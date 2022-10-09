@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 const Class = () => {
+  const [classNameList, setClassNameList] = useState([
+    "K-Culture",
+    "Standard Korean",
+    "TOPIK",
+  ]);
+
   return (
-    <View style={styles.container}>
-      <Text>Class</Text>
-    </View>
+    <View style={styles.container}>{classNameList.map((className) => {})}</View>
   );
 };
 
