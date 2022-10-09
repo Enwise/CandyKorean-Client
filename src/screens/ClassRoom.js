@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-const MyLecture = () => {
+const ClassRoom = () => {
   return (
     <View style={styles.container}>
-      <Text>MyLecture</Text>
+      <Text>ClassRoom</Text>
     </View>
   );
 };
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyLecture;
+export default ClassRoom;

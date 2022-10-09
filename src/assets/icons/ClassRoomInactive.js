@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 
-const MyLectureInactive = (props) => (
+const ClassRoomInactive = (props) => (
   <Svg
     width={24}
     height={23}
@@ -26,4 +26,4 @@ const MyLectureInactive = (props) => (
   </Svg>
 );
 
-export default MyLectureInactive;
+export default ClassRoomInactive;
