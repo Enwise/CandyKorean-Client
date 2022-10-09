@@ -4,8 +4,6 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
-import MyLecture from "../screens/MyLecture";
-import Class from "../screens/Class";
 import Premium from "../screens/Premium";
 import MyPage from "../screens/MyPage";
 import ClassStack from "../navigation/ClassStack";
@@ -32,8 +30,10 @@ const MainTab = () => {
         },
         tabBarActiveTintColor: "black",
         tabBarStyle: {
-          height: 88,
-          borderRadius: "29px 29px 0px 0px",
+          height: 70,
+          borderTopLeftRadius: 29,
+          borderTopRightRadius: 29,
+
           border: "0.5px solid #EFEFEF",
           shadowOffset: {
             width: 0,
@@ -62,15 +62,7 @@ const MainTab = () => {
           },
         }}
       />
-      {/* <Tab.Screen
-        name="ClassInfo"
-        component={ClassInfo}
-        options={{
-          tabBarIcon: ({ focused }) => {
-            return focused ? <ClassInactive /> : <ClassInactive />;
-          },
-        }}
-      /> */}
+
       <Tab.Screen
         name="ClassRoom"
         component={ClassRoom}
