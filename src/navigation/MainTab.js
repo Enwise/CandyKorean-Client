@@ -1,10 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
-import Class from "../screens/Class";
 import MyLecture from "../screens/MyLecture";
 import Premium from "../screens/Premium";
 import MyPage from "../screens/MyPage";
+import ClassStack from "../navigation/ClassStack";
 import ClassInactive from "../assets/icons/ClassInactive";
 import MyLectureInactive from "../assets/icons/MyLectureInactive";
 import MyPageInactive from "../assets/icons/MyPageInactive";
@@ -27,13 +27,22 @@ const MainTab = () => {
       />
       <Tab.Screen
         name="Class"
-        component={Class}
+        component={ClassStack}
         options={{
           tabBarIcon: ({ focused }) => {
             return focused ? <ClassInactive /> : <ClassInactive />;
           },
         }}
       />
+      {/* <Tab.Screen
+        name="ClassInfo"
+        component={ClassInfo}
+        options={{
+          tabBarIcon: ({ focused }) => {
+            return focused ? <ClassInactive /> : <ClassInactive />;
+          },
+        }}
+      /> */}
       <Tab.Screen
         name="MyLecture"
         component={MyLecture}
