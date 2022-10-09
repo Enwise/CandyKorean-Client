@@ -1,5 +1,8 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  BottomTabBar,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import Class from "../screens/Class";
 import Premium from "../screens/Premium";
@@ -19,15 +22,30 @@ const MainTab = () => {
   });
   if (!fontsLoaded) return null;
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarLabelStyle: {
+          fontFamily: "Poppins-Regular",
+        },
+        tabBarActiveTintColor: "black",
+        tabBarStyle: {
+          height: 88,
+          borderRadius: "29px 29px 0px 0px",
+          border: "0.5px solid #EFEFEF",
+          shadowOffset: {
+            width: 0,
+            height: -2,
+          },
+          shadowColor: "rgba(0, 0, 0, 0.1)",
+          shadowRadius: 23,
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabelStyle: {
-            fontFamily: "Poppins-Regular",
-          },
-          tabBarActiveTintColor: "black",
           tabBarIcon: ({ focused }) => {
             return focused ? <HomeInactive /> : <HomeInactive />;
           },
@@ -37,10 +55,6 @@ const MainTab = () => {
         name="Class"
         component={Class}
         options={{
-          tabBarLabelStyle: {
-            fontFamily: "Poppins-Regular",
-          },
-          tabBarActiveTintColor: "black",
           tabBarIcon: ({ focused }) => {
             return focused ? <ClassInactive /> : <ClassInactive />;
           },
@@ -50,10 +64,6 @@ const MainTab = () => {
         name="ClassRoom"
         component={ClassRoom}
         options={{
-          tabBarLabelStyle: {
-            fontFamily: "Poppins-Regular",
-          },
-          tabBarActiveTintColor: "black",
           tabBarIcon: ({ focused }) => {
             return focused ? <ClassRoomInactive /> : <ClassRoomInactive />;
           },
@@ -63,10 +73,6 @@ const MainTab = () => {
         name="Premium"
         component={Premium}
         options={{
-          tabBarLabelStyle: {
-            fontFamily: "Poppins-Regular",
-          },
-          tabBarActiveTintColor: "black",
           tabBarIcon: ({ focused }) => {
             return focused ? <PremiumInactive /> : <PremiumInactive />;
           },
@@ -76,10 +82,6 @@ const MainTab = () => {
         name="My"
         component={MyPage}
         options={{
-          tabBarLabelStyle: {
-            fontFamily: "Poppins-Regular",
-          },
-          tabBarActiveTintColor: "black",
           tabBarIcon: ({ focused }) => {
             return focused ? <MyPageInactive /> : <MyPageInactive />;
           },
