@@ -1,21 +1,57 @@
 import { useFonts } from "expo-font";
 import React from "react";
-import { TextInput, Dimensions, StyleSheet, Platform } from "react-native";
+import {
+  TextInput,
+  Dimensions,
+  StyleSheet,
+  Platform,
+  View,
+  Text,
+} from "react-native";
+import CheckIcon from "../assets/icons/CheckIcon";
+import ErrorIcon from "../assets/icons/ErrorIcon";
 const windowWidth = Dimensions.get("window").width;
 
-const Input = ({ placeholder }) => {
+const Input = ({ placeholder, value, handleChange, isValid }) => {
   const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
   });
   if (!fontsLoaded) return null;
 
-  return <TextInput style={styles.input} placeholder={placeholder} />;
+  return (
+    <View style={styles.container(value, isValid)}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={value}
+          style={styles.input(value)}
+          placeholder={placeholder}
+          onChangeText={handleChange}
+        />
+        {value ? isValid ? <CheckIcon /> : <ErrorIcon /> : null}
+      </View>
+      {placeholder === "Email" && value && !isValid ? (
+        <Text style={styles.text}>Please enter correct email</Text>
+      ) : null}
+      {placeholder === "Confirm Password" && value && !isValid ? (
+        <Text style={styles.text}>Re-enter correct password</Text>
+      ) : null}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  input: {
+  container: (value, isValid) => ({
     width: windowWidth - 40,
+    marginBottom: value && !isValid ? 16 : 38,
+  }),
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     height: 55,
+    borderRadius: 9,
+    backgroundColor: "white",
+    paddingRight: 20,
+    paddingLeft: 20,
     ...Platform.select({
       ios: {
         shadowOpacity: 0.1,
@@ -30,12 +66,18 @@ const styles = StyleSheet.create({
         elevation: 10,
       },
     }),
-    borderRadius: 9,
-    backgroundColor: "white",
-    paddingLeft: 24,
+  },
+  input: (value) => ({
+    flex: 1,
     fontFamily: "Poppins-Regular",
-    fontSize: 16,
-    marginBottom: 38,
+    fontSize: value ? 14 : 16,
+  }),
+  text: {
+    textAlign: "right",
+    fontFamily: "Poppins-Regular",
+    fontSize: 12,
+    color: "#E2608F",
+    marginTop: 4,
   },
 });
 

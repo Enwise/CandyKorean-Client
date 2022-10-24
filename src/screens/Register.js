@@ -7,11 +7,35 @@ import Input from "../components/Input";
 import SignButton from "../components/SignButton";
 
 const Register = ({ navigation }) => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [isVaildEmail, setIsVaildEmail] = React.useState(false);
+  const [isVaildPassword, setIsVaildPassword] = React.useState(false);
+  const [checkPassword, setCheckPassword] = React.useState(false);
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
   });
   if (!fontsLoaded) return null;
+
+  const handleChange = (type) => {
+    return (value) => {
+      if (type === "email") {
+        setEmail(value);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (reg.test(value)) setIsVaildEmail(true);
+        else setIsVaildEmail(false);
+      } else if (type === "password") {
+        setPassword(value);
+      } else if (type === "confirmPassword") {
+        setConfirmPassword(value);
+        if (value === password) setCheckPassword(true);
+        else setCheckPassword(false);
+        console.log(checkPassword);
+      }
+    };
+  };
 
   return (
     <View style={styles.container}>
@@ -28,9 +52,23 @@ const Register = ({ navigation }) => {
         >
           SIGN UP
         </Text>
-        <Input placeholder={"Email"} />
-        <Input placeholder={"Password"} />
-        <Input placeholder={"Confirm Password"} />
+        <Input
+          value={email}
+          placeholder={"Email"}
+          handleChange={handleChange("email")}
+          isValid={isVaildEmail}
+        />
+        <Input
+          value={password}
+          placeholder={"Password"}
+          handleChange={handleChange("password")}
+        />
+        <Input
+          value={confirmPassword}
+          placeholder={"Confirm Password"}
+          handleChange={handleChange("confirmPassword")}
+          isValid={checkPassword}
+        />
         <SignButton title={"SIGN UP"} />
       </View>
       <Text
