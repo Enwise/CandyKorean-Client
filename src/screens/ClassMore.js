@@ -1,26 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
   View,
+  Button,
   TouchableOpacity,
-  FlatList,
-  Image,
+  ScrollView,
   SafeAreaView,
+  FlatList,
 } from "react-native";
-import Class from "./Class";
-import { AntDesign } from "@expo/vector-icons";
+import Class from "../components/Class";
+import { Ionicons } from "@expo/vector-icons";
 
-const Course = ({ title, classList, showAllClass, isShowAll, navigation }) => {
-  const handleShowAllClass = () => {
-    {
-      isShowAll ? showAllClass(title, false) : showAllClass(title, true);
-    }
-  };
+const ClassMore = ({ navigation, route }) => {
+  const title = route.params.title;
+  const classList = route.params.classList;
 
   return (
     <View style={styles.courseContainer}>
-      <View style={isShowAll ? styles.topContainerFixed : styles.topContainer}>
+      <View style={styles.topContainer}>
         <View style={styles.topItem1}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.secondTitle}>
@@ -35,34 +33,25 @@ const Course = ({ title, classList, showAllClass, isShowAll, navigation }) => {
           <TouchableOpacity
             style={styles.moreButton}
             onPress={() => {
-              navigation.navigate("ClassMore", {
-                classList: classList,
-                title: title,
-              });
+              navigation.navigate("ClassMain");
             }}
           >
-            <Text style={styles.moreText}>more</Text>
-            <AntDesign name="right" size={24} color="black" />
+            <Ionicons name="arrow-back" size={35} color="black" />
           </TouchableOpacity>
         </View>
       </View>
-
       <SafeAreaView nestedScrollEnabled={true}>
         <FlatList
           numColumns={1}
           key={"_"}
           style={styles.classListContainer}
-          horizontal={true}
+          horizontal={false}
           keyExtractor={(item) => String(item.id)}
           data={classList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <Class
-              navigation={navigation}
-              classInfo={item}
-              isShowAll={isShowAll}
-            />
+            <Class navigation={navigation} classInfo={item} isShowAll={true} />
           )}
         ></FlatList>
       </SafeAreaView>
@@ -75,16 +64,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 50,
   },
   topContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 40,
-    marginBottom: 15,
+    marginTop: 30,
+    marginBottom: 30,
   },
-
+  classListContainer: {
+    width: 300,
+  },
   topItem1: {
     width: 270,
   },
@@ -94,26 +86,5 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
   },
-
-  classListContainer: {
-    flexDirection: "row",
-    paddingLeft: 20,
-  },
-  moreText: {
-    fontSize: 15,
-    marginBottom: 5,
-  },
-  moreButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
 });
-
-export default Course;
+export default ClassMore;
