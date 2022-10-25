@@ -5,6 +5,9 @@ import SignButton from "../components/SignButton";
 import BackButton from "../components/BackButton";
 import { Calendar } from "react-native-calendars";
 import Plotly from 'react-native-plotly';
+import {
+    LineChart,
+} from 'react-native-chart-kit'
 
 
 
@@ -75,34 +78,39 @@ const MyPage = () => {
         showlegend: false, // @4
     };
 
+    const linedata = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        datasets: [
+            {
+                data: [20, 45, 28, 80, 9, 43],
+                strokeWidth: 2, // optional
+            },
+        ],
+    };
+
   return (
     <View style={styles.container}>
-        <View style={{width:Width, display:"flex",  flexDirection:"row"}}>
+        <View style={{width:"90%", display:"flex",  flexDirection:"row-reverse"}}>
+            <Text style={{fontSize: 20, height:30}}>setting</Text>
+            <View style={{width:20}}/>
+            <Text style={{fontSize: 20, height:50}}>Log out</Text>
+        </View>
+        <View style={{width:"90%", display:"flex",  flexDirection:"row", alignItems:"center"}}>
             <Image
                 source={require("../assets/LogoText.png")}
-                style={{width:200, height:200}}
+                style={{width:150, height:150, borderRadius:"75"}}
             />
-            <View style={{marginLeft:20, display:"flex",flexDirection:"collumn", alignItems:"center"}}>
-                <Text style={{fontSize: 20, height:50}}>닉네임</Text>
-                <View style={{borderStyle:"solid", width:200, height:150, backgroundColor:"green"}}>
-                    <Text style={{fontSize: 20}}>수강코스</Text>
-                    <Text style={{fontSize: 20}}>수강내역</Text>
-                    <View style={{display:"flex", flexDirection:"row"}}>
-                        {/*<SignButton*/}
-                        {/*    title="LOGIN"*/}
-                        {/*    onPress={() => navigation.navigate("Login")}*/}
-                        {/*    style={{width:100}}*/}
-                        {/*/>*/}
-                        {/*<SignButton*/}
-                        {/*    title="LOGIN"*/}
-                        {/*    onPress={() => navigation.navigate("Login")}*/}
-                        {/*/>*/}
-                    </View>
+            <View style={{marginLeft:30, display:"flex",flexDirection:"collum", alignItems:"center"}}>
+                <Text style={{fontSize: 20, marginBottom:10}}>반가워요 Bony!</Text>
+                <View style={{borderStyle:"solid", width:200, height:100, backgroundColor:"#d9d9d9", alignItems:"center", justifyContent:"center"}}>
+                    <Text style={{fontSize: 20, marginBottom:10}}>My purchases</Text>
+                    <Text style={{fontSize: 20}}>Go to Lesson</Text>
                 </View>
-
             </View>
         </View>
-        <View style={{width:Width, marginTop:20}}>
+
+
+        <View style={{width:"90%", marginTop:20}}>
             <Calendar
                 style={styles.calendar}
                 markedDates={markedDates}
@@ -113,18 +121,40 @@ const MyPage = () => {
                     todayTextColor: 'yellow',
                 }} />
         </View>
-        <View style={{width:Width, marginTop:20}}>
-            <View style={{width:200, height:200}}>
-                <Plotly data={data} layout={layout}/>
-            </View>
-            <View style={{width:200, height:200}}>
 
+
+        <View style={{width:"90%", marginTop:20, display:"flex", flexDirection:"row", alignItems:"center"}}>
+            <View style={{width:"50%"}}>
+                <LineChart
+                    data={linedata}
+                    width={Dimensions.get('window').width*0.5} // from react-native
+                    height={120}
+                    // yAxisLabel={'$'}
+                    chartConfig={{
+                        backgroundColor: '#e26a00',
+                        backgroundGradientFrom: '#fb8c00',
+                        backgroundGradientTo: '#ffa726',
+                        decimalPlaces: 2, // optional, defaults to 2dp
+                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        style: {
+                            borderRadius: 16
+                        }
+                    }}
+                    bezier
+                    style={{
+                        marginVertical: 8,
+                        borderRadius: 16
+                    }}
+                />
+            </View>
+            <View style={{width:"50%", marginLeft:40}}>
+                <View style={{borderStyle:"solid", width:150, height:120, backgroundColor:"#d9d9d9", alignItems:"center", justifyContent:"center", borderRadius:10}}>
+                    <Text style={{fontSize: 20, marginBottom:10}}>How to improve your Korean Level</Text>
+                    <Text style={{fontSize: 20}}>Go to Lesson</Text>
+                </View>
             </View>
 
         </View>
-
-
-
 
 
 
@@ -134,16 +164,15 @@ const MyPage = () => {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
-        marginTop: 80,
-        marginLeft: 40,
-        justifyContent: "center",
-        alignItems: "center",
+        flex: 1,
+        alignItems:"center",
+        width: '100%',
+        paddingTop: '15%',
+        paddingBottom : '15%',
     },
     calendar: {
         borderBottomWidth: 1,
         borderBottomColor: '#e0e0e0',
-        width: 400,
     },
 });
 
