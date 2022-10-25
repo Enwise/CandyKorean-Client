@@ -8,15 +8,18 @@ import {
   Button,
 } from "react-native";
 
-const Class = ({ classInfo, navigation, isShowAll }) => {
+const Class = ({ maintitle, classInfo, navigation, isShowAll }) => {
   return (
     <View style={styles.classContainer}>
       <View style={dstyles(isShowAll).topContainer}>
         <View style={styles.imageContainer}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("ClassInfo", { classInfo: classInfo })
-            }
+            onPress={() => {
+              navigation.navigate("ClassInfo", {
+                classInfo: classInfo,
+                maintitle: maintitle,
+              });
+            }}
           >
             <Image
               style={dstyles(isShowAll).img}
@@ -40,7 +43,17 @@ const Class = ({ classInfo, navigation, isShowAll }) => {
       </View>
       {isShowAll ? (
         <View style={styles.bottomContainer}>
-          <Button style={styles.button} title="Details / Samples"></Button>
+          <Button
+            style={styles.button}
+            title="Details / Samples"
+            onPress={() => {
+              navigation.navigate("ClassInfo", {
+                classInfo: classInfo,
+                maintitle: maintitle,
+              });
+              console.log("ClassInfo");
+            }}
+          ></Button>
         </View>
       ) : null}
     </View>

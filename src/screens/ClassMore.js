@@ -13,7 +13,7 @@ import Class from "../components/Class";
 import { Ionicons } from "@expo/vector-icons";
 
 const ClassMore = ({ navigation, route }) => {
-  const title = route.params.title;
+  const title = route.params.title ?? route.params.maintitle;
   const classList = route.params.classList;
 
   return (
@@ -31,7 +31,6 @@ const ClassMore = ({ navigation, route }) => {
         </View>
         <View style={styles.topItem2}>
           <TouchableOpacity
-            style={styles.moreButton}
             onPress={() => {
               navigation.navigate("ClassMain");
             }}
@@ -51,7 +50,12 @@ const ClassMore = ({ navigation, route }) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <Class navigation={navigation} classInfo={item} isShowAll={true} />
+            <Class
+              maintitle={title}
+              navigation={navigation}
+              classInfo={item}
+              isShowAll={true}
+            />
           )}
         ></FlatList>
       </SafeAreaView>

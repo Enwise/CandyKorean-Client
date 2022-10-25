@@ -62,6 +62,7 @@ const Course = ({ title, classList, showAllClass, isShowAll, navigation }) => {
               navigation={navigation}
               classInfo={item}
               isShowAll={isShowAll}
+              maintitle={title}
             />
           )}
         ></FlatList>
