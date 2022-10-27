@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Constants from "expo-constants";
 import BackButton from "../components/BackButton";
 import { useFonts } from "expo-font";
-import Input from "../components/Input";
+import SignUpInput from "../components/SignUpInput";
 import SignButton from "../components/SignButton";
 
 const Register = ({ navigation }) => {
@@ -32,7 +32,6 @@ const Register = ({ navigation }) => {
         setConfirmPassword(value);
         if (value === password) setCheckPassword(true);
         else setCheckPassword(false);
-        console.log(checkPassword);
       }
     };
   };
@@ -40,7 +39,7 @@ const Register = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <BackButton onPress={() => navigation.navigate("Welcome")} />
+        <BackButton onPress={() => navigation.pop()} />
       </View>
       <View style={{ marginLeft: 20, alignContent: "center" }}>
         <Text
@@ -52,24 +51,27 @@ const Register = ({ navigation }) => {
         >
           SIGN UP
         </Text>
-        <Input
+        <SignUpInput
           value={email}
           placeholder={"Email"}
           handleChange={handleChange("email")}
           isValid={isVaildEmail}
         />
-        <Input
+        <SignUpInput
           value={password}
           placeholder={"Password"}
           handleChange={handleChange("password")}
         />
-        <Input
+        <SignUpInput
           value={confirmPassword}
           placeholder={"Confirm Password"}
           handleChange={handleChange("confirmPassword")}
           isValid={checkPassword}
         />
-        <SignButton title={"SIGN UP"} />
+        <SignButton
+          title={"SIGN UP"}
+          onPress={() => navigation.navigate("Success")}
+        />
       </View>
       <Text
         style={{

@@ -12,7 +12,7 @@ import CheckIcon from "../assets/icons/CheckIcon";
 import ErrorIcon from "../assets/icons/ErrorIcon";
 const windowWidth = Dimensions.get("window").width;
 
-const Input = ({ placeholder, value, handleChange, isValid }) => {
+const SignUpInput = ({ placeholder, value, handleChange, isValid }) => {
   const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
   });
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Input;
+export default SignUpInput;
