@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import Course from "../components/Course";
+import CartButton from "../components/CartButton";
 
 const ClassMain = ({ navigation }) => {
   const [courseNameList, setCourseNameList] = useState([
@@ -103,10 +104,12 @@ const ClassMain = ({ navigation }) => {
               classList={dummyCourseList[courseName]}
               showAllClass={showAllClass}
               isShowAll={false}
+              isMain={true}
             ></Course>
           );
         })}
       </ScrollView>
+      <CartButton text="1" navigation={navigation} isMain={true}></CartButton>
     </View>
   );
 };
@@ -119,6 +122,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 50,
     backgroundColor: "#fff",
+    position: "relative",
   },
   moreButton: {
     flexDirection: "row",
