@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const ProfileInput = ({ title }) => {
   const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
   });
   if (!fontsLoaded) return null;
   return (
@@ -18,12 +18,12 @@ const ProfileInput = ({ title }) => {
 const styles = StyleSheet.create({
   container: {
     width: windowWidth - 40,
-    marginTop: 20,
+    marginTop: 24,
   },
   text: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#B8B5BC",
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins-Medium",
     marginBottom: 10,
   },
   input: {
