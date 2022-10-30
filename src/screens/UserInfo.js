@@ -136,7 +136,10 @@ const UserInfo = ({ navigation }) => {
         </View>
       </View>
       <View style={{ marginLeft: 20, flex: 1 }}>
-        <SignButton title={"SUBMIT"} />
+        <SignButton
+          title={"SUBMIT"}
+          onPress={() => navigation.navigate("Survey")}
+        />
       </View>
       <BottomSheet
         visible={bottomSheetVisible}

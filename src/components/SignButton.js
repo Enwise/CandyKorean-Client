@@ -5,13 +5,13 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 
-const SignButton = ({ onPress, title }) => {
+const SignButton = ({ onPress, title, disabled }) => {
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
   if (!fontsLoaded) return null;
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disabled={disabled}>
       <LinearGradient
         colors={["#84E9FF", "#C284FF"]}
         locations={[0, 1]}
