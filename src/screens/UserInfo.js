@@ -15,7 +15,7 @@ import DropDownIcon from "../assets/icons/DropDownIcon";
 import SignButton from "../components/SignButton";
 import BottomSheet from "../components/BottomSheet";
 import DateTimePicker from "react-native-modal-datetime-picker";
-
+import LevelSelect from "../components/LevelSelect";
 const windowWidth = Dimensions.get("window").width;
 const UserInfo = ({ navigation }) => {
   const gender = ["Female", "Male", "Other"];
@@ -26,6 +26,22 @@ const UserInfo = ({ navigation }) => {
   const [levelSelect, setLevelSelect] = React.useState();
   const [datePickerVisible, setDatePickerVisible] = React.useState(false);
   const [date, setDate] = React.useState();
+
+  const levelData = [
+    {
+      level: "Beginner",
+      description: "I don't know anything about Korean.",
+    },
+    {
+      level: "Intermediate",
+      description: "I know something about Korean.",
+    },
+    {
+      level: "Advanced",
+      description: "I can speak and write Korean.",
+    },
+  ];
+
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
@@ -125,9 +141,14 @@ const UserInfo = ({ navigation }) => {
       <BottomSheet
         visible={bottomSheetVisible}
         setVisible={setBottomSheetVisible}
-        levelSelect={setLevelSelect}
-        level={levelSelect}
-      />
+        header={"Korean Level"}
+      >
+        <LevelSelect
+          data={levelData}
+          select={levelSelect}
+          onPress={(value) => setLevelSelect(value)}
+        />
+      </BottomSheet>
     </View>
   );
 };

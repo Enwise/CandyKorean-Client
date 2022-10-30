@@ -14,7 +14,7 @@ import {
 import CloseIcon from "../assets/icons/CloseIcon";
 import LevelSelect from "./LevelSelect";
 
-const BottomSheet = ({ visible, setVisible, levelSelect, level }) => {
+const BottomSheet = ({ children, visible, setVisible, header }) => {
   const screenHeight = Dimensions.get("screen").height;
   const panY = React.useRef(new Animated.Value(screenHeight)).current;
   const translateY = panY.interpolate({
@@ -63,25 +63,6 @@ const BottomSheet = ({ visible, setVisible, levelSelect, level }) => {
     });
   };
 
-  const levelData = [
-    {
-      level: "Beginner",
-      description: "I don't know anything about Korean.",
-    },
-    {
-      level: "Intermediate",
-      description: "I know something about Korean.",
-    },
-    {
-      level: "Advanced",
-      description: "I can speak and write Korean.",
-    },
-  ];
-  const [selected, setSelected] = React.useState(level);
-  const onSelect = (value) => {
-    setSelected(value);
-    levelSelect(value);
-  };
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
@@ -103,18 +84,12 @@ const BottomSheet = ({ visible, setVisible, levelSelect, level }) => {
           {...panResponders.panHandlers}
         >
           <View style={styles.header}>
-            <Text style={styles.headerText}>Korean Level</Text>
+            <Text style={styles.headerText}>{header}</Text>
             <TouchableOpacity onPress={closeModal}>
               <CloseIcon />
             </TouchableOpacity>
           </View>
-          <View style={{ margin: 20 }}>
-            <LevelSelect
-              data={levelData}
-              select={selected}
-              onPress={(value) => onSelect(value)}
-            />
-          </View>
+          <View style={{ margin: 20 }}>{children}</View>
         </Animated.View>
       </View>
     </Modal>
