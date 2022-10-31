@@ -82,7 +82,7 @@ const MainTab = () => {
         }}
       />
       <Tab.Screen
-        name="My"
+        name="MyPage"
         component={MyPage}
         options={{
           tabBarIcon: ({ focused }) => {
