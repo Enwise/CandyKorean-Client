@@ -47,6 +47,11 @@ const Payment = ({ navigation, route }) => {
     return null;
   }
 
+  const deleteItem = (id) => {
+    console.log("delete");
+    setPayList(payList.filter((item) => item.id !== id));
+  };
+
   return (
     <ScrollView
       style={styles.container}
@@ -117,10 +122,12 @@ const Payment = ({ navigation, route }) => {
                   <View style={styles.swipeHiddenItem}>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate("ClassMore", { title: item.level });
+                        navigation.navigate("MyCart", { isAddToCart: false });
                       }}
                     >
-                      <Text style={styles.swipeHiddenItemText}>Similar</Text>
+                      <Text style={styles.swipeHiddenItemText}>
+                        Return{"\n"}to cart
+                      </Text>
                     </TouchableOpacity>
                   </View>
                   <View style={styles.swipeHiddenItem}>
@@ -309,6 +316,24 @@ const styles = StyleSheet.create({
     color: "white",
     top: 15,
     left: 55,
+  },
+  swipeHiddenItemContainer: {
+    paddingLeft: 30,
+    height: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingRight: 20,
+  },
+  swipeHiddenItem: {
+    height: "100%",
+    marginLeft: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  swipeHiddenItemText: {
+    fontFamily: "Poppins-Medium",
+    color: "#444345",
+    fontSize: 14,
   },
 });
 export default Payment;
