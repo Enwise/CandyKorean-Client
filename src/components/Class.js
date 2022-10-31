@@ -57,7 +57,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
           {isShowAll ? (
             <View style={styles.unitsImg}>
               <Image source={require("../assets/img/units_btn.png")}></Image>
-              <Text style={styles.unitsNumText}>{unitsNum} Units</Text>
+              <Text style={styles.unitsNumText}>{classInfo.units} Units</Text>
             </View>
           ) : null}
         </View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     position: "absolute",
     bottom: 0,
-    right: 8,
+    right: 6,
   },
   bottomContainer: {
     marginTop: 15,

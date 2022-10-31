@@ -18,6 +18,7 @@ import VideoPlayer from "expo-video-player";
 const ClassInfo = ({ props, navigation, route }) => {
   const className = route.params.classInfo.className;
   const teacherName = route.params.classInfo.teacherName;
+  const units = route.params.classInfo.units;
   // const isMain = route.params.isMain;
 
   // const video = useRef(null);
@@ -74,7 +75,7 @@ const ClassInfo = ({ props, navigation, route }) => {
           </View>
           <View style={styles.unitsImg}>
             <Image source={require("../assets/img/units_btn.png")}></Image>
-            <Text style={styles.unitsNumText}>{unitsNum} Units</Text>
+            <Text style={styles.unitsNumText}>{units} Units</Text>
           </View>
         </View>
       </View>

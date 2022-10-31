@@ -36,7 +36,8 @@ const MyCart = ({ navigation, route }) => {
         category: classInfo.category,
         className: classInfo.className,
         level: classInfo.level,
-        price: 15,
+        price: classInfo.price,
+        units: classInfo.units,
         checked: false,
       };
       setCartList([...cartList, newProduct]);
@@ -53,6 +54,7 @@ const MyCart = ({ navigation, route }) => {
       category: "K-culture",
       checked: false,
       level: "Lollipop",
+      units: 10,
     },
     {
       id: 2,
@@ -62,6 +64,7 @@ const MyCart = ({ navigation, route }) => {
       category: "K-culture",
       checked: false,
       level: "CottonCandy",
+      units: 10,
     },
     {
       id: 3,
@@ -71,6 +74,7 @@ const MyCart = ({ navigation, route }) => {
       category: "K-culture",
       checked: false,
       level: "Lollipop",
+      units: 10,
     },
   ]);
 
@@ -147,6 +151,11 @@ const MyCart = ({ navigation, route }) => {
     console.log(id);
     const newCartList = cartList.filter((item) => item.id !== id);
     setCartList(newCartList);
+  };
+
+  const checkBuyNow = (id) => {
+    const newCartList = cartList.filter((item) => item.id === id);
+    return newCartList;
   };
 
   return (
@@ -243,7 +252,8 @@ const MyCart = ({ navigation, route }) => {
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  console.log("BUY NOW");
+                  const payList = checkBuyNow(item.id);
+                  navigation.navigate("Payment", { payList: payList });
                 }}
               >
                 <Image
@@ -297,7 +307,12 @@ const MyCart = ({ navigation, route }) => {
         </View>
       </View>
       <View style={styles.checkoutBtnContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            const payList = cartList.filter((item) => item.checked);
+            navigation.navigate("Payment", { payList: payList });
+          }}
+        >
           <Image
             style={styles.checkoutBtn}
             source={require("../assets/img/btn-checkout.jpg")}
@@ -319,9 +334,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   title: {
-    fontSize: 25,
-    marginTop: 50,
-    marginLeft: 35,
+    fontSize: 20,
+    marginTop: 30,
+    fontFamily: "Poppins-SemiBold",
   },
   titleContainer: {
     position: "relative",
@@ -331,11 +346,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     backgroundColor: "white",
   },
-  title: {
-    fontSize: 20,
-    marginTop: 30,
-    fontFamily: "Poppins-SemiBold",
-  },
+
   backBtn: {
     position: "absolute",
     top: 35,

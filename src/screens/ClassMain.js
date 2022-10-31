@@ -35,6 +35,8 @@ const ClassMain = ({ navigation }) => {
         className: "class1",
         category: "K-culture",
         level: "Lollipop",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img1",
@@ -42,6 +44,8 @@ const ClassMain = ({ navigation }) => {
         className: "class2",
         category: "K-history",
         level: "Lollipop",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img1",
@@ -49,6 +53,8 @@ const ClassMain = ({ navigation }) => {
         className: "class3",
         category: "K-pop",
         level: "Lollipop",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img1",
@@ -56,6 +62,8 @@ const ClassMain = ({ navigation }) => {
         className: "class4",
         category: "K-culture",
         level: "Lollipop",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img1",
@@ -63,6 +71,8 @@ const ClassMain = ({ navigation }) => {
         className: "class5",
         category: "K-culture",
         level: "Lollipop",
+        units: 10,
+        price: 100,
       },
     ],
     "Cotton Candy Level": [
@@ -72,6 +82,8 @@ const ClassMain = ({ navigation }) => {
         className: "class1",
         category: "K-culture",
         level: "CottonCandy",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img2",
@@ -79,6 +91,8 @@ const ClassMain = ({ navigation }) => {
         className: "class2",
         category: "K-culture",
         level: "CottonCandy",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img2",
@@ -86,6 +100,8 @@ const ClassMain = ({ navigation }) => {
         className: "class3",
         category: "K-culture",
         level: "CottonCandy",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img2",
@@ -93,6 +109,8 @@ const ClassMain = ({ navigation }) => {
         className: "class4",
         category: "K-culture",
         level: "CottonCandy",
+        units: 10,
+        price: 100,
       },
     ],
     "Mint Candy Level": [
@@ -102,6 +120,8 @@ const ClassMain = ({ navigation }) => {
         className: "class1",
         category: "K-culture",
         level: "MintCandy",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img3",
@@ -109,6 +129,8 @@ const ClassMain = ({ navigation }) => {
         className: "class2",
         category: "K-culture",
         level: "MintCandy",
+        units: 10,
+        price: 100,
       },
       {
         imgUrl: "img3",
@@ -116,6 +138,8 @@ const ClassMain = ({ navigation }) => {
         className: "class3",
         category: "K-culture",
         level: "MintCandy",
+        units: 10,
+        price: 100,
       },
     ],
   });
