@@ -82,7 +82,7 @@ const ClassInfo = ({ props, navigation, route }) => {
       <View style={styles.videoContainer}>
         <VideoPlayer
           videoProps={{
-            shouldPlay: true,
+            shouldPlay: false,
             resizeMode: ResizeMode.STRETCH,
             // ❗ source is required https://docs.expo.io/versions/latest/sdk/video/#props
             source: {

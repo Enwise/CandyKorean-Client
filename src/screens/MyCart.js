@@ -13,8 +13,9 @@ import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 
 const MyCart = ({ navigation, route }) => {
-  const isAddToCart = route.params.isAddToCart ?? false;
-
+  const [isAddToCart, setIsAddToCart] = useState(
+    route.params.isAddToCart ?? false
+  );
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [selectedCount, setSelectedCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -27,6 +28,20 @@ const MyCart = ({ navigation, route }) => {
     //   newPrice += item.price;
     // });
     // setTotalPrice(newPrice);
+    if (isAddToCart) {
+      const classInfo = route.params.classInfo;
+      const newProduct = {
+        id: Date.now(),
+        imgUrl: classInfo.imgUrl,
+        category: classInfo.category,
+        className: classInfo.className,
+        level: classInfo.level,
+        price: 15,
+        checked: false,
+      };
+      setCartList([...cartList, newProduct]);
+      setIsAddToCart(false);
+    }
   }, [isSelectAll, cartList, totalPrice, selectedCount]);
 
   const [cartList, setCartList] = useState([
