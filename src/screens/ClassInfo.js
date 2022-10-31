@@ -51,7 +51,7 @@ const ClassInfo = ({ props, navigation, route }) => {
         <View style={styles.backBtn}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("ClassMain");
+              navigation.goBack();
             }}
           >
             <AntDesign name="left" size={20} color="black" />
@@ -124,7 +124,10 @@ const ClassInfo = ({ props, navigation, route }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("MyCart");
+            navigation.navigate("MyCart", {
+              classInfo: route.params.classInfo,
+              isAddToCart: true,
+            });
           }}
         >
           <View style={styles.cartBtn}>

@@ -68,7 +68,6 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
           onPress={() => {
             navigation.navigate("ClassInfo", {
               classInfo: classInfo,
-              maintitle: maintitle,
             });
             console.log("ClassInfo");
           }}

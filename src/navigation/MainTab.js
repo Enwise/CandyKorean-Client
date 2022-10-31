@@ -33,6 +33,7 @@ const MainTab = () => {
           height: 70,
           borderTopLeftRadius: 29,
           borderTopRightRadius: 29,
+          backgroundColor: "#fff",
 
           border: "0.5px solid #EFEFEF",
           shadowOffset: {

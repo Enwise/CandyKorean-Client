@@ -24,7 +24,10 @@ const CartButton = ({ text, navigation, isMain }) => {
     <TouchableOpacity
       style={dstyles(isMain).button}
       onPress={() => {
-        navigation.navigate("MyCart");
+        navigation.navigate("MyCart", {
+          isAddToCart: false,
+          classInfo: "No ClassInfo",
+        });
       }}
     >
       <Image source={require("../assets/img/ic-cart.png")}></Image>
