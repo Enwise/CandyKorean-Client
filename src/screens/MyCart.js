@@ -6,7 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 
@@ -14,16 +16,28 @@ const MyCart = ({ navigation, route }) => {
   const isAddToCart = route.params.isAddToCart ?? false;
 
   const [isSelectAll, setIsSelectAll] = useState(false);
+  const [selectedCount, setSelectedCount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // 장바구니에 담긴 상품들 불러오기
+  useEffect(() => {
+    console.log(route.params.classInfo);
+    // let newPrice = 0;
+    // cartList.map((item) => {
+    //   newPrice += item.price;
+    // });
+    // setTotalPrice(newPrice);
+  }, [isSelectAll, cartList, totalPrice, selectedCount]);
 
   const [cartList, setCartList] = useState([
     {
       id: 1,
       imgUrl: require("../assets/img/sample_class_img1.jpeg"),
-
       className: "Trip Korean",
       price: 0,
       category: "K-culture",
       checked: false,
+      level: "Lollipop",
     },
     {
       id: 2,
@@ -32,6 +46,7 @@ const MyCart = ({ navigation, route }) => {
       price: 15,
       category: "K-culture",
       checked: false,
+      level: "CottonCandy",
     },
     {
       id: 3,
@@ -40,13 +55,9 @@ const MyCart = ({ navigation, route }) => {
       price: 15,
       category: "K-culture",
       checked: false,
+      level: "Lollipop",
     },
   ]);
-
-  // 장바구니에 담긴 상품들 불러오기
-  useEffect(() => {
-    console.log(route.params.classInfo);
-  }, [isSelectAll]);
 
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
@@ -59,6 +70,8 @@ const MyCart = ({ navigation, route }) => {
   }
 
   const changeCheckColor = (id = "default") => {
+    console.log(id);
+    let count = 0;
     if (id === "default") {
       if (isSelectAll) {
         setIsSelectAll(false);
@@ -66,25 +79,32 @@ const MyCart = ({ navigation, route }) => {
           return { ...item, checked: false };
         });
         setCartList(newCartList);
+        changePrice(newCartList);
+        setSelectedCount(0);
       } else {
         setIsSelectAll(true);
         const newCartList = cartList.map((item) => {
           return { ...item, checked: true };
         });
         setCartList(newCartList);
+        changePrice(newCartList);
+        setSelectedCount(cartList.length);
       }
     } else {
       let isAllSelected = true;
-      const newCartList = cartList.map((item) => {
+      let newCartList = cartList.map((item) => {
         if (item.id === id) {
           item.checked = !item.checked;
         }
         return item;
       });
       setCartList(newCartList);
-      newCartList.map((item) => {
+
+      cartList.map((item) => {
         if (!item.checked) {
           isAllSelected = false;
+        } else {
+          count += 1;
         }
       });
       if (isAllSelected) {
@@ -92,7 +112,26 @@ const MyCart = ({ navigation, route }) => {
       } else {
         setIsSelectAll(false);
       }
+      setSelectedCount(count);
+      changePrice(newCartList);
     }
+  };
+
+  const changePrice = (cartList) => {
+    console.log("changePrice");
+    let newPrice = 0;
+    cartList.map((item) => {
+      if (item.checked) {
+        newPrice += item.price;
+      }
+    });
+    setTotalPrice(newPrice);
+  };
+
+  const deleteItem = (id) => {
+    console.log(id);
+    const newCartList = cartList.filter((item) => item.id !== id);
+    setCartList(newCartList);
   };
 
   return (
@@ -143,8 +182,10 @@ const MyCart = ({ navigation, route }) => {
         </View>
       </View>
       <View style={styles.cartListContainer}>
-        {cartList.map((item) => {
-          return (
+        <SwipeListView
+          data={cartList}
+          // 어떻게 아이템을 렌더링 할 것인가
+          renderItem={({ item }) => (
             <View style={styles.cartListItem}>
               <View style={styles.checkAndEdit}>
                 <TouchableOpacity
@@ -162,12 +203,13 @@ const MyCart = ({ navigation, route }) => {
                     }
                   ></Image>
                 </TouchableOpacity>
-                <View style={styles.editBtn}>
+                {/* <View style={styles.editBtn}>
                   <TouchableOpacity>
                     <Text style={styles.editBtnText}>edit</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
+
               <View style={styles.classInfoContainer}>
                 <View style={styles.classImgContainer}>
                   <Image style={styles.classImg} source={item.imgUrl}></Image>
@@ -184,7 +226,6 @@ const MyCart = ({ navigation, route }) => {
                   </View>
                 </View>
               </View>
-
               <TouchableOpacity
                 onPress={() => {
                   console.log("BUY NOW");
@@ -196,17 +237,48 @@ const MyCart = ({ navigation, route }) => {
                 ></Image>
               </TouchableOpacity>
             </View>
-          );
-        })}
+          )}
+          // 어떻게 숨겨진 아이템을 렌더링 할 것인가
+          renderHiddenItem={({ item }) => (
+            <View style={styles.swipeHiddenItemContainer}>
+              <View style={styles.swipeHiddenItem}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("ClassMore", { title: item.level });
+                  }}
+                >
+                  <Text style={styles.swipeHiddenItemText}>Similar</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.swipeHiddenItem}>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("delete");
+                    deleteItem(item.id);
+                  }}
+                >
+                  <Text style={styles.swipeHiddenItemText}>Delete</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          rightOpenValue={-150}
+          previewRowKey={"0"}
+          previewOpenValue={-40}
+          previewOpenDelay={3000}
+          disableRightSwipe={true}
+          // leftOpenValue={0}
+        />
       </View>
+
       <View style={styles.bottomInfoContainer}>
         <View style={styles.selectedProductsContainer}>
           <Text style={styles.selectedProductsText}>Selected products</Text>
-          <Text style={styles.selectedProductsNum}>2</Text>
+          <Text style={styles.selectedProductsNum}>{selectedCount}</Text>
         </View>
         <View style={styles.totalPriceContainer}>
           <Text style={styles.totalPriceText}>Total</Text>
-          <Text style={styles.totalPrice}>$ 15</Text>
+          <Text style={styles.totalPrice}>$ {totalPrice}</Text>
         </View>
       </View>
       <View style={styles.checkoutBtnContainer}>
@@ -276,11 +348,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cartListItem: {
-    width: "100%",
+    width: 350,
     paddingLeft: 20,
     paddingRight: 20,
     position: "relative",
     marginBottom: 25,
+    zIndex: 2,
+    backgroundColor: "white",
   },
   checkAndEdit: {
     flexDirection: "row",
@@ -369,7 +443,25 @@ const styles = StyleSheet.create({
   checkoutBtnContainer: {
     alignItems: "center",
     marginTop: 20,
+    paddingBottom: 20,
   },
-  checkoutBtn: {},
+  swipeHiddenItemContainer: {
+    paddingLeft: 30,
+    height: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingRight: 20,
+  },
+  swipeHiddenItem: {
+    height: "100%",
+    marginLeft: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  swipeHiddenItemText: {
+    fontFamily: "Poppins-Medium",
+    color: "#444345",
+    fontSize: 14,
+  },
 });
 export default MyCart;
