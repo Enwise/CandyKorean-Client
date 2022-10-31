@@ -25,7 +25,10 @@ const SurveyCompletePage = ({ navigation }) => {
         <Text>Let's start sweet Korean!</Text>
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
-        <SignButton title={"START"} />
+        <SignButton
+          title={"START"}
+          onPress={() => navigation.navigate("MainTab")}
+        />
       </View>
     </View>
   );
