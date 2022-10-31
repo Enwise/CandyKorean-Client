@@ -16,14 +16,8 @@ import { ResizeMode } from "expo-av";
 import VideoPlayer from "expo-video-player";
 
 const ClassInfo = ({ props, navigation, route }) => {
-  const className = route.params.classInfo.className;
-  const teacherName = route.params.classInfo.teacherName;
-  const units = route.params.classInfo.units;
-  // const isMain = route.params.isMain;
-
-  // const video = useRef(null);
-  // const [status, setStatus] = useState({});
   const [unitsNum, setUnitsNum] = useState(9);
+  const [classInfo, setClassInfo] = useState(route.params.classInfo);
 
   const [inFullscreen, setInFullsreen] = useState(false);
   const [inFullscreen2, setInFullsreen2] = useState(false);
@@ -48,7 +42,7 @@ const ClassInfo = ({ props, navigation, route }) => {
       stickyHeaderIndices={[0]}
     >
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{className}</Text>
+        <Text style={styles.title}>{classInfo.className}</Text>
         <View style={styles.backBtn}>
           <TouchableOpacity
             onPress={() => {
@@ -68,14 +62,14 @@ const ClassInfo = ({ props, navigation, route }) => {
         </View>
         <View style={styles.textContainer}>
           <View>
-            <Text style={styles.className}>{className}</Text>
+            <Text style={styles.className}>{classInfo.className}</Text>
           </View>
           <View style={styles.teacherNameContainer}>
-            <Text style={styles.teacherName}>with {teacherName}</Text>
+            <Text style={styles.teacherName}>with {classInfo.teacherName}</Text>
           </View>
           <View style={styles.unitsImg}>
             <Image source={require("../assets/img/units_btn.png")}></Image>
-            <Text style={styles.unitsNumText}>{units} Units</Text>
+            <Text style={styles.unitsNumText}>{classInfo.units} Units</Text>
           </View>
         </View>
       </View>
@@ -138,7 +132,8 @@ const ClassInfo = ({ props, navigation, route }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Payment");
+            const payList = [{ ...classInfo }];
+            navigation.navigate("Payment", { payList: payList });
           }}
         >
           <View style={styles.payBtn}>
