@@ -6,19 +6,30 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
-import Video from "react-native-video";
+
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
+import { ResizeMode } from "expo-av";
+import VideoPlayer from "expo-video-player";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const className = route.params.classInfo.className;
   const teacherName = route.params.classInfo.teacherName;
-  const isMain = route.params.isMain;
+  // const isMain = route.params.isMain;
 
-  const video = useRef(null);
-  const [status, setStatus] = useState({});
+  // const video = useRef(null);
+  // const [status, setStatus] = useState({});
   const [unitsNum, setUnitsNum] = useState(9);
+
+  const [inFullscreen, setInFullsreen] = useState(false);
+  const [inFullscreen2, setInFullsreen2] = useState(false);
+  const [isMute, setIsMute] = useState(false);
+  const refVideo = useRef(null);
+  const refVideo2 = useRef(null);
+  const refScrollView = useRef(null);
 
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
@@ -30,7 +41,11 @@ const ClassInfo = ({ props, navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={{ ...styles.container, flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[0]}
+    >
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{className}</Text>
         <View style={styles.backBtn}>
@@ -65,17 +80,40 @@ const ClassInfo = ({ props, navigation, route }) => {
       </View>
 
       <View style={styles.videoContainer}>
-        {/* <Video
-          source={{
-            uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        <VideoPlayer
+          videoProps={{
+            shouldPlay: true,
+            resizeMode: ResizeMode.STRETCH,
+            // ❗ source is required https://docs.expo.io/versions/latest/sdk/video/#props
+            source: {
+              uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            },
           }}
-          style={styles.fullScreen}
-          paused={false} // 재생/중지 여부
-          resizeMode={"cover"} // 프레임이 비디오 크기와 일치하지 않을 때 비디오 크기를 조정하는 방법을 결정합니다. cover : 비디오의 크기를 유지하면서 최대한 맞게
-          onLoad={(e) => console.log(e)} // 미디어가 로드되고 재생할 준비가 되면 호출되는 콜백 함수입니다.
-          repeat={true} // video가 끝나면 다시 재생할 지 여부
-          onAnimatedValueUpdate={() => {}}
-        /> */}
+          fullscreen={{
+            enterFullscreen: async () => {
+              setStatusBarHidden(true, "fade");
+              setInFullsreen2(!inFullscreen2);
+              await ScreenOrientation.lockAsync(
+                ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+              );
+              refVideo2.current.setStatusAsync({
+                shouldPlay: true,
+              });
+            },
+            exitFullscreen: async () => {
+              setStatusBarHidden(false, "fade");
+              setInFullsreen2(!inFullscreen2);
+              await ScreenOrientation.lockAsync(
+                ScreenOrientation.OrientationLock.DEFAULT
+              );
+            },
+          }}
+          style={{
+            videoBackgroundColor: "black",
+            height: inFullscreen2 ? Dimensions.get("window").width : 500,
+            width: inFullscreen2 ? Dimensions.get("window").height : 300,
+          }}
+        />
       </View>
       <View style={styles.classAndteacherContainer}>
         <Text style={styles.classInfoText}>
@@ -105,32 +143,36 @@ const ClassInfo = ({ props, navigation, route }) => {
           </View>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    marginRight: 20,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
     position: "relative",
+    backgroundColor: "white",
   },
   titleContainer: {
     position: "relative",
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 50,
+    paddingLeft: 150,
+    zIndex: 1,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
+    marginTop: 30,
     fontFamily: "Poppins-SemiBold",
   },
   backBtn: {
     position: "absolute",
-    top: 10,
+    top: 40,
     left: -100,
   },
   img: {
@@ -182,23 +224,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
+    borderRadius: 50,
+    marginTop: 50,
   },
-  fullScreen: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
+
   classAndteacherContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 230,
   },
   buttonContainer: {
-    width: 210,
+    width: 230,
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 100,
+    marginBottom: 30,
   },
   cartBtn: {
     width: 55,
