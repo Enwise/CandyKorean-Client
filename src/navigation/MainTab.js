@@ -7,13 +7,14 @@ import Home from "../screens/Home";
 import Premium from "../screens/Premium";
 import MyPage from "../screens/MyPage";
 import ClassStack from "../navigation/ClassStack";
-import ClassRoomStack from "../navigation/ClassRoomStack";
 import ClassInactive from "../assets/icons/ClassInactive";
 import ClassRoomInactive from "../assets/icons/ClassRoomInactive";
 import MyPageInactive from "../assets/icons/MyPageInactive";
 import PremiumInactive from "../assets/icons/PremiumInactive";
 import HomeInactive from "../assets/icons/HomeInactive";
 import { useFonts } from "expo-font";
+import ClassRoom from "../screens/ClassRoom";
+import { Platform } from "react-native";
 const Tab = createBottomTabNavigator();
 
 const MainTab = () => {
@@ -25,16 +26,21 @@ const MainTab = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarLabelStyle: {
-          fontFamily: "Poppins-Regular",
-        },
+        tabBarInactiveTintColor: "#807F82",
         tabBarActiveTintColor: "black",
         tabBarStyle: {
-          height: 70,
+          ...Platform.select({
+            android: {
+              paddingBottom: 20,
+              height: 80,
+            },
+            ios: {
+              height: 88,
+            },
+          }),
           borderTopLeftRadius: 29,
           borderTopRightRadius: 29,
-          backgroundColor: "#fff",
-
+          backgroundColor: "white",
           border: "0.5px solid #EFEFEF",
           shadowOffset: {
             width: 0,
@@ -42,6 +48,10 @@ const MainTab = () => {
           },
           shadowColor: "rgba(0, 0, 0, 0.1)",
           shadowRadius: 23,
+        },
+        tabBarLabelStyle: {
+          fontFamily: "Poppins-Regular",
+          fontSize: 10,
         },
       }}
     >
@@ -66,7 +76,7 @@ const MainTab = () => {
 
       <Tab.Screen
         name="ClassRoom"
-        component={ClassRoomStack}
+        component={ClassRoom}
         options={{
           tabBarIcon: ({ focused }) => {
             return focused ? <ClassRoomInactive /> : <ClassRoomInactive />;
@@ -83,7 +93,7 @@ const MainTab = () => {
         }}
       />
       <Tab.Screen
-        name="MyPage"
+        name="My"
         component={MyPage}
         options={{
           tabBarIcon: ({ focused }) => {
