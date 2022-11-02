@@ -16,6 +16,7 @@ import { useFonts } from "expo-font";
 import ClassRoom from "../screens/ClassRoom";
 import { Platform } from "react-native";
 const Tab = createBottomTabNavigator();
+import MyPageStack from "./MyPageStack";
 
 const MainTab = () => {
   const [fontsLoaded] = useFonts({
@@ -94,7 +95,7 @@ const MainTab = () => {
       />
       <Tab.Screen
         name="My"
-        component={MyPage}
+        component={MyPageStack}
         options={{
           tabBarIcon: ({ focused }) => {
             return focused ? <MyPageInactive /> : <MyPageInactive />;

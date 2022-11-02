@@ -1,6 +1,6 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { Dimensions } from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions} from 'react-native';
 import SignButton from "../components/SignButton";
 import BackButton from "../components/BackButton";
 import { Calendar } from "react-native-calendars";
@@ -10,8 +10,7 @@ import {
 } from 'react-native-chart-kit'
 
 
-
-const MyPage = () => {
+const MyPage = ({navigation}) => {
   const Width = Dimensions.get("window").width; //스크린 너비 초기화
   const Height = Dimensions.get("window").height; //스크린 높이 초기화
   const markedDates = {
@@ -95,7 +94,11 @@ const MyPage = () => {
   return (
     <View style={styles.container}>
         <View style={{width:"90%", display:"flex",  flexDirection:"row-reverse"}}>
-            <Text style={{fontSize: 20, height:30}}>setting</Text>
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate("Setting");
+            }}>
+                <Text style={{fontSize: 20, height:30}}>setting</Text>
+            </TouchableOpacity>
             <View style={{width:20}}/>
             <Text style={{fontSize: 20, height:50}}>Log out</Text>
         </View>
@@ -107,7 +110,12 @@ const MyPage = () => {
             <View style={{marginLeft:30, display:"flex",flexDirection:"collum", alignItems:"center"}}>
                 <Text style={{fontSize: 20, marginBottom:10}}>반가워요 Bony!</Text>
                 <View style={{borderStyle:"solid", width:200, height:100, backgroundColor:"#d9d9d9", alignItems:"center", justifyContent:"center"}}>
-                    <Text style={{fontSize: 20, marginBottom:10}}>My purchases</Text>
+
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate("MyPurchases");
+                    }}>
+                        <Text style={{fontSize: 20, marginBottom:10}}>My purchases</Text>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20}}>Go to Lesson</Text>
                 </View>
             </View>
