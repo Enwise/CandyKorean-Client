@@ -1,36 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import SignButton from "../components/SignButton";
-import Constants from "expo-constants";
 import { useFonts } from "expo-font";
-import LogoIcon from "../assets/icons/LogoIcon";
+import { LinearGradient } from "expo-linear-gradient";
+import WhiteLogo from "../assets/icons/WhiteLogo";
 
 const SurveyCompletePage = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
-  if (!fontsLoaded) return null;
 
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate("MainTab");
+    }, 2000);
+  });
+
+  if (!fontsLoaded) return null;
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          flex: 6,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text>Thank you for your answer!</Text>
-        <Text>Let's start sweet Korean!</Text>
-      </View>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <SignButton
-          title={"START"}
-          onPress={() => navigation.navigate("MainTab")}
-        />
-      </View>
-    </View>
+    <LinearGradient
+      colors={["#84E9FF", "#C284FF"]}
+      locations={[0, 1]}
+      start={[0.025, 0.5]}
+      end={[0.975, 0.5]}
+      style={styles.container}
+    >
+      <WhiteLogo />
+      <View style={{ marginTop: 24 }}></View>
+      <Text style={styles.text}>Thank you for your answer</Text>
+      <Text style={styles.text}>Let’s start sweet Korean!</Text>
+    </LinearGradient>
   );
 };
 
@@ -38,8 +36,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: "white",
+    justifyContent: "center",
+  },
+  text: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 20,
+    color: "white",
   },
 });
 
