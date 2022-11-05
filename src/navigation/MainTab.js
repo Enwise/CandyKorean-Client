@@ -7,6 +7,7 @@ import Home from "../screens/Home";
 import Premium from "../screens/Premium";
 import MyPage from "../screens/MyPage";
 import ClassStack from "../navigation/ClassStack";
+import ClassRoomStack from "../navigation/ClassRoomStack";
 import ClassInactive from "../assets/icons/ClassInactive";
 import ClassRoomInactive from "../assets/icons/ClassRoomInactive";
 import MyPageInactive from "../assets/icons/MyPageInactive";
@@ -77,7 +78,7 @@ const MainTab = () => {
 
       <Tab.Screen
         name="ClassRoom"
-        component={ClassRoom}
+        component={ClassRoomStack}
         options={{
           tabBarIcon: ({ focused }) => {
             return focused ? <ClassRoomInactive /> : <ClassRoomInactive />;
