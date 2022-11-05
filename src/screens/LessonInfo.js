@@ -10,9 +10,18 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import Dialog, {
+  DialogContent,
+  ScaleAnimation,
+  DialogFooter,
+  DialogButton,
+} from "react-native-popup-dialog";
 
 const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
+  const [visible, setVisible] = useState(false);
+  const [review, setReview] = useState(true);
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
@@ -66,7 +75,11 @@ const LessonInfo = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.quizBtn}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setVisible(true);
+              }}
+            >
               <Image
                 source={require("../assets/img/btn-purple-lecture.png")}
               ></Image>
@@ -121,18 +134,123 @@ const LessonInfo = ({ navigation, route }) => {
                     <Text style={styles.unitStudyText}>Study</Text>
                   </View>
                 </TouchableOpacity>
-                <View style={styles.unitQuizContainer}>
-                  <Image
-                    style={styles.unitQuizBtn}
-                    source={require("../assets/img/units_quiz_btn.png")}
-                  ></Image>
-                  <Text style={styles.unitQuizText}></Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setVisible(true);
+                  }}
+                >
+                  <View style={styles.unitQuizContainer}>
+                    <Image
+                      style={styles.unitQuizBtn}
+                      source={require("../assets/img/units_quiz_btn.png")}
+                    ></Image>
+                    <Text style={styles.unitQuizText}></Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
         )}
       ></FlatList>
+      <Dialog
+        width={0.8}
+        height={0.25}
+        visible={visible}
+        onTouchOutside={() => {
+          setVisible(false);
+        }}
+        onHardwareBackPress={() => {
+          setVisible(false);
+        }}
+        dialogAnimation={
+          new ScaleAnimation({
+            initialValue: 0, // optional
+            useNativeDriver: true, // optional
+          })
+        }
+        footer={
+          <DialogFooter
+            bordered={false}
+            style={{
+              paddingLeft: 10,
+              paddingRight: 10,
+
+              paddingBottom: 20,
+            }}
+          >
+            <DialogButton
+              style={{
+                backgroundColor: "#E6E3EA",
+                borderRadius: 30,
+                marginRight: 5,
+                height: 48,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              textStyle={{
+                color: "#444345",
+                fontFamily: "Poppins-Medium",
+                fontSize: 14,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              text="NO"
+              onPress={() => {
+                setReview(false);
+                console.log("review: ", review);
+              }}
+            />
+            <DialogButton
+              style={{
+                backgroundColor: "#444345",
+                borderRadius: 30,
+                marginLeft: 5,
+                height: 48,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              textStyle={{
+                color: "#E6E3EA",
+                fontFamily: "Poppins-Medium",
+                fontSize: 14,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              text="YES"
+              onPress={() => {
+                setReview(true);
+                console.log("review: ", review);
+              }}
+            />
+          </DialogFooter>
+        }
+      >
+        <DialogContent
+          style={{
+            position: "relative",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: "Poppins-SemiBold",
+              color: "#000",
+              paddingTop: 40,
+              textAlign: "center",
+            }}
+          >
+            Do you want to start reviewing before the quiz?
+          </Text>
+        </DialogContent>
+        <TouchableOpacity
+          onPress={() => {
+            setVisible(false);
+          }}
+          style={{ position: "absolute", right: 10, top: 10 }}
+        >
+          <Ionicons name="ios-close-outline" size={24} color="black" />
+        </TouchableOpacity>
+      </Dialog>
     </View>
   );
 };
