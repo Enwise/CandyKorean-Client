@@ -14,7 +14,33 @@ const ClassRoomStack = ({ navigation, route }) => {
     if (routeName == "LessonVideo") {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
-      navigation.setOptions({ tabBarStyle: { display: "flex" } });
+      navigation.setOptions({
+        tabBarStyle: {
+          ...Platform.select({
+            android: {
+              paddingBottom: 20,
+              height: 80,
+            },
+            ios: {
+              height: 88,
+            },
+          }),
+          borderTopLeftRadius: 29,
+          borderTopRightRadius: 29,
+          backgroundColor: "white",
+          border: "0.5px solid #EFEFEF",
+          shadowOffset: {
+            width: 0,
+            height: -2,
+          },
+          shadowColor: "rgba(0, 0, 0, 0.1)",
+          shadowRadius: 23,
+        },
+        tabBarLabelStyle: {
+          fontFamily: "Poppins-Regular",
+          fontSize: 10,
+        },
+      });
     }
   }, [navigation, route]);
   return (

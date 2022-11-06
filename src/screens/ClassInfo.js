@@ -119,15 +119,15 @@ const ClassInfo = ({ props, navigation, route }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("MyCart", {
+            navigation.navigate("MyWishList", {
               classInfo: route.params.classInfo,
-              isAddToCart: true,
+              isAdd: true,
             });
           }}
         >
           <View style={styles.cartBtn}>
             <Image source={require("../assets/img/btn-purple.png")}></Image>
-            <Text style={styles.cartBtnText}>add to cart</Text>
+            <Text style={styles.cartBtnText}>add to wishlist</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
