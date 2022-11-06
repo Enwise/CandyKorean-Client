@@ -17,6 +17,7 @@ import ClassRoom from "../screens/ClassRoom";
 import { Platform } from "react-native";
 const Tab = createBottomTabNavigator();
 import MyPageStack from "./MyPageStack";
+import PremiumStack from "./PremiumStack";
 
 const MainTab = () => {
   const [fontsLoaded] = useFonts({
@@ -86,7 +87,7 @@ const MainTab = () => {
       />
       <Tab.Screen
         name="Premium"
-        component={Premium}
+        component={PremiumStack}
         options={{
           tabBarIcon: ({ focused }) => {
             return focused ? <PremiumInactive /> : <PremiumInactive />;
