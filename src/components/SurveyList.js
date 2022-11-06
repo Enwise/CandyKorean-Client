@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -6,31 +6,35 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import SurveyItem from "./SurveyItem";
 
-const SurveyList = ({ data, onPress }) => {
+const SurveyList = ({ data, onPress, selectedData }) => {
+  const [selected, setSelected] = React.useState(selectedData);
+  const onSelect = (item) => {
+    if (selected.includes(item)) {
+      setSelected(selected.filter((i) => i !== item));
+      onPress(selected.filter((i) => i !== item));
+    } else {
+      setSelected([...selected, item]);
+      onPress([...selected, item]);
+    }
+  };
+
+  // console.log(selected);
   return (
-    <FlatList
-      data={data}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.itemButton}
-          onPress={() => onPress(item)}
-        >
-          <Text>{item}</Text>
-        </TouchableOpacity>
-      )}
-    ></FlatList>
+    <View>
+      {data.map((item, index) => (
+        <SurveyItem
+          key={index}
+          checked={selected.includes(item)}
+          item={item}
+          onPress={() => onSelect(item)}
+        />
+      ))}
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  itemButton: {
-    alignItems: "center",
-    marginBottom: 15,
-    height: 30,
-    borderColor: "black",
-    borderWidth: 1,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default SurveyList;
