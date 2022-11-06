@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { useFonts } from "expo-font";
+import { AntDesign } from "@expo/vector-icons";
 const CartButton = ({ text, navigation, isMain }) => {
   // DB에서 CART 테이블에 있는 데이터 수 세야됨
   const [cartStatusNum, setCartStatusNum] = React.useState(0);
@@ -25,16 +26,16 @@ const CartButton = ({ text, navigation, isMain }) => {
     <TouchableOpacity
       style={dstyles(isMain).button}
       onPress={() => {
-        navigation.navigate("MyCart", {
-          isAddToCart: false,
+        navigation.navigate("MyWishList", {
+          isAdd: false,
           classInfo: "No ClassInfo",
         });
       }}
     >
-      <Image source={require("../assets/img/ic-cart.png")}></Image>
-      <View style={styles.circleContainer}>
+      <AntDesign name="heart" size={24} color="red" />
+      {/* <View style={styles.circleContainer}>
         <Text style={styles.cartStatusNum}>{cartStatusNum}</Text>
-      </View>
+      </View> */}
     </TouchableOpacity>
   );
 };
