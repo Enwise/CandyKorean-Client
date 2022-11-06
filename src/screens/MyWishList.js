@@ -296,8 +296,8 @@ const MyWishList = ({ navigation, route }) => {
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  const payList = checkBuyNow(item.id);
-                  navigation.navigate("Payment", { payList: payList });
+                  // const payList = checkBuyNow(item.id);
+                  navigation.navigate("Payment", { item: item });
                 }}
               >
                 <Image

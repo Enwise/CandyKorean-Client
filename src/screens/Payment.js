@@ -12,7 +12,10 @@ import { useFonts } from "expo-font";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 const Payment = ({ navigation, route }) => {
-  const [payList, setPayList] = useState(route.params.payList);
+  // const [payList, setPayList] = useState(route.params.payList);
+  const [itemInfo, setItemInfo] = useState(route.params.item);
+  const [payList, setPayList] = useState([itemInfo]);
+
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
   const [date, setDate] = useState();
@@ -31,11 +34,12 @@ const Payment = ({ navigation, route }) => {
     setDate(date);
 
     let totalPrice = 0;
+    // payList.append(item);
     payList.forEach((item) => {
       totalPrice += item.price;
     });
     setTotalPrice(totalPrice);
-  }, [totalPrice, payList]);
+  }, [payList, itemInfo]);
 
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
@@ -122,7 +126,9 @@ const Payment = ({ navigation, route }) => {
                   <View style={styles.swipeHiddenItem}>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate("MyCart", { isAddToCart: false });
+                        navigation.navigate("MyWishList", {
+                          isAddToCart: false,
+                        });
                       }}
                     >
                       <Text style={styles.swipeHiddenItemText}>
@@ -181,13 +187,29 @@ const Payment = ({ navigation, route }) => {
             <Text style={styles.howToPayText}>How to pay</Text>
           </View>
           <View style={styles.paymentContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("PaymentResult", {
+                  itemInfo: itemInfo,
+                  totalPrice: totalPrice,
+                  isSuccess: true,
+                });
+              }}
+            >
               <View style={styles.creditcardBtn}>
                 {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
                 <Text style={styles.creditcardText}>Credit card</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("PaymentResult", {
+                  itemInfo: itemInfo,
+                  totalPrice: totalPrice,
+                  isSuccess: false,
+                });
+              }}
+            >
               <View style={styles.paypalBtn}>
                 {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
                 <Text style={styles.paypalText}>Paypal</Text>
