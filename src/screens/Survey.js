@@ -24,6 +24,22 @@ const Survey = ({ navigation }) => {
   const [selected1, setSelected1] = React.useState([]);
   const [selected2, setSelected2] = React.useState([]);
   const [surveyOption, setSurveyOption] = React.useState(1);
+
+  const handleSelect = (item) => {
+    if (surveyOption === 1) {
+      if (selected1.includes(item)) {
+        setSelected1(selected1.filter((i) => i !== item));
+      } else {
+        setSelected1([...selected1, item]);
+      }
+    } else {
+      if (selected2.includes(item)) {
+        setSelected2(selected2.filter((i) => i !== item));
+      } else {
+        setSelected2([...selected2, item]);
+      }
+    }
+  };
   console.log(selected1, selected2);
   const survey1 = [
     "Google Search",
@@ -92,19 +108,11 @@ const Survey = ({ navigation }) => {
             ? "How did you hear \nabout Candy Korean? "
             : "What is your purpose \nto learn Korean?"}
         </Text>
-        {surveyOption === 1 ? (
-          <SurveyList
-            data={survey1}
-            onPress={(item) => setSelected1(item)}
-            selectedData={selected1}
-          />
-        ) : (
-          <SurveyList
-            data={survey2}
-            onPress={(item) => setSelected2(item)}
-            selectedData={selected2}
-          />
-        )}
+        <SurveyList
+          data={surveyOption === 1 ? survey1 : survey2}
+          onPress={(item) => handleSelect(item)}
+          selectedData={surveyOption === 1 ? selected1 : selected2}
+        />
       </View>
       <View style={styles.button}>
         {surveyOption === 1 ? (
