@@ -3,6 +3,8 @@ import {
   BottomTabBar,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+
 import Home from "../screens/Home";
 import Premium from "../screens/Premium";
 import MyPage from "../screens/MyPage";
@@ -19,7 +21,16 @@ import { Platform } from "react-native";
 const Tab = createBottomTabNavigator();
 import MyPageStack from "./MyPageStack";
 
-const MainTab = () => {
+const MainTab = ({ navigation, route }) => {
+  // const routeName = getFocusedRouteNameFromRoute(route);
+  // console.log(routeName);
+  // React.useLayoutEffect(() => {
+  //   if (routeName == "LessonVideo") {
+  //     navigation.setOptions({ tabBarVisible: false });
+  //   } else {
+  //     navigation.setOptions({ tabBarVisible: true });
+  //   }
+  // }, [navigation, route]);
   const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
   });
@@ -30,6 +41,7 @@ const MainTab = () => {
         headerShown: false,
         tabBarInactiveTintColor: "#807F82",
         tabBarActiveTintColor: "black",
+
         tabBarStyle: {
           ...Platform.select({
             android: {
