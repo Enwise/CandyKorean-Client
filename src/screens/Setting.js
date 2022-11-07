@@ -52,13 +52,30 @@ const Setting = ({navigation}) => {
             });
     };
 
+    const noticeArr = [
+        {
+            title: "제목입니다",
+            date: "22-10-2022",
+            content: "내용입니다.",
+        },
+        {
+            title: "제목입니다",
+            date: "22-10-2022",
+            content: "내용입니다.",
+        },
+    ]
+
     return (
         <View style={styles.container}>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between", width:"90%"}}>
                 <View style={{width:"56%", display:"flex", flexDirection:"row-reverse"}}>
                     <Text style={{fontSize:"20px"}}>setting</Text>
                 </View>
-                <BackButton onPress={() => navigation.navigate("My")}/>
+                {menuNum === 0 ?
+                    <BackButton onPress={() => navigation.navigate("My")}/>
+                    :
+                    <BackButton onPress={() => setMenuNum(0)}/>
+                }
             </View>
             {menuNum === 0 ?
                 <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
@@ -81,7 +98,7 @@ const Setting = ({navigation}) => {
                 :
                 menuNum === 1 ?
                     <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                        <Text style={styles.textCss}>privacy policy</Text>
+                        {/*<Text style={styles.textCss}>privacy policy</Text>*/}
                         <Text style={styles.textCss}>nickname</Text>
                         <TextInput
                             style={styles.input}
@@ -126,7 +143,23 @@ const Setting = ({navigation}) => {
 
                     </View>
                     :
-                    <View/>
+                    menuNum === 2 ?
+                        <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
+                            <Text style={styles.textCss}>notice</Text>
+                            <View style={{height:"100"}}/>
+                            <View style={{display:"flex", flexDirection:"column"}}>
+                                {noticeArr.map((item, idx)=>{
+                                    <View key={idx} style={{}}>
+                                        <Text>{item.title}</Text>
+                                    </View>
+                                })}
+                            </View>
+
+
+
+                        </View>
+                        :
+                        <View/>
 
             }
 
