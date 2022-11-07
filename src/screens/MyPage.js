@@ -116,7 +116,11 @@ const MyPage = ({navigation}) => {
                     }}>
                         <Text style={{fontSize: 20, marginBottom:10}}>My purchases</Text>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 20}}>Go to Lesson</Text>
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate("MyLesson");
+                    }}>
+                        <Text style={{fontSize: 20, marginBottom:10}}>Go to Lesson</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
           </View>
