@@ -3,19 +3,20 @@ import Svg, { Path } from "react-native-svg";
 
 const PremiumInactive = (props) => (
   <Svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="22"
-    height="22"
+    width={28}
+    height={19}
+    viewBox="0 0 28 19"
     fill="none"
-    viewBox="0 0 22 22"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
   >
     <Path
+      d="M13.605 1l5.602 8.403 7.002-5.602-2.8 14.005H3.8L1 3.801l7.003 5.602L13.605 1z"
       stroke="#807F82"
+      strokeWidth={1.82072}
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="1.83"
-      d="M13.039 16.648a7.66 7.66 0 100-15.321 7.66 7.66 0 000 15.321zM20.7 8.988a3.83 3.83 0 00-7.661 0M13.039 8.988a3.83 3.83 0 11-7.661 0M13.039 16.649a3.83 3.83 0 000-7.661M13.038 1.327a3.83 3.83 0 100 7.66M1 21.026l6.566-6.566"
-    ></Path>
+    />
   </Svg>
 );
 

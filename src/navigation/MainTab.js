@@ -20,6 +20,11 @@ import ClassRoom from "../screens/ClassRoom";
 import { Platform } from "react-native";
 const Tab = createBottomTabNavigator();
 import MyPageStack from "./MyPageStack";
+import HomeActive from "../assets/icons/HomeActive";
+import ClassActive from "../assets/icons/ClassActive";
+import ClassRoomActive from "../assets/icons/ClassRoomActive";
+import PremiumActive from "../assets/icons/PremiumActive";
+import MyPageActive from "../assets/icons/MyPageActive";
 
 const MainTab = ({ navigation, route }) => {
   // const routeName = getFocusedRouteNameFromRoute(route);
@@ -74,7 +79,7 @@ const MainTab = ({ navigation, route }) => {
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => {
-            return focused ? <HomeInactive /> : <HomeInactive />;
+            return focused ? <HomeActive /> : <HomeInactive />;
           },
         }}
       />
@@ -83,7 +88,7 @@ const MainTab = ({ navigation, route }) => {
         component={ClassStack}
         options={{
           tabBarIcon: ({ focused }) => {
-            return focused ? <ClassInactive /> : <ClassInactive />;
+            return focused ? <ClassActive /> : <ClassInactive />;
           },
         }}
       />
@@ -93,7 +98,7 @@ const MainTab = ({ navigation, route }) => {
         component={ClassRoomStack}
         options={{
           tabBarIcon: ({ focused }) => {
-            return focused ? <ClassRoomInactive /> : <ClassRoomInactive />;
+            return focused ? <ClassRoomActive /> : <ClassRoomInactive />;
           },
         }}
       />
@@ -102,7 +107,7 @@ const MainTab = ({ navigation, route }) => {
         component={Premium}
         options={{
           tabBarIcon: ({ focused }) => {
-            return focused ? <PremiumInactive /> : <PremiumInactive />;
+            return focused ? <PremiumActive /> : <PremiumInactive />;
           },
         }}
       />
@@ -111,7 +116,7 @@ const MainTab = ({ navigation, route }) => {
         component={MyPageStack}
         options={{
           tabBarIcon: ({ focused }) => {
-            return focused ? <MyPageInactive /> : <MyPageInactive />;
+            return focused ? <MyPageActive /> : <MyPageInactive />;
           },
         }}
       />
