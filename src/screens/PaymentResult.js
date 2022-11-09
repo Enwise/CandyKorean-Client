@@ -157,7 +157,7 @@ const PaymentResult = ({ navigation, route }) => {
               <Text style={styles.studyNowText}>Study now!</Text>
             </View>
           </TouchableOpacity>
-          <SafeAreaView style={{ ...styles.recommendContainer, flexGrow: 1 }}>
+          <SafeAreaView style={{ ...styles.recommendContainer }}>
             <View style={styles.recommendTopContainer}>
               <Text style={styles.recommendTitle}>Recommend</Text>
               <TouchableOpacity
@@ -174,7 +174,6 @@ const PaymentResult = ({ navigation, route }) => {
               data={recommendList}
               style={{
                 ...styles.recommendListContainer,
-                width: 400,
               }}
               // contentContainerStyle={{ flex: 1, flexGrow: 1 }}
               horizontal={true}
@@ -246,7 +245,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   purchasedItemContainer: {
-    marginTop: 100,
+    marginTop: 50,
     paddingLeft: 20,
     paddingRight: 20,
   },
@@ -325,13 +324,15 @@ const styles = StyleSheet.create({
   studyNowText: {
     position: "absolute",
     top: 10,
-    left: 120,
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
     color: "#fff",
   },
   recommendContainer: {
     marginTop: 40,
+    width: "100%",
+    height: 200,
+    paddingLeft: 10,
   },
 
   recommendTitle: {
@@ -342,8 +343,8 @@ const styles = StyleSheet.create({
   recommendTopContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
     alignItems: "center",
   },
   recommendMore: {
@@ -351,10 +352,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#807F82",
   },
-  recommendListContainer: {
-    paddingLeft: 20,
-    marginRight: 60,
-  },
+  recommendListContainer: {},
   recommendItemContainer: {
     marginRight: 10,
     width: 100,
