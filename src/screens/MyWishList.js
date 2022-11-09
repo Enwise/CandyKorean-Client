@@ -198,7 +198,7 @@ const MyWishList = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.selectAllContainer}>
+        {/* <View style={styles.selectAllContainer}>
           <TouchableOpacity
             onPress={() => {
               // 전체 선택
@@ -224,7 +224,7 @@ const MyWishList = ({ navigation, route }) => {
               Select All ({wishList.length}/{wishList.length})
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
 
       {wishListLength === 0 ? (
@@ -242,17 +242,7 @@ const MyWishList = ({ navigation, route }) => {
           // 어떻게 아이템을 렌더링 할 것인가
           renderItem={({ item }) => (
             <View style={{ ...styles.wishListItem }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setDialogVisible(true);
-                  setSelectedId(item.id);
-                }}
-              >
-                <View style={styles.deleteContainer}>
-                  <Text style={styles.deleteText}>Delete</Text>
-                </View>
-              </TouchableOpacity>
-              <View style={styles.checkAndEdit}>
+              {/* <View style={styles.checkAndEdit}>
                 <TouchableOpacity
                   onPress={() => {
                     // 상품 선택
@@ -268,12 +258,12 @@ const MyWishList = ({ navigation, route }) => {
                     }
                   ></Image>
                 </TouchableOpacity>
-                {/* <View style={styles.editBtn}>
+                <View style={styles.editBtn}>
                   <TouchableOpacity>
                     <Text style={styles.editBtnText}>edit</Text>
                   </TouchableOpacity>
-                </View> */}
-              </View>
+                </View>
+              </View> */}
 
               <View style={styles.classInfoContainer}>
                 <View style={styles.classImgContainer}>
@@ -283,7 +273,20 @@ const MyWishList = ({ navigation, route }) => {
                   ></Image>
                 </View>
                 <View style={styles.classInfoTextContainer}>
-                  <Text style={styles.classNameText}>{item.className}</Text>
+                  <View style={styles.classInfoTopContainer}>
+                    <Text style={styles.classNameText}>{item.className}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setDialogVisible(true);
+                        setSelectedId(item.id);
+                      }}
+                    >
+                      <View style={styles.deleteContainer}>
+                        <Text style={styles.deleteText}>Delete</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
                   <View style={styles.categoryContainer}>
                     <Text style={styles.cateogryText}>{item.category}</Text>
                   </View>
@@ -488,6 +491,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     zIndex: 1,
     backgroundColor: "white",
+    marginBottom: 20,
   },
 
   backBtn: {
@@ -514,15 +518,14 @@ const styles = StyleSheet.create({
   },
   wishListContainer: {
     marginTop: 20,
-
-    flexGrow: 1,
+    alignItems: "center",
   },
   wishListItem: {
-    width: 350,
+    width: "100%",
     paddingLeft: 20,
     paddingRight: 20,
     position: "relative",
-    marginBottom: 25,
+    marginBottom: 35,
     backgroundColor: "white",
   },
   checkAndEdit: {
@@ -538,6 +541,14 @@ const styles = StyleSheet.create({
   classInfoContainer: {
     flexDirection: "row",
     position: "relative",
+  },
+  classInfoTextContainer: {
+    width: "68%",
+  },
+  classInfoTopContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   deleteContainer: {
     position: "absolute",
