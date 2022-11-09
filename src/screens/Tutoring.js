@@ -31,7 +31,11 @@ const Tutoring = () => {
       <View style={styles.content}>
         <Text>튜터링 내역</Text>
       </View>
-      <AlertDialog visible={modalVisible} setModalVisible={setModalVisible} />
+      <AlertDialog
+        visible={modalVisible}
+        setModalVisible={setModalVisible}
+        url={"https://www.google.co.kr"}
+      />
     </View>
   );
 };

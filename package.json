@@ -20,6 +20,7 @@
     "expo-constants": "~13.2.4",
     "expo-font": "~10.2.0",
     "expo-linear-gradient": "~11.4.0",
+    "expo-linking": "~3.2.2",
     "expo-status-bar": "~1.4.0",
     "expo-video-player": "^2.2.0",
     "lodash": "^4.17.21",

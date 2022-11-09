@@ -1,23 +1,51 @@
+import { useFonts } from "expo-font";
 import React from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import CloseIcon from "../assets/icons/CloseIcon";
+import * as Linking from "expo-linking";
 
-const AlertDialog = ({ visible, setModalVisible }) => {
+const AlertDialog = ({ visible, setModalVisible, url }) => {
+  const [fontsLoaded] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+  });
+  const link = () => {
+    Linking.openURL(url);
+  };
+
+  if (!fontsLoaded) return null;
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.background}>
         <View style={styles.container}>
-          <Text>입장하면 잔여 튜터링 횟수 1회 차감됩니다.</Text>
-          <Text>
-            튜터와의 스케줄이 조율되지 않은 경우, 횟수만 차감되고 튜터링은
-            거절당할 수 있습니다.
+          <View style={{ flexDirection: "row-reverse", marginBottom: 10 }}>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <CloseIcon />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.title}>
+            Are you sure {"\n"}you want to enter?
           </Text>
-          <Text>입장하시겠습니까???</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setModalVisible(false)}
-          >
-            <Text>yes</Text>
-          </TouchableOpacity>
+
+          <Text style={styles.text}>
+            Once you enter, the remaining number of tutorials will be deducted.
+            {"\n"}
+            If the schedule with the tutor is not coordinated, only the number
+            of times will be deducted and the tutoring may be rejected.
+          </Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button_n}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.button_text_n}>Next time</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button_y} onPress={() => link()}>
+              <Text style={styles.button_text_y}>Yes</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -28,23 +56,60 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   container: {
     backgroundColor: "white",
-    width: "80%",
-    alignItems: "center",
-    padding: 20,
-    borderRadius: 20,
+    width: "90%",
+    paddingHorizontal: 30,
+    paddingBottom: 25,
+    paddingTop: 15,
+    borderRadius: 15,
   },
-  button: {
-    backgroundColor: "#D9D9D9",
-    marginTop: 20,
-    width: "100%",
-    height: 40,
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 30,
+  },
+  button_y: {
+    backgroundColor: "#444345",
+    flex: 1,
+    height: 42,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: 50,
+  },
+  button_n: {
+    flex: 1,
+    backgroundColor: "#E6E3EA",
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 15,
+  },
+  button_text_y: {
+    color: "white",
+    fontFamily: "Poppins-Medium",
+    fontsize: 14,
+  },
+  button_text_n: {
+    color: "#444345",
+    fontFamily: "Poppins-Medium",
+    fontsize: 14,
+  },
+  title: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 40,
+    lineHeight: 24,
+  },
+  text: {
+    fontFamily: "Poppins-Regular",
+    color: "#B8B5BC",
+    fontSize: 10,
+    textAlign: "center",
+    lineHeight: 15,
   },
 });
 export default AlertDialog;
