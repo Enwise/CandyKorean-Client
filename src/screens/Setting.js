@@ -146,12 +146,19 @@ const Setting = ({navigation}) => {
                     menuNum === 2 ?
                         <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
                             <Text style={styles.textCss}>notice</Text>
-                            <View style={{height:"100"}}/>
+                            <View style={{height:"200"}}/>
                             <View style={{display:"flex", flexDirection:"column"}}>
                                 {noticeArr.map((item, idx)=>{
-                                    <View key={idx} style={{}}>
-                                        <Text>{item.title}</Text>
-                                    </View>
+                                    return (
+                                        <View key={idx} style={{height:100, borderBottom:"1px solid #000000", marginBottom:20}}>
+                                            <View style={{display:"flex", flexDirection:"row",justifyContent:"space-between"}}>
+                                                <Text>{item.title}</Text>
+                                                <Text>{item.date}</Text>
+                                            </View>
+                                            <Text>{item.content}</Text>
+
+                                        </View>
+                                    );
                                 })}
                             </View>
 
@@ -159,7 +166,31 @@ const Setting = ({navigation}) => {
 
                         </View>
                         :
-                        <View/>
+                        <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
+                            <Text style={styles.textCss}>feedback</Text>
+                            <Text style={{fontSize:"14px", fontWeight:"500",marginTop:20}}>please select your feedback</Text>
+                            <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between",marginTop:20}}>
+                                <View>feature</View>
+                                <View>content</View>
+                                <View>bug</View>
+                                <View>other</View>
+                            </View>
+                            <TextInput
+                                style={{height:200, margin:12, borderWidth:1, padding:10}}
+                                onChangeText={setNickname}
+                                value={nickname}
+                                placeholder= "기존 닉네임"
+                                keyboardType="default"
+                            />
+
+
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate("My")}
+                            >
+                                <Text>confirm</Text>
+                            </TouchableOpacity>
+
+                        </View>
 
             }
 
