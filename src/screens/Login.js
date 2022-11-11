@@ -3,7 +3,7 @@ import React from "react";
 import Constants from "expo-constants";
 import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
 import Logo from "../components/Logo";
-import SignButton from "../components/SignButton";
+import GradientButton from "../components/GradientButton";
 import LoginInput from "../components/LoginInput";
 const windowWidth = Dimensions.get("window").width;
 const Login = ({ navigation }) => {
@@ -52,7 +52,7 @@ const Login = ({ navigation }) => {
         />
       </View>
       <View style={{ flex: 2 }}>
-        <SignButton
+        <GradientButton
           title="LOGIN"
           disabled={email === "" || password === ""}
           onPress={() => navigation.navigate("MainTab")}

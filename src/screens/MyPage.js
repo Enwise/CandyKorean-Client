@@ -1,16 +1,12 @@
 import React from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Dimensions} from 'react-native';
-import SignButton from "../components/SignButton";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions } from "react-native";
 import BackButton from "../components/BackButton";
 import { Calendar } from "react-native-calendars";
-import Plotly from 'react-native-plotly';
-import {
-    LineChart,
-} from 'react-native-chart-kit'
+import Plotly from "react-native-plotly";
+import { LineChart } from "react-native-chart-kit";
 
-
-const MyPage = ({navigation}) => {
+const MyPage = ({ navigation }) => {
   const Width = Dimensions.get("window").width; //스크린 너비 초기화
   const Height = Dimensions.get("window").height; //스크린 높이 초기화
   const markedDates = {
@@ -81,113 +77,156 @@ const MyPage = ({navigation}) => {
     showlegend: false, // @4
   };
 
-    const linedata = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [
-            {
-                data: [20, 45, 28, 80, 9, 43],
-                strokeWidth: 2, // optional
-            },
-        ],
-    };
+  const linedata = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 9, 43],
+        strokeWidth: 2, // optional
+      },
+    ],
+  };
 
   return (
     <View style={styles.container}>
-        <View style={{width:"90%", display:"flex",  flexDirection:"row-reverse"}}>
-            <TouchableOpacity onPress={()=>{
-                navigation.navigate("Setting");
-            }}>
-                <Text style={{fontSize: 20, height:30}}>setting</Text>
+      <View
+        style={{ width: "90%", display: "flex", flexDirection: "row-reverse" }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Setting");
+          }}
+        >
+          <Text style={{ fontSize: 20, height: 30 }}>setting</Text>
+        </TouchableOpacity>
+        <View style={{ width: 20 }} />
+        <Text style={{ fontSize: 20, height: 50 }}>Log out</Text>
+      </View>
+      <View
+        style={{
+          width: "90%",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          source={require("../assets/LogoText.png")}
+          style={{ width: 150, height: 150, borderRadius: "75" }}
+        />
+        <View
+          style={{
+            marginLeft: 30,
+            display: "flex",
+            flexDirection: "collum",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 20, marginBottom: 10 }}>반가워요 Bony!</Text>
+          <View
+            style={{
+              borderStyle: "solid",
+              width: 200,
+              height: 100,
+              backgroundColor: "#d9d9d9",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("MyPurchases");
+              }}
+            >
+              <Text style={{ fontSize: 20, marginBottom: 10 }}>
+                My purchases
+              </Text>
             </TouchableOpacity>
-            <View style={{width:20}}/>
-            <Text style={{fontSize: 20, height:50}}>Log out</Text>
-        </View>
-        <View style={{width:"90%", display:"flex",  flexDirection:"row", alignItems:"center"}}>
-            <Image
-                source={require("../assets/LogoText.png")}
-                style={{width:150, height:150, borderRadius:"75"}}
-            />
-            <View style={{marginLeft:30, display:"flex",flexDirection:"collum", alignItems:"center"}}>
-                <Text style={{fontSize: 20, marginBottom:10}}>반가워요 Bony!</Text>
-                <View style={{borderStyle:"solid", width:200, height:100, backgroundColor:"#d9d9d9", alignItems:"center", justifyContent:"center"}}>
-
-                    <TouchableOpacity onPress={()=>{
-                        navigation.navigate("MyPurchases");
-                    }}>
-                        <Text style={{fontSize: 20, marginBottom:10}}>My purchases</Text>
-                    </TouchableOpacity>
-                    <Text style={{fontSize: 20}}>Go to Lesson</Text>
-                </View>
-            </View>
+            <Text style={{ fontSize: 20 }}>Go to Lesson</Text>
           </View>
-       
-
-
-        <View style={{width:"90%", marginTop:20}}>
-            <Calendar
-                style={styles.calendar}
-                markedDates={markedDates}
-                theme={{
-                    selectedDayBackgroundColor: 'red',
-                    arrowColor: 'blue',
-                    dotColor: 'green',
-                    todayTextColor: 'yellow',
-                }} />
         </View>
+      </View>
 
+      <View style={{ width: "90%", marginTop: 20 }}>
+        <Calendar
+          style={styles.calendar}
+          markedDates={markedDates}
+          theme={{
+            selectedDayBackgroundColor: "red",
+            arrowColor: "blue",
+            dotColor: "green",
+            todayTextColor: "yellow",
+          }}
+        />
+      </View>
 
-        <View style={{width:"90%", marginTop:20, display:"flex", flexDirection:"row", alignItems:"center"}}>
-            <View style={{width:"50%"}}>
-                <LineChart
-                    data={linedata}
-                    width={Dimensions.get('window').width*0.5} // from react-native
-                    height={120}
-                    // yAxisLabel={'$'}
-                    chartConfig={{
-                        backgroundColor: '#e26a00',
-                        backgroundGradientFrom: '#fb8c00',
-                        backgroundGradientTo: '#ffa726',
-                        decimalPlaces: 2, // optional, defaults to 2dp
-                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                        style: {
-                            borderRadius: 16
-                        }
-                    }}
-                    bezier
-                    style={{
-                        marginVertical: 8,
-                        borderRadius: 16
-                    }}
-                />
-            </View>
-            <View style={{width:"50%", marginLeft:40}}>
-                <View style={{borderStyle:"solid", width:150, height:120, backgroundColor:"#d9d9d9", alignItems:"center", justifyContent:"center", borderRadius:10}}>
-                    <Text style={{fontSize: 20, marginBottom:10}}>How to improve your Korean Level</Text>
-                    <Text style={{fontSize: 20}}>Go to Lesson</Text>
-                </View>
-            </View>
-
+      <View
+        style={{
+          width: "90%",
+          marginTop: 20,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <View style={{ width: "50%" }}>
+          <LineChart
+            data={linedata}
+            width={Dimensions.get("window").width * 0.5} // from react-native
+            height={120}
+            // yAxisLabel={'$'}
+            chartConfig={{
+              backgroundColor: "#e26a00",
+              backgroundGradientFrom: "#fb8c00",
+              backgroundGradientTo: "#ffa726",
+              decimalPlaces: 2, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+          />
         </View>
-
-
-
-
+        <View style={{ width: "50%", marginLeft: 40 }}>
+          <View
+            style={{
+              borderStyle: "solid",
+              width: 150,
+              height: 120,
+              backgroundColor: "#d9d9d9",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 10,
+            }}
+          >
+            <Text style={{ fontSize: 20, marginBottom: 10 }}>
+              How to improve your Korean Level
+            </Text>
+            <Text style={{ fontSize: 20 }}>Go to Lesson</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems:"center",
-        width: '100%',
-        paddingTop: '15%',
-        paddingBottom : '15%',
-    },
-    calendar: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#e0e0e0',
-    },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    width: "100%",
+    paddingTop: "15%",
+    paddingBottom: "15%",
+  },
+  calendar: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#e0e0e0",
+  },
 });
 
 export default MyPage;

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import SignButton from "../components/SignButton";
+import GradientButton from "../components/GradientButton";
 import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import LogoIcon from "../assets/icons/LogoIcon";
@@ -25,7 +25,7 @@ const SurveyCompletePage = ({ navigation }) => {
         <Text>Let's start sweet Korean!</Text>
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
-        <SignButton
+        <GradientButton
           title={"START"}
           onPress={() => navigation.navigate("MainTab")}
         />

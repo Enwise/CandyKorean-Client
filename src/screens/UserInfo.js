@@ -12,7 +12,7 @@ import BackButton from "../components/BackButton";
 import ProfileInput from "../components/ProfileInput";
 import RadioButton from "../components/RadioButton";
 import DropDownIcon from "../assets/icons/DropDownIcon";
-import SignButton from "../components/SignButton";
+import GradientButton from "../components/GradientButton";
 import BottomSheet from "../components/BottomSheet";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import LevelSelect from "../components/LevelSelect";
@@ -136,7 +136,7 @@ const UserInfo = ({ navigation }) => {
         </View>
       </View>
       <View style={{ marginLeft: 20, flex: 1 }}>
-        <SignButton
+        <GradientButton
           title={"SUBMIT"}
           onPress={() => navigation.navigate("Survey")}
         />

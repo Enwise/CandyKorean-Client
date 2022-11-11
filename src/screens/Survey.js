@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import BottomSheet from "../components/BottomSheet";
-import SignButton from "../components/SignButton";
+import GradientButton from "../components/GradientButton";
 import SurveyList from "../components/SurveyList";
 const windowWidth = Dimensions.get("window").width;
 const Survey = ({ navigation }) => {
@@ -81,7 +81,7 @@ const Survey = ({ navigation }) => {
         ></SurveyList>
       </BottomSheet>
       <View style={{ flex: 1 }}>
-        <SignButton
+        <GradientButton
           title={"SUBMIT"}
           disabled={!selected1 || !selected2}
           onPress={() => navigation.navigate("SurveyComplete")}
