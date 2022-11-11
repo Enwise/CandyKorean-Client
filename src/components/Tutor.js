@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import React from "react";
 import {
   Dimensions,
+  Image,
   Platform,
   StyleSheet,
   Text,
@@ -18,8 +19,11 @@ const Tutor = ({ onPress, disabled }) => {
   if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
-      <View style={styles.profileImg}>
-        <Text>이미지</Text>
+      <View style={styles.imgContainer}>
+        <Image
+          style={styles.img}
+          source={require("../assets/img/tutor_ex1.png")}
+        />
       </View>
       <View style={styles.tutorProfile}>
         <Text style={styles.tutorName}>강사 이름</Text>
@@ -39,7 +43,9 @@ const styles = StyleSheet.create({
     width: windowWidth - 40,
     marginBottom: 10,
   },
-  profileImg: {
+  imgContainer: {
+    borderColor: "#F1EFF4",
+    borderWidth: 1,
     backgroundColor: "white",
     width: 51,
     height: 51,
@@ -60,6 +66,12 @@ const styles = StyleSheet.create({
         elevation: 1,
       },
     }),
+  },
+  img: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
+    borderRadius: 51 / 2,
   },
   tutorProfile: {
     marginLeft: 16,
