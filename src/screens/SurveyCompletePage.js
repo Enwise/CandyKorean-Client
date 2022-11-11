@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import GradientButton from "../components/GradientButton";
+import Constants from "expo-constants";
+
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import WhiteLogo from "../assets/icons/WhiteLogo";

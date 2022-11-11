@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import SignButton from "../components/SignButton";
+import GradientButton from "../components/GradientButton";
 import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import LogoIcon from "../assets/icons/LogoIcon";
@@ -26,7 +26,7 @@ const SignUpSuccessPage = ({ navigation }) => {
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
         <Text style={styles.text}>Start your study with Candy Korean</Text>
-        <SignButton
+        <GradientButton
           title={"SET YOUR GOAL"}
           onPress={() => navigation.navigate("UserInfo")}
         />

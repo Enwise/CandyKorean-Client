@@ -19,6 +19,7 @@ import { useFonts } from "expo-font";
 import ClassRoom from "../screens/ClassRoom";
 import { Platform, Text } from "react-native";
 import MyPageStack from "./MyPageStack";
+import PremiumStack from "./PremiumStack";
 import HomeActive from "../assets/icons/HomeActive";
 import ClassActive from "../assets/icons/ClassActive";
 import ClassRoomActive from "../assets/icons/ClassRoomActive";
@@ -114,7 +115,7 @@ const MainTab = ({ navigation, route }) => {
       />
       <Tab.Screen
         name="Premium"
-        component={Premium}
+        component={PremiumStack}
         options={{
           tabBarIcon: ({ focused }) => {
             return focused ? <PremiumActive /> : <PremiumInactive />;

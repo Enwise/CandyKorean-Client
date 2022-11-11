@@ -7,7 +7,8 @@ import {
   View,
 } from "react-native";
 import Constants from "expo-constants";
-import SignButton from "../components/SignButton";
+import BottomSheet from "../components/BottomSheet";
+import GradientButton from "../components/GradientButton";
 import SurveyList from "../components/SurveyList";
 import BackButton from "../components/BackButton";
 import { useFonts } from "expo-font";

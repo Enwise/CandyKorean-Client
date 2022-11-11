@@ -4,7 +4,7 @@ import Constants from "expo-constants";
 import BackButton from "../components/BackButton";
 import { useFonts } from "expo-font";
 import SignUpInput from "../components/SignUpInput";
-import SignButton from "../components/SignButton";
+import GradientButton from "../components/GradientButton";
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
@@ -68,7 +68,7 @@ const Register = ({ navigation }) => {
           handleChange={handleChange("confirmPassword")}
           isValid={checkPassword}
         />
-        <SignButton
+        <GradientButton
           title={"SIGN UP"}
           onPress={() => navigation.navigate("Success")}
         />
