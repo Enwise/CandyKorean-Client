@@ -12,7 +12,10 @@ import { useFonts } from "expo-font";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 const Payment = ({ navigation, route }) => {
-  const [payList, setPayList] = useState(route.params.payList);
+  // const [payList, setPayList] = useState(route.params.payList);
+  const [itemInfo, setItemInfo] = useState(route.params.item);
+  const [payList, setPayList] = useState([itemInfo]);
+
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
   const [date, setDate] = useState();
@@ -31,11 +34,12 @@ const Payment = ({ navigation, route }) => {
     setDate(date);
 
     let totalPrice = 0;
+    // payList.append(item);
     payList.forEach((item) => {
       totalPrice += item.price;
     });
     setTotalPrice(totalPrice);
-  }, [totalPrice, payList]);
+  }, [payList, itemInfo]);
 
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
@@ -122,7 +126,9 @@ const Payment = ({ navigation, route }) => {
                   <View style={styles.swipeHiddenItem}>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate("MyCart", { isAddToCart: false });
+                        navigation.navigate("MyWishList", {
+                          isAddToCart: false,
+                        });
                       }}
                     >
                       <Text style={styles.swipeHiddenItemText}>
@@ -150,7 +156,11 @@ const Payment = ({ navigation, route }) => {
               // leftOpenValue={0}
             />
           </View>
-          <View style={styles.summaryContainer}>
+          <View style={styles.paymentAmountContainer}>
+            <Text style={styles.paymentAmountText}>Payment amount</Text>
+            <Text style={styles.paymentPriceText}>$ {totalPrice}</Text>
+          </View>
+          {/* <View style={styles.summaryContainer}>
             <Text>Summary</Text>
             {payList.map((item) => {
               return (
@@ -172,17 +182,36 @@ const Payment = ({ navigation, route }) => {
               <Text>Total</Text>
               <Text>$ {totalPrice}</Text>
             </View>
+          </View> */}
+          <View style={styles.howToPayContainer}>
+            <Text style={styles.howToPayText}>How to pay</Text>
           </View>
           <View style={styles.paymentContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("PaymentResult", {
+                  itemInfo: itemInfo,
+                  totalPrice: totalPrice,
+                  isSuccess: true,
+                });
+              }}
+            >
               <View style={styles.creditcardBtn}>
-                <Image source={require("../assets/img/btn-purple.png")}></Image>
+                {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
                 <Text style={styles.creditcardText}>Credit card</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("PaymentResult", {
+                  itemInfo: itemInfo,
+                  totalPrice: totalPrice,
+                  isSuccess: false,
+                });
+              }}
+            >
               <View style={styles.paypalBtn}>
-                <Image source={require("../assets/img/btn-purple.png")}></Image>
+                {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
                 <Text style={styles.paypalText}>Paypal</Text>
               </View>
             </TouchableOpacity>
@@ -295,27 +324,66 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginBottom: 20,
   },
+  paymentAmountContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderColor: "#E6E3EA",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderRadius: 20,
+    marginLeft: 15,
+    marginRight: 15,
+    height: 50,
+    alignItems: "center",
+  },
+  paymentAmountText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 16,
+    color: "#000",
+  },
+  paymentPriceText: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 20,
+    color: "#A160E2",
+  },
+  howToPayContainer: {
+    marginTop: 20,
+    marginLeft: 20,
+  },
+  howToPayText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 16,
+    color: "#B8B5BC",
+  },
+
   creditcardBtn: {
-    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 160,
+    height: 40,
+    backgroundColor: "#F1EFF4",
+    borderRadius: 10,
   },
   creditcardText: {
-    position: "absolute",
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "Poppins-Medium",
     fontSize: 16,
-    color: "white",
-    top: 15,
-    left: 35,
+    color: "#807F82",
   },
   paypalBtn: {
-    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 160,
+    height: 40,
+
+    backgroundColor: "#F1EFF4",
+    borderRadius: 10,
   },
   paypalText: {
-    position: "absolute",
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "Poppins-Medium",
     fontSize: 16,
-    color: "white",
-    top: 15,
-    left: 55,
+    color: "#807F82",
   },
   swipeHiddenItemContainer: {
     paddingLeft: 30,

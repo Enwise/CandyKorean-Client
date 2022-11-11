@@ -87,19 +87,11 @@ const UserInfo = ({ navigation }) => {
           >
             <View style={styles.dateSelectView}>
               <Text style={styles.dateText}>
-                {date ? date.getDate() : "DD"}
-              </Text>
-            </View>
-            <View style={styles.dateSelectView}>
-              <Text style={styles.dateText}>
-                {" "}
-                {date ? date.getMonth() + 1 : "MM"}
-              </Text>
-            </View>
-            <View style={styles.dateSelectView}>
-              <Text style={styles.dateText}>
-                {" "}
-                {date ? date.getFullYear() : "YYYY"}
+                {date
+                  ? `${date.getDate()} / ${
+                      date.getMonth() + 1
+                    } / ${date.getFullYear()}`
+                  : "DD / MM/ YYYY"}
               </Text>
             </View>
           </TouchableOpacity>
@@ -195,7 +187,6 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     paddingVertical: 9,
     paddingHorizontal: 22,
-    marginRight: 16,
   },
   dateText: {
     fontFamily: "Poppins-Regular",

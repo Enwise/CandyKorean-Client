@@ -52,13 +52,30 @@ const Setting = ({navigation}) => {
             });
     };
 
+    const noticeArr = [
+        {
+            title: "제목입니다",
+            date: "22-10-2022",
+            content: "내용입니다.",
+        },
+        {
+            title: "제목입니다",
+            date: "22-10-2022",
+            content: "내용입니다.",
+        },
+    ]
+
     return (
         <View style={styles.container}>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between", width:"90%"}}>
                 <View style={{width:"56%", display:"flex", flexDirection:"row-reverse"}}>
                     <Text style={{fontSize:"20px"}}>setting</Text>
                 </View>
-                <BackButton onPress={() => navigation.navigate("My")}/>
+                {menuNum === 0 ?
+                    <BackButton onPress={() => navigation.navigate("My")}/>
+                    :
+                    <BackButton onPress={() => setMenuNum(0)}/>
+                }
             </View>
             {menuNum === 0 ?
                 <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
@@ -81,7 +98,7 @@ const Setting = ({navigation}) => {
                 :
                 menuNum === 1 ?
                     <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                        <Text style={styles.textCss}>privacy policy</Text>
+                        {/*<Text style={styles.textCss}>privacy policy</Text>*/}
                         <Text style={styles.textCss}>nickname</Text>
                         <TextInput
                             style={styles.input}
@@ -126,7 +143,54 @@ const Setting = ({navigation}) => {
 
                     </View>
                     :
-                    <View/>
+                    menuNum === 2 ?
+                        <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
+                            <Text style={styles.textCss}>notice</Text>
+                            <View style={{height:"200"}}/>
+                            <View style={{display:"flex", flexDirection:"column"}}>
+                                {noticeArr.map((item, idx)=>{
+                                    return (
+                                        <View key={idx} style={{height:100, borderBottom:"1px solid #000000", marginBottom:20}}>
+                                            <View style={{display:"flex", flexDirection:"row",justifyContent:"space-between"}}>
+                                                <Text>{item.title}</Text>
+                                                <Text>{item.date}</Text>
+                                            </View>
+                                            <Text>{item.content}</Text>
+
+                                        </View>
+                                    );
+                                })}
+                            </View>
+
+
+
+                        </View>
+                        :
+                        <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
+                            <Text style={styles.textCss}>feedback</Text>
+                            <Text style={{fontSize:"14px", fontWeight:"500",marginTop:20}}>please select your feedback</Text>
+                            <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between",marginTop:20}}>
+                                <View>feature</View>
+                                <View>content</View>
+                                <View>bug</View>
+                                <View>other</View>
+                            </View>
+                            <TextInput
+                                style={{height:200, margin:12, borderWidth:1, padding:10}}
+                                onChangeText={setNickname}
+                                value={nickname}
+                                placeholder= "기존 닉네임"
+                                keyboardType="default"
+                            />
+
+
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate("My")}
+                            >
+                                <Text>confirm</Text>
+                            </TouchableOpacity>
+
+                        </View>
 
             }
 

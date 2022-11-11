@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import Course from "../components/Course";
-import CartButton from "../components/CartButton";
+import WishListButton from "../components/WishListButton";
 
 const ClassMain = ({ navigation }) => {
   const [courseNameList, setCourseNameList] = useState([
@@ -205,7 +205,11 @@ const ClassMain = ({ navigation }) => {
           );
         })}
       </ScrollView>
-      <CartButton text="1" navigation={navigation} isMain={true}></CartButton>
+      <WishListButton
+        text="1"
+        navigation={navigation}
+        isMain={true}
+      ></WishListButton>
     </View>
   );
 };

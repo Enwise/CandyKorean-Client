@@ -10,7 +10,7 @@ import {
   FlatList,
 } from "react-native";
 import Class from "../components/Class";
-import CartButton from "../components/CartButton";
+import CartButton from "../components/WishListButton";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 

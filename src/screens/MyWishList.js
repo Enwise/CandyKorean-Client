@@ -3,32 +3,44 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   Image,
   SafeAreaView,
+  FlatList,
 } from "react-native";
-import { SwipeListView } from "react-native-swipe-list-view";
+// import { SwipeListView } from "react-native-swipe-list-view";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
+import Dialog, {
+  DialogContent,
+  ScaleAnimation,
+  DialogFooter,
+  DialogButton,
+} from "react-native-popup-dialog";
+import { Ionicons } from "@expo/vector-icons";
 
-const MyCart = ({ navigation, route }) => {
-  const [isAddToCart, setIsAddToCart] = useState(
-    route.params.isAddToCart ?? false
-  );
+const MyWishList = ({ navigation, route }) => {
+  const [isAdd, setIsAdd] = useState(route.params.isAdd ?? false);
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [selectedCount, setSelectedCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  // const [wishList, setWishList] = useState([]);
+  const [wishListLength, setWishListLength] = useState(0);
+  const [dialogVisible, setDialogVisible] = useState(false);
+
+  const [selectedId, setSelectedId] = useState(null);
+
   // 장바구니에 담긴 상품들 불러오기
   useEffect(() => {
-    console.log(route.params.classInfo);
+    // console.log(route.params.classInfo);
+
     // let newPrice = 0;
-    // cartList.map((item) => {
+    // wishList.map((item) => {
     //   newPrice += item.price;
     // });
     // setTotalPrice(newPrice);
-    if (isAddToCart) {
+    if (isAdd) {
       const classInfo = route.params.classInfo;
       const newProduct = {
         id: Date.now(),
@@ -40,12 +52,20 @@ const MyCart = ({ navigation, route }) => {
         units: classInfo.units,
         checked: false,
       };
-      setCartList([...cartList, newProduct]);
-      setIsAddToCart(false);
+      setWishList([...wishList, newProduct]);
+      setIsAdd(false);
     }
-  }, [isSelectAll, cartList, totalPrice, selectedCount]);
+    setWishListLength(wishList.length);
+  }, [
+    isSelectAll,
+    wishList,
+    totalPrice,
+    selectedCount,
+    wishListLength,
+    dialogVisible,
+  ]);
 
-  const [cartList, setCartList] = useState([
+  const [wishList, setWishList] = useState([
     {
       id: 1,
       imgUrl: require("../assets/img/sample_class_img1.jpeg"),
@@ -94,32 +114,32 @@ const MyCart = ({ navigation, route }) => {
     if (id === "default") {
       if (isSelectAll) {
         setIsSelectAll(false);
-        const newCartList = cartList.map((item) => {
+        const newWishList = wishList.map((item) => {
           return { ...item, checked: false };
         });
-        setCartList(newCartList);
-        changePrice(newCartList);
+        setWishList(newWishList);
+        changePrice(newWishList);
         setSelectedCount(0);
       } else {
         setIsSelectAll(true);
-        const newCartList = cartList.map((item) => {
+        const newWishList = wishList.map((item) => {
           return { ...item, checked: true };
         });
-        setCartList(newCartList);
-        changePrice(newCartList);
-        setSelectedCount(cartList.length);
+        setWishList(newWishList);
+        changePrice(newWishList);
+        setSelectedCount(wishList.length);
       }
     } else {
       let isAllSelected = true;
-      let newCartList = cartList.map((item) => {
+      let newWishList = wishList.map((item) => {
         if (item.id === id) {
           item.checked = !item.checked;
         }
         return item;
       });
-      setCartList(newCartList);
+      setWishList(newWishList);
 
-      cartList.map((item) => {
+      wishList.map((item) => {
         if (!item.checked) {
           isAllSelected = false;
         } else {
@@ -132,14 +152,14 @@ const MyCart = ({ navigation, route }) => {
         setIsSelectAll(false);
       }
       setSelectedCount(count);
-      changePrice(newCartList);
+      changePrice(newWishList);
     }
   };
 
-  const changePrice = (cartList) => {
+  const changePrice = (wishList) => {
     console.log("changePrice");
     let newPrice = 0;
-    cartList.map((item) => {
+    wishList.map((item) => {
       if (item.checked) {
         newPrice += item.price;
       }
@@ -149,24 +169,25 @@ const MyCart = ({ navigation, route }) => {
 
   const deleteItem = (id) => {
     console.log(id);
-    const newCartList = cartList.filter((item) => item.id !== id);
-    setCartList(newCartList);
+    const newWishList = wishList.filter((item) => item.id !== id);
+    setWishList(newWishList);
   };
 
   const checkBuyNow = (id) => {
-    const newCartList = cartList.filter((item) => item.id === id);
-    return newCartList;
+    const newWishList = wishList.filter((item) => item.id === id);
+    return newWishList;
   };
 
   return (
-    <ScrollView
-      style={styles.container}
+    <View
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[0]}
+      contentContainerStyle={{ ...styles.container }}
+      style={{ flex: 1, backgroundColor: "white" }}
     >
       <View style={styles.topContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>My Cart</Text>
+          <Text style={styles.title}>My Wishlist</Text>
           <View style={styles.backBtn}>
             <TouchableOpacity
               onPress={() => {
@@ -177,7 +198,7 @@ const MyCart = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.selectAllContainer}>
+        {/* <View style={styles.selectAllContainer}>
           <TouchableOpacity
             onPress={() => {
               // 전체 선택
@@ -200,18 +221,28 @@ const MyCart = ({ navigation, route }) => {
             }}
           >
             <Text style={styles.selectAllText}>
-              Select All ({cartList.length}/{cartList.length})
+              Select All ({wishList.length}/{wishList.length})
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
-      <View style={styles.cartListContainer}>
-        <SwipeListView
-          data={cartList}
+
+      {wishListLength === 0 ? (
+        <View style={styles.wishListEmptyContainer}>
+          <Text style={styles.wishListEmptyText}>Your Wishlist is empty</Text>
+        </View>
+      ) : (
+        <FlatList
+          contentContainerstyle={{ ...styles.wishListContainer }}
+          numColumns={1}
+          key={"_"}
+          data={wishList}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           // 어떻게 아이템을 렌더링 할 것인가
           renderItem={({ item }) => (
-            <View style={styles.cartListItem}>
-              <View style={styles.checkAndEdit}>
+            <View style={{ ...styles.wishListItem }}>
+              {/* <View style={styles.checkAndEdit}>
                 <TouchableOpacity
                   onPress={() => {
                     // 상품 선택
@@ -227,19 +258,35 @@ const MyCart = ({ navigation, route }) => {
                     }
                   ></Image>
                 </TouchableOpacity>
-                {/* <View style={styles.editBtn}>
+                <View style={styles.editBtn}>
                   <TouchableOpacity>
                     <Text style={styles.editBtnText}>edit</Text>
                   </TouchableOpacity>
-                </View> */}
-              </View>
+                </View>
+              </View> */}
 
               <View style={styles.classInfoContainer}>
                 <View style={styles.classImgContainer}>
-                  <Image style={styles.classImg} source={item.imgUrl}></Image>
+                  <Image
+                    style={styles.classImg}
+                    source={require("../assets/img/sample_class_img1.jpeg")}
+                  ></Image>
                 </View>
                 <View style={styles.classInfoTextContainer}>
-                  <Text style={styles.classNameText}>{item.className}</Text>
+                  <View style={styles.classInfoTopContainer}>
+                    <Text style={styles.classNameText}>{item.className}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setDialogVisible(true);
+                        setSelectedId(item.id);
+                      }}
+                    >
+                      <View style={styles.deleteContainer}>
+                        <Text style={styles.deleteText}>Delete</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
                   <View style={styles.categoryContainer}>
                     <Text style={styles.cateogryText}>{item.category}</Text>
                   </View>
@@ -252,8 +299,8 @@ const MyCart = ({ navigation, route }) => {
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  const payList = checkBuyNow(item.id);
-                  navigation.navigate("Payment", { payList: payList });
+                  // const payList = checkBuyNow(item.id);
+                  navigation.navigate("Payment", { item: item });
                 }}
               >
                 <Image
@@ -264,38 +311,137 @@ const MyCart = ({ navigation, route }) => {
             </View>
           )}
           // 어떻게 숨겨진 아이템을 렌더링 할 것인가
-          renderHiddenItem={({ item }) => (
-            <View style={styles.swipeHiddenItemContainer}>
-              <View style={styles.swipeHiddenItem}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("ClassMore", { title: item.level });
-                  }}
-                >
-                  <Text style={styles.swipeHiddenItemText}>Similar</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.swipeHiddenItem}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("delete");
-                    deleteItem(item.id);
-                  }}
-                >
-                  <Text style={styles.swipeHiddenItemText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-          rightOpenValue={-150}
-          previewRowKey={"0"}
-          previewOpenValue={-40}
-          previewOpenDelay={3000}
-          disableRightSwipe={true}
-          // leftOpenValue={0}
-        />
-      </View>
+          //   renderHiddenItem={({ item }) => (
+          //     <View style={styles.swipeHiddenItemContainer}>
+          //       <View style={styles.swipeHiddenItem}>
+          //         <TouchableOpacity
+          //           onPress={() => {
+          //             navigation.navigate("ClassMore", { title: item.level });
+          //           }}
+          //         >
+          //           <Text style={styles.swipeHiddenItemText}>Similar</Text>
+          //         </TouchableOpacity>
+          //       </View>
+          //       <View style={styles.swipeHiddenItem}>
+          //         <TouchableOpacity
+          //           onPress={() => {
+          //             console.log("delete");
+          //             deleteItem(item.id);
+          //           }}
+          //         >
+          //           <Text style={styles.swipeHiddenItemText}>Delete</Text>
+          //         </TouchableOpacity>
+          //       </View>
+          //     </View>
+          //   )}
+          //   rightOpenValue={-150}
+          //   previewRowKey={"0"}
+          //   previewOpenValue={-40}
+          //   previewOpenDelay={3000}
+          //   disableRightSwipe={true}
+          //   // leftOpenValue={0}
+          // />
+        ></FlatList>
+      )}
+      <Dialog
+        width={0.8}
+        height={0.25}
+        visible={dialogVisible}
+        onTouchOutside={() => {
+          setDialogVisible(false);
+        }}
+        onHardwareBackPress={() => {
+          setDialogVisible(false);
+        }}
+        dialogAnimation={
+          new ScaleAnimation({
+            initialValue: 0, // optional
+            useNativeDriver: true, // optional
+          })
+        }
+        footer={
+          <DialogFooter
+            bordered={false}
+            style={{
+              paddingLeft: 10,
+              paddingRight: 10,
 
+              paddingBottom: 20,
+            }}
+          >
+            <DialogButton
+              style={{
+                backgroundColor: "#E6E3EA",
+                borderRadius: 30,
+                marginRight: 5,
+                height: 48,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              textStyle={{
+                color: "#444345",
+                fontFamily: "Poppins-Medium",
+                fontSize: 14,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              text="NO"
+              onPress={() => {
+                setDialogVisible(false);
+              }}
+            />
+            <DialogButton
+              style={{
+                backgroundColor: "#444345",
+                borderRadius: 30,
+                marginLeft: 5,
+                height: 48,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              textStyle={{
+                color: "#E6E3EA",
+                fontFamily: "Poppins-Medium",
+                fontSize: 14,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              text="YES"
+              onPress={() => {
+                setDialogVisible(false);
+                deleteItem(selectedId);
+              }}
+            />
+          </DialogFooter>
+        }
+      >
+        <DialogContent
+          style={{
+            position: "relative",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: "Poppins-SemiBold",
+              color: "#000",
+              paddingTop: 40,
+              textAlign: "center",
+            }}
+          >
+            Are you sure you want to delete this class?
+          </Text>
+        </DialogContent>
+        <TouchableOpacity
+          onPress={() => {
+            setDialogVisible(false);
+          }}
+          style={{ position: "absolute", right: 10, top: 10 }}
+        >
+          <Ionicons name="ios-close-outline" size={24} color="black" />
+        </TouchableOpacity>
+      </Dialog>
+      {/* 
       <View style={styles.bottomInfoContainer}>
         <View style={styles.selectedProductsContainer}>
           <Text style={styles.selectedProductsText}>Selected products</Text>
@@ -309,7 +455,7 @@ const MyCart = ({ navigation, route }) => {
       <View style={styles.checkoutBtnContainer}>
         <TouchableOpacity
           onPress={() => {
-            const payList = cartList.filter((item) => item.checked);
+            const payList = wishList.filter((item) => item.checked);
             navigation.navigate("Payment", { payList: payList });
           }}
         >
@@ -318,16 +464,16 @@ const MyCart = ({ navigation, route }) => {
             source={require("../assets/img/btn-checkout.jpg")}
           ></Image>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </View> */}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexGrow: 1,
     backgroundColor: "white",
+    width: "100%",
   },
   topContainer: {
     flexDirection: "column",
@@ -345,6 +491,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     zIndex: 1,
     backgroundColor: "white",
+    marginBottom: 20,
   },
 
   backBtn: {
@@ -369,17 +516,16 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: "#B8B5BC",
   },
-  cartListContainer: {
+  wishListContainer: {
     marginTop: 20,
     alignItems: "center",
   },
-  cartListItem: {
-    width: 350,
+  wishListItem: {
+    width: "100%",
     paddingLeft: 20,
     paddingRight: 20,
     position: "relative",
-    marginBottom: 25,
-    zIndex: 2,
+    marginBottom: 35,
     backgroundColor: "white",
   },
   checkAndEdit: {
@@ -394,6 +540,24 @@ const styles = StyleSheet.create({
   },
   classInfoContainer: {
     flexDirection: "row",
+    position: "relative",
+  },
+  classInfoTextContainer: {
+    width: "68%",
+  },
+  classInfoTopContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  deleteContainer: {
+    position: "absolute",
+    right: 0,
+  },
+  deleteText: {
+    color: "#B8B5BC",
+    fontFamily: "Poppins-Regular",
+    fontSize: 10,
   },
   classImg: {
     width: 100,
@@ -452,6 +616,17 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 20,
   },
+  wishListEmptyContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 250,
+    backgroundColor: "white",
+  },
+  wishListEmptyText: {
+    fontFamily: "Poppins-Regular",
+    color: "#444345",
+    fontSize: 14,
+  },
   totalPriceContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -490,4 +665,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
-export default MyCart;
+export default MyWishList;
