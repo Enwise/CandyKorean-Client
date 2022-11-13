@@ -189,7 +189,6 @@ const ClassMain = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView
-        style={{ height: 1 }}
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -223,9 +222,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 20,
     backgroundColor: "#fff",
     position: "relative",
+    paddingBottom: 50,
   },
   moreButton: {
     flexDirection: "row",

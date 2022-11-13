@@ -13,27 +13,20 @@ import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import StudyNowIcon from "../assets/icons/StudyNowIcon";
 import UnitIcon from "../assets/icons/UnitIcon";
-import SampleClassImg1 from "../assets/icons/SampleClassImg1";
-import SampleClassImg2 from "../assets/icons/SampleClassImg2";
-import SampleClassImg3 from "../assets/icons/SampleClassImg3";
-import SampleClassImg4 from "../assets/icons/SampleClassImg4";
-import SampleClassImg5 from "../assets/icons/SampleClassImg5";
+
+import SampleClassImg3 from "../assets/icons/SampleClassImg1";
+
+import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
+import SampleClassImg2 from "../assets/icons/level/SampleClassImg2";
 
 const PaymentResult = ({ navigation, route }) => {
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
   const [date, setDate] = useState();
 
-  const sampleClassImgList = [
-    <SampleClassImg2></SampleClassImg2>,
-    <SampleClassImg3></SampleClassImg3>,
-    <SampleClassImg4></SampleClassImg4>,
-    <SampleClassImg5></SampleClassImg5>,
-  ];
-
   const [recommendList, setRecommendList] = useState([
     {
-      imgUrl: "../assets/img/sample_class_img1.jpeg",
+      imgUrl: <SampleClassImg1></SampleClassImg1>,
       teacherName: "Kyungeun1",
       className: "class1",
       category: "K-culture",
@@ -43,7 +36,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: true,
     },
     {
-      imgUrl: "../assets/img/sample_class_img1.jpeg",
+      imgUrl: <SampleClassImg2></SampleClassImg2>,
       teacherName: "Kyungeun2",
       className: "class2",
       category: "K-history",
@@ -53,7 +46,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: "../assets/img/sample_class_img1.jpeg",
+      imgUrl: <SampleClassImg2></SampleClassImg2>,
       teacherName: "Kyungeun3",
       className: "class3",
       category: "K-pop",
@@ -63,7 +56,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: "../assets/img/sample_class_img1.jpeg",
+      imgUrl: <SampleClassImg2></SampleClassImg2>,
       teacherName: "Kyungeun4",
       className: "class4",
       category: "K-culture",
@@ -73,7 +66,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: "../assets/img/sample_class_img1.jpeg",
+      imgUrl: <SampleClassImg2></SampleClassImg2>,
       teacherName: "Kyungeun5",
       className: "class5",
       category: "K-culture",
@@ -188,9 +181,10 @@ const PaymentResult = ({ navigation, route }) => {
               horizontal={true}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item, idx }) => (
+              renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
+                    console.log("item", item);
                     navigation.navigate("ClassInfo", { classInfo: item });
                   }}
                 >
@@ -199,7 +193,7 @@ const PaymentResult = ({ navigation, route }) => {
                       ...styles.recommendItemContainer,
                     }}
                   >
-                    <SampleClassImg2 />
+                    <SampleClassImg3 />
                     <View style={styles.recommendItemInfo}>
                       <Text style={styles.recommendItemClassName}>
                         {item.className}
@@ -240,6 +234,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
+    paddingBottom: 70,
+    paddingTop: 70,
   },
   titleContainer: {
     paddingLeft: 20,
@@ -251,7 +247,6 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   purchasedItemContainer: {
-    marginTop: 50,
     paddingLeft: 20,
     paddingRight: 20,
   },
@@ -379,8 +374,8 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
     color: "#000",
-    paddingTop: 300,
-    paddingBottom: 250,
+    paddingTop: 200,
+    paddingBottom: 200,
   },
   backToPageBtn: {
     justifyContent: "center",

@@ -344,8 +344,11 @@ const MyWishList = ({ navigation, route }) => {
       )}
       <Dialog
         width={0.8}
-        height={0.25}
+        height={0.23}
         visible={dialogVisible}
+        dialogStyle={{
+          borderRadius: 25,
+        }}
         onTouchOutside={() => {
           setDialogVisible(false);
         }}
@@ -364,7 +367,6 @@ const MyWishList = ({ navigation, route }) => {
             style={{
               paddingLeft: 10,
               paddingRight: 10,
-
               paddingBottom: 20,
             }}
           >
@@ -380,11 +382,11 @@ const MyWishList = ({ navigation, route }) => {
               textStyle={{
                 color: "#444345",
                 fontFamily: "Poppins-Medium",
-                fontSize: 14,
+                fontSize: 12,
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              text="NO"
+              text="Return to Wishlist"
               onPress={() => {
                 setDialogVisible(false);
               }}
@@ -405,7 +407,7 @@ const MyWishList = ({ navigation, route }) => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              text="YES"
+              text="Delete"
               onPress={() => {
                 setDialogVisible(false);
                 deleteItem(selectedId);

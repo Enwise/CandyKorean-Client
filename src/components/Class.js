@@ -148,6 +148,7 @@ const dstyles = (isShowAll) =>
       ? {
           flexDirection: "column",
           marginBottom: 40,
+          width: 150,
         }
       : {
           flexDirection: "column",

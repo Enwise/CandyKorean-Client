@@ -8,7 +8,7 @@ const LessonVideo = ({ route, navigation }) => {
   const [isPortrait, setIsPortrait] = useState(true); // false면 가로, true면 세로
   const [isFullScreen, setIsFullScreen] = useState(false);
   const videoPlayer = useRef();
-  const [videoStatus, setVideoStatus] = useState(0);
+  const [videoStatus, setVideoStatus] = useState(3);
 
   useEffect(() => {
     // StatusBar.setBackgroundColor("transparent");
@@ -23,7 +23,6 @@ const LessonVideo = ({ route, navigation }) => {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
     } else {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-      videoPlayer.height = Dimensions.get("window").height / 2;
     }
   };
 

@@ -75,8 +75,8 @@ const dstyles = (isMain) =>
       borderRadius: 35,
 
       position: "absolute",
-      bottom: isMain ? 0 : -45,
-      right: 20,
+      bottom: 70,
+      right: 30,
 
       ...Platform.select({
         ios: {

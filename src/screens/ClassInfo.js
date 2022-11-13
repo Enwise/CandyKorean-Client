@@ -8,24 +8,32 @@ import {
   Button,
   SafeAreaView,
   ScrollView,
+  Dimensions,
 } from "react-native";
-
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { ResizeMode } from "expo-av";
-import VideoPlayer from "expo-video-player";
+import { Video } from "expo-av";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { StatusBar } from "react-native";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [unitsNum, setUnitsNum] = useState(9);
   const [classInfo, setClassInfo] = useState(route.params.classInfo);
+  console.log(classInfo);
 
-  const [inFullscreen, setInFullsreen] = useState(false);
-  const [inFullscreen2, setInFullsreen2] = useState(false);
-  const [isMute, setIsMute] = useState(false);
-  const refVideo = useRef(null);
-  const refVideo2 = useRef(null);
-  const refScrollView = useRef(null);
+  const [isPortrait, setIsPortrait] = useState(false); // false면 가로, true면 세로
 
+  const videoPlayer = useRef();
+  const [videoStatus, setVideoStatus] = useState(3);
+
+  const setOrientation = (status) => {
+    if (status === 1 && !isPortrait) {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    } else {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+    }
+  };
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
@@ -36,108 +44,101 @@ const ClassInfo = ({ props, navigation, route }) => {
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={{ ...styles.container, flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}
-      stickyHeaderIndices={[0]}
-    >
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{classInfo.className}</Text>
-        <View style={styles.backBtn}>
+    <>
+      <StatusBar translucent={false} hidden={true} />
+      <ScrollView
+        contentContainerStyle={{
+          ...styles.container,
+          flexGrow: 1,
+          paddingBottom: 70,
+        }}
+        showsVerticalScrollIndicator={false}
+        stickyHeaderIndices={[0]}
+      >
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{classInfo.className}</Text>
+          <View style={styles.backBtn}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <AntDesign name="left" size={20} color="black" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.topContainer}>
+          <View style={styles.imageContainer}>{classInfo.imgUrl}</View>
+          <View style={styles.textContainer}>
+            <View>
+              <Text style={styles.className}>{classInfo.className}</Text>
+            </View>
+            <View style={styles.teacherNameContainer}>
+              <Text style={styles.teacherName}>
+                with {classInfo.teacherName}
+              </Text>
+            </View>
+            <View style={styles.unitsImg}>
+              <Image source={require("../assets/img/units_btn.png")}></Image>
+              <Text style={styles.unitsNumText}>{classInfo.units} Units</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.videoContainer}>
+          <Video
+            source={{
+              uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            }}
+            rate={1.0}
+            useNativeControls={true}
+            style={{ height: 500, width: 300 }}
+            resizeMode="stretch"
+            isLooping
+            onFullscreenUpdate={(status) => {
+              // console.log(status);
+              const videoStatus = status.fullscreenUpdate; // 1이면 전체화면 표시완료, 3이면 닫기 완료
+              setVideoStatus(videoStatus);
+              setOrientation(videoStatus);
+            }}
+            slider={{ visible: true }}
+            ref={videoPlayer}
+          />
+        </View>
+
+        <View style={styles.classAndteacherContainer}>
+          <Text style={styles.classInfoText}>
+            Let's study real Korean formal language!
+          </Text>
+          <Text style={styles.teacherInfoText}>Ph.D Korean education</Text>
+        </View>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() => {
-              navigation.goBack();
+              navigation.navigate("MyWishList", {
+                classInfo: route.params.classInfo,
+                isAdd: true,
+              });
             }}
           >
-            <AntDesign name="left" size={20} color="black" />
+            <View style={styles.cartBtn}>
+              <Image source={require("../assets/img/btn-purple.png")}></Image>
+              <Text style={styles.cartBtnText}>add to wishlist</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              // const payList = [{ ...classInfo }];
+              navigation.navigate("Payment", { item: classInfo });
+            }}
+          >
+            <View style={styles.payBtn}>
+              <Image source={require("../assets/img/btn-purple.png")}></Image>
+              <Text style={styles.payBtnText}>buy now</Text>
+            </View>
           </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.topContainer}>
-        <View style={styles.imageContainer}>{classInfo.imgUrl}</View>
-        <View style={styles.textContainer}>
-          <View>
-            <Text style={styles.className}>{classInfo.className}</Text>
-          </View>
-          <View style={styles.teacherNameContainer}>
-            <Text style={styles.teacherName}>with {classInfo.teacherName}</Text>
-          </View>
-          <View style={styles.unitsImg}>
-            <Image source={require("../assets/img/units_btn.png")}></Image>
-            <Text style={styles.unitsNumText}>{classInfo.units} Units</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.videoContainer}>
-        <VideoPlayer
-          videoProps={{
-            shouldPlay: false,
-            resizeMode: ResizeMode.STRETCH,
-            // ❗ source is required https://docs.expo.io/versions/latest/sdk/video/#props
-            source: {
-              uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            },
-          }}
-          fullscreen={{
-            enterFullscreen: async () => {
-              setStatusBarHidden(true, "fade");
-              setInFullsreen2(!inFullscreen2);
-              await ScreenOrientation.lockAsync(
-                ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-              );
-              refVideo2.current.setStatusAsync({
-                shouldPlay: true,
-              });
-            },
-            exitFullscreen: async () => {
-              setStatusBarHidden(false, "fade");
-              setInFullsreen2(!inFullscreen2);
-              await ScreenOrientation.lockAsync(
-                ScreenOrientation.OrientationLock.DEFAULT
-              );
-            },
-          }}
-          style={{
-            videoBackgroundColor: "black",
-            height: inFullscreen2 ? Dimensions.get("window").width : 500,
-            width: inFullscreen2 ? Dimensions.get("window").height : 300,
-          }}
-        />
-      </View>
-      <View style={styles.classAndteacherContainer}>
-        <Text style={styles.classInfoText}>
-          Let's study real Korean formal language!
-        </Text>
-        <Text style={styles.teacherInfoText}>Ph.D Korean education</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("MyWishList", {
-              classInfo: route.params.classInfo,
-              isAdd: true,
-            });
-          }}
-        >
-          <View style={styles.cartBtn}>
-            <Image source={require("../assets/img/btn-purple.png")}></Image>
-            <Text style={styles.cartBtnText}>add to wishlist</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            const payList = [{ ...classInfo }];
-            navigation.navigate("Payment", { payList: payList });
-          }}
-        >
-          <View style={styles.payBtn}>
-            <Image source={require("../assets/img/btn-purple.png")}></Image>
-            <Text style={styles.payBtnText}>buy now</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
@@ -214,18 +215,18 @@ const styles = StyleSheet.create({
     right: 8,
   },
   videoContainer: {
-    flex: 1,
+    flex: 3,
+    height: 500,
+    width: 120,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: 50,
-    marginTop: 50,
+    marginTop: 30,
   },
 
   classAndteacherContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 230,
+    marginTop: 150,
   },
   buttonContainer: {
     width: 230,
@@ -264,4 +265,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+// const dstyles = (videoStatus) =>
+//   StyleSheet.create({
+//     video: {
+//       height: "100%",
+//     },
+//   });
 export default ClassInfo;

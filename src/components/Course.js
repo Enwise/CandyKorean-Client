@@ -69,7 +69,7 @@ const Course = ({
         </View>
       </View>
       {title === "Lollipop Level" ? (
-        <SafeAreaView nestedScrollEnabled={true}>
+        <SafeAreaView nestedScrollEnabled={true} style={{ width: "100%" }}>
           <FlatList
             numColumns={1}
             key={"_"}
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 30,
     marginLeft: 20,
   },
 
@@ -140,13 +139,13 @@ const styles = StyleSheet.create({
   },
 
   classListContainer: {
+    width: 350,
     flexDirection: "row",
     paddingLeft: 20,
   },
 
   moreButton: {
     flexDirection: "row",
-
     alignItems: "center",
   },
   moreText: {
