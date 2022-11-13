@@ -17,7 +17,7 @@ import Dialog, {
   DialogFooter,
   DialogButton,
 } from "react-native-popup-dialog";
-import SampleClassImg1 from "../assets/icons/SampleClassImg1";
+import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
 
 const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
@@ -138,11 +138,10 @@ const LessonInfo = ({ navigation, route }) => {
                   }}
                 >
                   <View style={styles.unitQuizContainer}>
-                    <Image
-                      style={styles.unitQuizBtn}
-                      source={require("../assets/img/units_quiz_btn.png")}
-                    ></Image>
-                    <Text style={styles.unitQuizText}></Text>
+                    <View style={styles.unitQuizLeftContainer}>
+                      <Text style={styles.unitQuizLeftText}>Quiz</Text>
+                    </View>
+                    <Text style={styles.unitQuizNumText}>5/7</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -225,7 +224,8 @@ const LessonInfo = ({ navigation, route }) => {
                 </View>
               }
               onPress={() => {
-                setReview(false);
+                setReview(true);
+                setVisible(false);
                 console.log("review: ", review);
               }}
             ></DialogButton>
@@ -275,8 +275,9 @@ const LessonInfo = ({ navigation, route }) => {
                 </View>
               }
               onPress={() => {
-                setReview(true);
-                console.log("review: ", review);
+                setReview(false);
+                setVisible(false);
+                navigation.navigate("LessonQuiz", { lessonId: lessonInfo.id });
               }}
             />
           </DialogFooter>
@@ -411,6 +412,7 @@ const styles = StyleSheet.create({
 
   curriculumItem: {
     flexDirection: "row",
+    marginBottom: 20,
   },
   unitNum: {
     marginRight: 20,
@@ -441,6 +443,29 @@ const styles = StyleSheet.create({
   unitStudyText: {
     fontSize: 10,
     fontFamily: "Poppins-Medium",
+    color: "#A160E2",
+  },
+  unitQuizContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  unitQuizLeftContainer: {
+    width: 45,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#A160E2",
+    marginRight: 5,
+  },
+  unitQuizLeftText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 10,
+    color: "#FDFDFD",
+  },
+  unitQuizNumText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 10,
     color: "#A160E2",
   },
   unitNumText: {

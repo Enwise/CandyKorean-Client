@@ -18,8 +18,7 @@ import Dialog, {
   DialogButton,
 } from "react-native-popup-dialog";
 import { Ionicons } from "@expo/vector-icons";
-import SampleClassImg1 from "../assets/icons/SampleClassImg1";
-import SampleClassImg2 from "../assets/icons/SampleClassImg2";
+import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
 
 const MyWishList = ({ navigation, route }) => {
   const [isAdd, setIsAdd] = useState(route.params.isAdd ?? false);

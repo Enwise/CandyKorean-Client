@@ -4,6 +4,7 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import ClassRoom from "../screens/ClassRoom";
 import LessonInfo from "../screens/LessonInfo";
 import LessonVideo from "../screens/LessonVideo";
+import LessonQuiz from "../screens/LessonQuiz";
 import { Platform } from "react-native";
 
 const Stack = createNativeStackNavigator();
@@ -57,6 +58,7 @@ const ClassRoomStack = ({ navigation, route }) => {
         }}
         component={LessonVideo}
       />
+      <Stack.Screen name="LessonQuiz" component={LessonQuiz} />
     </Stack.Navigator>
   );
 };
