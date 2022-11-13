@@ -1,64 +1,56 @@
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  FlatList,
-  Image,
-  Dimensions,
-} from "react-native";
-import { ResizeMode } from "expo-av";
-import VideoPlayer from "expo-video-player";
-
-import * as ScreenOrientation from "expo-screen-orientation";
 import { Video } from "expo-av";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { StatusBar } from "react-native";
 
-const LessonVideo = ({ navigation, route }) => {
-  const [inFullscreen2, setInFullsreen2] = useState(false);
-  const [inFullscreen, setInFullsreen] = useState(false);
-  const refVideo = useRef(null);
+const LessonVideo = ({ route, navigation }) => {
+  const [isPortrait, setIsPortrait] = useState(true); // false면 가로, true면 세로
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const videoPlayer = useRef();
+  const [videoStatus, setVideoStatus] = useState(0);
+
+  useEffect(() => {
+    // StatusBar.setBackgroundColor("transparent");
+    // StatusBar.setTranslucent(true);
+    // StatusBar.setBarStyle("dark-content");
+
+    console.log("useEffect");
+  }, [isFullScreen]);
+
+  const setOrientation = (status) => {
+    if (status === 1 && !isPortrait) {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    } else {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+      videoPlayer.height = Dimensions.get("window").height / 2;
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <VideoPlayer
-        videoProps={{
-          shouldPlay: true,
-          resizeMode: ResizeMode.STRETCH,
-          source: {
-            uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-          },
-          ref: refVideo,
+      <StatusBar translucent={false} hidden={true} />
+      <Video
+        source={{
+          uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
         }}
-        fullscreen={{
-          enterFullscreen: () => {
-            setInFullsreen(!inFullscreen);
-            refVideo.current.setStatusAsync({
-              shouldPlay: true,
-            });
-          },
-          exitFullscreen: () => {
-            setInFullsreen(!inFullscreen);
-            refVideo.current.setStatusAsync({
-              shouldPlay: true,
-            });
-          },
-          inFullscreen,
+        rate={1.0}
+        useNativeControls={true}
+        resizeMode="stretch"
+        style={dstyles(videoStatus).video}
+        isLooping
+        onFullscreenUpdate={(status) => {
+          // console.log(status);
+          const videoStatus = status.fullscreenUpdate; // 1이면 전체화면 표시완료, 3이면 닫기 완료
+          setVideoStatus(videoStatus);
+          setOrientation(videoStatus);
         }}
-        style={{
-          videoBackgroundColor: "black",
-          height: inFullscreen
-            ? Dimensions.get("window").height
-            : Dimensions.get("window").height,
-          width: inFullscreen
-            ? Dimensions.get("window").width
-            : Dimensions.get("window").width,
-        }}
-        slider={{
-          visible: true,
-        }}
+        slider={{ visible: true }}
+        ref={videoPlayer}
       />
+      <View style={styles.lectureNoteContainer}>
+        <Text style={styles.lectureNote}>강의노트</Text>
+      </View>
     </View>
   );
 };
@@ -66,10 +58,21 @@ const LessonVideo = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    marginTop: 25,
+  },
+
+  lectureNoteContainer: {
+    height: "40%",
+    justifyContent: "center",
     alignItems: "center",
   },
 });
+
+const dstyles = (videoStatus) =>
+  StyleSheet.create({
+    video: {
+      height: videoStatus === 1 ? Dimensions.get("window").height : "60%",
+      zIndex: videoStatus === 1 ? 3 : 1,
+    },
+  });
 
 export default LessonVideo;
