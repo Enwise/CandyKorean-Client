@@ -17,6 +17,7 @@ import Dialog, {
   DialogFooter,
   DialogButton,
 } from "react-native-popup-dialog";
+import SampleClassImg1 from "../assets/icons/SampleClassImg1";
 
 const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
@@ -44,10 +45,7 @@ const LessonInfo = ({ navigation, route }) => {
       </View>
       <View style={styles.lessonInfoContainer}>
         <View style={styles.imageContainer}>
-          <Image
-            style={styles.img}
-            source={require("../assets/img/sample_class_img1.jpeg")}
-          ></Image>
+          <SampleClassImg1 />
         </View>
         <View style={styles.textContainer}>
           <View style={styles.todayContainer}>
@@ -153,8 +151,11 @@ const LessonInfo = ({ navigation, route }) => {
         )}
       ></FlatList>
       <Dialog
-        width={0.8}
-        height={0.25}
+        width={0.9}
+        height={0.27}
+        dialogStyle={{
+          borderRadius: 25,
+        }}
         visible={visible}
         onTouchOutside={() => {
           setVisible(false);
@@ -172,51 +173,107 @@ const LessonInfo = ({ navigation, route }) => {
           <DialogFooter
             bordered={false}
             style={{
-              paddingLeft: 10,
-              paddingRight: 10,
-
-              paddingBottom: 20,
+              height: "37%",
             }}
           >
             <DialogButton
               style={{
                 backgroundColor: "#E6E3EA",
-                borderRadius: 30,
-                marginRight: 5,
-                height: 48,
+                borderBottomLeftRadius: 25,
+
                 justifyContent: "center",
                 alignItems: "center",
               }}
               textStyle={{
-                color: "#444345",
-                fontFamily: "Poppins-Medium",
-                fontSize: 14,
+                color: "#fff",
+                fontFamily: "Poppins-SemiBold",
+                fontSize: 24,
                 justifyContent: "center",
                 alignItems: "center",
+                flexDirection: "row",
               }}
-              text="NO"
+              text={
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ marginRight: 5 }}>
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontFamily: "Poppins-SemiBold",
+                        fontSize: 24,
+                      }}
+                    >
+                      NO
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontFamily: "Poppins-Regular",
+                        fontSize: 10,
+                        textAlign: "center",
+                      }}
+                    >
+                      I want to review{"\n"}before the quiz
+                    </Text>
+                  </View>
+                </View>
+              }
               onPress={() => {
                 setReview(false);
                 console.log("review: ", review);
               }}
-            />
+            ></DialogButton>
             <DialogButton
               style={{
-                backgroundColor: "#444345",
-                borderRadius: 30,
-                marginLeft: 5,
-                height: 48,
+                backgroundColor: "#A160E2",
+                borderBottomRightRadius: 25,
+
                 justifyContent: "center",
                 alignItems: "center",
               }}
               textStyle={{
                 color: "#E6E3EA",
-                fontFamily: "Poppins-Medium",
-                fontSize: 14,
-                justifyContent: "center",
-                alignItems: "center",
+                fontFamily: "Poppins-SemiBold",
+                fontSize: 24,
               }}
-              text="YES"
+              text={
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ marginRight: 5 }}>
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontFamily: "Poppins-SemiBold",
+                        fontSize: 24,
+                      }}
+                    >
+                      YES
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontFamily: "Poppins-Regular",
+                        fontSize: 10,
+                        textAlign: "center",
+                      }}
+                    >
+                      I want to start{"\n"}without the review
+                    </Text>
+                  </View>
+                </View>
+              }
               onPress={() => {
                 setReview(true);
                 console.log("review: ", review);
@@ -233,13 +290,14 @@ const LessonInfo = ({ navigation, route }) => {
           <Text
             style={{
               fontSize: 16,
-              fontFamily: "Poppins-SemiBold",
+              fontFamily: "Poppins-Medium",
               color: "#000",
               paddingTop: 40,
               textAlign: "center",
             }}
           >
-            Do you want to start reviewing before the quiz?
+            Before starting the quiz,{"\n"}Are you sure to start without
+            reviewing the last lesson?
           </Text>
         </DialogContent>
         <TouchableOpacity
@@ -267,6 +325,7 @@ const styles = StyleSheet.create({
   lessonInfoContainer: {
     flexDirection: "row",
     marginTop: 100,
+    justifyContent: "space-evenly",
   },
   img: {
     width: 130,

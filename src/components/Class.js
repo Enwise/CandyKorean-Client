@@ -39,10 +39,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
             }}
             disabled={!isMain}
           >
-            <Image
-              style={dstyles(isShowAll).img}
-              source={require("../assets/img/sample_class_img1.jpeg")}
-            ></Image>
+            {classInfo.imgUrl}
           </TouchableOpacity>
         </View>
         <View style={dstyles(isShowAll).textContainer}>
@@ -83,6 +80,9 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
 };
 
 const styles = StyleSheet.create({
+  classCotaniner: {
+    backgroundColor: "#fff",
+  },
   className: {
     marginBottom: 5,
     fontFamily: "Poppins-Medium",
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
 
   unitsImg: {
     position: "absolute",
-    bottom: 0,
-    right: 0,
+    bottom: 15,
+    right: 5,
   },
 
   unitsNumText: {
@@ -153,7 +153,6 @@ const dstyles = (isShowAll) =>
           flexDirection: "column",
           marginRight: 5,
           alignItems: "center",
-          marginBottom: 40,
           width: 150,
         },
     img: {

@@ -85,9 +85,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
-    marginBottom: 50,
     position: "relative",
+    backgroundColor: "#fff",
+    paddingTop: 50,
   },
   topContainer: {
     flexDirection: "row",
@@ -99,13 +99,15 @@ const styles = StyleSheet.create({
   },
   classListContainer: {
     width: 300,
+    backgroundColor: "#fff",
   },
   topItem1: {
     justifyContent: "center",
+    backgroundColor: "#fff",
   },
   backBtn: {
     position: "absolute",
-    top: 10,
+    top: 60,
     left: 30,
     width: 50,
   },

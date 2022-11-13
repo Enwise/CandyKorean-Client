@@ -18,6 +18,8 @@ import Dialog, {
   DialogButton,
 } from "react-native-popup-dialog";
 import { Ionicons } from "@expo/vector-icons";
+import SampleClassImg1 from "../assets/icons/SampleClassImg1";
+import SampleClassImg2 from "../assets/icons/SampleClassImg2";
 
 const MyWishList = ({ navigation, route }) => {
   const [isAdd, setIsAdd] = useState(route.params.isAdd ?? false);
@@ -267,10 +269,7 @@ const MyWishList = ({ navigation, route }) => {
 
               <View style={styles.classInfoContainer}>
                 <View style={styles.classImgContainer}>
-                  <Image
-                    style={styles.classImg}
-                    source={require("../assets/img/sample_class_img1.jpeg")}
-                  ></Image>
+                  <SampleClassImg1 />
                 </View>
                 <View style={styles.classInfoTextContainer}>
                   <View style={styles.classInfoTopContainer}>

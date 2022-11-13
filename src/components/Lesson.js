@@ -11,6 +11,7 @@ import {
 import { useFonts } from "expo-font";
 import { AntDesign } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
+import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
 
 const Lesson = ({ navigation, lessonInfo }) => {
   const [fontsLoaded] = useFonts({
@@ -33,10 +34,7 @@ const Lesson = ({ navigation, lessonInfo }) => {
       <View style={styles.container}>
         <View style={styles.lessonInfoContainer}>
           <View style={styles.imageContainer}>
-            <Image
-              style={styles.img}
-              source={require("../assets/img/sample_class_img1.jpeg")}
-            ></Image>
+            <SampleClassImg1 />
           </View>
           <View style={styles.textContainer}>
             <View style={styles.lessonNameContainer}>

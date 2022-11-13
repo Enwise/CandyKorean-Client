@@ -11,6 +11,9 @@ import {
 import Class from "./Class";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
+import CottonCandyLevel from "../assets/icons/CottonCandyLevel";
+import MintCandyLevel from "../assets/icons/MintCandyLevel";
+import EmptyLevel from "../assets/icons/level/EmptyLevel";
 
 const Course = ({
   title,
@@ -22,7 +25,12 @@ const Course = ({
 }) => {
   const handleShowAllClass = () => {
     {
-      isShowAll ? showAllClass(title, false) : showAllClass(title, true);
+      title === "Lollipop Level"
+        ? navigation.navigate("ClassMore", {
+            classList: classList,
+            title: title,
+          })
+        : null;
     }
   };
 
@@ -37,7 +45,7 @@ const Course = ({
 
   return (
     <View style={styles.courseContainer}>
-      <View style={isShowAll ? styles.topContainerFixed : styles.topContainer}>
+      <View style={styles.topContainer}>
         <View style={styles.topItem1}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.secondTitle}>
@@ -52,10 +60,7 @@ const Course = ({
           <TouchableOpacity
             style={styles.moreButton}
             onPress={() => {
-              navigation.navigate("ClassMore", {
-                classList: classList,
-                title: title,
-              });
+              handleShowAllClass();
             }}
           >
             <Text style={styles.moreText}>MORE</Text>
@@ -63,54 +68,67 @@ const Course = ({
           </TouchableOpacity>
         </View>
       </View>
-
-      <SafeAreaView nestedScrollEnabled={true}>
-        <FlatList
-          numColumns={1}
-          key={"_"}
-          style={styles.classListContainer}
-          horizontal={true}
-          keyExtractor={(item) => String(item.id)}
-          data={classList}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <Class
-              navigation={navigation}
-              classInfo={item}
-              isShowAll={isShowAll}
-              maintitle={title}
-              isMain={isMain}
-            />
-          )}
-        ></FlatList>
-      </SafeAreaView>
+      {title === "Lollipop Level" ? (
+        <SafeAreaView nestedScrollEnabled={true}>
+          <FlatList
+            numColumns={1}
+            key={"_"}
+            style={styles.classListContainer}
+            horizontal={true}
+            keyExtractor={(item) => String(item.id)}
+            data={classList}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Class
+                navigation={navigation}
+                classInfo={item}
+                isShowAll={isShowAll}
+                maintitle={title}
+                isMain={isMain}
+              />
+            )}
+          ></FlatList>
+        </SafeAreaView>
+      ) : (
+        // Coming Soon
+        <Image
+          style={styles.commingSoonContainer}
+          source={require("../assets/img/EmptyLevel.png")}
+        ></Image>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  courseContainer: {
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+
+  courseContainer: {
     marginTop: 20,
-    marginBottom: -50,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 5,
   },
   topContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 30,
-    marginBottom: 15,
+    marginLeft: 20,
   },
 
   topItem1: {
-    width: 270,
-    marginTop: 25,
+    flex: 2,
   },
+
   topItem2: {
-    width: 50,
+    flex: 1,
   },
   title: {
     fontSize: 25,
@@ -125,6 +143,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingLeft: 20,
   },
+
+  moreButton: {
+    flexDirection: "row",
+
+    alignItems: "center",
+  },
   moreText: {
     fontSize: 10,
     marginTop: 2,
@@ -132,16 +156,8 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: "#807F82",
   },
-  moreButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  comingSoonContainer: {
+    width: 300,
   },
 });
 

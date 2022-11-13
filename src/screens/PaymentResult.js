@@ -13,11 +13,23 @@ import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import StudyNowIcon from "../assets/icons/StudyNowIcon";
 import UnitIcon from "../assets/icons/UnitIcon";
+import SampleClassImg1 from "../assets/icons/SampleClassImg1";
+import SampleClassImg2 from "../assets/icons/SampleClassImg2";
+import SampleClassImg3 from "../assets/icons/SampleClassImg3";
+import SampleClassImg4 from "../assets/icons/SampleClassImg4";
+import SampleClassImg5 from "../assets/icons/SampleClassImg5";
 
 const PaymentResult = ({ navigation, route }) => {
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
   const [date, setDate] = useState();
+
+  const sampleClassImgList = [
+    <SampleClassImg2></SampleClassImg2>,
+    <SampleClassImg3></SampleClassImg3>,
+    <SampleClassImg4></SampleClassImg4>,
+    <SampleClassImg5></SampleClassImg5>,
+  ];
 
   const [recommendList, setRecommendList] = useState([
     {
@@ -120,10 +132,7 @@ const PaymentResult = ({ navigation, route }) => {
           <View style={styles.purchasedItemContainer}>
             <Text style={styles.purchasedItemText}>Purchased product</Text>
             <View style={styles.purchasedItem}>
-              <Image
-                style={styles.purchasedItemImg}
-                source={require("../assets/img/sample_class_img2.png")}
-              ></Image>
+              <SampleClassImg1 />
               <View style={styles.purchasedItemInfo}>
                 <Text style={styles.classNameText}>{item.className}</Text>
                 <View style={styles.categoryAndUnit}>
@@ -179,7 +188,7 @@ const PaymentResult = ({ navigation, route }) => {
               horizontal={true}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
+              renderItem={({ item, idx }) => (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ClassInfo", { classInfo: item });
@@ -190,10 +199,7 @@ const PaymentResult = ({ navigation, route }) => {
                       ...styles.recommendItemContainer,
                     }}
                   >
-                    <Image
-                      style={styles.recommendItemImg}
-                      source={require("../assets/img/sample_class_img1.jpeg")}
-                    ></Image>
+                    <SampleClassImg2 />
                     <View style={styles.recommendItemInfo}>
                       <Text style={styles.recommendItemClassName}>
                         {item.className}

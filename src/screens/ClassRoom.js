@@ -293,7 +293,7 @@ const ClassRoom = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Today's Lesson</Text>
+        <Text style={styles.title}>My ClassRoom</Text>
       </View>
       <SafeAreaView nestedScrollEnabled={true}>
         <FlatList

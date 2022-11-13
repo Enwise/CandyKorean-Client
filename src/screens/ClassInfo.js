@@ -54,12 +54,7 @@ const ClassInfo = ({ props, navigation, route }) => {
         </View>
       </View>
       <View style={styles.topContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.img}
-            source={require("../assets/img/sample_class_img1.jpeg")}
-          ></Image>
-        </View>
+        <View style={styles.imageContainer}>{classInfo.imgUrl}</View>
         <View style={styles.textContainer}>
           <View>
             <Text style={styles.className}>{classInfo.className}</Text>

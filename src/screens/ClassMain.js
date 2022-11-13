@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import Course from "../components/Course";
 import WishListButton from "../components/WishListButton";
+import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
+import SampleClassImg2 from "../assets/icons/level/SampleClassImg2";
 
 const ClassMain = ({ navigation }) => {
   const [courseNameList, setCourseNameList] = useState([
@@ -30,7 +32,7 @@ const ClassMain = ({ navigation }) => {
   const [dummyCourseList, setDummyCourseList] = useState({
     "Lollipop Level": [
       {
-        imgUrl: "img1",
+        imgUrl: <SampleClassImg1></SampleClassImg1>,
         teacherName: "Kyungeun1",
         className: "class1",
         category: "K-culture",
@@ -39,7 +41,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img1",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "Kyungeun2",
         className: "class2",
         category: "K-history",
@@ -48,7 +50,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img1",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "Kyungeun3",
         className: "class3",
         category: "K-pop",
@@ -57,7 +59,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img1",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "Kyungeun4",
         className: "class4",
         category: "K-culture",
@@ -66,7 +68,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img1",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "Kyungeun5",
         className: "class5",
         category: "K-culture",
@@ -77,7 +79,7 @@ const ClassMain = ({ navigation }) => {
     ],
     "Cotton Candy Level": [
       {
-        imgUrl: "img2",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "K pop with Wang1",
         className: "class1",
         category: "K-culture",
@@ -86,7 +88,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img2",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "K pop with Wang2",
         className: "class2",
         category: "K-culture",
@@ -95,7 +97,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img2",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "K pop with Wang3",
         className: "class3",
         category: "K-culture",
@@ -104,7 +106,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img2",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "K pop with Wang4",
         className: "class4",
         category: "K-culture",
@@ -115,7 +117,7 @@ const ClassMain = ({ navigation }) => {
     ],
     "Mint Candy Level": [
       {
-        imgUrl: "img3",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "shin",
         className: "class1",
         category: "K-culture",
@@ -124,7 +126,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img3",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "kim",
         className: "class2",
         category: "K-culture",
@@ -133,7 +135,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: "img3",
+        imgUrl: <SampleClassImg2></SampleClassImg2>,
         teacherName: "lee",
         className: "class3",
         category: "K-culture",
@@ -187,6 +189,7 @@ const ClassMain = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView
+        style={{ height: 1 }}
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -226,6 +229,7 @@ const styles = StyleSheet.create({
   },
   moreButton: {
     flexDirection: "row",
+    backgroundColor: "#fff",
   },
 });
 
