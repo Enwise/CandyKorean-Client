@@ -7,7 +7,8 @@ import {
   View,
 } from "react-native";
 import Constants from "expo-constants";
-import SignButton from "../components/SignButton";
+import BottomSheet from "../components/BottomSheet";
+import GradientButton from "../components/GradientButton";
 import SurveyList from "../components/SurveyList";
 import BackButton from "../components/BackButton";
 import { useFonts } from "expo-font";
@@ -81,7 +82,7 @@ const Survey = ({ navigation }) => {
       <View style={styles.progressContainer}>
         {surveyOption === 1 ? (
           <View style={styles.leftContainer}>
-            <LinearGradient
+            <GradientButton
               colors={["#84E9FF", "#C284FF"]}
               locations={[0, 1]}
               start={[0.025, 0.5]}
@@ -116,13 +117,13 @@ const Survey = ({ navigation }) => {
       </View>
       <View style={styles.button}>
         {surveyOption === 1 ? (
-          <SignButton
+          <GradientButton
             title={"NEXT"}
             disabled={selected1.length === 0}
             onPress={() => setSurveyOption(2)}
           />
         ) : (
-          <SignButton
+          <GradientButton
             title={"SUBMIT"}
             disabled={selected2.length === 0}
             onPress={() => navigation.navigate("SurveyComplete")}

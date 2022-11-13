@@ -11,7 +11,7 @@ import {
 
 const windowWidth = Dimensions.get("window").width;
 
-const SignButton = ({ onPress, title, disabled }) => {
+const GradientButton = ({ onPress, title, disabled }) => {
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#B8B5BC",
   },
 });
-export default SignButton;
+export default GradientButton;

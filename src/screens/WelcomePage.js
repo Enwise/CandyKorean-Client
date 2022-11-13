@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-import SignButton from "../components/SignButton";
+import GradientButton from "../components/GradientButton";
 import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import Logo from "../components/Logo";
@@ -28,13 +28,13 @@ const WelcomePage = ({ navigation }) => {
       </View>
       <View style={{ flex: 1 }}>
         <View>
-          <SignButton
+          <GradientButton
             title="LOGIN"
             onPress={() => navigation.navigate("Login")}
           />
         </View>
         <View style={{ marginTop: 16 }}>
-          <SignButton
+          <GradientButton
             title="SIGN UP"
             onPress={() => navigation.navigate("Register")}
           />
