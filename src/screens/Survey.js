@@ -22,26 +22,6 @@ const Survey = ({ navigation }) => {
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
 
-  const [selected1, setSelected1] = React.useState([]);
-  const [selected2, setSelected2] = React.useState([]);
-  const [surveyOption, setSurveyOption] = React.useState(1);
-
-  const handleSelect = (item) => {
-    if (surveyOption === 1) {
-      if (selected1.includes(item)) {
-        setSelected1(selected1.filter((i) => i !== item));
-      } else {
-        setSelected1([...selected1, item]);
-      }
-    } else {
-      if (selected2.includes(item)) {
-        setSelected2(selected2.filter((i) => i !== item));
-      } else {
-        setSelected2([...selected2, item]);
-      }
-    }
-  };
-  console.log(selected1, selected2);
   const survey1 = [
     "Google Search",
     "App Store / Google Play Store",
@@ -59,6 +39,63 @@ const Survey = ({ navigation }) => {
     "Boost my career",
     "Other",
   ];
+  const survey3 = [
+    "K-Pop",
+    "Drama",
+    "History",
+    "Food",
+    "Movies",
+    "K-Brands",
+    "Fashion",
+    "Tv-Show",
+    "K-Sports",
+    "K-Games",
+    "Webtoon",
+    "K-Beauty",
+  ];
+  const [selected1, setSelected1] = React.useState([]);
+  const [selected2, setSelected2] = React.useState([]);
+  const [selected3, setSelected3] = React.useState([]);
+  const [surveyOption, setSurveyOption] = React.useState(1);
+
+  const handleSelect = (item) => {
+    if (surveyOption === 1) {
+      if (selected1.includes(item)) {
+        setSelected1(selected1.filter((i) => i !== item));
+      } else {
+        setSelected1([...selected1, item]);
+      }
+    } else {
+      if (selected2.includes(item)) {
+        setSelected2(selected2.filter((i) => i !== item));
+      } else {
+        setSelected2([...selected2, item]);
+      }
+    }
+  };
+
+  const handleSelect3 = (item) => {
+    if (selected3.includes(item)) {
+      setSelected3(selected3.filter((i) => i !== item));
+    } else {
+      if (selected3.length === 3) {
+        selected3.length = 2;
+      }
+      setSelected3([...selected3, item]);
+    }
+  };
+
+  const survey3Items = survey3.map((item) => {
+    return (
+      <TouchableOpacity
+        style={styles.survey3(selected3.includes(item))}
+        activeOpacity={0.9}
+        onPress={() => handleSelect3(item)}
+      >
+        <Text style={styles.survey3Text(selected3.includes(item))}>{item}</Text>
+      </TouchableOpacity>
+    );
+  });
 
   if (!fontsLoaded) return null;
   return (
@@ -82,7 +119,7 @@ const Survey = ({ navigation }) => {
       <View style={styles.progressContainer}>
         {surveyOption === 1 ? (
           <View style={styles.leftContainer}>
-            <GradientButton
+            <LinearGradient
               colors={["#84E9FF", "#C284FF"]}
               locations={[0, 1]}
               start={[0.025, 0.5]}
@@ -90,10 +127,20 @@ const Survey = ({ navigation }) => {
               style={styles.gradient(surveyOption)}
             />
           </View>
-        ) : (
+        ) : surveyOption === 2 ? (
           <View style={styles.rightContainer}>
             <LinearGradient
               colors={["#C284FF", "#84E9FF"]}
+              locations={[0, 1]}
+              start={[0.025, 0.5]}
+              end={[0.975, 0.5]}
+              style={styles.gradient(surveyOption)}
+            />
+          </View>
+        ) : (
+          <View style={styles.fullContainer}>
+            <LinearGradient
+              colors={["#84E9FF", "#C284FF"]}
               locations={[0, 1]}
               start={[0.025, 0.5]}
               end={[0.975, 0.5]}
@@ -105,15 +152,33 @@ const Survey = ({ navigation }) => {
 
       <View style={styles.surveyContainer}>
         <Text style={styles.surveyTitle}>
-          {surveyOption === 1
-            ? "How did you hear \nabout Candy Korean? "
-            : "What is your purpose \nto learn Korean?"}
+          {surveyOption === 1 ? (
+            "How did you hear \nabout Candy Korean? "
+          ) : surveyOption === 2 ? (
+            "What is your purpose \nto learn Korean?"
+          ) : (
+            <Text style={styles.surveyTitle}>
+              Please select the K-culture field{"\n"}you are interested in.
+              {"   "}
+              {surveyOption === 3 ? (
+                <View style={styles.info}>
+                  <Text style={styles.infoText}>3 things</Text>
+                </View>
+              ) : null}
+            </Text>
+          )}
         </Text>
-        <SurveyList
-          data={surveyOption === 1 ? survey1 : survey2}
-          onPress={(item) => handleSelect(item)}
-          selectedData={surveyOption === 1 ? selected1 : selected2}
-        />
+        {surveyOption === 3 ? (
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {survey3Items}
+          </View>
+        ) : (
+          <SurveyList
+            data={surveyOption === 1 ? survey1 : survey2}
+            onPress={(item) => handleSelect(item)}
+            selectedData={surveyOption === 1 ? selected1 : selected2}
+          />
+        )}
       </View>
       <View style={styles.button}>
         {surveyOption === 1 ? (
@@ -122,10 +187,16 @@ const Survey = ({ navigation }) => {
             disabled={selected1.length === 0}
             onPress={() => setSurveyOption(2)}
           />
-        ) : (
+        ) : surveyOption === 2 ? (
           <GradientButton
             title={"SUBMIT"}
             disabled={selected2.length === 0}
+            onPress={() => setSurveyOption(3)}
+          />
+        ) : (
+          <GradientButton
+            title={"SUBMIT"}
+            disabled={selected3.length < 3}
             onPress={() => navigation.navigate("SurveyComplete")}
           />
         )}
@@ -150,6 +221,7 @@ const styles = StyleSheet.create({
     height: 7,
     backgroundColor: "#F1EFF4",
     flexDirection: "row",
+    marginBottom: 42,
   },
   gradient: (surveyOption) => ({
     flex: 1,
@@ -165,6 +237,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: windowWidth / 2,
   },
+  fullContainer: {
+    flex: 1,
+  },
   title: {
     marginBottom: 10,
   },
@@ -176,11 +251,40 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
     marginBottom: 35,
-    marginTop: 42,
   },
   button: {
     flex: 1,
     alignItems: "center",
   },
+  info: {
+    backgroundColor: "#FDFDFD",
+    borderWidth: 1,
+    borderRadius: 41,
+    borderColor: "#B8B5BC",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+  },
+  infoText: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 10,
+    color: "#807F82",
+    textAlign: "center",
+  },
+  survey3: (selected) => ({
+    borderWidth: 1,
+    borderColor: selected ? "#A160E2" : "#E6E3EA",
+    borderRadius: 9,
+    paddingHorizontal: 15,
+    paddingVertical: 9,
+    margin: 5,
+    backgroundColor: selected ? "#A160E2" : "white",
+  }),
+  survey3Text: (selected) => ({
+    fontFamily: "Poppins-Regular",
+    fontSize: 14,
+    color: selected ? "white" : "#444345",
+  }),
 });
 export default Survey;
