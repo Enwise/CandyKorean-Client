@@ -53,7 +53,7 @@ const ClassRoomStack = ({ navigation, route }) => {
         name="LessonVideo"
         options={{
           headerShown: false,
-          headerBackground: "transparent",
+
           tabBarStyle: { display: "none" },
         }}
         component={LessonVideo}

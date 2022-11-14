@@ -5,19 +5,27 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
+import { AntDesign } from "@expo/vector-icons";
 
 import Sea from "../assets/icons/quiz/Sea";
 import Mountain from "../assets/icons/quiz/Mountain";
 import City from "../assets/icons/quiz/City";
 import Tree from "../assets/icons/quiz/Tree";
+import QuizNextButton from "../assets/icons/quiz/QuizNextButton";
+import QuizCorrect from "../assets/icons/quiz/QuizCorrect";
+import QuizWrong from "../assets/icons/quiz/QuizWrong";
 
 const LessonQuiz = ({ route, navigation }) => {
   const [lessonId, setLessonId] = useState(route.params.lessonId);
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
+  const [isChecked, setIsChecked] = useState({
+    isNext: false,
+    isCorrect: false,
+  });
 
   // lessonId 를 활용한 quiz 정보 가져오기
   const [quizList, setQuizList] = useState([
@@ -28,19 +36,56 @@ const LessonQuiz = ({ route, navigation }) => {
       koreanList: ["아니,", "나", "먹을", "생각", "없어."],
       englishList: ["no,", "I", "don't", "have", "any", "idea", "to", "eat"],
       selectList: [
-        "no",
-        "I",
-        "don't",
-        "have",
-        "any",
-        "idea",
-        "to",
-        "eat",
-        "we",
-        "are",
-        "tired",
-        "going",
+        {
+          word: "no,",
+          selected: false,
+        },
+        {
+          word: "I",
+          selected: false,
+        },
+        {
+          word: "don't",
+          selected: false,
+        },
+        {
+          word: "have",
+          selected: false,
+        },
+        {
+          word: "any",
+          selected: false,
+        },
+        {
+          word: "idea",
+          selected: false,
+        },
+        {
+          word: "to",
+          selected: false,
+        },
+        {
+          word: "eat",
+          selected: false,
+        },
+        {
+          word: "we",
+          selected: false,
+        },
+        {
+          word: "are",
+          selected: false,
+        },
+        {
+          word: "tired",
+          selected: false,
+        },
+        {
+          word: "going",
+          selected: false,
+        },
       ],
+      selectedList: [],
       answer: "No, I don't have any idea to eat.",
     },
     {
@@ -69,6 +114,10 @@ const LessonQuiz = ({ route, navigation }) => {
     // },
   ]);
 
+  useEffect(() => {
+    console.log("useEffect");
+  }, [currentQuizIdx, quizList, isChecked]);
+
   console.log(lessonId);
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
@@ -79,6 +128,56 @@ const LessonQuiz = ({ route, navigation }) => {
   if (!fontsLoaded) {
     return null;
   }
+
+  const updateSelected = (word) => {
+    console.log(word);
+    let updatedQuizList = [...quizList];
+    updatedQuizList[currentQuizIdx].selectList.map((select) => {
+      if (select.word === word && select.selected === false) {
+        select.selected = true;
+        updatedQuizList[currentQuizIdx].selectedList.push(word);
+      }
+    });
+
+    setQuizList(updatedQuizList);
+  };
+
+  const deleteSelected = (pushedWord) => {
+    console.log(pushedWord);
+    let updatedQuizList = [...quizList];
+    updatedQuizList[currentQuizIdx].selectList.map((select) => {
+      if (select.word === pushedWord && select.selected === true) {
+        select.selected = false;
+        let newUpdatedQuizList = updatedQuizList[
+          currentQuizIdx
+        ].selectedList.filter((selectedWord) => {
+          return selectedWord != pushedWord;
+        });
+
+        updatedQuizList[currentQuizIdx].selectedList = [...newUpdatedQuizList];
+      }
+    });
+
+    setQuizList(updatedQuizList);
+  };
+
+  const checkQuizAnswer = () => {
+    let isCorrect;
+    if (quizList[currentQuizIdx].quizType === "translation") {
+      isCorrect =
+        quizList[currentQuizIdx].selectedList.join() ==
+        quizList[currentQuizIdx].englishList.join();
+    }
+    let updatedisChecked = { ...isChecked };
+    if (isCorrect) {
+      updatedisChecked.isCorrect = true;
+      updatedisChecked.isNext = true;
+    } else {
+      updatedisChecked.isCorrect = false;
+      updatedisChecked.isNext = true;
+    }
+    setIsChecked(updatedisChecked);
+  };
 
   return (
     <View style={styles.container}>
@@ -108,6 +207,105 @@ const LessonQuiz = ({ route, navigation }) => {
         <View
           style={dstyles(currentQuizIdx, quizList.length).quizStatusBar}
         ></View>
+      </View>
+      <View style={styles.quizContentContainer}>
+        {quizList[currentQuizIdx].quizType === "translation" ? (
+          <>
+            <View style={styles.quizQuestionContainer}>
+              <View style={styles.quizQuestionWordsContainer}>
+                {quizList[currentQuizIdx].koreanList.map((word, idx) => {
+                  return (
+                    <View style={styles.koreanWordContainer}>
+                      <Text style={styles.koreanWordText}>{word}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+              <View style={styles.quizQuestionWordsNum}>
+                <Text style={styles.quizQuestionWordsNumText}>
+                  {quizList[currentQuizIdx].englishList.length} words
+                </Text>
+              </View>
+            </View>
+            <View style={styles.arrowContainer}>
+              <AntDesign name="arrowdown" size={24} color="#A160E2" />
+            </View>
+            <View style={styles.quizSelectedWordContainer}>
+              <View style={styles.resultContainer}>
+                {isChecked.isNext ? (
+                  isChecked.isCorrect ? (
+                    <QuizCorrect />
+                  ) : (
+                    <QuizWrong />
+                  )
+                ) : null}
+              </View>
+              {quizList[currentQuizIdx].selectedList.map((word, idx) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      deleteSelected(word);
+                    }}
+                  >
+                    <View style={styles.selectedWordContainer}>
+                      <Text style={styles.selectedWordText}>{word}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <View style={styles.quizEnglishWordsContainer}>
+              {quizList[currentQuizIdx].selectList.map((item, idx) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (
+                        quizList[currentQuizIdx].englishList.length >
+                        quizList[currentQuizIdx].selectedList.length
+                      ) {
+                        updateSelected(item.word);
+                      }
+                    }}
+                    disabled={item.selected ?? false}
+                  >
+                    <View style={styles.englishWordContainer}>
+                      <Text style={wordStyle(item.selected).englishWordText}>
+                        {item.word}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            {isChecked.isNext === false ? (
+              <TouchableOpacity
+                disabled={
+                  quizList[currentQuizIdx].englishList.length >
+                  quizList[currentQuizIdx].selectedList.length
+                }
+                onPress={() => {
+                  checkQuizAnswer();
+                }}
+              >
+                <View
+                  style={
+                    buttonStyles(
+                      quizList[currentQuizIdx].englishList.length,
+                      quizList[currentQuizIdx].selectedList.length,
+                      isChecked
+                    ).buttonContainer
+                  }
+                >
+                  <Text style={styles.buttonText}>CHECK</Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <QuizNextButton></QuizNextButton>
+            )}
+          </>
+        ) : (
+          <View></View>
+        )}
       </View>
     </View>
   );
@@ -160,6 +358,116 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#A160E2",
   },
+  quizContentContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  quizQuestionContainer: {
+    borderRadius: 10,
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    width: "90%",
+    height: "10%",
+    alignItems: "center",
+    paddingLeft: 10,
+    justifyContent: "space-between",
+    paddingRight: 10,
+
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 2, width: 2 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        elevation: 10,
+        marginHorizontal: 0,
+      },
+    }),
+  },
+  quizQuestionWordsContainer: {
+    flexDirection: "row",
+  },
+  koreanWordContainer: {
+    marginRight: 5,
+  },
+  arrowContainer: {
+    marginTop: 10,
+  },
+  quizSelectedWordContainer: {
+    position: "relative",
+    marginTop: 10,
+    borderRadius: 10,
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    width: "90%",
+    height: "35%",
+    alignItems: "center",
+    flexWrap: "wrap",
+
+    padding: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 2, width: 2 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        elevation: 10,
+        marginHorizontal: 0,
+      },
+    }),
+  },
+  resultContainer: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+  },
+  quizEnglishWordsContainer: {
+    marginTop: 30,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: 20,
+    justifyContent: "center",
+  },
+  englishWordContainer: {
+    width: 45,
+    height: 25,
+    backgroundColor: "#F1EFF4",
+    borderColor: "#E6E3EA",
+    borderWidth: 1,
+    marginRight: 5,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  selectedWordContainer: {
+    width: 45,
+    height: 25,
+    backgroundColor: "#F1EFF4",
+    borderColor: "#E6E3EA",
+    borderWidth: 1,
+    marginRight: 5,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  selectedWordText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 12,
+    color: "#807F82",
+  },
+  buttonText: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 20,
+    color: "#fff",
+  },
 });
 
 const dstyles = (currentQuizIdx, length) =>
@@ -168,6 +476,29 @@ const dstyles = (currentQuizIdx, length) =>
       backgroundColor: "#A160E2",
       height: 5,
       width: (Dimensions.get("window").width * (currentQuizIdx + 1)) / length,
+    },
+  });
+
+const wordStyle = (selected) =>
+  StyleSheet.create({
+    englishWordText: {
+      fontFamily: "Poppins-Medium",
+      fontSize: 12,
+      color: selected ? "#B8B5BC" : "#807F82",
+    },
+  });
+
+const buttonStyles = (englishListLength, selectedListLength, checked) =>
+  StyleSheet.create({
+    buttonContainer: {
+      marginTop: 20,
+      width: 330,
+      height: 50,
+      borderRadius: 30,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor:
+        selectedListLength < englishListLength ? "#B8B5BC" : "#A160E2",
     },
   });
 
