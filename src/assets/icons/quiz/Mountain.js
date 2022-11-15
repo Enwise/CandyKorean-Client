@@ -12,8 +12,8 @@ import Svg, {
 function Mountain(props) {
   return (
     <Svg
-      width={137}
-      height={137}
+      width={110}
+      height={110}
       viewBox="0 0 137 137"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -5,6 +5,7 @@ import ClassRoom from "../screens/ClassRoom";
 import LessonInfo from "../screens/LessonInfo";
 import LessonVideo from "../screens/LessonVideo";
 import LessonQuiz from "../screens/LessonQuiz";
+import QuizResult from "../screens/QuizResult";
 import { Platform } from "react-native";
 
 const Stack = createNativeStackNavigator();
@@ -59,6 +60,7 @@ const ClassRoomStack = ({ navigation, route }) => {
         component={LessonVideo}
       />
       <Stack.Screen name="LessonQuiz" component={LessonQuiz} />
+      <Stack.Screen name="QuizResult" component={QuizResult} />
     </Stack.Navigator>
   );
 };

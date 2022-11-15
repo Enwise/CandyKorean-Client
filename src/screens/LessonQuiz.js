@@ -91,19 +91,39 @@ const LessonQuiz = ({ route, navigation }) => {
     {
       quizId: 2,
       quizName: "Select the correct word",
-      quizType: "multipleChoice",
-      quizWord: "바다",
+      quizType: "selection",
+      koreanList: ["바다"],
       selectList: [
-        { word: "Sea", imgUrl: <Sea></Sea>, isCorrect: true },
-        { word: "Mountain", imgUrl: <Mountain></Mountain>, isCorrect: false },
-        { word: "Tree", imgUrl: <Tree></Tree>, isCorrect: false },
-        { word: "City", imgUrl: <City></City>, isCorrect: false },
+        {
+          word: "Sea",
+          imgUrl: <Sea></Sea>,
+          isCorrect: true,
+          isSelected: false,
+        },
+        {
+          word: "Mountain",
+          imgUrl: <Mountain></Mountain>,
+          isCorrect: false,
+          isSelected: false,
+        },
+        {
+          word: "Tree",
+          imgUrl: <Tree></Tree>,
+          isCorrect: false,
+          isSelected: false,
+        },
+        {
+          word: "City",
+          imgUrl: <City></City>,
+          isCorrect: false,
+          isSelected: false,
+        },
       ],
     },
     // {
     //   quizId: 3,
     //   quizName: "Select the correct word",
-    //   quizType: "multipleChoice",
+    //   quizType: "selection",
     //   quizWord: "바다",
     //   selectList: [
     //     { word: "Sea", imgUrl: <Sea></Sea>, isCorrect: true },
@@ -113,6 +133,8 @@ const LessonQuiz = ({ route, navigation }) => {
     //   ],
     // },
   ]);
+
+  const [resultList, setResultList] = useState([]);
 
   useEffect(() => {
     console.log("useEffect");
@@ -131,15 +153,29 @@ const LessonQuiz = ({ route, navigation }) => {
 
   const updateSelected = (word) => {
     console.log(word);
-    let updatedQuizList = [...quizList];
-    updatedQuizList[currentQuizIdx].selectList.map((select) => {
-      if (select.word === word && select.selected === false) {
-        select.selected = true;
-        updatedQuizList[currentQuizIdx].selectedList.push(word);
-      }
-    });
+    if (quizList[currentQuizIdx].quizType === "translation") {
+      let updatedQuizList = [...quizList];
+      updatedQuizList[currentQuizIdx].selectList.map((select) => {
+        if (select.word === word && select.selected === false) {
+          select.selected = true;
+          updatedQuizList[currentQuizIdx].selectedList.push(word);
+        }
+      });
 
-    setQuizList(updatedQuizList);
+      setQuizList(updatedQuizList);
+    } else if (quizList[currentQuizIdx].quizType === "selection") {
+      let updatedQuizList = [...quizList];
+      updatedQuizList[currentQuizIdx].selectList.map((select) => {
+        if (select.word === word && select.isSelected === false) {
+          select.isSelected = true;
+        } else {
+          select.isSelected = false;
+        }
+      });
+      // updatedQuizList[currentQuizIdx].selectedList = [...updatedSelectList];
+
+      setQuizList(updatedQuizList);
+    }
   };
 
   const deleteSelected = (pushedWord) => {
@@ -163,20 +199,62 @@ const LessonQuiz = ({ route, navigation }) => {
 
   const checkQuizAnswer = () => {
     let isCorrect;
+    let updatedResultList = [...resultList];
     if (quizList[currentQuizIdx].quizType === "translation") {
       isCorrect =
         quizList[currentQuizIdx].selectedList.join() ==
         quizList[currentQuizIdx].englishList.join();
+      let updatedisChecked = { ...isChecked };
+      if (isCorrect) {
+        updatedisChecked.isCorrect = true;
+        updatedisChecked.isNext = true;
+        updatedResultList.push(true);
+      } else {
+        updatedisChecked.isCorrect = false;
+        updatedisChecked.isNext = true;
+        updatedResultList.push(false);
+      }
+      setIsChecked(updatedisChecked);
+      setResultList(updatedResultList);
+    } else if (quizList[currentQuizIdx].quizType === "selection") {
+      isCorrect = quizList[currentQuizIdx].selectList.filter((select) => {
+        return select.isSelected === true;
+      })[0].isCorrect;
+      let updatedisChecked = { ...isChecked };
+      if (isCorrect) {
+        updatedisChecked.isCorrect = true;
+        updatedisChecked.isNext = true;
+        updatedResultList.push(true);
+      } else {
+        updatedisChecked.isCorrect = false;
+        updatedisChecked.isNext = true;
+        updatedResultList.push(false);
+      }
+      setIsChecked(updatedisChecked);
+      setResultList(updatedResultList);
     }
+  };
+
+  const nextQuiz = () => {
+    let newQuizIdx = currentQuizIdx;
+    newQuizIdx += 1;
+    setCurrentQuizIdx(newQuizIdx); // 다음 quiz 으로 넘어가기
+
     let updatedisChecked = { ...isChecked };
-    if (isCorrect) {
-      updatedisChecked.isCorrect = true;
-      updatedisChecked.isNext = true;
-    } else {
-      updatedisChecked.isCorrect = false;
-      updatedisChecked.isNext = true;
-    }
-    setIsChecked(updatedisChecked);
+    updatedisChecked.isNext = false;
+    setIsChecked(updatedisChecked); // 다음 quiz 로 넘어가면 isNext 를 false 로 바꿔준다.
+  };
+
+  // selection 일 때, 선택을 했는지 안헀는지 체크하는 함수
+  const checkIfNotSelected = () => {
+    let isNotSelected = true;
+    quizList[currentQuizIdx].selectList.map((item) => {
+      if (item.isSelected === true) {
+        isNotSelected = false;
+        return;
+      }
+    });
+    return isNotSelected;
   };
 
   return (
@@ -209,37 +287,52 @@ const LessonQuiz = ({ route, navigation }) => {
         ></View>
       </View>
       <View style={styles.quizContentContainer}>
+        <View style={styles.resultContainer}>
+          {isChecked.isNext ? (
+            isChecked.isCorrect ? (
+              <QuizCorrect />
+            ) : (
+              <QuizWrong />
+            )
+          ) : null}
+        </View>
+        <View style={styles.quizQuestionContainer}>
+          <View style={styles.quizQuestionWordsContainer}>
+            {quizList[currentQuizIdx].koreanList.map((word, idx) => {
+              return (
+                <View style={styles.koreanWordContainer}>
+                  <Text style={styles.koreanWordText}>{word}</Text>
+                </View>
+              );
+            })}
+          </View>
+          {quizList[currentQuizIdx].quizType === "translation" ? (
+            <View style={styles.quizQuestionWordsNum}>
+              <Text style={styles.quizQuestionWordsNumText}>
+                {quizList[currentQuizIdx].englishList.length} words
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        <View style={styles.arrowContainer}>
+          <AntDesign name="arrowdown" size={24} color="#A160E2" />
+        </View>
         {quizList[currentQuizIdx].quizType === "translation" ? (
           <>
-            <View style={styles.quizQuestionContainer}>
-              <View style={styles.quizQuestionWordsContainer}>
-                {quizList[currentQuizIdx].koreanList.map((word, idx) => {
-                  return (
-                    <View style={styles.koreanWordContainer}>
-                      <Text style={styles.koreanWordText}>{word}</Text>
-                    </View>
-                  );
-                })}
-              </View>
-              <View style={styles.quizQuestionWordsNum}>
-                <Text style={styles.quizQuestionWordsNumText}>
-                  {quizList[currentQuizIdx].englishList.length} words
-                </Text>
-              </View>
-            </View>
-            <View style={styles.arrowContainer}>
-              <AntDesign name="arrowdown" size={24} color="#A160E2" />
-            </View>
-            <View style={styles.quizSelectedWordContainer}>
-              <View style={styles.resultContainer}>
-                {isChecked.isNext ? (
-                  isChecked.isCorrect ? (
-                    <QuizCorrect />
-                  ) : (
-                    <QuizWrong />
-                  )
-                ) : null}
-              </View>
+            <View
+              style={
+                tstyles(isChecked.isNext, isChecked.isCorrect)
+                  .quizSelectedWordContainer
+              }
+            >
+              {isChecked.isNext && !isChecked.isCorrect ? (
+                <View style={styles.answerContainer}>
+                  <Text style={styles.answerText}>
+                    {quizList[currentQuizIdx].answer}
+                  </Text>
+                </View>
+              ) : null}
+
               {quizList[currentQuizIdx].selectedList.map((word, idx) => {
                 return (
                   <TouchableOpacity
@@ -290,9 +383,8 @@ const LessonQuiz = ({ route, navigation }) => {
                 <View
                   style={
                     buttonStyles(
-                      quizList[currentQuizIdx].englishList.length,
-                      quizList[currentQuizIdx].selectedList.length,
-                      isChecked
+                      quizList[currentQuizIdx].selectedList.length <
+                        quizList[currentQuizIdx].englishList.length
                     ).buttonContainer
                   }
                 >
@@ -300,11 +392,96 @@ const LessonQuiz = ({ route, navigation }) => {
                 </View>
               </TouchableOpacity>
             ) : (
-              <QuizNextButton></QuizNextButton>
+              <TouchableOpacity
+                onPress={() => {
+                  if (currentQuizIdx === quizList.length - 1) {
+                    navigation.navigate("QuizResult", {
+                      resultList: resultList,
+                    });
+                  } else {
+                    nextQuiz();
+                  }
+                }}
+              >
+                <QuizNextButton></QuizNextButton>
+              </TouchableOpacity>
             )}
           </>
         ) : (
-          <View></View>
+          <>
+            <View style={styles.resultContainer}>
+              {isChecked.isNext ? (
+                isChecked.isCorrect ? (
+                  <QuizCorrect />
+                ) : (
+                  <QuizWrong />
+                )
+              ) : null}
+            </View>
+            <View style={styles.quizSelectionContainer}>
+              {quizList[currentQuizIdx].selectList.map((item, idx) => {
+                return (
+                  <TouchableOpacity
+                    disabled={isChecked.isNext}
+                    onPress={() => {
+                      updateSelected(item.word);
+                    }}
+                  >
+                    <View
+                      style={
+                        wordStyle2(
+                          item.isSelected,
+                          isChecked.isNext,
+                          item.isCorrect
+                        ).selectionContainer
+                      }
+                    >
+                      {item.imgUrl}
+                      <Text
+                        style={
+                          wordStyle2(
+                            item.isSelected,
+                            isChecked.isNext,
+                            item.isCorrect
+                          ).selectionText
+                        }
+                      >
+                        {item.word}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            {isChecked.isNext === false ? (
+              <TouchableOpacity
+                disabled={checkIfNotSelected()}
+                onPress={() => {
+                  checkQuizAnswer();
+                }}
+              >
+                <View
+                  style={buttonStyles(checkIfNotSelected()).buttonContainer}
+                >
+                  <Text style={styles.buttonText}>CHECK</Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  if (currentQuizIdx === quizList.length - 1) {
+                    navigation.navigate("QuizResult", {
+                      resultList: resultList,
+                    });
+                  } else {
+                    nextQuiz();
+                  }
+                }}
+              >
+                <QuizNextButton></QuizNextButton>
+              </TouchableOpacity>
+            )}
+          </>
         )}
       </View>
     </View>
@@ -396,36 +573,12 @@ const styles = StyleSheet.create({
   arrowContainer: {
     marginTop: 10,
   },
-  quizSelectedWordContainer: {
-    position: "relative",
-    marginTop: 10,
-    borderRadius: 10,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    width: "90%",
-    height: "35%",
-    alignItems: "center",
-    flexWrap: "wrap",
 
-    padding: 10,
-    ...Platform.select({
-      ios: {
-        shadowColor: "rgba(0,0,0,0.2)",
-        shadowOpacity: 1,
-        shadowOffset: { height: 2, width: 2 },
-        shadowRadius: 2,
-      },
-
-      android: {
-        elevation: 10,
-        marginHorizontal: 0,
-      },
-    }),
-  },
   resultContainer: {
     position: "absolute",
-    bottom: 0,
-    right: 0,
+    bottom: 200,
+    right: 5,
+    zIndex: 3,
   },
   quizEnglishWordsContainer: {
     marginTop: 30,
@@ -468,7 +621,68 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
   },
+  // select word 유형 quiz
+  quizSelectionContainer: {
+    position: "relative",
+    borderRadius: 10,
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    width: "100%",
+    height: "60%",
+    justifyContent: "space-evenly",
+    flexWrap: "wrap",
+    padding: 15,
+  },
+
+  // translate 유형 quiz의 answer
+  answerContainer: {
+    position: "absolute",
+    top: 90,
+    left: 30,
+    opacity: 1,
+    zIndex: 2,
+  },
+  answerText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 16,
+    color: "#E2608F",
+  },
 });
+
+const tstyles = (isNext, isCorrect) =>
+  StyleSheet.create({
+    quizSelectedWordContainer: {
+      opacity: isNext && !isCorrect ? 0.5 : 1,
+
+      position: "relative",
+      marginTop: 10,
+
+      flexDirection: "row",
+
+      width: "90%",
+      height: "35%",
+
+      flexWrap: "wrap",
+
+      backgroundColor: "#fff",
+      alignItems: "center",
+      padding: 10,
+      borderRadius: 10,
+      ...Platform.select({
+        ios: {
+          shadowColor: "rgba(0,0,0,0.2)",
+          shadowOpacity: 1,
+          shadowOffset: { height: 2, width: 2 },
+          shadowRadius: 2,
+        },
+
+        android: {
+          elevation: 10,
+          marginHorizontal: 0,
+        },
+      }),
+    },
+  });
 
 const dstyles = (currentQuizIdx, length) =>
   StyleSheet.create({
@@ -486,9 +700,84 @@ const wordStyle = (selected) =>
       fontSize: 12,
       color: selected ? "#B8B5BC" : "#807F82",
     },
+    selectionContainer: {
+      width: "98%",
+      height: 150,
+      backgroundColor: "#fff",
+      alignItems: "center",
+      padding: 10,
+      borderRadius: 10,
+      margin: 5,
+      borderWidth: 2,
+
+      borderColor: selected ? "#A160E2" : "#fff",
+
+      ...Platform.select({
+        ios: {
+          shadowColor: "rgba(0,0,0,0.2)",
+          shadowOpacity: 1,
+          shadowOffset: { height: 2, width: 2 },
+          shadowRadius: 2,
+        },
+
+        android: {
+          elevation: 10,
+          marginHorizontal: 0,
+        },
+      }),
+    },
+    selectionText: {
+      fontFamily: "Poppins-Medium",
+      fontSize: 14,
+      color: selected ? "#A160E2" : "#807F82",
+      marginTop: 5,
+    },
   });
 
-const buttonStyles = (englishListLength, selectedListLength, checked) =>
+const wordStyle2 = (selected, isNext, isAnswer) =>
+  StyleSheet.create({
+    englishWordText: {
+      fontFamily: "Poppins-Medium",
+      fontSize: 12,
+      color: selected ? "#B8B5BC" : "#807F82",
+    },
+    selectionContainer: {
+      position: "relative",
+      backgroundColor: "#fff",
+      borderColor: selected || (isNext && isAnswer) ? "#A160E2" : "#fff",
+      opacity: isNext && !isAnswer ? 0.2 : 1,
+
+      width: "98%",
+      height: 150,
+
+      alignItems: "center",
+      padding: 10,
+      borderRadius: 10,
+      margin: 5,
+      borderWidth: 2,
+      ...Platform.select({
+        ios: {
+          shadowColor: "rgba(0,0,0,0.2)",
+          shadowOpacity: 1,
+          shadowOffset: { height: 2, width: 2 },
+          shadowRadius: 2,
+        },
+
+        android: {
+          elevation: 10,
+          marginHorizontal: 0,
+        },
+      }),
+    },
+    selectionText: {
+      fontFamily: "Poppins-Medium",
+      fontSize: 14,
+      color: selected || (isNext && isAnswer) ? "#A160E2" : "#807F82",
+      marginTop: 5,
+    },
+  });
+
+const buttonStyles = (flag) =>
   StyleSheet.create({
     buttonContainer: {
       marginTop: 20,
@@ -497,8 +786,7 @@ const buttonStyles = (englishListLength, selectedListLength, checked) =>
       borderRadius: 30,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor:
-        selectedListLength < englishListLength ? "#B8B5BC" : "#A160E2",
+      backgroundColor: flag ? "#B8B5BC" : "#A160E2",
     },
   });
 
