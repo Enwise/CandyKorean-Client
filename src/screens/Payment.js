@@ -10,8 +10,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { SwipeListView } from "react-native-swipe-list-view";
-import SampleClassImg1 from "../assets/icons/SampleClassImg1";
-import SampleClassImg2 from "../assets/icons/SampleClassImg2";
+import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
