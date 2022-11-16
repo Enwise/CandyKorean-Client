@@ -1,6 +1,6 @@
 import { useFonts } from "expo-font";
 import React from "react";
-import { FlatList, Image, StyleSheet, View, Text } from "react-native";
+import {FlatList, Image, StyleSheet, View, Text, Platform} from "react-native";
 
 const TutorList = ({ tutor }) => {
   const [fontsLoaded] = useFonts({

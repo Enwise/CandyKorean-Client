@@ -54,29 +54,38 @@ const Setting = ({navigation}) => {
 
     const noticeArr = [
         {
-            title: "제목입니다",
+            title: "app update",
+            type: "new update",
             date: "22-10-2022",
             content: "내용입니다.",
         },
         {
-            title: "제목입니다",
+            title: "app update",
+            type: "new update",
             date: "22-10-2022",
             content: "내용입니다.",
         },
     ]
 
+    const menuArr = ["Setting", "Change profile", "Notice", "Feedback", "Terms of Use", "Privacy policy"];
+
+    const [feedbackNum, setFeedbackNum] = useState(0);
+
     return (
         <View style={styles.container}>
-            <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between", width:"90%"}}>
-                <View style={{width:"56%", display:"flex", flexDirection:"row-reverse"}}>
-                    <Text style={{fontSize:"20px"}}>setting</Text>
-                </View>
+
+            <View style={{display:"flex", flexDirection:"row",alignItems:"center", width:"90%"}}>
                 {menuNum === 0 ?
                     <BackButton onPress={() => navigation.navigate("My")}/>
                     :
                     <BackButton onPress={() => setMenuNum(0)}/>
                 }
+                <View style={{marginLeft:100}}>
+                    <Text style={{fontSize:"20px", fontWeight:"600"}}>{menuArr[menuNum]}</Text>
+                </View>
             </View>
+            <View style={{height:40}}/>
+
             {menuNum === 0 ?
                 <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
                     <TouchableOpacity onPress={()=>{setMenuNum(1);}}>
@@ -98,8 +107,13 @@ const Setting = ({navigation}) => {
                 :
                 menuNum === 1 ?
                     <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                        {/*<Text style={styles.textCss}>privacy policy</Text>*/}
-                        <Text style={styles.textCss}>nickname</Text>
+
+                        <View style={{width:"100%", display:"flex", alignItems:"center"}}>
+                            <Image
+                                source={require("../assets/img/sample_class_img2.png")}
+                                style={{width:200, height:200, borderRadius:100}}
+                            />
+                        </View>
                         <TextInput
                             style={styles.input}
                             onChangeText={setNickname}
@@ -107,34 +121,6 @@ const Setting = ({navigation}) => {
                             placeholder= "기존 닉네임"
                             keyboardType="default"
                         />
-
-                        <View style={{width:"100%", display:"flex", alignItems:"center"}}>
-                            <Image
-                                source={require("../assets/LogoText.png")}
-                                style={{width:200, height:200, borderRadius:"100"}}
-                            />
-                            <TouchableOpacity
-                                onPress={()=>{alert("닉네임이 변경되었습니다.");}}
-                            >
-                                <Text>select a photo</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                            {photo && (
-                                <>
-                                    <Image
-                                        source={{ uri: photo.uri }}
-                                        style={{ width: 300, height: 300 }}
-                                    />
-                                    <TouchableOpacity title="Upload Photo" onPress={handleUploadPhoto} ><Text>fs</Text></TouchableOpacity>
-                                </>
-                            )}
-                            <TouchableOpacity title="Choose Photo" onPress={handleChoosePhoto} ><Text>fsdfsdfsd</Text></TouchableOpacity>
-                        </View>
-
-
-
                         <TouchableOpacity
                             onPress={() => navigation.navigate("My")}
                         >
@@ -145,18 +131,21 @@ const Setting = ({navigation}) => {
                     :
                     menuNum === 2 ?
                         <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                            <Text style={styles.textCss}>notice</Text>
-                            <View style={{height:"200"}}/>
                             <View style={{display:"flex", flexDirection:"column"}}>
                                 {noticeArr.map((item, idx)=>{
                                     return (
-                                        <View key={idx} style={{height:100, borderBottom:"1px solid #000000", marginBottom:20}}>
-                                            <View style={{display:"flex", flexDirection:"row",justifyContent:"space-between"}}>
-                                                <Text>{item.title}</Text>
-                                                <Text>{item.date}</Text>
+                                        <View key={idx} style={{display:"flex", flexDirection:"row", justifyContent:"space-between", borderBottom:"1px solid #F1EFF4", paddingBottom:20}}>
+                                            <View style={{display:"flex", flexDirection:"column",justifyContent:"space-between"}}>
+                                                <Text style={{fontSize:16, fontWeight:500, color:"#444345", marginBottom:6}}>{item.title}</Text>
+                                                <Text style={{fontSize:12, fontWeight:400, color:"#807F82"}}>{item.type}</Text>
                                             </View>
-                                            <Text>{item.content}</Text>
-
+                                            <View style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+                                                <Text style={{fontSize:10, fontWeight:400, color:"#B8B5BC", marginRight:20}}>{item.date}</Text>
+                                                <Image
+                                                    source={require("../assets/img/icon-notice-detail.png")}
+                                                    style={{width:24, height:24}}
+                                                />
+                                            </View>
                                         </View>
                                     );
                                 })}
@@ -167,16 +156,36 @@ const Setting = ({navigation}) => {
                         </View>
                         :
                         <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                            <Text style={styles.textCss}>feedback</Text>
-                            <Text style={{fontSize:"14px", fontWeight:"500",marginTop:20}}>please select your feedback</Text>
-                            <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between",marginTop:20}}>
-                                <View>feature</View>
-                                <View>content</View>
-                                <View>bug</View>
-                                <View>other</View>
+                            <Text style={{fontSize:12, fontWeight:400, color:"#807F82", marginTop:20}}>please select your feedback</Text>
+                            <View style={{display:"flex", flexDirection:"row",marginTop:20}}>
+                                <TouchableOpacity
+                                    onPress={()=>{setFeedbackNum(1)}}
+                                >
+                                    <View style={{backgroundColor:feedbackNum===1 ? "#A160E2":"#FDFDFD", border:"1px solid #F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
+                                        <Text style={{fontSize:10, fontWeight:400, color:feedbackNum===1 ? "#FDFDFD" : "#B8B5BC"}}>content</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={()=>{setFeedbackNum(2)}}
+                                >
+                                    <View style={{backgroundColor:feedbackNum===2 ? "#A160E2":"#FDFDFD", border:"1px solid #F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
+                                        <Text style={{fontSize:10, fontWeight:400, color:feedbackNum===2 ? "#FDFDFD" : "#B8B5BC"}}>bug</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={()=>{setFeedbackNum(3)}}
+                                >
+                                    <View style={{backgroundColor:feedbackNum===3 ? "#A160E2":"#FDFDFD", border:"1px solid #F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
+                                        <Text style={{fontSize:10, fontWeight:400, color:feedbackNum===3 ? "#FDFDFD" : "#B8B5BC"}}>other</Text>
+                                    </View>
+                                </TouchableOpacity>
+
                             </View>
+                            <Text style={{fontSize:12, fontWeight:400, color:"#807F82", marginTop:40}}>Please leave your feedback below</Text>
                             <TextInput
-                                style={{height:200, margin:12, borderWidth:1, padding:10}}
+                                style={{height:200, margin:12, borderWidth:1}}
                                 onChangeText={setNickname}
                                 value={nickname}
                                 placeholder= "기존 닉네임"
@@ -187,7 +196,10 @@ const Setting = ({navigation}) => {
                             <TouchableOpacity
                                 onPress={() => navigation.navigate("My")}
                             >
-                                <Text>confirm</Text>
+                                <View style={{display:"flex", justifyContent:"center", alignItems:"center",width:"100%", height:50, borderRadius:50, backgroundColor:true ? "#B8B5BC" : "#A160E2"}}>
+                                    <Text style={{fontSize:20, fontWeight:600, color:"#FFFFFF" }}>submit</Text>
+                                </View>
+
                             </TouchableOpacity>
 
                         </View>
@@ -206,16 +218,19 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingTop: '15%',
         paddingBottom : '15%',
+        backgroundColor:"#FFFFFF"
     },
     textCss: {
-        fontSize:'21px',
-        fontWeight:"700",
+        fontSize:'16px',
+        fontWeight:"500",
+        color:"#444345",
         marginTop:15,
+        paddingBottom:15,
     },
     input: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
+        borderBottom:"1px solid #B8B5BC",
         padding: 10,
     },
 });
