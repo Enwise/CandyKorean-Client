@@ -2,16 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import GradientButton from "../components/GradientButton";
 import Constants from "expo-constants";
-import { useFonts } from "expo-font";
+
 import LogoIcon from "../assets/icons/LogoIcon";
 
 const SignUpSuccessPage = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-  });
-  if (!fontsLoaded) return null;
-
   return (
     <View style={styles.container}>
       <View

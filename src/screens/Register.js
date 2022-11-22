@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Constants from "expo-constants";
 import BackButton from "../components/BackButton";
-import { useFonts } from "expo-font";
+
 import SignUpInput from "../components/SignUpInput";
 import GradientButton from "../components/GradientButton";
 
@@ -13,11 +13,6 @@ const Register = ({ navigation }) => {
   const [isVaildEmail, setIsVaildEmail] = React.useState(false);
   const [isVaildPassword, setIsVaildPassword] = React.useState(false);
   const [checkPassword, setCheckPassword] = React.useState(false);
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) return null;
 
   const handleChange = (type) => {
     return (value) => {

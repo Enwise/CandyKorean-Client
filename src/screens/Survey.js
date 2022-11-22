@@ -11,17 +11,11 @@ import BottomSheet from "../components/BottomSheet";
 import GradientButton from "../components/GradientButton";
 import SurveyList from "../components/SurveyList";
 import BackButton from "../components/BackButton";
-import { useFonts } from "expo-font";
+
 import { LinearGradient } from "expo-linear-gradient";
 
 const windowWidth = Dimensions.get("window").width;
 const Survey = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-  });
-
   const survey1 = [
     "Google Search",
     "App Store / Google Play Store",
@@ -97,7 +91,6 @@ const Survey = ({ navigation }) => {
     );
   });
 
-  if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
       <View style={styles.header}>

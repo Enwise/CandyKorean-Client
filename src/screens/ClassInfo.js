@@ -11,7 +11,7 @@ import {
   Dimensions,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
+
 import { ResizeMode } from "expo-av";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -50,14 +50,6 @@ const ClassInfo = ({ props, navigation, route }) => {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     }
   };
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <>

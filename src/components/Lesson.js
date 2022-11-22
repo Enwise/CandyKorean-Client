@@ -8,21 +8,12 @@ import {
   Button,
   Platform,
 } from "react-native";
-import { useFonts } from "expo-font";
+
 import { AntDesign } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
 import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
 
 const Lesson = ({ navigation, lessonInfo }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
   return (
     <TouchableOpacity
       onPress={() => {

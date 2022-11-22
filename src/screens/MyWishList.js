@@ -10,7 +10,7 @@ import {
 } from "react-native";
 // import { SwipeListView } from "react-native-swipe-list-view";
 import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
+
 import Dialog, {
   DialogContent,
   ScaleAnimation,
@@ -98,16 +98,6 @@ const MyWishList = ({ navigation, route }) => {
       units: 10,
     },
   ]);
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const changeCheckColor = (id = "default") => {
     console.log(id);

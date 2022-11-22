@@ -8,19 +8,11 @@ import {
   View,
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
-import { useFonts } from "expo-font";
+
 import { AntDesign } from "@expo/vector-icons";
 const CartButton = ({ text, navigation, isMain }) => {
   // DB에서 CART 테이블에 있는 데이터 수 세야됨
   const [cartStatusNum, setCartStatusNum] = React.useState(0);
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <TouchableOpacity

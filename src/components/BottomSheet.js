@@ -1,4 +1,3 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import {
   Animated,
@@ -62,13 +61,6 @@ const BottomSheet = ({ children, visible, setVisible, header }) => {
       setVisible(false);
     });
   };
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  });
-  if (!fontsLoaded) return null;
 
   return (
     <Modal visible={visible} transparent animationType="fade">

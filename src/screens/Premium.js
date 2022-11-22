@@ -9,17 +9,12 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import * as Progress from "react-native-progress";
-import { useFonts } from "expo-font";
+
 import PremiumEnter from "../assets/icons/PremiumEnter";
 import TutorList from "../components/TutorList";
 import GradientButton from "../components/GradientButton";
 const windowWidth = Dimensions.get("window").width;
 const Premium = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-  });
   const [isPaid, setIsPaid] = React.useState(false);
   const tutors = [
     {
@@ -39,7 +34,7 @@ const Premium = ({ navigation }) => {
       img: require("../assets/img/gather_town_ex.png"),
     },
   ];
-  if (!fontsLoaded) return null;
+
   return (
     <View style={styles.container}>
       {!isPaid ? (

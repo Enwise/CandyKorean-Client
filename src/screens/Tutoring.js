@@ -11,17 +11,11 @@ import Constants from "expo-constants";
 import Tutor from "../components/Tutor";
 import AlertDialog from "../components/AlertDialog";
 import BackButton from "../components/BackButton";
-import { useFonts } from "expo-font";
+
 import TutoringHistory from "../components/TutoringHistory";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const Tutoring = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  });
-
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const ex_history = [
@@ -47,7 +41,6 @@ const Tutoring = ({ navigation }) => {
     },
   ];
 
-  if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
       <View style={styles.header}>

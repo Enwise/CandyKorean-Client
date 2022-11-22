@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
+
 import { SwipeListView } from "react-native-swipe-list-view";
 import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
 
@@ -41,16 +41,6 @@ const Payment = ({ navigation, route }) => {
     });
     setTotalPrice(totalPrice);
   }, [payList, itemInfo]);
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const deleteItem = (id) => {
     console.log("delete");

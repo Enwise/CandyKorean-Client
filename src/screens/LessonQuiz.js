@@ -8,7 +8,7 @@ import {
   Platform,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import { useFonts } from "expo-font";
+
 import { AntDesign } from "@expo/vector-icons";
 
 import Sea from "../assets/icons/quiz/Sea";
@@ -141,15 +141,6 @@ const LessonQuiz = ({ route, navigation }) => {
   }, [currentQuizIdx, quizList, isChecked]);
 
   console.log(lessonId);
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const updateSelected = (word) => {
     console.log(word);

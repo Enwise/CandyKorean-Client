@@ -1,4 +1,3 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import Constants from "expo-constants";
 import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
@@ -7,10 +6,6 @@ import GradientButton from "../components/GradientButton";
 import LoginInput from "../components/LoginInput";
 const windowWidth = Dimensions.get("window").width;
 const Login = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -25,7 +20,6 @@ const Login = ({ navigation }) => {
     };
   };
 
-  if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
       <View

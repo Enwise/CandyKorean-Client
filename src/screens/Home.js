@@ -10,18 +10,13 @@ import {
 import Constants from "expo-constants";
 import SmallLogoIcon from "../assets/icons/SmallLogoIcon";
 import NoticeIcon from "../assets/icons/NoticeIcon";
-import { useFonts } from "expo-font";
+
 import RecommendedLecture from "../components/RecommendedLecture";
 import { LinearGradient } from "expo-linear-gradient";
 import RecommendedLecList from "../components/RecommendedLecList";
 import ProgressLecture from "../components/ProgressLecture";
 const windowWidth = Dimensions.get("window").width;
 const Home = () => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-  });
-  if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
       <LinearGradient

@@ -8,7 +8,7 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { useFonts } from "expo-font";
+
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import Dialog, {
@@ -24,14 +24,6 @@ const LessonInfo = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
   const [clickedUnit, setClickedUnit] = useState(0);
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const goToCurrentVideo = () => {
     navigation.navigate("LessonVideo", {

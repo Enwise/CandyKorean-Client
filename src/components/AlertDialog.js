@@ -1,20 +1,13 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CloseIcon from "../assets/icons/CloseIcon";
 import * as Linking from "expo-linking";
 
 const AlertDialog = ({ visible, setModalVisible, url }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  });
   const link = () => {
     Linking.openURL(url);
   };
 
-  if (!fontsLoaded) return null;
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.background}>

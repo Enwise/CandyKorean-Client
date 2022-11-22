@@ -1,4 +1,3 @@
-import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
@@ -12,10 +11,6 @@ import {
 const windowWidth = Dimensions.get("window").width;
 
 const GradientButton = ({ onPress, title, disabled }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-  });
-  if (!fontsLoaded) return null;
   return (
     <TouchableOpacity onPress={onPress} disabled={disabled}>
       {disabled ? (

@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   FlatList,
 } from "react-native";
-import { useFonts } from "expo-font";
+
 import Lesson from "../components/Lesson";
 
 const ClassRoom = ({ navigation }) => {
@@ -295,15 +295,6 @@ const ClassRoom = ({ navigation }) => {
     //   ],
     // },
   ]);
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>

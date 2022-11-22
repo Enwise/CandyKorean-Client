@@ -15,7 +15,7 @@ import ClassRoomInactive from "../assets/icons/ClassRoomInactive";
 import MyPageInactive from "../assets/icons/MyPageInactive";
 import PremiumInactive from "../assets/icons/PremiumInactive";
 import HomeInactive from "../assets/icons/HomeInactive";
-import { useFonts } from "expo-font";
+
 import ClassRoom from "../screens/ClassRoom";
 import { Platform, Text } from "react-native";
 import MyPageStack from "./MyPageStack";
@@ -37,11 +37,7 @@ const MainTab = ({ navigation, route }) => {
   //     navigation.setOptions({ tabBarVisible: true });
   //   }
   // }, [navigation, route]);
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  });
-  if (!fontsLoaded) return null;
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

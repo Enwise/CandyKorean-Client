@@ -8,21 +8,12 @@ import {
   Button,
   Platform,
 } from "react-native";
-import { useFonts } from "expo-font";
+
 import { AntDesign } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
 
 const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
   const [unitsNum, setUnitsNum] = useState(9);
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <View style={dstyles(isShowAll).classContainer}>

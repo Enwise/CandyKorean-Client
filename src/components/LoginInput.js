@@ -1,4 +1,3 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import {
   TextInput,
@@ -11,11 +10,6 @@ import {
 const windowWidth = Dimensions.get("window").width;
 
 const LoginInput = ({ placeholder, value, handleChange, isValid }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) return null;
-
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>

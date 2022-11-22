@@ -3,22 +3,16 @@ import { StyleSheet, Text, View } from "react-native";
 import GradientButton from "../components/GradientButton";
 import Constants from "expo-constants";
 
-import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import WhiteLogo from "../assets/icons/WhiteLogo";
 
 const SurveyCompletePage = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-  });
-
   useEffect(() => {
     setTimeout(() => {
       navigation.navigate("MainTab");
     }, 2000);
   });
 
-  if (!fontsLoaded) return null;
   return (
     <LinearGradient
       colors={["#84E9FF", "#C284FF"]}

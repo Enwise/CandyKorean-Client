@@ -1,4 +1,3 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import _ from "lodash";
@@ -10,11 +9,6 @@ const LevelSelect = ({ data, onPress, select }) => {
     onPress(value);
   };
 
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  });
-  if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
       {data.map((item, index) => {

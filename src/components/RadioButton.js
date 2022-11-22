@@ -1,4 +1,3 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const RadioButton = ({ data, onPress }) => {
@@ -7,10 +6,7 @@ const RadioButton = ({ data, onPress }) => {
     setSelected(value);
     onPress(value);
   };
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) return null;
+
   return (
     <View style={styles.container}>
       {data.map((item, index) => {

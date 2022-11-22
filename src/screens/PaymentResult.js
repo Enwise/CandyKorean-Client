@@ -9,7 +9,7 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
-import { useFonts } from "expo-font";
+
 import { Ionicons } from "@expo/vector-icons";
 import StudyNowIcon from "../assets/icons/StudyNowIcon";
 import UnitIcon from "../assets/icons/UnitIcon";
@@ -95,15 +95,6 @@ const PaymentResult = ({ navigation, route }) => {
   const [isSuccess, setIsSuccess] = useState(route.params.isSuccess);
   const [item, setItem] = useState(route.params.itemInfo);
 
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <View style={styles.container}>
       {isSuccess ? (

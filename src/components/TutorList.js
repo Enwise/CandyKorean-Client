@@ -1,12 +1,14 @@
-import { useFonts } from "expo-font";
 import React from "react";
-import {FlatList, Image, StyleSheet, View, Text, Platform} from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+} from "react-native";
 
 const TutorList = ({ tutor }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
   const renderItem = ({ item }) => (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
@@ -15,7 +17,7 @@ const TutorList = ({ tutor }) => {
       <Text style={styles.nameText}>{item.name}</Text>
     </View>
   );
-  if (!fontsLoaded) return null;
+
   return (
     <View style={{ marginLeft: 10 }}>
       <FlatList

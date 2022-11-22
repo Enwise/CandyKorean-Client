@@ -8,7 +8,6 @@ import {
   Image,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
 
 const QuizResult = ({ navigation, route }) => {
   const [resultList, setResultList] = useState(route.params.resultList);
@@ -28,16 +27,6 @@ const QuizResult = ({ navigation, route }) => {
     setCorrect(correct);
     setWrong(wrong);
   }, []);
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,3 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import {
   Dimensions,
@@ -10,11 +9,6 @@ import {
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const TutoringHistory = ({ tutoring }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  });
-  if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
       {tutoring.map((tutor, index) => {

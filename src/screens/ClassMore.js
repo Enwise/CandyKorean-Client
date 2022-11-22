@@ -12,7 +12,6 @@ import {
 import Class from "../components/Class";
 import CartButton from "../components/WishListButton";
 import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
 
 const ClassMore = ({ navigation, route }) => {
   // useEffect
@@ -20,16 +19,6 @@ const ClassMore = ({ navigation, route }) => {
 
   const title = route.params.title ?? route.params.maintitle;
   const classList = route.params.classList;
-
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <View style={styles.courseContainer}>

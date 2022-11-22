@@ -1,14 +1,9 @@
-import { useFonts } from "expo-font";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CheckedIcon from "../assets/icons/CheckedIcon";
 import UnCheckedIcon from "../assets/icons/UnCheckedIcon";
 
 const SurveyItem = ({ checked, item, onPress }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) return null;
   return (
     <TouchableOpacity
       style={styles.container}

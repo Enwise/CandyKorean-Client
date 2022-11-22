@@ -3,14 +3,9 @@ import { Image, StyleSheet, Text, View } from "react-native";
 
 import GradientButton from "../components/GradientButton";
 import Constants from "expo-constants";
-import { useFonts } from "expo-font";
+
 import Logo from "../components/Logo";
 const WelcomePage = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-  if (!fontsLoaded) return null;
-
   return (
     <View style={styles.container}>
       <View

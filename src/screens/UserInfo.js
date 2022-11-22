@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import Constants from "expo-constants";
-import { useFonts } from "expo-font";
+
 import BackButton from "../components/BackButton";
 import ProfileInput from "../components/ProfileInput";
 import RadioButton from "../components/RadioButton";
@@ -49,12 +49,6 @@ const UserInfo = ({ navigation }) => {
   ];
   const jobList = ["Students", "Worker", "Self-employment", "Unemployed"];
   console.log(nationality);
-  const [fontsLoaded] = useFonts({
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  });
-  if (!fontsLoaded) return null;
 
   return (
     <View style={styles.container}>
