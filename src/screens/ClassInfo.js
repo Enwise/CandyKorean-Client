@@ -16,7 +16,6 @@ import { ResizeMode } from "expo-av";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
-import { Video as VideoCompress } from "react-native-compressor";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [unitsNum, setUnitsNum] = useState(9);

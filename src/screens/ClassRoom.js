@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
 
-    alignItems: "center",
+    justifyContent: "space-between",
     paddingTop: 50,
     backgroundColor: "#fff",
     position: "relative",

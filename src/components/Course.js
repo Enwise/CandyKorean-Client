@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 5,
+    width: "100%",
   },
   topContainer: {
     flexDirection: "row",
