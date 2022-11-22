@@ -32,16 +32,22 @@ const ClassMain = ({ navigation }) => {
   const [dummyCourseList, setDummyCourseList] = useState({
     "Lollipop Level": [
       {
-        imgUrl: <SampleClassImg1></SampleClassImg1>,
-        teacherName: "Kyungeun1",
-        className: "class1",
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        teacherName: "yoojin shin",
+        // mp4 로 해야됨..서버에 mp4 파일 올려야됨
+        // introVideoUrl: require("https://youtube.com/shorts/2sr2X_inOSg"),
+        // introVideoUrl: require("../assets/videos/shin_yoo_jin/0차시(소개).mp4"),
+        introVideoUrl:
+          "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        className: "yoojin shin class",
         category: "K-culture",
         level: "Lollipop",
-        units: 10,
+        units: 9,
         price: 100,
+        isPortrait: true, // is세로? -> true면 세로, false면 가로
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun2",
         className: "class2",
         category: "K-history",
@@ -50,7 +56,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun3",
         className: "class3",
         category: "K-pop",
@@ -59,7 +65,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun4",
         className: "class4",
         category: "K-culture",
@@ -68,7 +74,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun5",
         className: "class5",
         category: "K-culture",
@@ -79,7 +85,7 @@ const ClassMain = ({ navigation }) => {
     ],
     "Cotton Candy Level": [
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang1",
         className: "class1",
         category: "K-culture",
@@ -88,7 +94,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang2",
         className: "class2",
         category: "K-culture",
@@ -97,7 +103,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang3",
         className: "class3",
         category: "K-culture",
@@ -106,7 +112,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang4",
         className: "class4",
         category: "K-culture",
@@ -117,7 +123,7 @@ const ClassMain = ({ navigation }) => {
     ],
     "Mint Candy Level": [
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "shin",
         className: "class1",
         category: "K-culture",
@@ -126,7 +132,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "kim",
         className: "class2",
         category: "K-culture",
@@ -135,7 +141,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
-        imgUrl: <SampleClassImg2></SampleClassImg2>,
+        imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "lee",
         className: "class3",
         category: "K-culture",

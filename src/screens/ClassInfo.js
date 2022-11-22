@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,13 +16,30 @@ import { ResizeMode } from "expo-av";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
+import { Video as VideoCompress } from "react-native-compressor";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [unitsNum, setUnitsNum] = useState(9);
   const [classInfo, setClassInfo] = useState(route.params.classInfo);
   console.log(classInfo);
+  const [url, setUrl] = useState("");
+  //useEffect(async () => {}, []);
 
-  const [isPortrait, setIsPortrait] = useState(false); // false면 가로, true면 세로
+  // const videoCompress = async () => {
+  //   await VideoCompress.compress(
+  //     "../assets/videos/shin_yoo_jin/1차시.mp4",
+  //     {
+  //       compressionMethod: "auto",
+  //     },
+  //     (progress) => {
+  //       console.log({ compression: progress });
+  //     }
+  //   ).then(async (compressedFileUrl) => {
+  //     return compressedFileUrl;
+  //   });
+  // };
+
+  const [isPortrait, setIsPortrait] = useState(classInfo.isPortrait); // false면 가로, true면 세로
 
   const videoPlayer = useRef();
   const [videoStatus, setVideoStatus] = useState(3);
@@ -68,7 +85,10 @@ const ClassInfo = ({ props, navigation, route }) => {
           </View>
         </View>
         <View style={styles.topContainer}>
-          <View style={styles.imageContainer}>{classInfo.imgUrl}</View>
+          <Image
+            source={classInfo.imgUrl}
+            style={styles.imageContainer}
+          ></Image>
           <View style={styles.textContainer}>
             <View>
               <Text style={styles.className}>{classInfo.className}</Text>
@@ -86,9 +106,7 @@ const ClassInfo = ({ props, navigation, route }) => {
         </View>
         <View style={styles.videoContainer}>
           <Video
-            source={{
-              uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            }}
+            source={{ uri: classInfo.introVideoUrl }}
             rate={1.0}
             useNativeControls={true}
             style={{ height: 500, width: 300 }}
@@ -146,17 +164,17 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+
     marginBottom: 20,
     position: "relative",
     backgroundColor: "white",
   },
   titleContainer: {
     position: "relative",
-    flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
     marginTop: 50,
-    paddingLeft: 150,
+    width: "100%",
     zIndex: 1,
     backgroundColor: "white",
   },
@@ -165,10 +183,16 @@ const styles = StyleSheet.create({
     marginTop: 30,
     fontFamily: "Poppins-SemiBold",
   },
+  imageContainer: {
+    width: 150,
+    height: 250,
+    marginRight: 10,
+    borderRadius: 20,
+  },
   backBtn: {
     position: "absolute",
     top: 40,
-    left: -100,
+    right: 230,
   },
   img: {
     width: 150,
