@@ -78,16 +78,16 @@ const Survey = ({ navigation }) => {
     if (selected3.includes(item)) {
       setSelected3(selected3.filter((i) => i !== item));
     } else {
-      if (selected3.length === 3) {
-        selected3.length = 2;
+      if (selected3.length !== 3) {
+        setSelected3([...selected3, item]);
       }
-      setSelected3([...selected3, item]);
     }
   };
-
-  const survey3Items = survey3.map((item) => {
+  console.log(selected3);
+  const survey3Items = survey3.map((item, index) => {
     return (
       <TouchableOpacity
+        key={index}
         style={styles.survey3(selected3.includes(item))}
         activeOpacity={0.9}
         onPress={() => handleSelect3(item)}
