@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import Course from "../components/Course";
 import WishListButton from "../components/WishListButton";
-import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
-import SampleClassImg2 from "../assets/icons/level/SampleClassImg2";
+
+import { login } from '../modules/NetworkFunction';  
 
 const ClassMain = ({ navigation }) => {
   const [courseNameList, setCourseNameList] = useState([
@@ -188,8 +188,16 @@ const ClassMain = ({ navigation }) => {
     }
   };
 
+  const [isLoginSucceed, setIsLoginSucceed] = useState(false);
+
   useEffect(() => {
     console.log("activeState");
+
+    if(!isLoginSucceed){
+      login({"login_id" : "11@test.com", "password": "1111"}, (v) => {console.log(v)}, setIsLoginSucceed, (e) => {console.log({...e})});
+    }
+    
+
   }, [activeState, isShowAllActive]);
 
   return (

@@ -301,10 +301,13 @@ const MyWishList = ({ navigation, route }) => {
                   navigation.navigate("Payment", { item: item });
                 }}
               >
-                <Image
+                {/* <Image
                   style={styles.buyNowBtn}
                   source={require("../assets/img/ic-buynow-btn.png")}
-                ></Image>
+                ></Image> */}
+                <View style={styles.buyNowBtn}>
+                  <Text style={styles.buyNowBtnText}>Buy Now</Text>
+                </View>
               </TouchableOpacity>
             </View>
           )}
@@ -596,6 +599,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     bottom: 0,
+    width: 70,
+    height: 30,
+    backgroundColor: "#A160E2",
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buyNowBtnText: {
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
+    fontSize: 12,
   },
   bottomInfoContainer: {
     width: "100%",

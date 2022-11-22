@@ -1,4 +1,4 @@
-import Network from "./Network";
+import request from "./Network";
 /* Class */
 export const getClasses = async (
   reqParam,
@@ -6,7 +6,7 @@ export const getClasses = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/class/getClasses",
     reqParam,
     handleError
@@ -23,7 +23,7 @@ export const getClassById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/class/getClassById",
     reqParam,
     handleError
@@ -40,7 +40,7 @@ export const createClass = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/class/createClass",
     reqParam,
     handleError
@@ -57,7 +57,7 @@ export const updateClass = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/class/updateClass",
     reqParam,
     handleError
@@ -74,7 +74,7 @@ export const deleteClass = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/class/deleteClass",
     reqParam,
     handleError
@@ -92,7 +92,7 @@ export const getContents = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/content/getContents",
     reqParam,
     handleError
@@ -109,7 +109,7 @@ export const getContentById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/content/getContentById",
     reqParam,
     handleError
@@ -126,7 +126,7 @@ export const createContent = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/content/createContent",
     reqParam,
     handleError
@@ -143,7 +143,7 @@ export const updateContent = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/content/updateContent",
     reqParam,
     handleError
@@ -160,7 +160,7 @@ export const deleteContent = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/content/deleteContent",
     reqParam,
     handleError
@@ -178,7 +178,7 @@ export const getCourses = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/course/getCourses",
     reqParam,
     handleError
@@ -195,7 +195,7 @@ export const getCourseById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/course/getCourseById",
     reqParam,
     handleError
@@ -212,7 +212,7 @@ export const createCourse = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/course/createCourse",
     reqParam,
     handleError
@@ -228,7 +228,7 @@ export const updateCourse = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/course/updateCourse",
     reqParam,
     handleError
@@ -244,7 +244,7 @@ export const deleteCourse = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/course/deleteCourse",
     reqParam,
     handleError
@@ -257,7 +257,7 @@ export const deleteCourse = async (
 
 /* Levels */
 export const getLevels = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await Network.request(
+  const response = await request(
     "/level/getLevels",
     reqParam,
     handleError
@@ -273,7 +273,7 @@ export const getLevelById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/level/getLevelById",
     reqParam,
     handleError
@@ -289,7 +289,7 @@ export const createLevel = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/level/createLevel",
     reqParam,
     handleError
@@ -305,7 +305,7 @@ export const updateLevel = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/level/updateLevel",
     reqParam,
     handleError
@@ -321,7 +321,7 @@ export const deleteLevel = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/level/deleteLevel",
     reqParam,
     handleError
@@ -334,7 +334,7 @@ export const deleteLevel = async (
 
 /* Quizs */
 export const getQuizs = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await Network.request(
+  const response = await request(
     "/quiz/getQuizs",
     reqParam,
     handleError
@@ -351,7 +351,7 @@ export const getQuizById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/quiz/getQuizById",
     reqParam,
     handleError
@@ -368,7 +368,7 @@ export const createQuiz = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/quiz/createQuiz",
     reqParam,
     handleError
@@ -385,7 +385,7 @@ export const updateQuiz = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/quiz/updateQuiz",
     reqParam,
     handleError
@@ -402,7 +402,7 @@ export const deleteQuiz = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/quiz/deleteQuiz",
     reqParam,
     handleError
@@ -415,7 +415,7 @@ export const deleteQuiz = async (
 
 /* Slides */
 export const getSlides = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await Network.request(
+  const response = await request(
     "/slide/getSlides",
     reqParam,
     handleError
@@ -431,7 +431,7 @@ export const getSlideById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/slide/getSlideById",
     reqParam,
     handleError
@@ -448,7 +448,7 @@ export const createSlide = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/slide/createSlide",
     reqParam,
     handleError
@@ -465,7 +465,7 @@ export const updateSlide = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/slide/updateSlide",
     reqParam,
     handleError
@@ -482,7 +482,7 @@ export const deleteSlide = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/slide/deleteSlide",
     reqParam,
     handleError
@@ -495,7 +495,7 @@ export const deleteSlide = async (
 
 /* Tutors */
 export const getTutors = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await Network.request(
+  const response = await request(
     "/tutor/getTutors",
     reqParam,
     handleError
@@ -512,7 +512,7 @@ export const getTutorById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/tutor/getTutorById",
     reqParam,
     handleError
@@ -529,7 +529,7 @@ export const createTutor = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/tutor/createTutor",
     reqParam,
     handleError
@@ -546,7 +546,7 @@ export const updateTutor = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/tutor/updateTutor",
     reqParam,
     handleError
@@ -563,7 +563,7 @@ export const deleteTutor = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/tutor/deleteTutor",
     reqParam,
     handleError
@@ -576,7 +576,7 @@ export const deleteTutor = async (
 
 /* Users */
 export const getUsers = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await Network.request(
+  const response = await request(
     "/user/getUsers",
     reqParam,
     handleError
@@ -593,7 +593,7 @@ export const getUserById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/user/getUserById",
     reqParam,
     handleError
@@ -610,7 +610,7 @@ export const createUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/user/createUser",
     reqParam,
     handleError
@@ -627,7 +627,7 @@ export const updateUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/user/updateUser",
     reqParam,
     handleError
@@ -644,13 +644,31 @@ export const deleteUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await Network.request(
+  const response = await request(
     "/user/deleteUser",
     reqParam,
     handleError
   );
   if (response !== null) {
     setData();
+    setIsReady(true);
+  }
+};
+
+/* Login */
+export const login = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await request(
+    "/login",
+    reqParam,
+    handleError
+  );
+  if (response !== null) {
+    setData(response.data);
     setIsReady(true);
   }
 };

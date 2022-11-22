@@ -81,59 +81,60 @@ const ClassRoom = ({ navigation }) => {
         },
       ],
     },
-    // {
-    //   id: 2,
-    //   imgUrl: "img1",
-    //   teacherName: "Kyungeun2",
-    //   className: "class2",
-    //   category: "K-history",
-    //   level: "Lollipop",
-    //   currentUnit: 5,
+    {
+      id: 2,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+      profileImgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+      teacherName: "Kyungeun2",
+      className: "class2",
+      category: "K-history",
+      level: "Lollipop",
+      currentUnit: 5,
 
-    //   totalUnits: 10,
-    //   price: 100,
-    //   startDate: "2021-01-01",
-    //   endDate: "2021-01-31",
-    //   description: "Let's study real Korean\n formal language!",
-    //   curriculum: [
-    //     {
-    //       unitNum: 1,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 2,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 3,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 4,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 5,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 6,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 7,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 8,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //     {
-    //       unitNum: 9,
-    //       unitName: "Greetings 안녕하세요",
-    //     },
-    //   ],
-    // },
+      totalUnits: 10,
+      price: 100,
+      startDate: "2021-01-01",
+      endDate: "2021-01-31",
+      description: "Let's study real Korean\n formal language!",
+      curriculum: [
+        {
+          unitNum: 1,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 2,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 3,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 4,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 5,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 6,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 7,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 8,
+          unitName: "Greetings 안녕하세요",
+        },
+        {
+          unitNum: 9,
+          unitName: "Greetings 안녕하세요",
+        },
+      ],
+    },
     // {
     //   id: 3,
     //   imgUrl: "img1",

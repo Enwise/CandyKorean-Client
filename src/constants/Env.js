@@ -1,5 +1,5 @@
-import { config } from "dotenv";
+import { SERVER_URI } from "@env";
+export default { SERVER_URI }
+// config();
 
-config();
-
-export const { SERVER_URI } = process.env;
+// export const { SERVER_URI } = process.env;
