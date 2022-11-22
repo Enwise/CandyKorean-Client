@@ -79,7 +79,7 @@ const Home = () => {
 
 
         <View
-            style={{marginTop:20,marginBottom: 40, height: 170 }}
+            style={{marginTop:20,marginBottom: 30, height: 130 }}
         >
             <Text style={{fontSize:18, fontWeight: "500"}}>Hello, Bony</Text>
             <View style={styles.textInput}>
@@ -115,15 +115,28 @@ const Home = () => {
 
 
       <ScrollView>
-        <View style={{}}>
+        {/*<View style={{}}>*/}
+        {/*  <Text style={styles.title}>Lecture in progress</Text>*/}
+        {/*  <ProgressLecture />*/}
+        {/*</View>*/}
+
           <Text style={styles.title}>Lecture in progress</Text>
-          <ProgressLecture />
-        </View>
+          <ScrollView horizontal = {true}>
+              <ProgressLecture />
+              <View style={{width: 15}}/>
+              <ProgressLecture />
+              <View style={{width: 15}}/>
+              <ProgressLecture />
+          </ScrollView>
         <View style={{ marginTop: 41 }}>
           <Text style={styles.title}>Recommended Lecture</Text>
           <RecommendedLecList />
         </View>
       </ScrollView>
+
+
+
+
     </View>
   );
 };
