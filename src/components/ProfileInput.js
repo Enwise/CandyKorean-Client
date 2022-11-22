@@ -2,14 +2,17 @@ import { useFonts } from "expo-font";
 import React from "react";
 import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
 const windowWidth = Dimensions.get("window").width;
-const ProfileInput = ({ title }) => {
+const ProfileInput = ({ title, required }) => {
   const [fontsLoaded] = useFonts({
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
   });
   if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={styles.text}>
+        {title}
+        {required ? <Text style={{ color: "#A160E2" }}> *</Text> : null}
+      </Text>
       <TextInput style={styles.input} />
     </View>
   );
@@ -22,7 +25,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: "#B8B5BC",
+    color: "#807F82",
     fontFamily: "Poppins-Medium",
     marginBottom: 10,
   },

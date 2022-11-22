@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Dimensions,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -16,6 +17,9 @@ import GradientButton from "../components/GradientButton";
 import BottomSheet from "../components/BottomSheet";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import LevelSelect from "../components/LevelSelect";
+import Accordion from "../components/Accordion";
+import CountryPicker from "react-native-country-picker-modal";
+
 const windowWidth = Dimensions.get("window").width;
 const UserInfo = ({ navigation }) => {
   const gender = ["Female", "Male", "Other"];
@@ -26,7 +30,9 @@ const UserInfo = ({ navigation }) => {
   const [levelSelect, setLevelSelect] = React.useState();
   const [datePickerVisible, setDatePickerVisible] = React.useState(false);
   const [date, setDate] = React.useState();
-
+  const [job, setJob] = React.useState();
+  const [nationality, setNationality] = React.useState();
+  const [modalVisible, setModalVisible] = React.useState(false);
   const levelData = [
     {
       level: "Beginner",
@@ -41,7 +47,8 @@ const UserInfo = ({ navigation }) => {
       description: "I can speak and write Korean.",
     },
   ];
-
+  const jobList = ["Students", "Worker", "Self-employment", "Unemployed"];
+  console.log(nationality);
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
@@ -65,67 +72,105 @@ const UserInfo = ({ navigation }) => {
         >
           Profile
         </Text>
-        <ProfileInput title={"Email"} />
-        <ProfileInput title={"Username"} />
-
-        <View style={styles.title}>
-          <Text style={styles.titleText}>Gender</Text>
-        </View>
-        <View>
-          <RadioButton
-            data={gender}
-            onPress={(value) => setGenderSelect(value)}
-          />
-        </View>
-
-        <View style={styles.title}>
-          <Text style={styles.titleText}>Date of Birth</Text>
-          <TouchableOpacity
-            onPress={() => setDatePickerVisible(true)}
-            activeOpacity={0.8}
-            style={{ flexDirection: "row" }}
-          >
-            <View style={styles.dateSelectView}>
-              <Text style={styles.dateText}>
-                {date
-                  ? `${date.getDate()} / ${
-                      date.getMonth() + 1
-                    } / ${date.getFullYear()}`
-                  : "DD / MM/ YYYY"}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <DateTimePicker
-          isVisible={datePickerVisible}
-          date={date}
-          mode="date"
-          onConfirm={(date) => {
-            setDate(date);
-            setDatePickerVisible(false);
-          }}
-          onCancel={() => setDatePickerVisible(false)}
-        />
-
-        <View style={styles.title}>
-          <Text style={styles.titleText}>Korean Level</Text>
-          <TouchableOpacity
-            style={styles.levelView}
-            onPress={() => setBottomSheetVisible(true)}
-          >
-            <Text
-              style={{
-                fontFamily: "Poppins-Regular",
-                fontSize: 14,
-                color: "#B8B5BC",
-                flex: 0.95,
-              }}
-            >
-              {levelSelect ? `${levelSelect.level}` : "Select your Level"}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <ProfileInput title={"Email"} required={true} />
+          <ProfileInput title={"Username"} required={true} />
+          <View style={styles.title}>
+            <Text style={styles.titleText}>
+              Nationality
+              <Text style={{ color: "#A160E2" }}> *</Text>
             </Text>
-            <DropDownIcon />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.selectView}
+              onPress={() => setModalVisible(true)}
+            >
+              <CountryPicker
+                placeholder=""
+                withEmoji
+                withAlphaFilter
+                withFilter
+                onSelect={(value) => setNationality(value.name)}
+                onOpen={() => setModalVisible(true)}
+                onClose={() => setModalVisible(false)}
+                visible={modalVisible}
+              />
+              <Text
+                style={[
+                  styles.selectViewText,
+                  nationality ? { color: "#444345" } : undefined,
+                ]}
+              >
+                {nationality ? nationality : "Select your nation"}
+              </Text>
+              <DropDownIcon />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Korean Level</Text>
+            <TouchableOpacity
+              style={styles.selectView}
+              onPress={() => setBottomSheetVisible(true)}
+            >
+              <Text
+                style={[
+                  styles.selectViewText,
+                  levelSelect ? { color: "#444345" } : undefined,
+                ]}
+              >
+                {levelSelect ? `${levelSelect.level}` : "Select your Level"}
+              </Text>
+              <DropDownIcon />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Job</Text>
+            <Accordion
+              title={"Select your job"}
+              data={jobList}
+              selectItem={setJob}
+              selected={job}
+            />
+          </View>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Gender</Text>
+          </View>
+          <View>
+            <RadioButton
+              data={gender}
+              onPress={(value) => setGenderSelect(value)}
+            />
+          </View>
+
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Date of Birth</Text>
+            <TouchableOpacity
+              onPress={() => setDatePickerVisible(true)}
+              activeOpacity={0.8}
+              style={{ flexDirection: "row" }}
+            >
+              <View style={styles.dateSelectView}>
+                <Text style={styles.dateText}>
+                  {date
+                    ? `${date.getDate()} / ${
+                        date.getMonth() + 1
+                      } / ${date.getFullYear()}`
+                    : "DD / MM/ YYYY"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <DateTimePicker
+            isVisible={datePickerVisible}
+            date={date}
+            mode="date"
+            onConfirm={(date) => {
+              setDate(date);
+              setDatePickerVisible(false);
+            }}
+            onCancel={() => setDatePickerVisible(false)}
+          />
+        </ScrollView>
       </View>
       <View style={{ marginLeft: 20, flex: 1 }}>
         <GradientButton
@@ -164,11 +209,11 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: "Poppins-Medium",
-    color: "#B8B5BC",
+    color: "#807F82",
     fontSize: 16,
     marginBottom: 10,
   },
-  levelView: {
+  selectView: {
     height: 40,
     width: windowWidth - 40,
     backgroundColor: "white",
@@ -192,6 +237,12 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: "#B8B5BC",
     fontSize: 14,
+  },
+  selectViewText: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 14,
+    color: "#B8B5BC",
+    flex: 0.95,
   },
 });
 
