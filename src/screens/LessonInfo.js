@@ -23,6 +23,7 @@ const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
+  const [clickedUnit, setClickedUnit] = useState(0);
   const [fontsLoaded] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
@@ -31,6 +32,28 @@ const LessonInfo = ({ navigation, route }) => {
   if (!fontsLoaded) {
     return null;
   }
+
+  const goToCurrentVideo = () => {
+    navigation.navigate("LessonVideo", {
+      curriculumInfo: lessonInfo.curriculum[lessonInfo.currentUnit - 1],
+      isPortrait: lessonInfo.isPortrait,
+    });
+  };
+
+  const goToVideo = (unitNum, isReview) => {
+    if (!isReview) {
+      console.log(unitNum);
+      navigation.navigate("LessonVideo", {
+        curriculumInfo: lessonInfo.curriculum[unitNum - 1],
+        isPortrait: lessonInfo.isPortrait,
+      });
+    } else {
+      navigation.navigate("LessonVideo", {
+        curriculumInfo: lessonInfo.curriculum[clickedUnit - 1],
+        isPortrait: lessonInfo.isPortrait,
+      });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -44,9 +67,8 @@ const LessonInfo = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.lessonInfoContainer}>
-        <View style={styles.imageContainer}>
-          <SampleClassImg1 />
-        </View>
+        <Image style={styles.imageContainer} source={lessonInfo.imgUrl}></Image>
+
         <View style={styles.textContainer}>
           <View style={styles.todayContainer}>
             <Text style={styles.todayText}>Today's Lecture</Text>
@@ -63,7 +85,7 @@ const LessonInfo = ({ navigation, route }) => {
           <View style={styles.studyNowBtn}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("LessonVideo", { lessonInfo: lessonInfo });
+                goToCurrentVideo();
               }}
             >
               <Image
@@ -76,6 +98,7 @@ const LessonInfo = ({ navigation, route }) => {
             <TouchableOpacity
               onPress={() => {
                 setVisible(true);
+                setClickedUnit(lessonInfo.currentUnit);
               }}
             >
               <Image
@@ -103,7 +126,7 @@ const LessonInfo = ({ navigation, route }) => {
           <View style={styles.curriculumItem}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("LessonVideo", { lessonInfo: item });
+                goToVideo(item.unitNum, false);
               }}
             >
               <View style={styles.unitNum}>
@@ -114,7 +137,7 @@ const LessonInfo = ({ navigation, route }) => {
             <View style={styles.unitInfo}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("LessonVideo", { lessonInfo: item });
+                  goToVideo(item.unitNum, false);
                 }}
               >
                 <View style={styles.unitTitle}>
@@ -125,7 +148,7 @@ const LessonInfo = ({ navigation, route }) => {
               <View style={styles.unitBottomContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("LessonVideo", { lessonInfo: item });
+                    goToVideo(item.unitNum, false);
                   }}
                 >
                   <View style={styles.unitStudyContainer}>
@@ -135,6 +158,7 @@ const LessonInfo = ({ navigation, route }) => {
                 <TouchableOpacity
                   onPress={() => {
                     setVisible(true);
+                    setClickedUnit(item.unitNum);
                   }}
                 >
                   <View style={styles.unitQuizContainer}>
@@ -179,7 +203,6 @@ const LessonInfo = ({ navigation, route }) => {
               style={{
                 backgroundColor: "#E6E3EA",
                 borderBottomLeftRadius: 25,
-
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -226,6 +249,8 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(true);
                 setVisible(false);
+                goToVideo(0, true);
+
                 console.log("review: ", review);
               }}
             ></DialogButton>
@@ -327,6 +352,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 100,
     justifyContent: "space-evenly",
+  },
+  imageContainer: {
+    width: 150,
+    height: 150,
+    borderRadius: 20,
   },
   img: {
     width: 130,
