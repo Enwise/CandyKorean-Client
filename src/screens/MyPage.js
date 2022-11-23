@@ -11,9 +11,10 @@ const MyPage = ({ navigation }) => {
   const Width = Dimensions.get("window").width; //스크린 너비 초기화
   const Height = Dimensions.get("window").height; //스크린 높이 초기화
   const markedDates = {
-    "2022-10-26": { selected: true },
-    "2022-10-27": { marked: true },
-    "2022-10-28": { marked: true },
+    "2022-11-26": { selected: true },
+    "2022-11-27": { marked: true },
+    "2022-11-28": { marked: true },
+      "2022-11-30": { selected: true },
   };
   const 데이터이름 = ["Score", "KDA", "Damage", "Vision", "Suvival", "Growth"];
   const 유저데이터 = [30, 24, 50, 23, 50, 34];
@@ -160,11 +161,38 @@ const MyPage = ({ navigation }) => {
           style={styles.calendar}
           markedDates={markedDates}
           theme={{
-            selectedDayBackgroundColor: "red",
-            arrowColor: "blue",
-            dotColor: "green",
-            todayTextColor: "yellow",
+              calendarBackground: '#166088',
+
+              // background: linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)
+              selectedDayBackgroundColor: 'linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%',
+              selectedDayTextColor: '#FFFFFF',
+              selectedDotColor: '#166088',
+
+              dayTextColor: '#DBE9EE',
+              textDisabledColor: '#729DAF',
+              dotColor: '#DBE9EE',
+
+              monthTextColor: '#DBE9EE',
+              textMonthFontWeight: 'bold',
+
+              arrowColor: '#DBE9EE',
           }}
+          // theme={{
+          //   selectedDayBackgroundColor: "linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)",
+          //   arrowColor: "blue",
+          //   dotColor: "green",
+          //   todayTextColor: "linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)",
+          // }}
+          // markingType={'period'}
+          // markedDates={{
+          //     '2022-11-15': {marked: true, dotColor: '#50cebb'},
+          //     '2022-11-16': {marked: true, dotColor: '#50cebb'},
+          //     '2022-11-17': {startingDay: true, color: '#50cebb', textColor: 'white'},
+          //     '2022-11-18': {color: '#70d7c7', textColor: 'white'},
+          //     '2022-11-19': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
+          //     '2022-11-20': {color: '#70d7c7', textColor: 'white'},
+          //     '2022-11-21': {endingDay: true, color: '#50cebb', textColor: 'white'}
+          // }}
         />
       </View>
 
@@ -181,7 +209,6 @@ const MyPage = ({ navigation }) => {
 
           <Image
               source={require("../assets/img/Group 2026.png")}
-              style={{width:340}}
           />
 
       </View>
