@@ -81,10 +81,10 @@ const MyPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{display:"flex",flexDirection:"row" ,justifyContent:"space-between", width: "90%", alignItems:"center", marginBottom:"40px"}}>
+      <View style={{display:"flex",flexDirection:"row" ,justifyContent:"space-between", width: "90%", alignItems:"center", marginBottom:40}}>
 
           <View>
-              <Text style={{fontSize:"20px", fontWeight:"400"}}>반가워요. Bony!</Text>
+              <Text style={{fontSize:20, fontWeight:"400"}}>반가워요. Bony!</Text>
           </View>
           <View
               style={{ display: "flex", flexDirection: "row-reverse" }}
@@ -101,8 +101,9 @@ const MyPage = ({ navigation }) => {
               </TouchableOpacity>
               <View style={{ width: 8 }} />
               <TouchableOpacity>
-                  <View style={{width:"50px",height:"20px", border:"1px solid #B8B5BC", borderRadius:"5px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                      <Text style={{fontSize:"10px", color:"#B8B5BC"}}>Log out</Text>
+                  {/*, border:"1px solid #B8B5BC",*/}
+                  <View style={{width:50,height:20, borderRadius:5, display:"flex", alignItems:"center", justifyContent:"center"}}>
+                      <Text style={{fontSize:10, color:"#B8B5BC"}}>Log out</Text>
                   </View>
               </TouchableOpacity>
 
@@ -118,36 +119,36 @@ const MyPage = ({ navigation }) => {
       >
         <Image
           source={require("../assets/img/sample_class_img2.png")}
-          style={{ width: "110px", height: "110px", borderRadius: "55px" }}
+          style={{ width: 110, height: 110, borderRadius: 55 }}
         />
         <View
           style={{
-            marginLeft: "20px",
+            marginLeft: 20,
             display: "flex",
-            flexDirection: "collum",
+            flexDirection: "column",
               width:"60%"
           }}
         >
-            <Text style={{fontSize:"16px", fontWeight:"600", color:"#444345"}}>Bony</Text>
-            <View style={{height:"7px"}}/>
+            <Text style={{fontSize:16, fontWeight:"600", color:"#444345"}}>Bony</Text>
+            <View style={{height:7}}/>
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate("MyPurchases");
                 }}
-                style={{backgroundColor:"#807F82", borderRadius:"9px", width:"100%", height:"36px", justifyContent:"center", paddingLeft:"20px"}}
+                style={{backgroundColor:"#807F82", borderRadius:9, width:"100%", height:36, justifyContent:"center", paddingLeft:20}}
             >
-                <Text style={{fontSize:"14px", fontWeight:"500", color:"#FFFFFF"}}>
+                <Text style={{fontSize:14, fontWeight:"500", color:"#FFFFFF"}}>
                     My purchases
                 </Text>
             </TouchableOpacity>
-            <View style={{height:"2px"}}/>
+            <View style={{height:2}}/>
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate("MyLesson");
                 }}
-                style={{backgroundColor:"#807F82", borderRadius:"9px", width:"100%", height:"36px", justifyContent:"center", paddingLeft:"20px"}}
+                style={{backgroundColor:"#807F82", borderRadius:9, width:"100%", height:36, justifyContent:"center", paddingLeft:20}}
             >
-                <Text style={{fontSize:"14px", fontWeight:"500", color:"#FFFFFF"}}>
+                <Text style={{fontSize:14, fontWeight:"500", color:"#FFFFFF"}}>
                     Go to Lesson
                 </Text>
             </TouchableOpacity>
@@ -173,10 +174,10 @@ const MyPage = ({ navigation }) => {
           marginTop: 20,
           display: "flex",
           flexDirection: "column",
-            borderTop:"1px solid #F1EFF4"
+            // borderTop:"1px solid #F1EFF4"
         }}
       >
-          <Text style={{fontSize:"16px", fontWeight:"600", color:"#444345", marginTop:"15px", marginBottom:"15px"}}>Analysis</Text>
+          <Text style={{fontSize:16, fontWeight:"600", color:"#444345", marginTop:15, marginBottom:15}}>Analysis</Text>
 
           <Image
               source={require("../assets/img/Group 2026.png")}
