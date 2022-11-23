@@ -5,7 +5,8 @@ import BackButton from "../components/BackButton";
 import { Calendar } from "react-native-calendars";
 import Plotly from "react-native-plotly";
 import { LineChart } from "react-native-chart-kit";
-import {VERTICAL} from "react-native/Libraries/Components/ScrollView/ScrollViewContext";
+import { VERTICAL } from "react-native/Libraries/Components/ScrollView/ScrollViewContext";
+import { LinearGradient } from "expo-linear-gradient";
 
 const MyPage = ({ navigation }) => {
   const Width = Dimensions.get("window").width; //스크린 너비 초기화
@@ -14,7 +15,7 @@ const MyPage = ({ navigation }) => {
     "2022-11-26": { selected: true },
     "2022-11-27": { marked: true },
     "2022-11-28": { marked: true },
-      "2022-11-30": { selected: true },
+    "2022-11-30": { selected: true },
   };
   const 데이터이름 = ["Score", "KDA", "Damage", "Vision", "Suvival", "Growth"];
   const 유저데이터 = [30, 24, 50, 23, 50, 34];
@@ -79,36 +80,51 @@ const MyPage = ({ navigation }) => {
     showlegend: false, // @4
   };
 
-
   return (
     <View style={styles.container}>
-      <View style={{display:"flex",flexDirection:"row" ,justifyContent:"space-between", width: "90%", alignItems:"center", marginBottom:40}}>
-
-          <View>
-              <Text style={{fontSize:20, fontWeight:"400"}}>반가워요. Bony!</Text>
-          </View>
-          <View
-              style={{ display: "flex", flexDirection: "row-reverse" }}
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "90%",
+          alignItems: "center",
+          marginBottom: 40,
+        }}
+      >
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: "400" }}>
+            반가워요. Bony!
+          </Text>
+        </View>
+        <View style={{ display: "flex", flexDirection: "row-reverse" }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Setting");
+            }}
           >
-              <TouchableOpacity
-                  onPress={() => {
-                      navigation.navigate("Setting");
-                  }}
-              >
-                  <Image
-                      source={require("../assets/img/setting-icon.png")}
-                      style={{ width: 24, height: 24 }}
-                  />
-              </TouchableOpacity>
-              <View style={{ width: 8 }} />
-              <TouchableOpacity>
-                  {/*, border:"1px solid #B8B5BC",*/}
-                  <View style={{width:50,height:20, borderRadius:5, display:"flex", alignItems:"center", justifyContent:"center"}}>
-                      <Text style={{fontSize:10, color:"#B8B5BC"}}>Log out</Text>
-                  </View>
-              </TouchableOpacity>
-
-          </View>
+            <Image
+              source={require("../assets/img/setting-icon.png")}
+              style={{ width: 24, height: 24 }}
+            />
+          </TouchableOpacity>
+          <View style={{ width: 8 }} />
+          <TouchableOpacity>
+            {/*, border:"1px solid #B8B5BC",*/}
+            <View
+              style={{
+                width: 50,
+                height: 20,
+                borderRadius: 5,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ fontSize: 10, color: "#B8B5BC" }}>Log out</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
       <View
         style={{
@@ -127,73 +143,126 @@ const MyPage = ({ navigation }) => {
             marginLeft: 20,
             display: "flex",
             flexDirection: "column",
-              width:"60%"
+            width: "60%",
           }}
         >
-            <Text style={{fontSize:16, fontWeight:"600", color:"#444345"}}>Bony</Text>
-            <View style={{height:7}}/>
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate("MyPurchases");
-                }}
-                style={{backgroundColor:"#807F82", borderRadius:9, width:"100%", height:36, justifyContent:"center", paddingLeft:20}}
-            >
-                <Text style={{fontSize:14, fontWeight:"500", color:"#FFFFFF"}}>
-                    My purchases
-                </Text>
-            </TouchableOpacity>
-            <View style={{height:2}}/>
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate("MyLesson");
-                }}
-                style={{backgroundColor:"#807F82", borderRadius:9, width:"100%", height:36, justifyContent:"center", paddingLeft:20}}
-            >
-                <Text style={{fontSize:14, fontWeight:"500", color:"#FFFFFF"}}>
-                    Go to Lesson
-                </Text>
-            </TouchableOpacity>
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "#444345" }}>
+            Bony
+          </Text>
+          <View style={{ height: 7 }} />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("MyPurchases");
+            }}
+            style={{
+              backgroundColor: "#807F82",
+              borderRadius: 9,
+              width: "100%",
+              height: 36,
+              justifyContent: "center",
+              paddingLeft: 20,
+            }}
+          >
+            <Text style={{ fontSize: 14, fontWeight: "500", color: "#FFFFFF" }}>
+              My purchases
+            </Text>
+          </TouchableOpacity>
+          <View style={{ height: 2 }} />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("MyLesson");
+            }}
+            style={{
+              backgroundColor: "#807F82",
+              borderRadius: 9,
+              width: "100%",
+              height: 36,
+              justifyContent: "center",
+              paddingLeft: 20,
+            }}
+          >
+            <Text style={{ fontSize: 14, fontWeight: "500", color: "#FFFFFF" }}>
+              Go to Lesson
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
       <View style={{ width: "90%", marginTop: 20 }}>
         <Calendar
           style={styles.calendar}
-          markedDates={markedDates}
+          // markedDates={markedDates}
           theme={{
-              calendarBackground: '#166088',
+            calendarBackground: "white",
 
-              // background: linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)
-              // selectedDayBackgroundColor: 'linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%',
-              selectedDayBackgroundColor: '#DBE9EE',
-              selectedDayTextColor: '#FFFFFF',
-              selectedDotColor: '#166088',
+            // background: linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)
+            selectedDayBackgroundColor:
+              "linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%",
+            selectedDayTextColor: "#FFFFFF",
+            selectedDotColor: "#166088",
 
-              dayTextColor: '#DBE9EE',
-              textDisabledColor: '#729DAF',
-              dotColor: '#DBE9EE',
+            dayTextColor: "#DBE9EE",
+            textDisabledColor: "#729DAF",
+            dotColor: "#DBE9EE",
 
-              monthTextColor: '#DBE9EE',
-              textMonthFontWeight: 'bold',
+            monthTextColor: "#DBE9EE",
+            textMonthFontWeight: "bold",
 
-              arrowColor: '#DBE9EE',
+            arrowColor: "#DBE9EE",
           }}
           // theme={{
-          //   selectedDayBackgroundColor: "linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)",
+          //   selectedDayBackgroundColor:
+          //     "linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)",
           //   arrowColor: "blue",
           //   dotColor: "green",
-          //   todayTextColor: "linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)",
+          //   todayTextColor:
+          //     "linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)",
           // }}
-          // markingType={'period'}
-          // markedDates={{
-          //     '2022-11-15': {marked: true, dotColor: '#50cebb'},
-          //     '2022-11-16': {marked: true, dotColor: '#50cebb'},
-          //     '2022-11-17': {startingDay: true, color: '#50cebb', textColor: 'white'},
-          //     '2022-11-18': {color: '#70d7c7', textColor: 'white'},
-          //     '2022-11-19': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
-          //     '2022-11-20': {color: '#70d7c7', textColor: 'white'},
-          //     '2022-11-21': {endingDay: true, color: '#50cebb', textColor: 'white'}
-          // }}
+          dayComponent={({ date, state, marking }) => {
+            return (
+              <LinearGradient
+                colors={
+                  marking ? ["#84E9FF", "#C284FF"] : ["#FFFFFF", "#ffffff"]
+                }
+                locations={[0, 1]}
+                start={[0.025, 0.5]}
+                end={[0.975, 0.5]}
+                style={{}}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: state === "disabled" ? "gray" : "black",
+                  }}
+                >
+                  {date.day}
+                </Text>
+              </LinearGradient>
+            );
+          }}
+          markingType={"period"}
+          markedDates={{
+            "2022-11-15": { marked: true, dotColor: "#50cebb" },
+            "2022-11-16": { marked: true, dotColor: "#50cebb" },
+            "2022-11-17": {
+              startingDay: true,
+              color: "#50cebb",
+              textColor: "white",
+            },
+            "2022-11-18": { color: "#70d7c7", textColor: "white" },
+            "2022-11-19": {
+              color: "#70d7c7",
+              textColor: "white",
+              marked: true,
+              dotColor: "white",
+            },
+            "2022-11-20": { color: "#70d7c7", textColor: "white" },
+            "2022-11-21": {
+              endingDay: true,
+              color: "#50cebb",
+              textColor: "white",
+            },
+          }}
         />
       </View>
 
@@ -203,15 +272,22 @@ const MyPage = ({ navigation }) => {
           marginTop: 20,
           display: "flex",
           flexDirection: "column",
-            // borderTop:"1px solid #F1EFF4"
+          // borderTop:"1px solid #F1EFF4"
         }}
       >
-          <Text style={{fontSize:16, fontWeight:"600", color:"#444345", marginTop:15, marginBottom:15}}>Analysis</Text>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "600",
+            color: "#444345",
+            marginTop: 15,
+            marginBottom: 15,
+          }}
+        >
+          Analysis
+        </Text>
 
-          <Image
-              source={require("../assets/img/Group 2026.png")}
-          />
-
+        <Image source={require("../assets/img/Group 2026.png")} />
       </View>
     </View>
   );
@@ -224,7 +300,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: "15%",
     paddingBottom: "15%",
-      backgroundColor:"#FFFFFF"
+    backgroundColor: "#FFFFFF",
   },
   calendar: {
     borderBottomWidth: 1,

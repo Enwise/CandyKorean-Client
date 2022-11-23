@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Class from "./Class";
 import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
+
 import CottonCandyLevel from "../assets/icons/CottonCandyLevel";
 import MintCandyLevel from "../assets/icons/MintCandyLevel";
 import EmptyLevel from "../assets/icons/level/EmptyLevel";
