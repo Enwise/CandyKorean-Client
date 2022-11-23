@@ -164,7 +164,8 @@ const MyPage = ({ navigation }) => {
               calendarBackground: '#166088',
 
               // background: linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%)
-              selectedDayBackgroundColor: 'linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%',
+              // selectedDayBackgroundColor: 'linear-gradient(96.07deg, #84E9FF 0%, #C284FF 100%',
+              selectedDayBackgroundColor: '#DBE9EE',
               selectedDayTextColor: '#FFFFFF',
               selectedDotColor: '#166088',
 
