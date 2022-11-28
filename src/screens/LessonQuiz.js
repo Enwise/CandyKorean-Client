@@ -14,6 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import QuizNextButton from "../assets/icons/quiz/QuizNextButton";
 import QuizCorrect from "../assets/icons/quiz/QuizCorrect";
 import QuizWrong from "../assets/icons/quiz/QuizWrong";
+import { update } from 'lodash';
 
 const LessonQuiz = ({ route, navigation }) => {
   const [lessonId, setLessonId] = useState(route.params.lessonId);
@@ -22,7 +23,7 @@ const LessonQuiz = ({ route, navigation }) => {
     isNext: false,
     isCorrect: false,
   });
-  const [selectedList, setSelectedList] = useState([]);
+  // const [selectedList, setSelectedList] = useState([]);
 
   // lessonId 를 활용한 quiz 정보 가져오기
   const [quizList, setQuizList] = useState([
@@ -34,15 +35,20 @@ const LessonQuiz = ({ route, navigation }) => {
     //     answer : {
     //       1: {
     //         text: "무슨",
-    //         order : 1
+    //         order : 1,
+    //         is_selected : false,
     //       },
     //       2 : {
     //         text: "일",
-    //         order : 2
+    //         order : 2,
+    //         is_selected : false,
+
     //       }, 
     //       3: {
     //         text: "있었어요?",
-    //         order : 3
+    //         order : 3,
+    //         is_selected : false,
+
     //       },
     //     },
     //   }
@@ -56,16 +62,22 @@ const LessonQuiz = ({ route, navigation }) => {
       answer: {
         1:{
           text: "어떤 일 있었어요?",
-          correct: false
+          correct: false,
+          is_selected : false,
+
         },
         2: {
           text: "무슨 일 있었어요?",
-          correct: false
+          correct: false,
+          is_selected : false,
+
     
         },
         3: {
           text: "별일 없었어요?",
-          correct: true
+          correct: true,
+          is_selected : false,
+
         },	
       }
     
@@ -79,21 +91,29 @@ const LessonQuiz = ({ route, navigation }) => {
     //     A: {
     //     "eng" : "Where are you going?",
     //     "kor" : "어디에 가세요?",
-    //     isQuestion: true,
+    //     is_question: true,
+    //     is_selected : false,
+
     //     },
     //     B: {
     //     "eng" : "I am trying to go to a bank",
     //     "kor" : "저는 은행에 가려고 해요.",
-    //     isQuestion: false,	
+    //     is_question: false,	
+    //     is_selected : false,
+
     //     },
     //   },
     //   answer: {
     //     1:{
     //       text: "언제 가세요?",	
+    //       is_selected : false,
+
           
     //     },
     //     2: {
     //       text:"지금 가세요?",
+    //       is_selected : false,
+
           
     //     },
           
@@ -109,15 +129,21 @@ const LessonQuiz = ({ route, navigation }) => {
     //   answer: {
     //     1:{
     //       text: "멋지다",
-    //       correct:false	
+    //       correct:false	,
+    //       is_selected : false,
+
     //     },
     //     2: {
     //       text: "재밌다",
-    //       correct:false
+    //       correct:false,
+    //       is_selected : false,
+
     //     },
     //     3: {
     //       text: "맛있다",
-    //       correct:true
+    //       correct:true,
+    //       is_selected : false,
+
     //     },	
     //   }
     
@@ -127,6 +153,7 @@ const LessonQuiz = ({ route, navigation }) => {
   ]);
 
   const [resultList, setResultList] = useState([]);
+  const [selectedList, setSelectedList] = useState([]);
 
   useEffect(() => {
     console.log("useEffect");
@@ -140,12 +167,11 @@ const LessonQuiz = ({ route, navigation }) => {
     if (quizList[currentQuizIdx].style === "arrange") {
       
 
-      if(!updatedQuizList[currentQuizIdx].json.answer[key].hasOwnProperty('isSelected')) {
-        console.log('not exist')
-        updatedQuizList[currentQuizIdx].json.answer[key]['isSelected'] = true;
-        let updatedSelectedList = [...selectedList]
-        updatedSelectedList.push(updatedQuizList[currentQuizIdx].json.answer[key]) 
-        console.log(updatedSelectedList);
+      if(!updatedQuizList[currentQuizIdx].json.answer[key].is_selected) {
+        updatedQuizList[currentQuizIdx].json.answer[key].is_selected = true;
+        let updatedSelectedList = [...selectedList];
+        updatedSelectedList.push(updatedQuizList[currentQuizIdx].json.answer[key].text);
+        console.log(updatedSelectedList)
         setSelectedList(updatedSelectedList);
       } 
       console.log(updatedQuizList[currentQuizIdx].json.answer);
@@ -169,40 +195,23 @@ const LessonQuiz = ({ route, navigation }) => {
   };
 
   const deleteSelected = (item) => {
-    console.log("들어온 text: ", item.text);
+   
+    console.log("삭제예정인 item 값: ", item);
     let updatedQuizList = [...quizList];
 
     if (quizList[currentQuizIdx].style === "arrange") {
       let updatedQuizList = [...quizList];
-      
+      let key = Object.keys(updatedQuizList[currentQuizIdx].json.answer).find(key => updatedQuizList[currentQuizIdx].json.answer[key].text === item);
   
-        if(updatedQuizList[currentQuizIdx].json.answer[item.order].hasOwnProperty('isSelected')) {
+        if(updatedQuizList[currentQuizIdx].json.answer[key].is_selected) {
           console.log('if문 들어오기 성공!')
-          delete updatedQuizList[currentQuizIdx].json.answer[item.order].isSelected;
-          let updatedSelectedList = [...selectedList]
-          let newUpdatedSelectedList = updatedSelectedList.filter((selectedItem) => { return selectedItem.text !== item.text}) 
-          
-          setSelectedList(newUpdatedSelectedList)
-          console.log(newUpdatedSelectedList)
-        }
-      
-    
-      
-      setQuizList(updatedQuizList);
-    }
-
-    // updatedQuizList[currentQuizIdx].selectList.map((select) => {
-    //   if (select.word === pushedWord && select.selected === true) {
-    //     select.selected = false;
-    //     let newUpdatedQuizList = updatedQuizList[
-    //       currentQuizIdx
-    //     ].selectedList.filter((selectedWord) => {
-    //       return selectedWord != pushedWord;
-    //     });
-
-    //     updatedQuizList[currentQuizIdx].selectedList = [...newUpdatedQuizList];
-    //   }
-    // });
+          updatedQuizList[currentQuizIdx].json.answer[key].is_selected = false;
+          let updatedSelectedList = [...selectedList];
+          updatedSelectedList = updatedSelectedList.filter((item) => item !== quizList[currentQuizIdx].json.answer[key].text);
+          console.log(updatedSelectedList)
+          setSelectedList(updatedSelectedList);
+        }      
+      }
 
     setQuizList(updatedQuizList);
   };
@@ -220,7 +229,7 @@ const LessonQuiz = ({ route, navigation }) => {
       })
 
       selectedList.map((item) => {
-        guess += item.text;
+        guess += item;
       })
       console.log(answer, guess);
       isCorrect = guess == answer
@@ -303,6 +312,18 @@ const LessonQuiz = ({ route, navigation }) => {
     return answer;
   }
 
+  // arrange 유형 퀴즈일 때, 몇 개가 선택되었는지 알려주는 함수
+  const getSelectedCount = () => {
+    let count = 0;
+    Object.values(quizList[currentQuizIdx].json.answer).map((value, idx) => {
+      if (value.is_selected) {
+        count += 1;
+      }
+    });
+    return count;
+
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -371,7 +392,6 @@ const LessonQuiz = ({ route, navigation }) => {
                 <View style={styles.answerContainer}>
                   <Text style={styles.answerText}>{
                     showAnswer()
-                    
                   }
 
                   </Text>
@@ -379,6 +399,7 @@ const LessonQuiz = ({ route, navigation }) => {
               ) : null}
 
               {selectedList.map((item, idx) => {
+                console.log(item) // item[0] == key, item[1] == value
                 return (
                   
                   <TouchableOpacity
@@ -387,7 +408,7 @@ const LessonQuiz = ({ route, navigation }) => {
                     }}
                   >
                     <View style={styles.selectedWordContainer}>
-                      <Text style={styles.selectedWordText}>{item.text}</Text>
+                      <Text style={styles.selectedWordText}>{item}</Text>
                     </View>
                   </TouchableOpacity>
                 );
@@ -395,22 +416,22 @@ const LessonQuiz = ({ route, navigation }) => {
               })}
             </View>
             <View style={selection_styles(quizList[currentQuizIdx].style).quizSelectionContainer}>
-              {Object.keys(quizList[currentQuizIdx].json.answer).map((key, idx) => {
+              {Object.entries(quizList[currentQuizIdx].json.answer).map((item, idx) => {
                 return (
                   <TouchableOpacity
                     onPress={() => {
                       if (
                         Object.keys(quizList[currentQuizIdx].json.answer).length >
-                        selectedList.length
+                        getSelectedCount()
                       ) {
-                        updateSelected(key);
+                        updateSelected(item[0]);
                       }
                     }}
-                    disabled={quizList[currentQuizIdx].json.answer[key].isSelected ?? false}
+                    disabled={quizList[currentQuizIdx].json.answer[item[0]].is_selected ?? false}
                   >
                     <View style={styles.englishWordContainer}>
-                      <Text style={wordStyle(quizList[currentQuizIdx].json.answer[key].isSelected).englishWordText}>
-                        {quizList[currentQuizIdx].json.answer[key].text}
+                      <Text style={wordStyle(quizList[currentQuizIdx].json.answer[item[0]].is_selected).englishWordText}>
+                        {quizList[currentQuizIdx].json.answer[item[0]].text}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -454,7 +475,7 @@ const LessonQuiz = ({ route, navigation }) => {
               </TouchableOpacity>
             )}
           </>
-        ) : (  
+        ) : quizList[currentQuizIdx].style === "select_sentence" ?  (  
           <>
             <View style={styles.resultContainer}>
               {isChecked.isNext ? (
@@ -515,7 +536,7 @@ const LessonQuiz = ({ route, navigation }) => {
               </TouchableOpacity>
             )}
           </>
-        ) }
+        ) : null}
       </View>
     </View>
   );
