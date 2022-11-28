@@ -157,22 +157,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     marginBottom: 20,
-    position: "relative",
     backgroundColor: "white",
   },
   titleContainer: {
     position: "relative",
+    flexDirection:'row',
     justifyContent: "center",
-    alignItems: "center",
     marginTop: 50,
-    width: "100%",
-    zIndex: 1,
-    backgroundColor: "white",
+    width: '100%',
+    backgroundColor: "#fff",
+
   },
   title: {
     fontSize: 24,
     marginTop: 30,
     fontFamily: "Poppins-SemiBold",
+    backgroundColor:'#fff',
+    textAlign:'center',
+
   },
   imageContainer: {
     width: 150,
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
   backBtn: {
     position: "absolute",
     top: 40,
-    right: 230,
+    left: 20,
   },
   img: {
     width: 150,
