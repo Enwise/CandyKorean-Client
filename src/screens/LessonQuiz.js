@@ -1,6 +1,5 @@
 import {
   Dimensions,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -14,7 +13,6 @@ import { AntDesign } from "@expo/vector-icons";
 import QuizNextButton from "../assets/icons/quiz/QuizNextButton";
 import QuizCorrect from "../assets/icons/quiz/QuizCorrect";
 import QuizWrong from "../assets/icons/quiz/QuizWrong";
-import { update } from 'lodash';
 
 const LessonQuiz = ({ route, navigation }) => {
   const [lessonId, setLessonId] = useState(route.params.lessonId);
@@ -177,25 +175,20 @@ const LessonQuiz = ({ route, navigation }) => {
       console.log(updatedQuizList[currentQuizIdx].json.answer);
      
     } else if (quizList[currentQuizIdx].style === "select_sentence") {
-      let updatedSelectedList = [...selectedList];
-      updatedSelectedList = []
-
+      
+      if(!updatedQuizList[currentQuizIdx].json.answer[key].is_selected) {
       Object.keys(updatedQuizList[currentQuizIdx].json.answer).map((key_, idx) => {
-        updatedQuizList[currentQuizIdx].json.answer[key_].isSelected = false;
+        updatedQuizList[currentQuizIdx].json.answer[key_].is_selected = false;
+        
       })
-
-      updatedQuizList[currentQuizIdx].json.answer[key].isSelected = true;
-      let newItem = updatedQuizList[currentQuizIdx].json.answer[key]
-
-      updatedSelectedList.push(newItem);
-      console.log('updatedSelectedList = ', updatedSelectedList)
-      setSelectedList(updatedSelectedList);
+      updatedQuizList[currentQuizIdx].json.answer[key].is_selected = true;
     }
+  }
     setQuizList(updatedQuizList);
   };
 
   const deleteSelected = (item) => {
-   
+
     console.log("삭제예정인 item 값: ", item);
     let updatedQuizList = [...quizList];
 
@@ -247,7 +240,16 @@ const LessonQuiz = ({ route, navigation }) => {
       setIsChecked(updatedisChecked);
       setResultList(updatedResultList);
     } else if (quizList[currentQuizIdx].style === "select_sentence") {
-      isCorrect = selectedList[0].correct;
+
+      let isCorrect;
+
+      Object.values(quizList[currentQuizIdx].json.answer).map((item, idx) => {
+        if(item.is_selected) {
+          isCorrect = item.correct;
+        }
+      })
+
+      
 
       let updatedisChecked = { ...isChecked };
       if (isCorrect) {
@@ -280,7 +282,7 @@ const LessonQuiz = ({ route, navigation }) => {
   const checkIfNotSelected = () => {
     let isNotSelected = true;
     Object.keys(quizList[currentQuizIdx].json.answer).map((key, idx) => {
-      if (quizList[currentQuizIdx].json.answer[key]['isSelected']) {
+      if (quizList[currentQuizIdx].json.answer[key].is_selected) {
         isNotSelected = false;
         return;
       }
@@ -490,14 +492,15 @@ const LessonQuiz = ({ route, navigation }) => {
               {Object.keys(quizList[currentQuizIdx].json.answer).map((key, idx) => {
                 return (
                   <TouchableOpacity
+                  
                     disabled={isChecked.isNext}
                     onPress={() => {
                       updateSelected(key);
                     }}
                   >
-                    <View style={styles.quizSelectionRowContainer}>
-                      <View style={circle_styles(quizList[currentQuizIdx].json.answer[key]['isSelected']).quizSelectionCircle}>
-                        <Text style={circle_styles(quizList[currentQuizIdx].json.answer[key]['isSelected']).quizSelectionCircleText}>{key}</Text>
+                    <View style={row_styles(isChecked.isNext, quizList[currentQuizIdx].json.answer[key].correct).quizSelectionRowContainer}>
+                      <View style={circle_styles(isChecked.isNext, quizList[currentQuizIdx].json.answer[key].correct, quizList[currentQuizIdx].json.answer[key].is_selected).quizSelectionCircle}>
+                        <Text style={circle_styles(isChecked.isNext, quizList[currentQuizIdx].json.answer[key].correct, quizList[currentQuizIdx].json.answer[key].is_selected).quizSelectionCircleText}>{key}</Text>
                       </View>
                       <View style={styles.quizSelectionTextContainer}>
                         <Text style={styles.quizSelectionText}>{quizList[currentQuizIdx].json.answer[key].text}</Text>
@@ -673,15 +676,6 @@ const styles = StyleSheet.create({
   },
 
 
-  quizSelectionRowContainer:{
-    flexDirection:'row',
-    width:'100%',
-    height:30,
-    alignItems:'center',
-    marginBottom:10,
-    paddingLeft:10,
-    paddingRight:10,
-  },
 
   
 
@@ -689,20 +683,19 @@ const styles = StyleSheet.create({
   quizSelectionTextContainer:{
     width:'90%',
     height:'100%',
-    backgroundColor:'red',
+    backgroundColor:'#fff',
     justifyContent:'center',
     borderRadius:10,
-    backgroundColor:'#fff',
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0,0.2)",
         shadowOpacity: 1,
-        shadowOffset: { height: 2, width: 2 },
+        shadowOffset: { height: 1, width: 1 },
         shadowRadius: 2,
       },
 
       android: {
-        elevation: 10,
+        elevation: 15,
         marginHorizontal: 0,
       },
     }),
@@ -710,6 +703,7 @@ const styles = StyleSheet.create({
   },
   quizSelectionText:{
     fontFamily:'Poppins-Medium',
+    width:'100%',
     fontSize:14,
     paddingLeft:15,
   },
@@ -732,24 +726,38 @@ const styles = StyleSheet.create({
 
 });
 
-const circle_styles = (isSelected) => StyleSheet.create({
+const row_styles = (isNext, correct) => StyleSheet.create({
+    quizSelectionRowContainer:{
+      flexDirection:'row',
+      width:'100%',
+      height: 30,
+      alignItems:'center',
+      marginBottom:10,
+      paddingLeft:10,
+      paddingRight:10,
+      opacity : isNext && !correct ? 0.1 : 1,
+    },
+  
+})
+
+
+
+const circle_styles = (isNext, correct, isSelected) => StyleSheet.create({
   quizSelectionCircle : {
     width:'10%',
     height:'100%',
-    backgroundColor: isSelected ? '#A160E2' : '#F1EFF4',
+    backgroundColor: isNext ? (correct ? '#A160E2' : '#000') : (isSelected ? '#A160E2' : '#F1EFF4'),
     flexDirection:'row',
     justifyContent:'center',
     alignItems:'center',
     borderRadius:100,
-    borderColor:isSelected ? '#A160E2' : '#E6E3EA',
+    borderColor: isNext ? (correct ? 'A160E2' : '#000') : (isSelected ? '#A160E2' : '#E6E3EA'),
     marginRight:10,
-    
-
   } ,
   quizSelectionCircleText:{
     fontFamily:'Poppins-Medium',
     fontSize:14,
-    color:isSelected ? '#fff' : '#807F82'
+    color: isNext ? (correct ? '#fff' : '#000'): (isSelected ? '#fff' : '#807F82')
   },
 })
 
