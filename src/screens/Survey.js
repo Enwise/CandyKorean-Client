@@ -15,7 +15,7 @@ import BackButton from "../components/BackButton";
 import { LinearGradient } from "expo-linear-gradient";
 
 const windowWidth = Dimensions.get("window").width;
-const Survey = ({ navigation }) => {
+const Survey = ({ navigation, route }) => {
   const survey1 = [
     "Google Search",
     "App Store / Google Play Store",
@@ -52,6 +52,16 @@ const Survey = ({ navigation }) => {
   const [selected3, setSelected3] = React.useState([]);
   const [surveyOption, setSurveyOption] = React.useState(1);
 
+  const userData = {
+    ...route.params.userData,
+    survey1: selected1,
+    survey2: selected2,
+    survey3: selected3,
+  };
+  const handleSignUp = () => {
+    // createUser
+  };
+
   const handleSelect = (item) => {
     if (surveyOption === 1) {
       if (selected1.includes(item)) {
@@ -77,7 +87,7 @@ const Survey = ({ navigation }) => {
       }
     }
   };
-  console.log(selected3);
+
   const survey3Items = survey3.map((item, index) => {
     return (
       <TouchableOpacity

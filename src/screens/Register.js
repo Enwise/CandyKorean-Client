@@ -13,7 +13,7 @@ const Register = ({ navigation }) => {
   const [isVaildEmail, setIsVaildEmail] = React.useState(false);
   const [isVaildPassword, setIsVaildPassword] = React.useState(false);
   const [checkPassword, setCheckPassword] = React.useState(false);
-
+  const [enableButton, setEnableButton] = React.useState(false);
   const handleChange = (type) => {
     return (value) => {
       if (type === "email") {
@@ -23,6 +23,10 @@ const Register = ({ navigation }) => {
         else setIsVaildEmail(false);
       } else if (type === "password") {
         setPassword(value);
+        if (value.length >= 8) setIsVaildPassword(true);
+        else setIsVaildPassword(false);
+        if (value === confirmPassword) setCheckPassword(true);
+        else setCheckPassword(false);
       } else if (type === "confirmPassword") {
         setConfirmPassword(value);
         if (value === password) setCheckPassword(true);
@@ -30,6 +34,10 @@ const Register = ({ navigation }) => {
       }
     };
   };
+  React.useEffect(() => {
+    if (isVaildEmail && isVaildPassword && checkPassword) setEnableButton(true);
+    else setEnableButton(false);
+  }, [isVaildEmail, isVaildPassword, checkPassword]);
 
   return (
     <View style={styles.container}>
@@ -56,6 +64,7 @@ const Register = ({ navigation }) => {
           value={password}
           placeholder={"Password"}
           handleChange={handleChange("password")}
+          isValid={isVaildPassword}
         />
         <SignUpInput
           value={confirmPassword}
@@ -65,7 +74,13 @@ const Register = ({ navigation }) => {
         />
         <GradientButton
           title={"SIGN UP"}
-          onPress={() => navigation.navigate("Success")}
+          onPress={() => {
+            navigation.navigate("Success", {
+              email: email,
+              password: password,
+            });
+          }}
+          disabled={!enableButton}
         />
       </View>
       <Text

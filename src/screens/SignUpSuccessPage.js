@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 
 import LogoIcon from "../assets/icons/LogoIcon";
 
-const SignUpSuccessPage = ({ navigation }) => {
+const SignUpSuccessPage = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View
@@ -22,7 +22,12 @@ const SignUpSuccessPage = ({ navigation }) => {
         <Text style={styles.text}>Start your study with Candy Korean</Text>
         <GradientButton
           title={"SET YOUR GOAL"}
-          onPress={() => navigation.navigate("UserInfo")}
+          onPress={() =>
+            navigation.navigate("UserInfo", {
+              email: route.params.email,
+              password: route.params.password,
+            })
+          }
         />
       </View>
     </View>

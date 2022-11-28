@@ -21,9 +21,9 @@ import Accordion from "../components/Accordion";
 import CountryPicker from "react-native-country-picker-modal";
 
 const windowWidth = Dimensions.get("window").width;
-const UserInfo = ({ navigation }) => {
+const UserInfo = ({ navigation, route }) => {
   const gender = ["Female", "Male", "Other"];
-  const [email, setEmail] = React.useState();
+  const [email, setEmail] = React.useState(route.params.email);
   const [name, setName] = React.useState();
   const [genderSelect, setGenderSelect] = React.useState();
   const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
@@ -33,6 +33,16 @@ const UserInfo = ({ navigation }) => {
   const [job, setJob] = React.useState();
   const [nationality, setNationality] = React.useState();
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [enableButton, setEnableButton] = React.useState(false);
+  const userData = {
+    login_id: email,
+    password: route.params.password,
+    nickname: name,
+    gender: genderSelect,
+    koreanLevel: levelSelect.level,
+    birth: date,
+    job: job,
+  };
   const levelData = [
     {
       level: "Beginner",
@@ -48,7 +58,11 @@ const UserInfo = ({ navigation }) => {
     },
   ];
   const jobList = ["Students", "Worker", "Self-employment", "Unemployed"];
-  console.log(nationality);
+
+  React.useEffect(() => {
+    if (name && nationality) setEnableButton(true);
+    else setEnableButton(false);
+  }, [name, nationality]);
 
   return (
     <View style={styles.container}>
@@ -66,9 +80,17 @@ const UserInfo = ({ navigation }) => {
         >
           Profile
         </Text>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <ProfileInput title={"Email"} required={true} />
-          <ProfileInput title={"Username"} required={true} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 30 }}
+        >
+          <ProfileInput title={"Email"} required={true} value={email} />
+          <ProfileInput
+            title={"Username"}
+            required={true}
+            value={name}
+            onChange={setName}
+          />
           <View style={styles.title}>
             <Text style={styles.titleText}>
               Nationality
@@ -149,7 +171,7 @@ const UserInfo = ({ navigation }) => {
                     ? `${date.getDate()} / ${
                         date.getMonth() + 1
                       } / ${date.getFullYear()}`
-                    : "DD / MM/ YYYY"}
+                    : "MM / DD / YYYY"}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -169,7 +191,8 @@ const UserInfo = ({ navigation }) => {
       <View style={{ marginLeft: 20, flex: 1 }}>
         <GradientButton
           title={"SUBMIT"}
-          onPress={() => navigation.navigate("Survey")}
+          onPress={() => navigation.navigate("Survey", { userData })}
+          disabled={!enableButton}
         />
       </View>
       <BottomSheet
