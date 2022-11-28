@@ -16,16 +16,18 @@ const LevelSelect = ({ data, onPress, select }) => {
           <TouchableOpacity
             key={index}
             style={
-              _.isEqual(item, selected) ? styles.selected : styles.unselected
+              _.isEqual(item.level, selected)
+                ? styles.selected
+                : styles.unselected
             }
-            onPress={() => onSelect(item)}
+            onPress={() => onSelect(item.level)}
           >
             <View>
               <Text style={styles.title}>{item.level}</Text>
               <Text style={styles.description}>{item.description}</Text>
             </View>
 
-            {_.isEqual(item, selected) && (
+            {_.isEqual(item.level, selected) && (
               <View>
                 <LevelCheckIcon />
               </View>

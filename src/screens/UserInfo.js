@@ -39,7 +39,7 @@ const UserInfo = ({ navigation, route }) => {
     password: route.params.password,
     nickname: name,
     gender: genderSelect,
-    koreanLevel: levelSelect.level,
+    koreanLevel: levelSelect,
     birth: date,
     job: job,
   };
@@ -134,7 +134,7 @@ const UserInfo = ({ navigation, route }) => {
                   levelSelect ? { color: "#444345" } : undefined,
                 ]}
               >
-                {levelSelect ? `${levelSelect.level}` : "Select your Level"}
+                {levelSelect ? `${levelSelect}` : "Select your Level"}
               </Text>
               <DropDownIcon />
             </TouchableOpacity>
