@@ -1,14 +1,19 @@
 import React from "react";
 import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
 const windowWidth = Dimensions.get("window").width;
-const ProfileInput = ({ title, required }) => {
+const ProfileInput = ({ title, required, value, onChange }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
         {title}
         {required ? <Text style={{ color: "#A160E2" }}> *</Text> : null}
       </Text>
-      <TextInput style={styles.input} />
+      <TextInput
+        style={[styles.input, title === "Email" ? { color: "#B8B5BC" } : null]}
+        editable={title === "Email" ? false : true}
+        value={value}
+        onChangeText={onChange}
+      />
     </View>
   );
 };

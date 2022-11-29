@@ -468,7 +468,7 @@ export const createUser = async (
 ) => {
   const response = await postRequest("/user", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
@@ -479,9 +479,10 @@ export const updateUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await putRequest("/user", reqParam, handleError);
+  const { userId, ...restParam } = reqParam;
+  const response = await putRequest(`/user/${userId}`, restParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
@@ -501,7 +502,7 @@ export const deleteUser = async (
 
 /* Login */
 export const login = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await getRequest("/login", reqParam, handleError);
+  const response = await postRequest("/login", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);

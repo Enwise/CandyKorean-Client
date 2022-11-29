@@ -38,10 +38,6 @@ const Login = ({ navigation }) => {
     }
   };
 
-  React.useEffect(() => {
-    console.log("dfdfasdfa", authState);
-  }, [authState]);
-
   return (
     <View style={styles.container}>
       <View

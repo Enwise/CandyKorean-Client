@@ -8,8 +8,10 @@ import { LineChart } from "react-native-chart-kit";
 import { VERTICAL } from "react-native/Libraries/Components/ScrollView/ScrollViewContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
+import AuthContext from "../contexts/AuthContext";
 
 const MyPage = ({ navigation }) => {
+  const { signOut, authState } = React.useContext(AuthContext);
   const Width = Dimensions.get("window").width; //스크린 너비 초기화
   const Height = Dimensions.get("window").height; //스크린 높이 초기화
   const markedDates = {
@@ -110,7 +112,7 @@ const MyPage = ({ navigation }) => {
             />
           </TouchableOpacity>
           <View style={{ width: 8 }} />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={signOut}>
             {/*, border:"1px solid #B8B5BC",*/}
             <View
               style={{

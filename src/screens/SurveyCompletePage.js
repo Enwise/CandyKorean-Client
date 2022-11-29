@@ -3,11 +3,16 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import WhiteLogo from "../assets/icons/WhiteLogo";
+import AuthContext from "../contexts/AuthContext";
 
-const SurveyCompletePage = ({ navigation }) => {
+const SurveyCompletePage = ({ navigation, route }) => {
+  const { signIn } = React.useContext(AuthContext);
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate("MainTab");
+    setTimeout(async () => {
+      await signIn({
+        login_id: route.params.login_id,
+        password: route.params.password,
+      });
     }, 2000);
   });
 
