@@ -37,10 +37,10 @@ const UserInfo = ({ navigation, route }) => {
   const userData = {
     login_id: email,
     password: route.params.password,
-    nickname: name,
+    name: name,
     gender: genderSelect,
-    koreanLevel: levelSelect,
-    birth: date,
+    korean_level: levelSelect,
+    date_of_birth: date,
     job: job,
   };
   const levelData = [
@@ -167,21 +167,16 @@ const UserInfo = ({ navigation, route }) => {
             >
               <View style={styles.dateSelectView}>
                 <Text style={styles.dateText}>
-                  {date
-                    ? `${date.getDate()} / ${
-                        date.getMonth() + 1
-                      } / ${date.getFullYear()}`
-                    : "MM / DD / YYYY"}
+                  {date ? date : "MM / DD / YYYY"}
                 </Text>
               </View>
             </TouchableOpacity>
           </View>
           <DateTimePicker
             isVisible={datePickerVisible}
-            date={date}
             mode="date"
             onConfirm={(date) => {
-              setDate(date);
+              setDate(date.toLocaleDateString());
               setDatePickerVisible(false);
             }}
             onCancel={() => setDatePickerVisible(false)}

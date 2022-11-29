@@ -99,13 +99,13 @@ export default function App() {
           try {
             await AsyncStorage.multiSet([
               ["userToken", userToken],
-              ["userId", userId],
+              ["userId", String(userId)],
             ]);
           } catch (e) {
             console.log("e", e);
           }
         }
-        dispatch({ type: "SIGN_IN", token: userToken });
+        dispatch({ type: "SIGN_IN", token: userToken, userId: userId });
       },
       signOut: async () => {
         await AsyncStorage.multiRemove(["userToken", "userId"]);
@@ -134,7 +134,7 @@ export default function App() {
       },
       authState: state,
     }),
-    []
+    [state]
   );
   const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("./src/assets/fonts/Poppins-Regular.ttf"),
@@ -143,7 +143,6 @@ export default function App() {
     "Poppins-Bold": require("./src/assets/fonts/Poppins-Bold.ttf"),
   });
   if (!fontsLoaded) return null;
-  // console.log("state", state);
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>

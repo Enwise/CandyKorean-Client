@@ -13,9 +13,12 @@ import SurveyList from "../components/SurveyList";
 import BackButton from "../components/BackButton";
 
 import { LinearGradient } from "expo-linear-gradient";
+import { updateUser } from "../modules/NetworkFunction";
+import AuthContext from "../contexts/AuthContext";
 
 const windowWidth = Dimensions.get("window").width;
 const Survey = ({ navigation, route }) => {
+  const { authState } = React.useContext(AuthContext);
   const survey1 = [
     "Google Search",
     "App Store / Google Play Store",
@@ -54,12 +57,36 @@ const Survey = ({ navigation, route }) => {
 
   const userData = {
     ...route.params.userData,
-    survey1: selected1,
-    survey2: selected2,
-    survey3: selected3,
+    survey_answers: JSON.stringify({
+      survey1: selected1,
+      survey2: selected2,
+      survey3: selected3,
+    }),
+    userId: authState.userId,
   };
-  const handleSignUp = () => {
-    // createUser
+  const handleSignUp = async () => {
+    await updateUser(
+      userData,
+      (d) => {
+        if (d.message === "updated") {
+          navigation.reset({
+            routes: [
+              {
+                name: "SurveyComplete",
+                params: {
+                  login_id: userData.login_id,
+                  password: userData.password,
+                },
+              },
+            ],
+          });
+        }
+      },
+      () => {},
+      (e) => {
+        console.log("updateUser error", e);
+      }
+    );
   };
 
   const handleSelect = (item) => {
@@ -200,7 +227,7 @@ const Survey = ({ navigation, route }) => {
           <GradientButton
             title={"SUBMIT"}
             disabled={selected3.length < 3}
-            onPress={() => navigation.navigate("SurveyComplete")}
+            onPress={handleSignUp}
           />
         )}
       </View>

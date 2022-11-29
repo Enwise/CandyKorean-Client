@@ -502,7 +502,7 @@ export const deleteUser = async (
 
 /* Login */
 export const login = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await getRequest("/login", reqParam, handleError);
+  const response = await postRequest("/login", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);

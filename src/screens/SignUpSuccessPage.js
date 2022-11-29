@@ -22,12 +22,7 @@ const SignUpSuccessPage = ({ navigation, route }) => {
         <Text style={styles.text}>Start your study with Candy Korean</Text>
         <GradientButton
           title={"SET YOUR GOAL"}
-          onPress={() =>
-            navigation.navigate("UserInfo", {
-              email: route.params.email,
-              password: route.params.password,
-            })
-          }
+          onPress={() => navigation.navigate("UserInfo", route.params)}
         />
       </View>
     </View>
