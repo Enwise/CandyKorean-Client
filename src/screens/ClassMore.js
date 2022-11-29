@@ -64,7 +64,7 @@ const ClassMore = ({ navigation, route }) => {
           <AntDesign name="left" size={20} color="black" />
         </TouchableOpacity>
       </View>
-      <CartButton text="1" navigation={navigation} isMain={false}></CartButton>
+      {/* <CartButton text="1" navigation={navigation} isMain={false}></CartButton> */}
     </View>
   );
 };

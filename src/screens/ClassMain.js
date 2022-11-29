@@ -248,11 +248,11 @@ const ClassMain = ({ navigation }) => {
           );
         })}
       </ScrollView>
-      <WishListButton
+      {/* <WishListButton
         text="1"
         navigation={navigation}
         isMain={true}
-      ></WishListButton>
+      ></WishListButton> */}
     </View>
   );
 };
