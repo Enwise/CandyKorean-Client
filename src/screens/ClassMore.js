@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   classListContainer: {
-    width: 300,
+    width: "100%",
     backgroundColor: "#fff",
   },
   topItem1: {

@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,10 +10,21 @@ import {
 } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
-import { Shadow } from "react-native-shadow-2";
 
 const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
   const [unitsNum, setUnitsNum] = useState(9);
+  const [isWishList, setIsWishList] = useState(false);
+
+  const handleWishList = () => {
+    console.log("handleWishList");
+    setIsWishList(!isWishList);
+  };
+
+  useEffect(() => {
+    // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
+  }, []);
+
+  console.log(isShowAll);
 
   return (
     <View style={dstyles(isShowAll).classContainer}>
@@ -30,13 +41,27 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
             }}
             disabled={!isMain}
           >
-            <Image style={styles.classImg} source={classInfo.imgUrl}></Image>
+            <Image
+              style={isShowAll ? styles.classProfileImg : styles.classImg}
+              source={isShowAll ? classInfo.profileUrl : classInfo.imgUrl}
+            ></Image>
           </TouchableOpacity>
         </View>
         <View style={dstyles(isShowAll).textContainer}>
           {isShowAll ? (
-            <View>
+            <View style={styles.classNameAndHeart}>
               <Text style={styles.className}>{classInfo.className}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  handleWishList();
+                }}
+              >
+                {isWishList ? (
+                  <AntDesign name="heart" size={24} color="#A160E2" />
+                ) : (
+                  <AntDesign name="hearto" size={24} color="#A160E2" />
+                )}
+              </TouchableOpacity>
             </View>
           ) : null}
           <View style={styles.teacherNameContainer}>
@@ -71,7 +96,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
 };
 
 const styles = StyleSheet.create({
-  classCotaniner: {
+  classContainer: {
     backgroundColor: "#fff",
   },
   className: {
@@ -96,24 +121,23 @@ const styles = StyleSheet.create({
 
   unitsImg: {
     position: "absolute",
-    bottom: 15,
-    right: 15,
+    bottom: 0,
+    right: 0,
   },
 
   unitsNumText: {
     fontFamily: "Poppins-Medium",
-    color: "#FFFFFF",
+    color: "#fff",
     position: "absolute",
     bottom: 0,
     right: 6,
   },
   bottomContainer: {
     marginTop: 15,
-    width: 300,
+    paddingLeft: 10,
+    paddingRight: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    textAlign: "center",
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0,0.2)",
@@ -122,7 +146,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
       },
       android: {
-        elevation: 3,
         marginHorizontal: 0,
       },
     }),
@@ -137,6 +160,21 @@ const styles = StyleSheet.create({
     height: 250,
     marginRight: 10,
   },
+  classProfileImg: {
+    borderRadius: 20,
+    width: "100%",
+    height: 130,
+    marginRight: 15,
+  },
+  classNameAndHeart: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  imageContainer: {
+    width: "35%",
+    marginRight: 15,
+  },
 });
 
 const dstyles = (isShowAll) =>
@@ -145,7 +183,11 @@ const dstyles = (isShowAll) =>
       ? {
           flexDirection: "column",
           marginBottom: 40,
-          width: 150,
+          marginRight: 30,
+          borderRadius: 20,
+          paddingLeft: 20,
+          width: "100%",
+          position: "relative",
         }
       : {
           flexDirection: "column",
@@ -170,10 +212,12 @@ const dstyles = (isShowAll) =>
       shadowOpacity: 0.23,
       shadowRadius: 2.62,
       elevation: 4,
+      width: "100%",
     },
+
     textContainer: {
       flexDirection: "column",
-      width: 150,
+      width: "50%",
       alignItems: "flex-start",
     },
   });

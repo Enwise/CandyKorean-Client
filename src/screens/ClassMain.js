@@ -34,6 +34,7 @@ const ClassMain = ({ navigation }) => {
       {
         id: 1,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
         teacherName: "yoojin shin",
         // mp4 로 해야됨..서버에 mp4 파일 올려야됨
         // introVideoUrl: require("https://youtube.com/shorts/2sr2X_inOSg"),
@@ -50,6 +51,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 2,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "Kyungeun2",
         className: "class2",
         category: "K-history",
@@ -60,6 +63,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 3,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "Kyungeun3",
         className: "class3",
         category: "K-pop",
@@ -70,6 +75,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 4,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "Kyungeun4",
         className: "class4",
         category: "K-culture",
@@ -80,6 +87,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 5,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "Kyungeun5",
         className: "class5",
         category: "K-culture",
@@ -93,6 +102,8 @@ const ClassMain = ({ navigation }) => {
         id: 6,
 
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "K pop with Wang1",
         className: "class1",
         category: "K-culture",
@@ -103,6 +114,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 7,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "K pop with Wang2",
         className: "class2",
         category: "K-culture",
@@ -114,6 +127,8 @@ const ClassMain = ({ navigation }) => {
         id: 8,
 
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "K pop with Wang3",
         className: "class3",
         category: "K-culture",
@@ -124,6 +139,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 9,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "K pop with Wang4",
         className: "class4",
         category: "K-culture",
@@ -136,6 +153,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 10,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "shin",
         className: "class1",
         category: "K-culture",
@@ -146,6 +165,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 11,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "kim",
         className: "class2",
         category: "K-culture",
@@ -156,6 +177,8 @@ const ClassMain = ({ navigation }) => {
       {
         id: 12,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+        profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
         teacherName: "lee",
         className: "class3",
         category: "K-culture",
