@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import Lesson from "../components/Lesson";
+import GradientBtn from "../components/GradientButtonView";
 
 const ClassRoom = ({ navigation }) => {
   // 객체 형태로 저장
@@ -345,7 +346,6 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: "#fff",
     position: "relative",
-    paddingBottom: 50,
     alignItems: "center",
   },
   titleContainer: {
@@ -354,9 +354,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
-  },
-  moreButton: {
-    flexDirection: "row",
   },
 });
 

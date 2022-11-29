@@ -9,9 +9,7 @@ import {
   Platform,
 } from "react-native";
 
-import { AntDesign } from "@expo/vector-icons";
-import { Shadow } from "react-native-shadow-2";
-import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
+import GradientBtn from "../components/GradientButtonView";
 
 const Lesson = ({ navigation, lessonInfo }) => {
   return (
@@ -38,12 +36,20 @@ const Lesson = ({ navigation, lessonInfo }) => {
           </View>
         </View>
 
-        <View style={styles.unitsContainer}>
-          <Image source={require("../assets/img/ic-lesson-units.png")}></Image>
-          <Text style={styles.unitsText}>
-            {lessonInfo.currentUnit}/{lessonInfo.totalUnits} Units
-          </Text>
-        </View>
+        <GradientBtn
+          text={`${lessonInfo.currentUnit + "/" + lessonInfo.totalUnits} Units`}
+          viewStyle={{
+            borderRadius: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            zIndex: 3,
+            width: 80,
+            height: 30,
+            right: 0,
+            bottom: 0,
+          }}
+        />
         <View style={styles.lessonDateContainer}>
           <Text style={styles.lessonDateText}>
             From {lessonInfo.startDate} - {lessonInfo.endDate}

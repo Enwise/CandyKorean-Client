@@ -17,7 +17,8 @@ import Dialog, {
   DialogFooter,
   DialogButton,
 } from "react-native-popup-dialog";
-import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
+
+import GradientBtn from "../components/GradientButtonView";
 
 const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
@@ -68,15 +69,19 @@ const LessonInfo = ({ navigation, route }) => {
           <View style={styles.todayContainer}>
             <Text style={styles.todayText}>Today's Lecture</Text>
           </View>
-          <View style={styles.totalUnitContainer}>
-            <Image
-              style={styles.totalUnitsImg}
-              source={require("../assets/img/units_num_info.png")}
-            ></Image>
-            <Text style={styles.totalUnitsNum}>
-              {lessonInfo.totalUnits} Units
-            </Text>
-          </View>
+
+          <GradientBtn
+            text={`${lessonInfo.totalUnits} Units`}
+            viewStyle={{
+              borderRadius: 15,
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 3,
+              width: 75,
+              height: 25,
+              marginBottom: 30,
+            }}
+          />
           <View style={styles.studyNowBtn}>
             <TouchableOpacity
               onPress={() => {
@@ -360,6 +365,10 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
   },
+  textContainer: {
+    width: "50%",
+    position: "relative",
+  },
   todayContainer: {
     marginBottom: 3,
   },
@@ -438,12 +447,14 @@ const styles = StyleSheet.create({
   curriculumItem: {
     flexDirection: "row",
     marginBottom: 20,
+    width: "90%",
   },
   unitNum: {
     marginRight: 20,
+    flex: 1,
   },
   unitInfo: {
-    width: 200,
+    flex: 2,
   },
   unitTitle: {
     marginBottom: 10,

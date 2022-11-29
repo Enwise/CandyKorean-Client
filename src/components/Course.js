@@ -95,31 +95,27 @@ const Course = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 
   courseContainer: {
-    marginTop: 20,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 5,
+    marginTop: 40,
     width: "100%",
   },
   topContainer: {
+    width: "90%",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     marginLeft: 20,
   },
 
   topItem1: {
-    flex: 2,
+    width: "80%",
   },
 
   topItem2: {
-    flex: 1,
+    width: "20%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
   title: {
     fontSize: 25,

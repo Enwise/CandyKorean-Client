@@ -16,6 +16,7 @@ import { ResizeMode } from "expo-av";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
+import GradientBtn from "../components/GradientButtonView";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [unitsNum, setUnitsNum] = useState(9);
@@ -83,6 +84,20 @@ const ClassInfo = ({ props, navigation, route }) => {
             style={styles.imageContainer}
           ></Image>
           <View style={styles.textContainer}>
+            <GradientBtn
+              text={`${classInfo.units} Units`}
+              viewStyle={{
+                borderRadius: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                zIndex: 3,
+                width: 70,
+                height: 30,
+                right: 0,
+                bottom: -150,
+              }}
+            />
             <View style={styles.classNameHeartContainer}>
               <Text style={styles.className}>{classInfo.className}</Text>
               <TouchableOpacity
@@ -102,10 +117,6 @@ const ClassInfo = ({ props, navigation, route }) => {
               <Text style={styles.teacherName}>
                 with {classInfo.teacherName}
               </Text>
-            </View>
-            <View style={styles.unitsImg}>
-              <Image source={require("../assets/img/units_btn.png")}></Image>
-              <Text style={styles.unitsNumText}>{classInfo.units} Units</Text>
             </View>
           </View>
         </View>
@@ -174,7 +185,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   titleContainer: {
-    position: "relative",
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 50,
@@ -214,9 +224,7 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
-    flexDirection: "column",
     width: "55%",
-    alignItems: "flex-start",
     position: "relative",
   },
   classNameHeartContainer: {
@@ -239,19 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#444345",
   },
-  unitsImg: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-  },
 
-  unitsNumText: {
-    fontFamily: "Poppins-Medium",
-    color: "#FFFFFF",
-    position: "absolute",
-    bottom: 0,
-    right: 8,
-  },
   videoContainer: {
     flex: 3,
     height: 500,
@@ -304,10 +300,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// const dstyles = (videoStatus) =>
-//   StyleSheet.create({
-//     video: {
-//       height: "100%",
-//     },
-//   });
 export default ClassInfo;

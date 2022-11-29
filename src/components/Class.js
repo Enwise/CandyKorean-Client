@@ -8,6 +8,7 @@ import {
   Button,
   Platform,
 } from "react-native";
+import GradientBtn from "./GradientButtonView";
 
 import { AntDesign } from "@expo/vector-icons";
 
@@ -68,10 +69,18 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
             <Text style={styles.teacherName}>with {classInfo.teacherName}</Text>
           </View>
           {isShowAll ? (
-            <View style={styles.unitsImg}>
-              <Image source={require("../assets/img/units_btn.png")}></Image>
-              <Text style={styles.unitsNumText}>{classInfo.units} Units</Text>
-            </View>
+            <GradientBtn
+              viewStyle={{
+                borderRadius: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 5,
+                position: "absolute",
+                top: 30,
+                right: 0,
+              }}
+              text={`${classInfo.units} Units`}
+            />
           ) : null}
         </View>
       </View>
@@ -187,7 +196,6 @@ const dstyles = (isShowAll) =>
           borderRadius: 20,
           paddingLeft: 20,
           width: "100%",
-          position: "relative",
         }
       : {
           flexDirection: "column",
@@ -203,7 +211,6 @@ const dstyles = (isShowAll) =>
     },
     topContainer: {
       flexDirection: isShowAll ? "row" : "column",
-      position: "relative",
       shadowColor: "#000",
       shadowOffset: {
         width: 0,
@@ -217,8 +224,8 @@ const dstyles = (isShowAll) =>
 
     textContainer: {
       flexDirection: "column",
-      width: "50%",
-      alignItems: "flex-start",
+      width: "55%",
+      position: "relative",
     },
   });
 export default memo(Class);

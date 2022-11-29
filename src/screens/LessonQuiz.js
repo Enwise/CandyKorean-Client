@@ -789,6 +789,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     flex: 0.5,
+    width: "100%",
   },
   quizQuestionContainer: {
     borderRadius: 10,
@@ -887,7 +888,7 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#fff",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: 5,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0,0.2)",
@@ -897,7 +898,7 @@ const styles = StyleSheet.create({
       },
 
       android: {
-        elevation: 15,
+        elevation: 5,
         marginHorizontal: 0,
       },
     }),
@@ -1167,7 +1168,7 @@ const buttonStyles = (flag) =>
   StyleSheet.create({
     buttonContainer: {
       marginTop: 10,
-      width: 330,
+      width: Dimensions.get("window").width * 0.9,
       height: 50,
       borderRadius: 30,
       justifyContent: "center",
