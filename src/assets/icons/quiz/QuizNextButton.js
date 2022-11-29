@@ -4,9 +4,9 @@ import Svg, { Rect, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 function QuizNextButton(props) {
   return (
     <Svg
+      marginTop={10}
       width={330}
       height={50}
-      marginTop={20}
       viewBox="0 0 350 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
