@@ -7,6 +7,7 @@ import Plotly from "react-native-plotly";
 import { LineChart } from "react-native-chart-kit";
 import { VERTICAL } from "react-native/Libraries/Components/ScrollView/ScrollViewContext";
 import { LinearGradient } from "expo-linear-gradient";
+import { AntDesign } from "@expo/vector-icons";
 
 const MyPage = ({ navigation }) => {
   const Width = Dimensions.get("window").width; //스크린 너비 초기화
@@ -170,19 +171,28 @@ const MyPage = ({ navigation }) => {
           <View style={{ height: 2 }} />
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("MyLesson");
+              navigation.navigate("MyWishList", { isAdd: false });
             }}
             style={{
               backgroundColor: "#807F82",
               borderRadius: 9,
               width: "100%",
               height: 36,
-              justifyContent: "center",
               paddingLeft: 20,
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#FFFFFF" }}>
-              Go to Lesson
+            <AntDesign name="heart" size={15} color="#fff" />
+            <Text
+              style={{
+                marginLeft: 10,
+                fontSize: 14,
+                fontWeight: "500",
+                color: "#FFFFFF",
+              }}
+            >
+              Wish List
             </Text>
           </TouchableOpacity>
         </View>

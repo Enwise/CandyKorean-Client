@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import Lesson from "../components/Lesson";
+import GradientBtn from "../components/GradientButtonView";
 
 const ClassRoom = ({ navigation }) => {
   // 객체 형태로 저장
@@ -35,46 +36,55 @@ const ClassRoom = ({ navigation }) => {
 
       curriculum: [
         {
+          id: 1,
           unitNum: 1,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/1차시.mp4"),
         },
         {
+          id: 2,
           unitNum: 2,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/2차시.mp4"),
         },
         {
+          id: 3,
           unitNum: 3,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/3차시.mp4"),
         },
         {
+          id: 4,
           unitNum: 4,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/4차시.mp4"),
         },
         {
+          id: 5,
           unitNum: 5,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/5차시.mp4"),
         },
         {
+          id: 6,
           unitNum: 6,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/6차시.mp4"),
         },
         {
+          id: 7,
           unitNum: 7,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/7차시.mp4"),
         },
         {
+          id: 8,
           unitNum: 8,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/8차시.mp4"),
         },
         {
+          id: 9,
           unitNum: 9,
           unitName: "Greetings 안녕하세요",
           // videoUrl: require("../assets/videos/shin_yoo_jin/9차시.mp4"),
@@ -82,7 +92,7 @@ const ClassRoom = ({ navigation }) => {
       ],
     },
     {
-      id: 2,
+      id: 10,
       imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
       profileImgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun2",
@@ -98,38 +108,47 @@ const ClassRoom = ({ navigation }) => {
       description: "Let's study real Korean\n formal language!",
       curriculum: [
         {
+          id: 11,
           unitNum: 1,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 12,
           unitNum: 2,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 13,
           unitNum: 3,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 14,
           unitNum: 4,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 15,
           unitNum: 5,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 16,
           unitNum: 6,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 17,
           unitNum: 7,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 18,
           unitNum: 8,
           unitName: "Greetings 안녕하세요",
         },
         {
+          id: 19,
           unitNum: 9,
           unitName: "Greetings 안녕하세요",
         },
@@ -324,12 +343,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-
-    justifyContent: "space-between",
     paddingTop: 50,
     backgroundColor: "#fff",
     position: "relative",
-    paddingBottom: 50,
+    alignItems: "center",
   },
   titleContainer: {
     alignItems: "center",
@@ -337,9 +354,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
-  },
-  moreButton: {
-    flexDirection: "row",
   },
 });
 
