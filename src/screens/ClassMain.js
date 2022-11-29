@@ -1,3 +1,4 @@
+import { update } from "lodash";
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -10,7 +11,7 @@ import {
 import Course from "../components/Course";
 import WishListButton from "../components/WishListButton";
 
-import { login } from "../modules/NetworkFunction";
+import { getLevels, login } from "../modules/NetworkFunction";
 
 const ClassMain = ({ navigation }) => {
   const [courseNameList, setCourseNameList] = useState([
@@ -18,13 +19,6 @@ const ClassMain = ({ navigation }) => {
     "Cotton Candy Level",
     "Mint Candy Level",
   ]);
-
-  const [isShowAllActive, setIsShowAllActive] = useState(false);
-  const [activeState, setActiveState] = useState({
-    "Lollipop Level": false,
-    "Cotton Candy Level": false,
-    "Mint Candy Level": false,
-  });
 
   // 객체 형태로 저장
   // key: 코스이름
@@ -189,43 +183,38 @@ const ClassMain = ({ navigation }) => {
     ],
   });
 
-  const showAllClass = (title, status) => {
-    if (status) {
-      // more 버튼 눌렀을 때
-      setIsShowAllActive(true);
-      setActiveState({
-        ...activeState,
-        [title]: !activeState[title],
-      });
-    } else {
-      // back 버튼 눌렀을 때
-      setIsShowAllActive(false);
-      setActiveState({
-        "K-Culture": false,
-        "Standard Korean": false,
-        TOPIK: false,
-      });
-    }
-  };
-
-  const [isLoginSucceed, setIsLoginSucceed] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isLevelListLoaded, setIsLevelListLoaded] = useState(false);
+  const [levelList, setLevelList] = useState([]);
 
   useEffect(() => {
-    console.log("activeState");
+    console.log("useEffect");
 
-    if (!isLoginSucceed) {
-      login(
-        { login_id: "11@test.com", password: "1111" },
-        (v) => {
-          console.log(v);
+    // levelList 불러오기
+    if (!isLevelListLoaded) {
+      getLevels(
+        {},
+        (d) => {
+          console.log(d.data);
+          let updatedLevelList = [...levelList];
+          d.data.map((item) => {
+            console.log(item.enabled);
+
+            if (item.enabled) {
+              updatedLevelList.push(item);
+            }
+          });
+          console.log("updatedLevelList", updatedLevelList);
+          setLevelList(updatedLevelList);
         },
-        setIsLoginSucceed,
+
+        setIsLevelListLoaded,
         (e) => {
-          console.log({ ...e });
+          console.log(e);
         }
       );
     }
-  }, [activeState, isShowAllActive]);
+  }, [isLevelListLoaded]);
 
   return (
     <View style={styles.container}>
@@ -234,14 +223,14 @@ const ClassMain = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        {courseNameList.map((courseName) => {
+        {levelList.map((levelItem) => {
+          console.log(levelItem);
           return (
             <Course
               navigation={navigation}
-              key={courseName}
-              title={courseName}
-              classList={dummyCourseList[courseName]}
-              showAllClass={showAllClass}
+              key={levelItem.level_id}
+              levelItem={levelItem}
+              classList={dummyCourseList[levelItem.name]}
               isShowAll={false}
               isMain={true}
             ></Course>

@@ -5,10 +5,10 @@ import { SERVER_URI } from "@env";
 
 const request = async (endpoint, data, handleError) => {
   try {
-    console.log('SERVER URI', SERVER_URI);
+    console.log("SERVER URI", SERVER_URI);
     const response = await axios({
       url: SERVER_URI + endpoint,
-      method: "post",
+      method: "get",
       data: data,
     });
     return response;

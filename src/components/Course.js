@@ -11,41 +11,27 @@ import {
 import Class from "./Class";
 import { AntDesign } from "@expo/vector-icons";
 
-import CottonCandyLevel from "../assets/icons/CottonCandyLevel";
-import MintCandyLevel from "../assets/icons/MintCandyLevel";
-import EmptyLevel from "../assets/icons/level/EmptyLevel";
-
-const Course = ({
-  title,
-  classList,
-  showAllClass,
-  isShowAll,
-  navigation,
-  isMain,
-}) => {
+const Course = ({ classList, levelItem, isShowAll, navigation, isMain }) => {
   const handleShowAllClass = () => {
     {
-      title === "Lollipop Level"
+      levelItem.name === "Lollipop Level"
         ? navigation.navigate("ClassMore", {
             classList: classList,
-            title: title,
+            title: levelItem.name,
           })
         : null;
     }
   };
+  useEffect(() => {
+    console.log(levelItem);
+  }, []);
 
   return (
     <View style={styles.courseContainer}>
       <View style={styles.topContainer}>
         <View style={styles.topItem1}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.secondTitle}>
-            {title === "Lollipop Level"
-              ? "K-Culture with influencers!"
-              : title === "Cotton Candy Level"
-              ? "Standard Korean"
-              : "Lessons for TOPIK"}
-          </Text>
+          <Text style={styles.title}>{levelItem.name}</Text>
+          <Text style={styles.secondTitle}>{levelItem.info}</Text>
         </View>
         <View style={styles.topItem2}>
           <TouchableOpacity
@@ -59,7 +45,7 @@ const Course = ({
           </TouchableOpacity>
         </View>
       </View>
-      {title === "Lollipop Level" ? (
+      {levelItem.name === "Lollipop Level" ? (
         <SafeAreaView nestedScrollEnabled={true} style={{ width: "100%" }}>
           <FlatList
             numColumns={1}
@@ -75,7 +61,7 @@ const Course = ({
                 navigation={navigation}
                 classInfo={item}
                 isShowAll={isShowAll}
-                maintitle={title}
+                maintitle={levelItem.name}
                 isMain={isMain}
               />
             )}

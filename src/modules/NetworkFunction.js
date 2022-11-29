@@ -6,7 +6,7 @@ export const getClasses = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request("/class/getClasses", reqParam, handleError);
+  const response = await request("/class", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -19,7 +19,8 @@ export const getClassById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request("/class/getClassById", reqParam, handleError);
+  const { id } = reqParam;
+  const response = await request(`/class/${id}`, reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -32,7 +33,7 @@ export const createClass = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request("/class/createClass", reqParam, handleError);
+  const response = await request("/class", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -217,9 +218,9 @@ export const deleteCourse = async (
 
 /* Levels */
 export const getLevels = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await request("/level/getLevels", reqParam, handleError);
+  const response = await request("/level", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
