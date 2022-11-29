@@ -10,7 +10,7 @@ import {
 import Course from "../components/Course";
 import WishListButton from "../components/WishListButton";
 
-import { login } from '../modules/NetworkFunction';  
+import { login } from "../modules/NetworkFunction";
 
 const ClassMain = ({ navigation }) => {
   const [courseNameList, setCourseNameList] = useState([
@@ -32,6 +32,7 @@ const ClassMain = ({ navigation }) => {
   const [dummyCourseList, setDummyCourseList] = useState({
     "Lollipop Level": [
       {
+        id: 1,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "yoojin shin",
         // mp4 로 해야됨..서버에 mp4 파일 올려야됨
@@ -47,6 +48,7 @@ const ClassMain = ({ navigation }) => {
         isPortrait: true, // is세로? -> true면 세로, false면 가로
       },
       {
+        id: 2,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun2",
         className: "class2",
@@ -56,6 +58,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 3,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun3",
         className: "class3",
@@ -65,6 +68,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 4,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun4",
         className: "class4",
@@ -74,6 +78,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 5,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "Kyungeun5",
         className: "class5",
@@ -85,6 +90,8 @@ const ClassMain = ({ navigation }) => {
     ],
     "Cotton Candy Level": [
       {
+        id: 6,
+
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang1",
         className: "class1",
@@ -94,6 +101,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 7,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang2",
         className: "class2",
@@ -103,6 +111,8 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 8,
+
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang3",
         className: "class3",
@@ -112,6 +122,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 9,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "K pop with Wang4",
         className: "class4",
@@ -123,6 +134,7 @@ const ClassMain = ({ navigation }) => {
     ],
     "Mint Candy Level": [
       {
+        id: 10,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "shin",
         className: "class1",
@@ -132,6 +144,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 11,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "kim",
         className: "class2",
@@ -141,6 +154,7 @@ const ClassMain = ({ navigation }) => {
         price: 100,
       },
       {
+        id: 12,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         teacherName: "lee",
         className: "class3",
@@ -151,23 +165,6 @@ const ClassMain = ({ navigation }) => {
       },
     ],
   });
-
-  // const changeActiveCourse = (courseName) => {
-  //   setActiveCourse({
-  //     ...activeCourse,
-  //     [courseName]: !activeCourse[courseName],
-  //   });
-  // };
-
-  // const goBack = () => {
-  //   console.log("goBack");
-  //   setActiveCourse({
-  //     "K-Culture": false,
-  //     "Standard Korean": false,
-  //     TOPIK: false,
-  //   });
-  //   setIsMoreActive(false);
-  // };
 
   const showAllClass = (title, status) => {
     if (status) {
@@ -193,11 +190,18 @@ const ClassMain = ({ navigation }) => {
   useEffect(() => {
     console.log("activeState");
 
-    if(!isLoginSucceed){
-      login({"login_id" : "11@test.com", "password": "1111"}, (v) => {console.log(v)}, setIsLoginSucceed, (e) => {console.log({...e})});
+    if (!isLoginSucceed) {
+      login(
+        { login_id: "11@test.com", password: "1111" },
+        (v) => {
+          console.log(v);
+        },
+        setIsLoginSucceed,
+        (e) => {
+          console.log({ ...e });
+        }
+      );
     }
-    
-
   }, [activeState, isShowAllActive]);
 
   return (
