@@ -479,9 +479,10 @@ export const updateUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await putRequest("/user", reqParam, handleError);
+  const { userId, ...restParam } = reqParam;
+  const response = await putRequest(`/user/${userId}`, restParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
