@@ -115,14 +115,21 @@ export default function App() {
     "Poppins-Bold": require("./src/assets/fonts/Poppins-Bold.ttf"),
   });
   if (!fontsLoaded) return null;
+  console.log("state", state);
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {state.userToken == null ? (
             <>
-              <Stack.Screen name="AuthStack" component={AuthStack} />
-              <Stack.Screen name="MainTab" component={MainTab} />
+              <Stack.Screen
+                name="AuthStack"
+                component={AuthStack}
+                options={{
+                  title: "Auth",
+                  animationTypeForReplace: state.isSignout ? "pop" : "push",
+                }}
+              />
             </>
           ) : (
             <Stack.Screen name="MainTab" component={MainTab} />
