@@ -59,7 +59,10 @@ const LessonInfo = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.lessonInfoContainer}>
-        <Image style={styles.imageContainer} source={lessonInfo.imgUrl}></Image>
+        <Image
+          style={styles.imageContainer}
+          source={lessonInfo.profileImgUrl}
+        ></Image>
 
         <View style={styles.textContainer}>
           <View style={styles.todayContainer}>
