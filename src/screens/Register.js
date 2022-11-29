@@ -5,8 +5,10 @@ import BackButton from "../components/BackButton";
 
 import SignUpInput from "../components/SignUpInput";
 import GradientButton from "../components/GradientButton";
+import AuthContext from "../contexts/AuthContext";
 
 const Register = ({ navigation }) => {
+  const { signUp, authState } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
@@ -34,6 +36,24 @@ const Register = ({ navigation }) => {
       }
     };
   };
+
+  const handleSignUp = async () => {
+    const isSignUp = await signUp({ login_id: email, password: password });
+    if (isSignUp) {
+      navigation.reset({
+        routes: [
+          {
+            name: "Success",
+            params: {
+              email: email,
+              password: password,
+            },
+          },
+        ],
+      });
+    }
+  };
+
   React.useEffect(() => {
     if (isVaildEmail && isVaildPassword && checkPassword) setEnableButton(true);
     else setEnableButton(false);
@@ -74,12 +94,7 @@ const Register = ({ navigation }) => {
         />
         <GradientButton
           title={"SIGN UP"}
-          onPress={() => {
-            navigation.navigate("Success", {
-              email: email,
-              password: password,
-            });
-          }}
+          onPress={handleSignUp}
           disabled={!enableButton}
         />
       </View>

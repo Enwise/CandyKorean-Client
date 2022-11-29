@@ -468,7 +468,7 @@ export const createUser = async (
 ) => {
   const response = await postRequest("/user", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

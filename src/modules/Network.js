@@ -3,7 +3,6 @@ import { SERVER_URI } from "@env";
 
 const getRequest = async (endpoint, data, handleError) => {
   try {
-    console.log("SERVER URI", SERVER_URI);
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "get",
@@ -19,7 +18,6 @@ const getRequest = async (endpoint, data, handleError) => {
 
 const postRequest = async (endpoint, data, handleError) => {
   try {
-    console.log("SERVER URI", SERVER_URI);
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "post",
@@ -35,7 +33,6 @@ const postRequest = async (endpoint, data, handleError) => {
 
 const putRequest = async (endpoint, data, handleError) => {
   try {
-    console.log("SERVER URI", SERVER_URI);
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "put",
@@ -51,7 +48,6 @@ const putRequest = async (endpoint, data, handleError) => {
 
 const deleteRequest = async (endpoint, data, handleError) => {
   try {
-    console.log("SERVER URI", SERVER_URI);
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "delete",
