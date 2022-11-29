@@ -369,15 +369,7 @@ const LessonQuiz = ({ route, navigation }) => {
       </View>
       
       <View style={styles.secondContainer}>
-        <View style={styles.resultContainer}>
-          {isChecked.isNext ? (
-            isChecked.isCorrect ? (
-              <QuizCorrect />
-            ) : (
-              <QuizWrong />
-            )
-          ) : null}
-        </View>
+        
         {quizList[currentQuizIdx].style !== 'select_dialog' ? <View style={styles.quizQuestionContainer}>
           <View style={styles.quizQuestionWordsContainer}>
 
@@ -437,7 +429,7 @@ const LessonQuiz = ({ route, navigation }) => {
                 </View>
               ) : null}
 
-              {selectedList.map((item, idx) => {
+              {!isChecked.isNext ? selectedList.map((item, idx) => {
                 console.log(item) // item[0] == key, item[1] == value
                 return (
                   
@@ -452,7 +444,7 @@ const LessonQuiz = ({ route, navigation }) => {
                   </TouchableOpacity>
                 );
                   
-              })}
+              }) : null}
             </View>
             <View style={selection_styles(quizList[currentQuizIdx].style).quizSelectionContainer}>
               {Object.entries(quizList[currentQuizIdx].json.answer).map((item, idx) => {
@@ -482,13 +474,7 @@ const LessonQuiz = ({ route, navigation }) => {
         ) : quizList[currentQuizIdx].style === "select_sentence" ?  (  
           <>
             <View style={styles.resultContainer}>
-              {isChecked.isNext ? (
-                isChecked.isCorrect ? (
-                  <QuizCorrect />
-                ) : (
-                  <QuizWrong />
-                )
-              ) : null}
+              
             </View>
             <View style={selection_styles(quizList[currentQuizIdx].style).quizSelectionContainer}>
               {Object.keys(quizList[currentQuizIdx].json.answer).map((key, idx) => {
@@ -517,13 +503,7 @@ const LessonQuiz = ({ route, navigation }) => {
         ) : quizList[currentQuizIdx].style === 'select_word' ? 
         (<>
           <View style={styles.resultContainer}>
-            {isChecked.isNext ? (
-              isChecked.isCorrect ? (
-                <QuizCorrect />
-              ) : (
-                <QuizWrong />
-              )
-            ) : null}
+            
           </View>
           <View style={selection_styles(quizList[currentQuizIdx].style).quizSelectionContainer}>
             {Object.keys(quizList[currentQuizIdx].json.answer).map((key, idx) => {
@@ -545,15 +525,7 @@ const LessonQuiz = ({ route, navigation }) => {
           
         </>) : 
         (<>
-          <View style={styles.resultContainer}>
-            {isChecked.isNext ? (
-              isChecked.isCorrect ? (
-                <QuizCorrect />
-              ) : (
-                <QuizWrong />
-              )
-            ) : null}
-          </View>
+          
           <View style={selection_styles(quizList[currentQuizIdx].style).quizSelectionContainer}>
             {Object.keys(quizList[currentQuizIdx].json.answer).map((key, idx) => {
               return (
@@ -645,6 +617,15 @@ const LessonQuiz = ({ route, navigation }) => {
               </TouchableOpacity>
             )}
       </View>
+      <View style={styles.resultContainer}>
+          {isChecked.isNext ? (
+            isChecked.isCorrect ? (
+              <QuizCorrect />
+            ) : (
+              <QuizWrong />
+            )
+          ) : null}
+        </View>
     </View>
   );
 };
@@ -752,9 +733,22 @@ const styles = StyleSheet.create({
 
   resultContainer: {
     position: "absolute",
-    bottom: 200,
-    right: 5,
+    bottom: 80,
+    right: 20,
     zIndex: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 2, width: 2 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        elevation: 10,
+        marginHorizontal: 0,
+      },
+    }),
   },
 
   englishWordContainer: {
@@ -828,11 +822,7 @@ const styles = StyleSheet.create({
 
   // arrange 유형 quiz의 answer
   answerContainer: {
-    position: "absolute",
-    top: 90,
-    left: 30,
     opacity: 1,
-    zIndex: 2,
   },
   answerText: {
     fontFamily: "Poppins-Medium",
@@ -985,15 +975,16 @@ const tstyles = (isNext, isCorrect) =>
       marginTop: 10,
 
       flexDirection: "row",
+      justifyContent: isNext && !isCorrect ? "center" : "flex-start",
+      alignItems: isNext && !isCorrect ? "center" : "flex-start",
 
       width: "90%",
       height: "30%",
       marginBottom: 20,
 
-      flexWrap: "wrap",
+      flexWrap:isNext && !isCorrect ? "nowrap" :  "wrap",
 
       backgroundColor: "#fff",
-      alignItems: "center",
       padding: 10,
       borderRadius: 10,
       ...Platform.select({
