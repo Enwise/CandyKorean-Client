@@ -16,10 +16,13 @@ import { ResizeMode } from "expo-av";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
+import GradientBtn from "../components/GradientButtonView";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [unitsNum, setUnitsNum] = useState(9);
   const [classInfo, setClassInfo] = useState(route.params.classInfo);
+  const [isWishList, setIsWishList] = useState(false);
+
   console.log(classInfo);
   const [url, setUrl] = useState("");
   //useEffect(async () => {}, []);
@@ -77,21 +80,43 @@ const ClassInfo = ({ props, navigation, route }) => {
         </View>
         <View style={styles.topContainer}>
           <Image
-            source={classInfo.imgUrl}
+            source={classInfo.profileUrl}
             style={styles.imageContainer}
           ></Image>
           <View style={styles.textContainer}>
-            <View>
+            <GradientBtn
+              text={`${classInfo.units} Units`}
+              viewStyle={{
+                borderRadius: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                zIndex: 3,
+                width: 70,
+                height: 30,
+                right: 0,
+                bottom: -150,
+              }}
+            />
+            <View style={styles.classNameHeartContainer}>
               <Text style={styles.className}>{classInfo.className}</Text>
+              <TouchableOpacity
+                style={styles.heartContainer}
+                onPress={() => {
+                  setIsWishList(!isWishList);
+                }}
+              >
+                {isWishList ? (
+                  <AntDesign name="heart" size={24} color="#A160E2" />
+                ) : (
+                  <AntDesign name="hearto" size={24} color="#A160E2" />
+                )}
+              </TouchableOpacity>
             </View>
             <View style={styles.teacherNameContainer}>
               <Text style={styles.teacherName}>
                 with {classInfo.teacherName}
               </Text>
-            </View>
-            <View style={styles.unitsImg}>
-              <Image source={require("../assets/img/units_btn.png")}></Image>
-              <Text style={styles.unitsNumText}>{classInfo.units} Units</Text>
             </View>
           </View>
         </View>
@@ -157,33 +182,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     marginBottom: 20,
-    position: "relative",
     backgroundColor: "white",
   },
   titleContainer: {
-    position: "relative",
+    flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
     marginTop: 50,
     width: "100%",
-    zIndex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
     marginTop: 30,
     fontFamily: "Poppins-SemiBold",
+    backgroundColor: "#fff",
+    textAlign: "center",
   },
   imageContainer: {
-    width: 150,
-    height: 250,
+    width: "35%",
+    height: "100%",
     marginRight: 10,
     borderRadius: 20,
   },
   backBtn: {
     position: "absolute",
     top: 40,
-    right: 230,
+    left: 20,
   },
   img: {
     width: 150,
@@ -194,13 +218,20 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: "row",
     marginTop: 30,
+    width: "100%",
+    height: 150,
+    paddingLeft: 20,
   },
 
   textContainer: {
-    flexDirection: "column",
-    width: 150,
-    alignItems: "flex-start",
+    width: "55%",
     position: "relative",
+  },
+  classNameHeartContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
 
   className: {
@@ -216,19 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#444345",
   },
-  unitsImg: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-  },
 
-  unitsNumText: {
-    fontFamily: "Poppins-Medium",
-    color: "#FFFFFF",
-    position: "absolute",
-    bottom: 0,
-    right: 8,
-  },
   videoContainer: {
     flex: 3,
     height: 500,
@@ -281,10 +300,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// const dstyles = (videoStatus) =>
-//   StyleSheet.create({
-//     video: {
-//       height: "100%",
-//     },
-//   });
 export default ClassInfo;

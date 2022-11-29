@@ -9,9 +9,7 @@ import {
   Platform,
 } from "react-native";
 
-import { AntDesign } from "@expo/vector-icons";
-import { Shadow } from "react-native-shadow-2";
-import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
+import GradientBtn from "../components/GradientButtonView";
 
 const Lesson = ({ navigation, lessonInfo }) => {
   return (
@@ -24,9 +22,10 @@ const Lesson = ({ navigation, lessonInfo }) => {
     >
       <View style={styles.container}>
         <View style={styles.lessonInfoContainer}>
-          <View style={styles.imageContainer}>
-            <SampleClassImg1 />
-          </View>
+          <Image
+            style={styles.imageContainer}
+            source={lessonInfo.profileImgUrl}
+          ></Image>
           <View style={styles.textContainer}>
             <View style={styles.lessonNameContainer}>
               <Text style={styles.lessonName}>{lessonInfo.className}</Text>
@@ -37,12 +36,20 @@ const Lesson = ({ navigation, lessonInfo }) => {
           </View>
         </View>
 
-        <View style={styles.unitsContainer}>
-          <Image source={require("../assets/img/ic-lesson-units.png")}></Image>
-          <Text style={styles.unitsText}>
-            {lessonInfo.currentUnit}/{lessonInfo.totalUnits} Units
-          </Text>
-        </View>
+        <GradientBtn
+          text={`${lessonInfo.currentUnit + "/" + lessonInfo.totalUnits} Units`}
+          viewStyle={{
+            borderRadius: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            zIndex: 3,
+            width: 80,
+            height: 30,
+            right: 0,
+            bottom: 0,
+          }}
+        />
         <View style={styles.lessonDateContainer}>
           <Text style={styles.lessonDateText}>
             From {lessonInfo.startDate} - {lessonInfo.endDate}
@@ -55,27 +62,34 @@ const Lesson = ({ navigation, lessonInfo }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 15,
     flexDirection: "row",
     padding: 10,
     position: "relative",
-    marginBottom: 20,
-
-    ...Platform.select({
-      ios: {
-        shadowColor: "rgba(0,0,0,0.2)",
-        shadowOpacity: 1,
-        shadowOffset: { height: 2, width: 2 },
-        shadowRadius: 2,
-      },
-      android: {
-        elevation: 3,
-        marginHorizontal: 0,
-      },
-    }),
+    marginBottom: 40,
+    width: "100%",
+    height: 150,
+    borderRadius: 20,
+    // ...Platform.select({
+    //   ios: {
+    //     shadowColor: "rgba(0,0,0,0.2)",
+    //     shadowOpacity: 1,
+    //     shadowOffset: { height: 2, width: 2 },
+    //     shadowRadius: 2,
+    //   },
+    //   android: {
+    //     elevation: 3,
+    //     marginHorizontal: 0,
+    //   },
+    // }),
   },
   lessonInfoContainer: {
     flexDirection: "row",
+    width: "100%",
+  },
+  imageContainer: {
+    width: "40%",
+    height: "100%",
+    borderRadius: 20,
   },
   img: {
     width: 150,
@@ -85,6 +99,7 @@ const styles = StyleSheet.create({
 
   textContainer: {
     marginLeft: 10,
+    width: "60%",
   },
   lessonName: {
     fontFamily: "Poppins-Medium",

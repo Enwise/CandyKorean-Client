@@ -14,11 +14,12 @@ const ClassRoomStack = ({ navigation, route }) => {
   const routeName = getFocusedRouteNameFromRoute(route);
   console.log(routeName);
   React.useLayoutEffect(() => {
-    if (routeName == "LessonVideo") {
+    if (routeName == "LessonVideo" || routeName == "LessonQuiz") {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
       navigation.setOptions({
         tabBarStyle: {
+          paddingHorizontal: 10,
           ...Platform.select({
             android: {
               paddingBottom: 20,
@@ -31,30 +32,27 @@ const ClassRoomStack = ({ navigation, route }) => {
           borderTopLeftRadius: 29,
           borderTopRightRadius: 29,
           backgroundColor: "white",
-          border: "0.5px solid #EFEFEF",
+          borderWidth: 0.5,
+          borderColor: "#EFEFEF",
           shadowOffset: {
             width: 0,
             height: -2,
           },
           shadowColor: "rgba(0, 0, 0, 0.1)",
           shadowRadius: 23,
-        },
-        tabBarLabelStyle: {
-          fontFamily: "Poppins-Regular",
-          fontSize: 10,
+          position: "absolute",
         },
       });
     }
   }, [navigation, route]);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="ClassRoom" component={ClassRoom} />
+      <Stack.Screen name="ClassRoomMain" component={ClassRoom} />
       <Stack.Screen name="LessonInfo" component={LessonInfo} />
       <Stack.Screen
         name="LessonVideo"
         options={{
           headerShown: false,
-
           tabBarStyle: { display: "none" },
         }}
         component={LessonVideo}
