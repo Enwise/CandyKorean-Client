@@ -227,7 +227,7 @@ export const createLevel = async (
 ) => {
   const response = await postRequest("/level", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

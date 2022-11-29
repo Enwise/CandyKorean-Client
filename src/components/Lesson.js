@@ -63,7 +63,7 @@ const Lesson = ({ navigation, lessonInfo }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    padding: 10,
+    padding: 15,
     position: "relative",
     marginBottom: 40,
     width: "100%",

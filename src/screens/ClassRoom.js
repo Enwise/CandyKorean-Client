@@ -9,7 +9,6 @@ import {
 } from "react-native";
 
 import Lesson from "../components/Lesson";
-import GradientBtn from "../components/GradientButtonView";
 
 const ClassRoom = ({ navigation }) => {
   // 객체 형태로 저장
