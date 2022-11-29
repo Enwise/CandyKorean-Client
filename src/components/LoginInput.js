@@ -9,7 +9,7 @@ import {
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 
-const LoginInput = ({ placeholder, value, handleChange, isValid }) => {
+const LoginInput = ({ placeholder, value, handleChange, isSuccess }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -21,10 +21,10 @@ const LoginInput = ({ placeholder, value, handleChange, isValid }) => {
           secureTextEntry={placeholder === "Password" ? true : false}
         />
       </View>
-      {placeholder === "Email" && value && !isValid ? (
+      {placeholder === "Email" && value && !isSuccess ? (
         <Text style={styles.text}>Please check your email</Text>
       ) : null}
-      {placeholder === "Password" && value && !isValid ? (
+      {placeholder === "Password" && value && !isSuccess ? (
         <Text style={styles.text}>Please check yout password</Text>
       ) : null}
     </View>

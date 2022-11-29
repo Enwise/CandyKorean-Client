@@ -6,11 +6,7 @@ export const getClasses = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/class/getClasses",
-    reqParam,
-    handleError
-  );
+  const response = await request("/class/getClasses", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -23,11 +19,7 @@ export const getClassById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/class/getClassById",
-    reqParam,
-    handleError
-  );
+  const response = await request("/class/getClassById", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -40,11 +32,7 @@ export const createClass = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/class/createClass",
-    reqParam,
-    handleError
-  );
+  const response = await request("/class/createClass", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -57,11 +45,7 @@ export const updateClass = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/class/updateClass",
-    reqParam,
-    handleError
-  );
+  const response = await request("/class/updateClass", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -74,11 +58,7 @@ export const deleteClass = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/class/deleteClass",
-    reqParam,
-    handleError
-  );
+  const response = await request("/class/deleteClass", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -92,11 +72,7 @@ export const getContents = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/content/getContents",
-    reqParam,
-    handleError
-  );
+  const response = await request("/content/getContents", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -178,11 +154,7 @@ export const getCourses = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/course/getCourses",
-    reqParam,
-    handleError
-  );
+  const response = await request("/course/getCourses", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -212,11 +184,7 @@ export const createCourse = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/course/createCourse",
-    reqParam,
-    handleError
-  );
+  const response = await request("/course/createCourse", reqParam, handleError);
   if (response !== null) {
     setData(response.data.member);
     setIsReady(true);
@@ -228,11 +196,7 @@ export const updateCourse = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/course/updateCourse",
-    reqParam,
-    handleError
-  );
+  const response = await request("/course/updateCourse", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -244,11 +208,7 @@ export const deleteCourse = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/course/deleteCourse",
-    reqParam,
-    handleError
-  );
+  const response = await request("/course/deleteCourse", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -257,11 +217,7 @@ export const deleteCourse = async (
 
 /* Levels */
 export const getLevels = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await request(
-    "/level/getLevels",
-    reqParam,
-    handleError
-  );
+  const response = await request("/level/getLevels", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -273,11 +229,7 @@ export const getLevelById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/level/getLevelById",
-    reqParam,
-    handleError
-  );
+  const response = await request("/level/getLevelById", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -289,11 +241,7 @@ export const createLevel = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/level/createLevel",
-    reqParam,
-    handleError
-  );
+  const response = await request("/level/createLevel", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -305,11 +253,7 @@ export const updateLevel = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/level/updateLevel",
-    reqParam,
-    handleError
-  );
+  const response = await request("/level/updateLevel", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -321,11 +265,7 @@ export const deleteLevel = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/level/deleteLevel",
-    reqParam,
-    handleError
-  );
+  const response = await request("/level/deleteLevel", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -334,11 +274,7 @@ export const deleteLevel = async (
 
 /* Quizs */
 export const getQuizs = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await request(
-    "/quiz/getQuizs",
-    reqParam,
-    handleError
-  );
+  const response = await request("/quiz/getQuizs", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -351,11 +287,7 @@ export const getQuizById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/quiz/getQuizById",
-    reqParam,
-    handleError
-  );
+  const response = await request("/quiz/getQuizById", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -368,11 +300,7 @@ export const createQuiz = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/quiz/createQuiz",
-    reqParam,
-    handleError
-  );
+  const response = await request("/quiz/createQuiz", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -385,11 +313,7 @@ export const updateQuiz = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/quiz/updateQuiz",
-    reqParam,
-    handleError
-  );
+  const response = await request("/quiz/updateQuiz", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -402,11 +326,7 @@ export const deleteQuiz = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/quiz/deleteQuiz",
-    reqParam,
-    handleError
-  );
+  const response = await request("/quiz/deleteQuiz", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -415,11 +335,7 @@ export const deleteQuiz = async (
 
 /* Slides */
 export const getSlides = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await request(
-    "/slide/getSlides",
-    reqParam,
-    handleError
-  );
+  const response = await request("/slide/getSlides", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -431,11 +347,7 @@ export const getSlideById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/slide/getSlideById",
-    reqParam,
-    handleError
-  );
+  const response = await request("/slide/getSlideById", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -448,11 +360,7 @@ export const createSlide = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/slide/createSlide",
-    reqParam,
-    handleError
-  );
+  const response = await request("/slide/createSlide", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -465,11 +373,7 @@ export const updateSlide = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/slide/updateSlide",
-    reqParam,
-    handleError
-  );
+  const response = await request("/slide/updateSlide", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -482,11 +386,7 @@ export const deleteSlide = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/slide/deleteSlide",
-    reqParam,
-    handleError
-  );
+  const response = await request("/slide/deleteSlide", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -495,11 +395,7 @@ export const deleteSlide = async (
 
 /* Tutors */
 export const getTutors = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await request(
-    "/tutor/getTutors",
-    reqParam,
-    handleError
-  );
+  const response = await request("/tutor/getTutors", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -512,11 +408,7 @@ export const getTutorById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/tutor/getTutorById",
-    reqParam,
-    handleError
-  );
+  const response = await request("/tutor/getTutorById", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -529,11 +421,7 @@ export const createTutor = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/tutor/createTutor",
-    reqParam,
-    handleError
-  );
+  const response = await request("/tutor/createTutor", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -546,11 +434,7 @@ export const updateTutor = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/tutor/updateTutor",
-    reqParam,
-    handleError
-  );
+  const response = await request("/tutor/updateTutor", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -563,11 +447,7 @@ export const deleteTutor = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/tutor/deleteTutor",
-    reqParam,
-    handleError
-  );
+  const response = await request("/tutor/deleteTutor", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -576,11 +456,7 @@ export const deleteTutor = async (
 
 /* Users */
 export const getUsers = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await request(
-    "/user/getUsers",
-    reqParam,
-    handleError
-  );
+  const response = await request("/user/getUsers", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -593,11 +469,7 @@ export const getUserById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/user/getUserById",
-    reqParam,
-    handleError
-  );
+  const response = await request("/user/getUserById", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -610,11 +482,7 @@ export const createUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/user/createUser",
-    reqParam,
-    handleError
-  );
+  const response = await request("/user/createUser", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -627,11 +495,7 @@ export const updateUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/user/updateUser",
-    reqParam,
-    handleError
-  );
+  const response = await request("/user/updateUser", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -644,11 +508,7 @@ export const deleteUser = async (
   setIsReady,
   handleError
 ) => {
-  const response = await request(
-    "/user/deleteUser",
-    reqParam,
-    handleError
-  );
+  const response = await request("/user/deleteUser", reqParam, handleError);
   if (response !== null) {
     setData();
     setIsReady(true);
@@ -656,17 +516,8 @@ export const deleteUser = async (
 };
 
 /* Login */
-export const login = async (
-  reqParam,
-  setData,
-  setIsReady,
-  handleError
-) => {
-  const response = await request(
-    "/login",
-    reqParam,
-    handleError
-  );
+export const login = async (reqParam, setData, setIsReady, handleError) => {
+  const response = await request("/login", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);

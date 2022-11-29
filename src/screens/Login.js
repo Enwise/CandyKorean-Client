@@ -1,14 +1,24 @@
 import React from "react";
 import Constants from "expo-constants";
-import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Logo from "../components/Logo";
 import GradientButton from "../components/GradientButton";
 import LoginInput from "../components/LoginInput";
+import AuthContext from "../contexts/AuthContext";
+import RecommendedLecList from "../components/RecommendedLecList";
 const windowWidth = Dimensions.get("window").width;
 const Login = ({ navigation }) => {
+  const { signIn, authState } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
+  const [isLoginErr, setIsLoginErr] = React.useState(false);
   // 추후에 email, password 검사 필요
   const handleChange = (type) => {
     return (value) => {
@@ -17,8 +27,20 @@ const Login = ({ navigation }) => {
       } else if (type === "password") {
         setPassword(value);
       }
+      setIsLoginErr(false);
     };
   };
+
+  const handleLogin = async () => {
+    await signIn({ login_id: email, password: password });
+    if (authState.userToken == null) {
+      setIsLoginErr(true);
+    }
+  };
+
+  React.useEffect(() => {
+    console.log("dfdfasdfa", authState);
+  }, [authState]);
 
   return (
     <View style={styles.container}>
@@ -36,20 +58,20 @@ const Login = ({ navigation }) => {
           value={email}
           placeholder="Email"
           handleChange={handleChange("email")}
-          isValid={true}
+          isSuccess={!isLoginErr}
         />
         <LoginInput
           value={password}
           placeholder="Password"
           handleChange={handleChange("password")}
-          isValid={true}
+          isSuccess={!isLoginErr}
         />
       </View>
       <View style={{ flex: 2 }}>
         <GradientButton
           title="LOGIN"
           disabled={email === "" || password === ""}
-          onPress={() => navigation.navigate("MainTab")}
+          onPress={() => handleLogin()}
         />
       </View>
     </View>
