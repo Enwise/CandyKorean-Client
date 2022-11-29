@@ -34,8 +34,6 @@ const Course = ({
     }
   };
 
- 
-
   return (
     <View style={styles.courseContainer}>
       <View style={styles.topContainer}>

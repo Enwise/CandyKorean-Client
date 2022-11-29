@@ -20,6 +20,8 @@ import { StatusBar } from "react-native";
 const ClassInfo = ({ props, navigation, route }) => {
   const [unitsNum, setUnitsNum] = useState(9);
   const [classInfo, setClassInfo] = useState(route.params.classInfo);
+  const [isWishList, setIsWishList] = useState(false);
+
   console.log(classInfo);
   const [url, setUrl] = useState("");
   //useEffect(async () => {}, []);
@@ -77,12 +79,24 @@ const ClassInfo = ({ props, navigation, route }) => {
         </View>
         <View style={styles.topContainer}>
           <Image
-            source={classInfo.imgUrl}
+            source={classInfo.profileUrl}
             style={styles.imageContainer}
           ></Image>
           <View style={styles.textContainer}>
-            <View>
+            <View style={styles.classNameHeartContainer}>
               <Text style={styles.className}>{classInfo.className}</Text>
+              <TouchableOpacity
+                style={styles.heartContainer}
+                onPress={() => {
+                  setIsWishList(!isWishList);
+                }}
+              >
+                {isWishList ? (
+                  <AntDesign name="heart" size={24} color="#A160E2" />
+                ) : (
+                  <AntDesign name="hearto" size={24} color="#A160E2" />
+                )}
+              </TouchableOpacity>
             </View>
             <View style={styles.teacherNameContainer}>
               <Text style={styles.teacherName}>
@@ -161,24 +175,22 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     position: "relative",
-    flexDirection:'row',
+    flexDirection: "row",
     justifyContent: "center",
     marginTop: 50,
-    width: '100%',
+    width: "100%",
     backgroundColor: "#fff",
-
   },
   title: {
     fontSize: 24,
     marginTop: 30,
     fontFamily: "Poppins-SemiBold",
-    backgroundColor:'#fff',
-    textAlign:'center',
-
+    backgroundColor: "#fff",
+    textAlign: "center",
   },
   imageContainer: {
-    width: 150,
-    height: 250,
+    width: "35%",
+    height: "100%",
     marginRight: 10,
     borderRadius: 20,
   },
@@ -196,13 +208,22 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: "row",
     marginTop: 30,
+    width: "100%",
+    height: 150,
+    paddingLeft: 20,
   },
 
   textContainer: {
     flexDirection: "column",
-    width: 150,
+    width: "55%",
     alignItems: "flex-start",
     position: "relative",
+  },
+  classNameHeartContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
 
   className: {

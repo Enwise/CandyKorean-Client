@@ -48,7 +48,7 @@ const ClassRoomStack = ({ navigation, route }) => {
   }, [navigation, route]);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="ClassRoom" component={ClassRoom} />
+      <Stack.Screen name="ClassRoomMain" component={ClassRoom} />
       <Stack.Screen name="LessonInfo" component={LessonInfo} />
       <Stack.Screen
         name="LessonVideo"
