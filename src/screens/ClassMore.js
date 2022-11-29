@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   FlatList,
+  Dimensions,
 } from "react-native";
 import Class from "../components/Class";
 import CartButton from "../components/WishListButton";
@@ -38,6 +39,7 @@ const ClassMore = ({ navigation, route }) => {
         <FlatList
           numColumns={1}
           key={"_"}
+          contentContainerStyle={{}}
           style={styles.classListContainer}
           horizontal={false}
           keyExtractor={(item) => String(item.id)}
@@ -75,9 +77,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    backgroundColor: "#fff",
     paddingTop: 50,
     paddingBottom: 150,
+    backgroundColor: "#fff",
   },
   topContainer: {
     flexDirection: "row",
@@ -88,7 +90,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   classListContainer: {
-    width: "100%",
     backgroundColor: "#fff",
   },
   topItem1: {

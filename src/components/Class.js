@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Button,
   Platform,
+  Dimensions,
 } from "react-native";
 import GradientBtn from "./GradientButtonView";
 
@@ -142,19 +143,27 @@ const styles = StyleSheet.create({
     right: 6,
   },
   bottomContainer: {
-    marginTop: 15,
-    paddingLeft: 10,
-    paddingRight: 20,
+    width: Dimensions.get("window").width * 0.93,
+    marginTop: 10,
+    marginBottom: 25,
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
+    paddingLeft: 5,
+    paddingRight: 5,
+    height: 30,
+    backgroundColor: "#fff",
+    borderRadius: 10,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0,0.2)",
         shadowOpacity: 1,
-        shadowOffset: { height: 2, width: 2 },
+        shadowOffset: { height: 1, width: 1 },
         shadowRadius: 2,
       },
+
       android: {
+        elevation: 3,
         marginHorizontal: 0,
       },
     }),
@@ -191,13 +200,15 @@ const dstyles = (isShowAll) =>
     classContainer: isShowAll
       ? {
           flexDirection: "column",
-          marginBottom: 40,
-          marginRight: 30,
-          borderRadius: 20,
-          paddingLeft: 20,
-          width: "100%",
+          borderRadius: 9,
+          width: Dimensions.get("window").width * 0.95,
+          height: 170,
+          marginBottom: 60,
+          marginTop: 10,
+          alignItems: "center",
         }
       : {
+          flex: 1,
           flexDirection: "column",
           marginRight: 5,
           alignItems: "center",
@@ -211,20 +222,29 @@ const dstyles = (isShowAll) =>
     },
     topContainer: {
       flexDirection: isShowAll ? "row" : "column",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 2.62,
-      elevation: 4,
-      width: "100%",
+      width: isShowAll ? Dimensions.get("window").width * 0.93 : "100%",
+      height: isShowAll ? 150 : 300,
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      padding: 5,
+      ...Platform.select({
+        ios: isShowAll && {
+          shadowColor: "rgba(0,0,0,0.2)",
+          shadowOpacity: 1,
+          shadowOffset: { height: 1, width: 1 },
+          shadowRadius: 2,
+        },
+
+        android: isShowAll && {
+          elevation: 3,
+          marginHorizontal: 0,
+        },
+      }),
     },
 
     textContainer: {
       flexDirection: "column",
-      width: "55%",
+      width: "58%",
       position: "relative",
     },
   });
