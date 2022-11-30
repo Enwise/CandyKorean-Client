@@ -95,9 +95,13 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
             console.log("ClassInfo");
           }}
         >
-          <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText}>Go to the lecture description</Text>
-            <AntDesign name="right" size={10} color="#807F82" />
+          <View style={styles.bottomShadowContainer}>
+            <View style={styles.bottomContainer}>
+              <Text style={styles.bottomText}>
+                Go to the lecture description
+              </Text>
+              <AntDesign name="right" size={10} color="#807F82" />
+            </View>
           </View>
         </TouchableOpacity>
       ) : null}
@@ -142,18 +146,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 6,
   },
-  bottomContainer: {
+  bottomShadowContainer: {
     width: Dimensions.get("window").width * 0.93,
-    marginTop: 10,
-    marginBottom: 25,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingLeft: 5,
-    paddingRight: 5,
     height: 30,
+    marginTop: 10,
+    borderRadius: 20,
     backgroundColor: "#fff",
-    borderRadius: 10,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0,0.2)",
@@ -163,14 +161,27 @@ const styles = StyleSheet.create({
       },
 
       android: {
-        elevation: 3,
-        marginHorizontal: 0,
+        elevation: 5,
       },
     }),
+  },
+  bottomContainer: {
+    width: Dimensions.get("window").width * 0.93,
+    height: 30,
+    borderRadius: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: 5,
+    paddingRight: 20,
+    backgroundColor: "#fff",
+    zIndex: 5,
   },
   bottomText: {
     fontFamily: "Poppins-Regular",
     color: "#807F82",
+
+    backgroundColor: "#fff",
   },
   classImg: {
     borderRadius: 20,
