@@ -20,6 +20,11 @@ const SignUpInput = ({ placeholder, value, handleChange, isValid }) => {
           style={styles.input(value)}
           placeholder={placeholder}
           onChangeText={handleChange}
+          secureTextEntry={
+            placeholder === "Password" || placeholder === "Confirm Password"
+              ? true
+              : false
+          }
         />
         {value ? isValid ? <CheckIcon /> : <ErrorIcon /> : null}
       </View>

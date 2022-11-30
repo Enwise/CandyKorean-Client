@@ -42,6 +42,7 @@ const UserInfo = ({ navigation, route }) => {
     korean_level: levelSelect,
     date_of_birth: date,
     job: job,
+    nationality: nationality,
   };
   const levelData = [
     {
