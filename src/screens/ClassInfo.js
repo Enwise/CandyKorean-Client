@@ -78,48 +78,51 @@ const ClassInfo = ({ props, navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.topContainer}>
-          <Image
-            source={classInfo.profileUrl}
-            style={styles.imageContainer}
-          ></Image>
-          <View style={styles.textContainer}>
-            <GradientBtn
-              text={`${classInfo.units} Units`}
-              viewStyle={{
-                borderRadius: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                zIndex: 3,
-                width: 70,
-                height: 30,
-                right: 0,
-                bottom: -150,
-              }}
-            />
-            <View style={styles.classNameHeartContainer}>
-              <Text style={styles.className}>{classInfo.className}</Text>
-              <TouchableOpacity
-                style={styles.heartContainer}
-                onPress={() => {
-                  setIsWishList(!isWishList);
+        <View style={styles.topShadowContainer}>
+          <View style={styles.topContainer}>
+            <Image
+              source={classInfo.profileUrl}
+              style={styles.imageContainer}
+            ></Image>
+            <View style={styles.textContainer}>
+              <GradientBtn
+                text={`${classInfo.units} Units`}
+                viewStyle={{
+                  borderRadius: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  zIndex: 3,
+                  width: 70,
+                  height: 30,
+                  right: 0,
+                  bottom: -120,
                 }}
-              >
-                {isWishList ? (
-                  <AntDesign name="heart" size={24} color="#A160E2" />
-                ) : (
-                  <AntDesign name="hearto" size={24} color="#A160E2" />
-                )}
-              </TouchableOpacity>
-            </View>
-            <View style={styles.teacherNameContainer}>
-              <Text style={styles.teacherName}>
-                with {classInfo.teacherName}
-              </Text>
+              />
+              <View style={styles.classNameHeartContainer}>
+                <Text style={styles.className}>{classInfo.className}</Text>
+                <TouchableOpacity
+                  style={styles.heartContainer}
+                  onPress={() => {
+                    setIsWishList(!isWishList);
+                  }}
+                >
+                  {isWishList ? (
+                    <AntDesign name="heart" size={24} color="#A160E2" />
+                  ) : (
+                    <AntDesign name="hearto" size={24} color="#A160E2" />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <View style={styles.teacherNameContainer}>
+                <Text style={styles.teacherName}>
+                  with {classInfo.teacherName}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
+
         <View style={styles.videoContainer}>
           <Video
             source={{ uri: classInfo.introVideoUrl }}
@@ -145,8 +148,8 @@ const ClassInfo = ({ props, navigation, route }) => {
           </Text>
           <Text style={styles.teacherInfoText}>Ph.D Korean education</Text>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
+
+        {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate("MyWishList", {
                 classInfo: route.params.classInfo,
@@ -158,19 +161,17 @@ const ClassInfo = ({ props, navigation, route }) => {
               <Image source={require("../assets/img/btn-purple.png")}></Image>
               <Text style={styles.cartBtnText}>add to wishlist</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              // const payList = [{ ...classInfo }];
-              navigation.navigate("Payment", { item: classInfo });
-            }}
-          >
-            <View style={styles.payBtn}>
-              <Image source={require("../assets/img/btn-purple.png")}></Image>
-              <Text style={styles.payBtnText}>buy now</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          </TouchableOpacity> */}
+        <TouchableOpacity
+          onPress={() => {
+            // const payList = [{ ...classInfo }];
+            navigation.navigate("Payment", { item: classInfo });
+          }}
+        >
+          <View style={styles.payBtn}>
+            <Text style={styles.payBtnText}>buy now</Text>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </>
   );
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "35%",
-    height: "100%",
+    height: "80%",
     marginRight: 10,
     borderRadius: 20,
   },
@@ -215,16 +216,41 @@ const styles = StyleSheet.create({
     marginRight: 15,
     borderRadius: 10,
   },
+
+  topShadowContainer: {
+    width: Dimensions.get("window").width * 0.95,
+    height: Dimensions.get("window").height * 0.2,
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        shadowColor: "rgba(0,0,0,0.5)",
+        elevation: 5,
+      },
+    }),
+  },
+
   topContainer: {
-    flexDirection: "row",
-    marginTop: 30,
     width: "100%",
-    height: 150,
-    paddingLeft: 20,
+    height: "100%",
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 10,
+    paddingTop: 5,
+    borderRadius: 9,
   },
 
   textContainer: {
     width: "55%",
+    height: "80%",
     position: "relative",
   },
   classNameHeartContainer: {
@@ -262,38 +288,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 150,
   },
-  buttonContainer: {
-    width: 230,
-    flexDirection: "row",
-    marginTop: 100,
-    marginBottom: 30,
-  },
-  cartBtn: {
-    width: 55,
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 125,
-  },
-  payBtn: {
-    width: 50,
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  cartBtnText: {
-    width: 100,
-    textAlign: "center",
-    position: "absolute",
-    color: "#fff",
-    fontFamily: "Poppins-SemiBold",
-    fontSize: 16,
-  },
-  payBtnText: {
-    width: 100,
-    textAlign: "center",
 
-    position: "absolute",
+  payBtn: {
+    width: Dimensions.get("window").width * 0.9,
+    height: 50,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+    marginBottom: 30,
+    backgroundColor: "#A160E2",
+    borderRadius: 10,
+  },
+
+  payBtnText: {
+    textAlign: "center",
     color: "#fff",
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,

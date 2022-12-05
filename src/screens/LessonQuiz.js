@@ -529,10 +529,12 @@ const LessonQuiz = ({ route, navigation }) => {
                             {key}
                           </Text>
                         </View>
-                        <View style={styles.quizSelectionTextContainer}>
-                          <Text style={styles.quizSelectionText}>
-                            {quizList[currentQuizIdx].json.answer[key].text}
-                          </Text>
+                        <View style={styles.quizSelectionTextShadowContainer}>
+                          <View style={styles.quizSelectionTextContainer}>
+                            <Text style={styles.quizSelectionText}>
+                              {quizList[currentQuizIdx].json.answer[key].text}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     </TouchableOpacity>
@@ -882,13 +884,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
   },
-
-  quizSelectionTextContainer: {
-    width: "90%",
-    height: "100%",
+  quizSelectionTextShadowContainer: {
     backgroundColor: "#fff",
-    justifyContent: "center",
-    borderRadius: 5,
+    width: Dimensions.get("window").height * 0.36,
+    height: Dimensions.get("window").height * 0.05,
+    borderRadius: 9,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0,0.2)",
@@ -898,14 +898,27 @@ const styles = StyleSheet.create({
       },
 
       android: {
-        elevation: 5,
-        marginHorizontal: 0,
+        shadowColor: "lightgray",
+        elevation: 20,
       },
     }),
+  },
+
+  quizSelectionTextContainer: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#fff",
+
+    justifyContent: "center",
+    borderRadius: 9,
   },
   quizSelectionText: {
     fontFamily: "Poppins-Medium",
     width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    justifyContent: "center",
+
     fontSize: 14,
     paddingLeft: 15,
   },

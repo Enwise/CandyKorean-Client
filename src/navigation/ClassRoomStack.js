@@ -14,7 +14,11 @@ const ClassRoomStack = ({ navigation, route }) => {
   const routeName = getFocusedRouteNameFromRoute(route);
   console.log(routeName);
   React.useLayoutEffect(() => {
-    if (routeName == "LessonVideo" || routeName == "LessonQuiz") {
+    if (
+      routeName == "LessonVideo" ||
+      routeName == "LessonQuiz" ||
+      routeName == "LessonInfo"
+    ) {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
       navigation.setOptions({
@@ -48,7 +52,14 @@ const ClassRoomStack = ({ navigation, route }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ClassRoomMain" component={ClassRoom} />
-      <Stack.Screen name="LessonInfo" component={LessonInfo} />
+      <Stack.Screen
+        name="LessonInfo"
+        options={{
+          headerShown: false,
+          tabBarStyle: { display: "none" },
+        }}
+        component={LessonInfo}
+      />
       <Stack.Screen
         name="LessonVideo"
         options={{

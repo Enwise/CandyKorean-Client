@@ -7,10 +7,12 @@ import {
   SafeAreaView,
   FlatList,
   Image,
+  Dimensions,
 } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Dialog, {
   DialogContent,
   ScaleAnimation,
@@ -59,125 +61,136 @@ const LessonInfo = ({ navigation, route }) => {
           <AntDesign name="left" size={20} color="black" />
         </TouchableOpacity>
       </View>
-      <View style={styles.lessonInfoContainer}>
-        <Image
-          style={styles.imageContainer}
-          source={lessonInfo.profileImgUrl}
-        ></Image>
+      <View style={styles.lessonInfoShadowContainer}>
+        <View style={styles.lessonInfoContainer}>
+          <Image
+            style={styles.imageContainer}
+            source={lessonInfo.profileImgUrl}
+          ></Image>
 
-        <View style={styles.textContainer}>
-          <View style={styles.todayContainer}>
-            <Text style={styles.todayText}>Today's Lecture</Text>
-          </View>
+          <View style={styles.textContainer}>
+            <View style={styles.todayContainer}>
+              <Text style={styles.todayText}>Today's Lecture</Text>
+            </View>
 
-          <GradientBtn
-            text={`${lessonInfo.totalUnits} Units`}
-            viewStyle={{
-              borderRadius: 15,
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 3,
-              width: 75,
-              height: 25,
-              marginBottom: 30,
-            }}
-          />
-          <View style={styles.studyNowBtn}>
+            <GradientBtn
+              text={`${lessonInfo.totalUnits} Units`}
+              viewStyle={{
+                borderRadius: 15,
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 3,
+                width: 75,
+                height: 25,
+                marginBottom: 30,
+              }}
+            />
+
             <TouchableOpacity
               onPress={() => {
                 goToCurrentVideo();
               }}
             >
-              <Image
-                source={require("../assets/img/btn-purple-lecture.png")}
-              ></Image>
-              <Text style={styles.studyNowText}>Study Now</Text>
+              <View style={styles.studyNowBtn}>
+                <Text style={styles.studyNowText}>Study Now</Text>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  size={15}
+                  color="white"
+                />
+              </View>
             </TouchableOpacity>
-          </View>
-          <View style={styles.quizBtn}>
+
             <TouchableOpacity
               onPress={() => {
                 setVisible(true);
                 setClickedUnit(lessonInfo.currentUnit);
               }}
             >
-              <Image
-                source={require("../assets/img/btn-purple-lecture.png")}
-              ></Image>
-              <Text style={styles.quizText}>Today's Quiz</Text>
+              <View style={styles.quizBtn}>
+                <Text style={styles.quizText}>Today's Quiz</Text>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  size={15}
+                  color="white"
+                />
+              </View>
             </TouchableOpacity>
           </View>
         </View>
       </View>
 
-      <View style={styles.curriculumHeader}>
-        <Text style={styles.curriculumHeaderText}>Curriculum</Text>
-      </View>
+      <View style={styles.curriculumShadowContainer}>
+        <View style={styles.curriculumHeader}>
+          <Text style={styles.curriculumHeaderText}>Curriculum</Text>
+        </View>
 
-      <FlatList
-        numColumns={1}
-        key={"_"}
-        style={styles.curriculumListContainer}
-        keyExtractor={(item) => String(item.id)}
-        data={lessonInfo.curriculum}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <View style={styles.curriculumItem}>
-            <TouchableOpacity
-              onPress={() => {
-                goToVideo(item.unitNum, false);
-              }}
-            >
-              <View style={styles.unitNum}>
-                <Text style={styles.unitNumText}>Unit {item.unitNum}</Text>
-              </View>
-            </TouchableOpacity>
-
-            <View style={styles.unitInfo}>
+        <FlatList
+          numColumns={1}
+          key={"_"}
+          style={styles.curriculumListContainer}
+          keyExtractor={(item) => String(item.id)}
+          data={lessonInfo.curriculum}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <View style={styles.curriculumItem}>
               <TouchableOpacity
                 onPress={() => {
                   goToVideo(item.unitNum, false);
                 }}
               >
-                <View style={styles.unitTitle}>
-                  <Text style={styles.unitTitleText}>{item.unitName}</Text>
+                <View style={styles.unitNum}>
+                  <Text style={styles.unitNumText}>Unit {item.unitNum}</Text>
                 </View>
               </TouchableOpacity>
 
-              <View style={styles.unitBottomContainer}>
+              <View style={styles.unitInfo}>
                 <TouchableOpacity
                   onPress={() => {
                     goToVideo(item.unitNum, false);
                   }}
                 >
-                  <View style={styles.unitStudyContainer}>
-                    <Text style={styles.unitStudyText}>Study</Text>
+                  <View style={styles.unitTitle}>
+                    <Text style={styles.unitTitleText}>{item.unitName}</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setVisible(true);
-                    setClickedUnit(item.unitNum);
-                  }}
-                >
-                  <View style={styles.unitQuizContainer}>
-                    <View style={styles.unitQuizLeftContainer}>
-                      <Text style={styles.unitQuizLeftText}>Quiz</Text>
+
+                <View style={styles.unitBottomContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      goToVideo(item.unitNum, false);
+                    }}
+                  >
+                    <View style={styles.unitStudyContainer}>
+                      <Text style={styles.unitStudyText}>Study</Text>
                     </View>
-                    <Text style={styles.unitQuizNumText}>5/7</Text>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setVisible(true);
+                      setClickedUnit(item.unitNum);
+                    }}
+                  >
+                    <View style={styles.unitQuizContainer}>
+                      <View style={styles.unitQuizLeftContainer}>
+                        <Text style={styles.unitQuizLeftText}>Quiz</Text>
+                      </View>
+                      <Text style={styles.unitQuizNumText}>5/7</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-      ></FlatList>
+          )}
+        ></FlatList>
+      </View>
+
       <Dialog
-        width={0.9}
-        height={0.27}
         dialogStyle={{
           borderRadius: 25,
+          width: Dimensions.get("window").width * 0.9,
+          height: Dimensions.get("window").height * 0.27,
         }}
         visible={visible}
         onTouchOutside={() => {
@@ -196,23 +209,27 @@ const LessonInfo = ({ navigation, route }) => {
           <DialogFooter
             bordered={false}
             style={{
-              height: "37%",
+              height: "50%",
+              width: "100%",
             }}
           >
             <DialogButton
               style={{
+                width: "50%",
+                height: "100%",
                 backgroundColor: "#E6E3EA",
                 borderBottomLeftRadius: 25,
-                justifyContent: "center",
+                flexDirection: "row",
                 alignItems: "center",
               }}
               textStyle={{
                 color: "#fff",
                 fontFamily: "Poppins-SemiBold",
                 fontSize: 24,
+                flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                flexDirection: "row",
+                height: "100%",
               }}
               text={
                 <View
@@ -258,7 +275,8 @@ const LessonInfo = ({ navigation, route }) => {
               style={{
                 backgroundColor: "#A160E2",
                 borderBottomRightRadius: 25,
-
+                width: "50%",
+                height: "100%",
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -266,6 +284,7 @@ const LessonInfo = ({ navigation, route }) => {
                 color: "#E6E3EA",
                 fontFamily: "Poppins-SemiBold",
                 fontSize: 24,
+                height: "100%",
               }}
               text={
                 <View
@@ -343,22 +362,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-
+    alignItems: "center",
     backgroundColor: "#fff",
     position: "relative",
   },
 
+  lessonInfoShadowContainer: {
+    marginTop: 100,
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height * 0.22,
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        shadowColor: "gray",
+        elevation: 10,
+      },
+    }),
+  },
+
   lessonInfoContainer: {
     flexDirection: "row",
-    marginTop: 100,
     justifyContent: "space-evenly",
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    padding: 10,
   },
   imageContainer: {
-    width: 150,
-    height: 150,
+    width: "40%",
+    height: "100%",
     borderRadius: 20,
-    marginLeft:20,
-    marginRight:20,
+    marginLeft: 20,
+    marginRight: 20,
   },
   img: {
     width: 130,
@@ -368,7 +411,9 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   textContainer: {
-    width: "50%",
+    width: "55%",
+    height: "95%",
+    marginLeft: 15,
     position: "relative",
   },
   todayContainer: {
@@ -408,28 +453,64 @@ const styles = StyleSheet.create({
     left: 30,
   },
   studyNowBtn: {
-    position: "relative",
+    backgroundColor: "#A160E2",
+    borderRadius: 7,
+    width: 120,
+    height: 25,
     marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   studyNowText: {
-    position: "absolute",
-    top: 4,
-    left: 25,
     fontFamily: "Poppins-Medium",
     fontSize: 12,
     color: "#fff",
   },
-  quizBtn: { position: "relative" },
+  studyNowArrow: {
+    color: "#fff",
+  },
+  quizBtn: {
+    backgroundColor: "#A160E2",
+    borderRadius: 7,
+    width: 120,
+    height: 25,
+    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignItems: "center",
+  },
   quizText: {
-    position: "absolute",
-    top: 4,
-    left: 20,
     fontFamily: "Poppins-Medium",
     fontSize: 12,
     color: "#fff",
   },
-  curriculumContainer: {
-    padding: 40,
+  quizArrow: {
+    color: "#fff",
+  },
+  curriculumShadowContainer: {
+    marginTop: 20,
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height * 0.6,
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        shadowColor: "gray",
+        elevation: 10,
+      },
+    }),
   },
   curriculumHeader: {
     marginTop: 30,
