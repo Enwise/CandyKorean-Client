@@ -1,12 +1,12 @@
-import * as React from "react"
+import * as React from "react";
 import Svg, {
   G,
   Rect,
   Path,
   Defs,
   LinearGradient,
-  Stop
-} from "react-native-svg"
+  Stop,
+} from "react-native-svg";
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
 
 function QuizPerfect(props) {
@@ -14,6 +14,7 @@ function QuizPerfect(props) {
     <Svg
       width={"100%"}
       height={60}
+      borderRadius={13}
       viewBox="0 0 253 71"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +41,7 @@ function QuizPerfect(props) {
         </LinearGradient>
       </Defs>
     </Svg>
-  )
+  );
 }
 
-export default QuizPerfect
+export default QuizPerfect;

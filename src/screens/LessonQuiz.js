@@ -568,21 +568,33 @@ const LessonQuiz = ({ route, navigation }) => {
                             quizList[currentQuizIdx].json.answer[key].correct,
                             quizList[currentQuizIdx].json.answer[key]
                               .is_selected
-                          ).quizWordSelectionRowContainer
+                          ).quizWordSelectionRowShadowContainer
                         }
                       >
-                        <Text
+                        <View
                           style={
                             quiz_word_styles(
                               isChecked.isNext,
                               quizList[currentQuizIdx].json.answer[key].correct,
                               quizList[currentQuizIdx].json.answer[key]
                                 .is_selected
-                            ).quizWordSelectionText
+                            ).quizWordSelectionRowContainer
                           }
                         >
-                          {quizList[currentQuizIdx].json.answer[key].text}
-                        </Text>
+                          <Text
+                            style={
+                              quiz_word_styles(
+                                isChecked.isNext,
+                                quizList[currentQuizIdx].json.answer[key]
+                                  .correct,
+                                quizList[currentQuizIdx].json.answer[key]
+                                  .is_selected
+                              ).quizWordSelectionText
+                            }
+                          >
+                            {quizList[currentQuizIdx].json.answer[key].text}
+                          </Text>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );
@@ -639,10 +651,12 @@ const LessonQuiz = ({ route, navigation }) => {
                             {key}
                           </Text>
                         </View>
-                        <View style={styles.quizSelectionTextContainer}>
-                          <Text style={styles.quizSelectionText}>
-                            {quizList[currentQuizIdx].json.answer[key].text}
-                          </Text>
+                        <View style={styles.quizSelectionTextShadowContainer}>
+                          <View style={styles.quizSelectionTextContainer}>
+                            <Text style={styles.quizSelectionText}>
+                              {quizList[currentQuizIdx].json.answer[key].text}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     </TouchableOpacity>
@@ -784,14 +798,13 @@ const styles = StyleSheet.create({
   },
   secondContainer: {
     alignItems: "center",
-    marginTop: 20,
-    flex: 3.5,
+    flex: 3,
   },
   thirdContainer: {
     flexDirection: "row",
     justifyContent: "center",
     flex: 0.5,
-    width: "100%",
+    width: Dimensions.get("window").width,
   },
   quizQuestionContainer: {
     borderRadius: 10,
@@ -990,25 +1003,12 @@ const dialog_text_styles = (isQuestion) =>
 
 const quiz_word_styles = (isNext, correct, isSelected) =>
   StyleSheet.create({
-    // select_word
-    quizWordSelectionRowContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      width: "100%",
-      height: 60,
-      marginBottom: 20,
-
-      borderRadius: 20,
-      borderWidth: 1,
-      borderColor: isNext
-        ? correct
-          ? "#A160E2"
-          : "#fff"
-        : isSelected
-        ? "#A160E2"
-        : "#fff",
+    quizWordSelectionRowShadowContainer: {
       backgroundColor: "#fff",
+      width: Dimensions.get("window").width * 0.9,
+      height: Dimensions.get("window").height * 0.1,
+      borderRadius: 9,
+      marginBottom: 15,
       ...Platform.select({
         ios: {
           shadowColor: "rgba(0,0,0,0.2)",
@@ -1018,14 +1018,35 @@ const quiz_word_styles = (isNext, correct, isSelected) =>
         },
 
         android: {
-          elevation: 5,
-          marginHorizontal: 0,
+          shadowColor: "lightgray",
+          elevation: 30,
         },
       }),
     },
+    // select_word
+    quizWordSelectionRowContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#fff",
+
+      borderRadius: 9,
+      borderWidth: 1,
+      borderColor: isNext
+        ? correct
+          ? "#A160E2"
+          : "#fff"
+        : isSelected
+        ? "#A160E2"
+        : "#fff",
+    },
 
     quizWordSelectionText: {
+      width: "100%",
       textAlign: "center",
+      backgroundColor: "#fff",
       fontFamily: "Poppins-Medium",
       fontSize: 16,
       color: isNext
@@ -1045,7 +1066,7 @@ const row_styles = (isNext, correct) =>
       width: "100%",
       height: 35,
       alignItems: "center",
-      marginBottom: 10,
+      marginBottom: 20,
       paddingLeft: 10,
       paddingRight: 10,
       opacity: isNext && !correct ? 0.1 : 1,
@@ -1104,7 +1125,7 @@ const tstyles = (isNext, isCorrect) =>
 
       width: "90%",
       height: "30%",
-      marginBottom: 20,
+      marginBottom: 30,
 
       flexWrap: isNext && !isCorrect ? "nowrap" : "wrap",
 
@@ -1206,10 +1227,9 @@ const selection_styles = (quiz_style) =>
             flexDirection: "column",
             borderRadius: 10,
             backgroundColor: "#fff",
-            width: "100%",
-            height: 230,
-            justifyContent: "space-evenly",
-            padding: 15,
+            width: Dimensions.get("window").width,
+            height: Dimensions.get("window").height * 0.3,
+            alignItems: "center",
           },
 
     arrowContainer:

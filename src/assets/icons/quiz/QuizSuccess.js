@@ -1,12 +1,12 @@
-import * as React from "react"
+import * as React from "react";
 import Svg, {
   G,
   Rect,
   Path,
   Defs,
   LinearGradient,
-  Stop
-} from "react-native-svg"
+  Stop,
+} from "react-native-svg";
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
 
 function QuizSuccess(props) {
@@ -14,6 +14,7 @@ function QuizSuccess(props) {
     <Svg
       width={306}
       height={71}
+      borderRadius={13}
       viewBox="0 0 306 71"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +41,7 @@ function QuizSuccess(props) {
         </LinearGradient>
       </Defs>
     </Svg>
-  )
+  );
 }
 
-export default QuizSuccess
+export default QuizSuccess;

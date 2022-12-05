@@ -17,7 +17,8 @@ const ClassRoomStack = ({ navigation, route }) => {
     if (
       routeName == "LessonVideo" ||
       routeName == "LessonQuiz" ||
-      routeName == "LessonInfo"
+      routeName == "LessonInfo" ||
+      routeName == "QuizResult"
     ) {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
