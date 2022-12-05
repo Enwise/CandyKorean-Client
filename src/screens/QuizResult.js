@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   },
   nextBtnContainer: {
     width: "100%",
-    flex: 1,
+    flex: 1.5,
     justifyContent: "center",
     alignItems: "center",
   },

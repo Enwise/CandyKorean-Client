@@ -491,19 +491,19 @@ const LessonQuiz = ({ route, navigation }) => {
               {Object.keys(quizList[currentQuizIdx].json.answer).map(
                 (key, idx) => {
                   return (
-                    <TouchableOpacity
-                      disabled={isChecked.isNext}
-                      onPress={() => {
-                        updateSelected(key);
-                      }}
+                    <View
+                      style={
+                        row_styles(
+                          isChecked.isNext,
+                          quizList[currentQuizIdx].json.answer[key].correct
+                        ).quizSelectionRowContainer
+                      }
                     >
-                      <View
-                        style={
-                          row_styles(
-                            isChecked.isNext,
-                            quizList[currentQuizIdx].json.answer[key].correct
-                          ).quizSelectionRowContainer
-                        }
+                      <TouchableOpacity
+                        disabled={isChecked.isNext}
+                        onPress={() => {
+                          updateSelected(key);
+                        }}
                       >
                         <View
                           style={
@@ -529,15 +529,23 @@ const LessonQuiz = ({ route, navigation }) => {
                             {key}
                           </Text>
                         </View>
-                        <View style={styles.quizSelectionTextShadowContainer}>
+                      </TouchableOpacity>
+
+                      <View style={styles.quizSelectionTextShadowContainer}>
+                        <TouchableOpacity
+                          disabled={isChecked.isNext}
+                          onPress={() => {
+                            updateSelected(key);
+                          }}
+                        >
                           <View style={styles.quizSelectionTextContainer}>
                             <Text style={styles.quizSelectionText}>
                               {quizList[currentQuizIdx].json.answer[key].text}
                             </Text>
                           </View>
-                        </View>
+                        </TouchableOpacity>
                       </View>
-                    </TouchableOpacity>
+                    </View>
                   );
                 }
               )}
@@ -555,21 +563,20 @@ const LessonQuiz = ({ route, navigation }) => {
               {Object.keys(quizList[currentQuizIdx].json.answer).map(
                 (key, idx) => {
                   return (
-                    <TouchableOpacity
-                      disabled={isChecked.isNext}
-                      onPress={() => {
-                        updateSelected(key);
-                      }}
+                    <View
+                      style={
+                        quiz_word_styles(
+                          isChecked.isNext,
+                          quizList[currentQuizIdx].json.answer[key].correct,
+                          quizList[currentQuizIdx].json.answer[key].is_selected
+                        ).quizWordSelectionRowShadowContainer
+                      }
                     >
-                      <View
-                        style={
-                          quiz_word_styles(
-                            isChecked.isNext,
-                            quizList[currentQuizIdx].json.answer[key].correct,
-                            quizList[currentQuizIdx].json.answer[key]
-                              .is_selected
-                          ).quizWordSelectionRowShadowContainer
-                        }
+                      <TouchableOpacity
+                        disabled={isChecked.isNext}
+                        onPress={() => {
+                          updateSelected(key);
+                        }}
                       >
                         <View
                           style={
@@ -595,8 +602,8 @@ const LessonQuiz = ({ route, navigation }) => {
                             {quizList[currentQuizIdx].json.answer[key].text}
                           </Text>
                         </View>
-                      </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   );
                 }
               )}
@@ -613,19 +620,19 @@ const LessonQuiz = ({ route, navigation }) => {
               {Object.keys(quizList[currentQuizIdx].json.answer).map(
                 (key, idx) => {
                   return (
-                    <TouchableOpacity
-                      disabled={isChecked.isNext}
-                      onPress={() => {
-                        updateSelected(key);
-                      }}
+                    <View
+                      style={
+                        row_styles(
+                          isChecked.isNext,
+                          quizList[currentQuizIdx].json.answer[key].correct
+                        ).quizSelectionRowContainer
+                      }
                     >
-                      <View
-                        style={
-                          row_styles(
-                            isChecked.isNext,
-                            quizList[currentQuizIdx].json.answer[key].correct
-                          ).quizSelectionRowContainer
-                        }
+                      <TouchableOpacity
+                        disabled={isChecked.isNext}
+                        onPress={() => {
+                          updateSelected(key);
+                        }}
                       >
                         <View
                           style={
@@ -651,15 +658,23 @@ const LessonQuiz = ({ route, navigation }) => {
                             {key}
                           </Text>
                         </View>
-                        <View style={styles.quizSelectionTextShadowContainer}>
+                      </TouchableOpacity>
+
+                      <View style={styles.quizSelectionTextShadowContainer}>
+                        <TouchableOpacity
+                          disabled={isChecked.isNext}
+                          onPress={() => {
+                            updateSelected(key);
+                          }}
+                        >
                           <View style={styles.quizSelectionTextContainer}>
                             <Text style={styles.quizSelectionText}>
                               {quizList[currentQuizIdx].json.answer[key].text}
                             </Text>
                           </View>
-                        </View>
+                        </TouchableOpacity>
                       </View>
-                    </TouchableOpacity>
+                    </View>
                   );
                 }
               )}
@@ -899,7 +914,7 @@ const styles = StyleSheet.create({
   },
   quizSelectionTextShadowContainer: {
     backgroundColor: "#fff",
-    width: Dimensions.get("window").height * 0.36,
+    width: Dimensions.get("window").height * 0.38,
     height: Dimensions.get("window").height * 0.05,
     borderRadius: 9,
     ...Platform.select({
@@ -1067,7 +1082,7 @@ const row_styles = (isNext, correct) =>
       height: 35,
       alignItems: "center",
       marginBottom: 20,
-      paddingLeft: 10,
+      paddingLeft: 20,
       paddingRight: 10,
       opacity: isNext && !correct ? 0.1 : 1,
     },

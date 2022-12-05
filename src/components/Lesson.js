@@ -14,15 +14,15 @@ import GradientBtn from "../components/GradientButtonView";
 
 const Lesson = ({ navigation, lessonInfo }) => {
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("LessonInfo", {
-          lessonInfo: lessonInfo,
-        });
-      }}
-    >
-      <View style={styles.container}>
-        <View style={styles.lessonInfoShawdowContainer}>
+    <View style={styles.container}>
+      <View style={styles.lessonInfoShawdowContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("LessonInfo", {
+              lessonInfo: lessonInfo,
+            });
+          }}
+        >
           <View style={styles.lessonInfoContainer}>
             <Image
               style={styles.imageContainer}
@@ -37,7 +37,6 @@ const Lesson = ({ navigation, lessonInfo }) => {
               </View>
             </View>
           </View>
-
           <GradientBtn
             text={`${
               lessonInfo.currentUnit + "/" + lessonInfo.totalUnits
@@ -54,15 +53,15 @@ const Lesson = ({ navigation, lessonInfo }) => {
               bottom: 5,
             }}
           />
-        </View>
-
-        <View style={styles.lessonDateContainer}>
-          <Text style={styles.lessonDateText}>
-            From {lessonInfo.startDate} - {lessonInfo.endDate}
-          </Text>
-        </View>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+
+      <View style={styles.lessonDateContainer}>
+        <Text style={styles.lessonDateText}>
+          From {lessonInfo.startDate} - {lessonInfo.endDate}
+        </Text>
+      </View>
+    </View>
   );
 };
 

@@ -87,23 +87,23 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
       </View>
 
       {isShowAll ? (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ClassInfo", {
-              classInfo: classInfo,
-            });
-            console.log("ClassInfo");
-          }}
-        >
-          <View style={styles.bottomShadowContainer}>
+        <View style={styles.bottomShadowContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ClassInfo", {
+                classInfo: classInfo,
+              });
+              console.log("ClassInfo");
+            }}
+          >
             <View style={styles.bottomContainer}>
               <Text style={styles.bottomText}>
                 Go to the lecture description
               </Text>
               <AntDesign name="right" size={10} color="#807F82" />
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       ) : null}
     </View>
   );
@@ -147,12 +147,10 @@ const styles = StyleSheet.create({
     right: 6,
   },
   bottomShadowContainer: {
-    width: Dimensions.get("window").width * 0.93,
+    width: Dimensions.get("window").width * 0.95,
     height: Dimensions.get("window").height * 0.04,
     marginTop: 10,
     borderRadius: 20,
-    flexDirection: "row",
-    alignItems: "center",
     backgroundColor: "#fff",
     ...Platform.select({
       ios: {
