@@ -453,9 +453,10 @@ export const getUserById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await getRequest("/user", reqParam, handleError);
+  const userId = reqParam;
+  const response = await getRequest(`/user/${userId}`, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

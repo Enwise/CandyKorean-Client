@@ -4,7 +4,7 @@ import RecommendedLecture from "./RecommendedLecture";
 
 const RecommendedLecList = () => {
   return (
-    <View>
+    <View style={{ paddingHorizontal: 20 }}>
       <RecommendedLecture />
       <RecommendedLecture />
       <RecommendedLecture />
