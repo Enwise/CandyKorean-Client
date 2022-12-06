@@ -91,7 +91,7 @@ const Home = () => {
     >
       <View>
         <LinearGradient
-          colors={["#84E9FF", "#C984FF"]}
+          colors={["rgba(132, 233, 255, 0.8)", "rgba(201, 132, 255, 0.8)"]}
           locations={[0, 1]}
           start={[0.025, 0.5]}
           end={[0.975, 0.5]}
