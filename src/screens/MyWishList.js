@@ -7,6 +7,7 @@ import {
   Image,
   SafeAreaView,
   FlatList,
+  Dimensions,
 } from "react-native";
 // import { SwipeListView } from "react-native-swipe-list-view";
 import { AntDesign } from "@expo/vector-icons";
@@ -69,33 +70,87 @@ const MyWishList = ({ navigation, route }) => {
   const [wishList, setWishList] = useState([
     {
       id: 1,
-      imgUrl: require("../assets/img/sample_class_img1.jpeg"),
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       className: "Trip Korean",
       price: 0,
       category: "K-culture",
       checked: false,
       level: "Lollipop",
       units: 10,
+      isSelected: false,
     },
     {
       id: 2,
-      imgUrl: require("../assets/img/sample_class_img1.jpeg"),
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
       className: "Real Voca in K-Drama",
       price: 15,
       category: "K-culture",
       checked: false,
       level: "CottonCandy",
       units: 10,
+      isSelected: false,
     },
     {
       id: 3,
-      imgUrl: require("../assets/img/sample_class_img1.jpeg"),
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
       className: "Real Voca in K-Drama",
       price: 15,
       category: "K-culture",
       checked: false,
       level: "Lollipop",
       units: 10,
+      isSelected: false,
+    },
+    {
+      id: 4,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
+      className: "Real Voca in K-Drama",
+      price: 15,
+      category: "K-culture",
+      checked: false,
+      level: "Lollipop",
+      units: 10,
+      isSelected: false,
+    },
+
+    {
+      id: 5,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
+      className: "Real Voca in K-Drama",
+      price: 15,
+      category: "K-culture",
+      checked: false,
+      level: "Lollipop",
+      units: 10,
+      isSelected: false,
+    },
+    {
+      id: 6,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
+      className: "Real Voca in K-Drama",
+      price: 15,
+      category: "K-culture",
+      checked: false,
+      level: "Lollipop",
+      units: 10,
+      isSelected: false,
+    },
+    {
+      id: 7,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+
+      className: "Real Voca in K-Drama",
+      price: 15,
+      category: "K-culture",
+      checked: false,
+      level: "Lollipop",
+      units: 10,
+      isSelected: false,
     },
   ]);
 
@@ -169,6 +224,16 @@ const MyWishList = ({ navigation, route }) => {
     return newWishList;
   };
 
+  const updateSelected = (id) => {
+    const newWishList = wishList.map((item) => {
+      if (item.id === id) {
+        item.isSelected = !item.isSelected;
+      }
+      return item;
+    });
+    setWishList(newWishList);
+  };
+
   return (
     <View
       showsVerticalScrollIndicator={false}
@@ -223,116 +288,107 @@ const MyWishList = ({ navigation, route }) => {
           <Text style={styles.wishListEmptyText}>Your Wishlist is empty</Text>
         </View>
       ) : (
-        <FlatList
-          contentContainerstyle={{ ...styles.wishListContainer }}
-          numColumns={1}
-          key={"_"}
-          data={wishList}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          // 어떻게 아이템을 렌더링 할 것인가
-          renderItem={({ item }) => (
-            <View style={{ ...styles.wishListItem }}>
-              {/* <View style={styles.checkAndEdit}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // 상품 선택
-                    changeCheckColor(item.id);
-                  }}
-                >
-                  <Image
-                    style={styles.selectBtn}
-                    source={
-                      item.checked
-                        ? require("../assets/img/ic-item-selected.png")
-                        : require("../assets/img/ic-item-unselected.png")
-                    }
-                  ></Image>
-                </TouchableOpacity>
-                <View style={styles.editBtn}>
-                  <TouchableOpacity>
-                    <Text style={styles.editBtnText}>edit</Text>
+        <View style={styles.flatListContainer}>
+          <FlatList
+            contentContainerstyle={{
+              ...styles.wishListContainer,
+              alignItems: "center",
+            }}
+            numColumns={1}
+            key={"_"}
+            data={wishList}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            // 어떻게 아이템을 렌더링 할 것인가
+            renderItem={({ item }) => (
+              <View style={{ ...dstyles(item.isSelected).wishListItem }}>
+                <View style={styles.classInfoShadowContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      updateSelected(item.id);
+                    }}
+                  >
+                    <View style={styles.classInfoContainer}>
+                      <Image
+                        style={styles.classImgContainer}
+                        source={item.imgUrl}
+                      ></Image>
+                      <View style={styles.classInfoTextContainer}>
+                        <View style={styles.classInfoTopContainer}>
+                          <Text style={styles.classNameText}>
+                            {item.className}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() => {
+                              setDialogVisible(true);
+                              setSelectedId(item.id);
+                            }}
+                          >
+                            <AntDesign name="heart" size={24} color="#A160E2" />
+                          </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.categoryContainer}>
+                          <Text style={styles.cateogryText}>
+                            {item.category}
+                          </Text>
+                        </View>
+                        <View style={styles.priceTextContainer}>
+                          <Text style={styles.priceText}>
+                            $ {item.price === 0 ? "Free" : item.price}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
                   </TouchableOpacity>
                 </View>
-              </View> */}
-
-              <View style={styles.classInfoContainer}>
-                <View style={styles.classImgContainer}>
-                  <SampleClassImg1 />
-                </View>
-                <View style={styles.classInfoTextContainer}>
-                  <View style={styles.classInfoTopContainer}>
-                    <Text style={styles.classNameText}>{item.className}</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setDialogVisible(true);
-                        setSelectedId(item.id);
-                      }}
-                    >
-                      <View style={styles.deleteContainer}>
-                        <Text style={styles.deleteText}>Delete</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={styles.categoryContainer}>
-                    <Text style={styles.cateogryText}>{item.category}</Text>
-                  </View>
-                  <View style={styles.priceTextContainer}>
-                    <Text style={styles.priceText}>
-                      $ {item.price === 0 ? "Free" : item.price}
-                    </Text>
-                  </View>
-                </View>
+                {item.isSelected ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      // const payList = checkBuyNow(item.id);
+                      navigation.navigate("Payment", { item: item });
+                    }}
+                  >
+                    <View style={styles.buyNowBtn}>
+                      <Text style={styles.buyNowBtnText}>BUY NOW</Text>
+                    </View>
+                  </TouchableOpacity>
+                ) : null}
               </View>
-              <TouchableOpacity
-                onPress={() => {
-                  // const payList = checkBuyNow(item.id);
-                  navigation.navigate("Payment", { item: item });
-                }}
-              >
-                {/* <Image
-                  style={styles.buyNowBtn}
-                  source={require("../assets/img/ic-buynow-btn.png")}
-                ></Image> */}
-                <View style={styles.buyNowBtn}>
-                  <Text style={styles.buyNowBtnText}>Buy Now</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          )}
-          // 어떻게 숨겨진 아이템을 렌더링 할 것인가
-          //   renderHiddenItem={({ item }) => (
-          //     <View style={styles.swipeHiddenItemContainer}>
-          //       <View style={styles.swipeHiddenItem}>
-          //         <TouchableOpacity
-          //           onPress={() => {
-          //             navigation.navigate("ClassMore", { title: item.level });
-          //           }}
-          //         >
-          //           <Text style={styles.swipeHiddenItemText}>Similar</Text>
-          //         </TouchableOpacity>
-          //       </View>
-          //       <View style={styles.swipeHiddenItem}>
-          //         <TouchableOpacity
-          //           onPress={() => {
-          //             console.log("delete");
-          //             deleteItem(item.id);
-          //           }}
-          //         >
-          //           <Text style={styles.swipeHiddenItemText}>Delete</Text>
-          //         </TouchableOpacity>
-          //       </View>
-          //     </View>
-          //   )}
-          //   rightOpenValue={-150}
-          //   previewRowKey={"0"}
-          //   previewOpenValue={-40}
-          //   previewOpenDelay={3000}
-          //   disableRightSwipe={true}
-          //   // leftOpenValue={0}
-          // />
-        ></FlatList>
+            )}
+            // 어떻게 숨겨진 아이템을 렌더링 할 것인가
+            //   renderHiddenItem={({ item }) => (
+            //     <View style={styles.swipeHiddenItemContainer}>
+            //       <View style={styles.swipeHiddenItem}>
+            //         <TouchableOpacity
+            //           onPress={() => {
+            //             navigation.navigate("ClassMore", { title: item.level });
+            //           }}
+            //         >
+            //           <Text style={styles.swipeHiddenItemText}>Similar</Text>
+            //         </TouchableOpacity>
+            //       </View>
+            //       <View style={styles.swipeHiddenItem}>
+            //         <TouchableOpacity
+            //           onPress={() => {
+            //             console.log("delete");
+            //             deleteItem(item.id);
+            //           }}
+            //         >
+            //           <Text style={styles.swipeHiddenItemText}>Delete</Text>
+            //         </TouchableOpacity>
+            //       </View>
+            //     </View>
+            //   )}
+            //   rightOpenValue={-150}
+            //   previewRowKey={"0"}
+            //   previewOpenValue={-40}
+            //   previewOpenDelay={3000}
+            //   disableRightSwipe={true}
+            //   // leftOpenValue={0}
+            // />
+          ></FlatList>
+        </View>
       )}
       <Dialog
         width={0.8}
@@ -462,6 +518,16 @@ const MyWishList = ({ navigation, route }) => {
   );
 };
 
+const dstyles = (isSelected) =>
+  StyleSheet.create({
+    wishListItem: {
+      width: Dimensions.get("window").width * 0.9,
+      marginBottom: isSelected ? 65 : 20,
+      backgroundColor: "#fff",
+      height: Dimensions.get("window").height * 0.15,
+    },
+  });
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -509,18 +575,19 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: "#B8B5BC",
   },
-  wishListContainer: {
-    marginTop: 20,
+  flatListContainer: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height - 250,
+    backgroundColor: "#fff",
     alignItems: "center",
   },
-  wishListItem: {
+  wishListContainer: {
     width: "100%",
-    paddingLeft: 20,
-    paddingRight: 20,
-    position: "relative",
-    marginBottom: 35,
-    backgroundColor: "white",
+    height: "100%",
+    backgroundColor: "#fff",
+    flexGrow: 1,
   },
+
   checkAndEdit: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -531,12 +598,44 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontSize: 10,
   },
-  classInfoContainer: {
-    flexDirection: "row",
-    position: "relative",
+  classInfoShadowContainer: {
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").width * 0.35,
+    borderRadius: 9,
+    backgroundColor: "#fff",
+
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        shadowColor: "gray",
+        elevation: 5,
+      },
+    }),
+    marginBottom: 15,
   },
+  classInfoContainer: {
+    width: "100%",
+    height: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 9,
+  },
+  classImgContainer: {
+    width: "30%",
+    height: "80%",
+    borderRadius: 10,
+    marginRight: 10,
+  },
+
   classInfoTextContainer: {
-    width: "68%",
+    width: "65%",
   },
   classInfoTopContainer: {
     width: "100%",
@@ -586,13 +685,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buyNowBtn: {
-    position: "absolute",
-    right: 0,
-    bottom: 0,
-    width: 70,
+    width: Dimensions.get("window").width * 0.9,
     height: 30,
     backgroundColor: "#A160E2",
-    borderRadius: 12,
+    borderRadius: 7,
     justifyContent: "center",
     alignItems: "center",
   },

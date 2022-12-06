@@ -8,15 +8,12 @@ import {
   Image,
   FlatList,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import StudyNowIcon from "../assets/icons/StudyNowIcon";
 import UnitIcon from "../assets/icons/UnitIcon";
-
-import SampleClassImg3 from "../assets/icons/lesson/SampleClassImg1";
-import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
-import SampleClassImg2 from "../assets/icons/level/SampleClassImg2";
 
 const PaymentResult = ({ navigation, route }) => {
   const [year, setYear] = useState();
@@ -25,7 +22,7 @@ const PaymentResult = ({ navigation, route }) => {
 
   const [recommendList, setRecommendList] = useState([
     {
-      imgUrl: <SampleClassImg1></SampleClassImg1>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun1",
       className: "class1",
       category: "K-culture",
@@ -35,7 +32,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: true,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun2",
       className: "class2",
       category: "K-history",
@@ -45,8 +42,9 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun3",
+
       className: "class3",
       category: "K-pop",
       level: "Lollipop",
@@ -55,7 +53,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun4",
       className: "class4",
       category: "K-culture",
@@ -65,7 +63,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun5",
       className: "class5",
       category: "K-culture",
@@ -98,16 +96,17 @@ const PaymentResult = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       {isSuccess ? (
-        <View>
+        <>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>
               Order Completed{"\n"}Thank you for purchasing!
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("ClassMain");
+                route.params.returnToClass
+                  ? navigation.navigate("ClassMain")
+                  : navigation.navigate("My");
               }}
-              style={{ position: "absolute", right: 10, top: 10 }}
             >
               <Ionicons name="ios-close-outline" size={24} color="black" />
             </TouchableOpacity>
@@ -115,7 +114,10 @@ const PaymentResult = ({ navigation, route }) => {
           <View style={styles.purchasedItemContainer}>
             <Text style={styles.purchasedItemText}>Purchased product</Text>
             <View style={styles.purchasedItem}>
-              <SampleClassImg1 />
+              <Image
+                style={styles.purchasedItemImg}
+                source={require("../assets/icons/class_img/shin_yoo_jin_square.jpg")}
+              ></Image>
               <View style={styles.purchasedItemInfo}>
                 <Text style={styles.classNameText}>{item.className}</Text>
                 <View style={styles.categoryAndUnit}>
@@ -172,36 +174,43 @@ const PaymentResult = ({ navigation, route }) => {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("item", item);
-                    navigation.navigate("ClassInfo", { classInfo: item });
-                  }}
-                >
-                  <View
-                    style={{
-                      ...styles.recommendItemContainer,
+                <View style={styles.recommendItemShadowContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log("item", item);
+                      navigation.navigate("ClassInfo", { classInfo: item });
                     }}
                   >
-                    <SampleClassImg3 />
-                    <View style={styles.recommendItemInfo}>
-                      <Text style={styles.recommendItemClassName}>
-                        {item.className}
-                      </Text>
-                      <Text style={styles.recommendItemTeacherName}>
-                        {item.teacherName}
-                      </Text>
+                    <View
+                      style={{
+                        ...styles.recommendItemContainer,
+                      }}
+                    >
+                      <Image
+                        style={styles.imageContainer}
+                        source={item.imgUrl}
+                      ></Image>
+                      <View style={styles.recommendItemInfo}>
+                        <Text style={styles.recommendItemClassName}>
+                          {item.className}
+                        </Text>
+                        <Text style={styles.recommendItemTeacherName}>
+                          {item.teacherName}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
               )}
             />
           </SafeAreaView>
-        </View>
+        </>
       ) : (
-        <Text style={styles.paymentFailedText}>
-          Failed to payment.{"\n"}Please try again.
-        </Text>
+        <View style={styles.paymentFailedTextContainer}>
+          <Text style={styles.paymentFailedText}>
+            Failed to payment.{"\n"}Please try again.
+          </Text>
+        </View>
       )}
       {isSuccess ? null : (
         <TouchableOpacity
@@ -220,18 +229,23 @@ const PaymentResult = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: "center",
     backgroundColor: "#fff",
-    paddingBottom: 70,
-    paddingTop: 70,
+    flex: 1,
+    alignItems: "center",
+    paddingTop: 50,
   },
   titleContainer: {
+    backgroundColor: "#fff",
     paddingLeft: 20,
     paddingRight: 20,
+    width: Dimensions.get("window").width,
+    height: 100,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
+    backgroundColor: "#fff",
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
     color: "#000",
@@ -239,12 +253,19 @@ const styles = StyleSheet.create({
   purchasedItemContainer: {
     paddingLeft: 20,
     paddingRight: 20,
+    backgroundColor: "#fff",
+    width: Dimensions.get("window").width,
+    height: 150,
   },
   purchasedItem: {
     flexDirection: "row",
+    height: "80%",
   },
   purchasedItemImg: {
     marginRight: 15,
+    width: "30%",
+    height: "80%",
+    borderRadius: 10,
   },
   classNameText: {
     fontFamily: "Poppins-Medium",
@@ -300,6 +321,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
+    width: Dimensions.get("window").width * 0.95,
   },
   totalText: { fontFamily: "Poppins-Medium", fontSize: 16, color: "#000" },
   totalPrice: {
@@ -308,6 +330,10 @@ const styles = StyleSheet.create({
     color: "#A160E2",
   },
   studyNowBtn: {
+    width: Dimensions.get("window").width,
+    height: 50,
+    paddingLeft: 20,
+    paddingRight: 20,
     position: "relative",
     flexDirection: "row",
     justifyContent: "center",
@@ -322,7 +348,7 @@ const styles = StyleSheet.create({
   recommendContainer: {
     marginTop: 40,
     width: "100%",
-    height: 200,
+    height: Dimensions.get("window").height * 0.35,
     paddingLeft: 10,
   },
 
@@ -343,38 +369,79 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#807F82",
   },
-  recommendListContainer: {},
-  recommendItemContainer: {
-    marginRight: 10,
-    width: 100,
-    borderRadius: 15,
+  recommendListContainer: {
+    width: Dimensions.get("window").width * 0.95,
+    height: "100%",
+    paddingLeft: 10,
   },
-  recommendItemImg: {
-    width: 100,
-    height: 100,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+  recommendItemShadowContainer: {
+    width: Dimensions.get("window").width * 0.35,
+    height: "85%",
+    marginRight: 20,
+    borderRadius: 10,
+
+    backgroundColor: "#fff",
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        shadowColor: "gray",
+        elevation: 3,
+      },
+    }),
+  },
+  recommendItemContainer: {
+    alignItems: "center",
+    borderRadius: 10,
+    zIndex: 3,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#fff",
+  },
+  imageContainer: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    width: "100%",
+    height: "70%",
+    backgroundColor: "#fff",
+  },
+  recommendItemInfo: {
+    width: "95%",
+    height: "30%",
+    padding: 5,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    backgroundColor: "#fff",
   },
   recommendItemTeacherName: {
     color: "#807F82",
     fontSize: 12,
+    backgroundColor: "#fff",
+  },
+  paymentFailedTextContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: Dimensions.get("window").height - 80,
+    backgroundColor: "#fff",
   },
   paymentFailedText: {
     textAlign: "center",
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
     color: "#000",
-    paddingTop: 200,
-    paddingBottom: 200,
   },
   backToPageBtn: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#A160E2",
-    borderRadius: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    height: 50,
+    borderRadius: 30,
+    width: Dimensions.get("window").width * 0.95,
+    height: Dimensions.get("window").height * 0.07,
   },
   backToPageText: {
     fontFamily: "Poppins-SemiBold",

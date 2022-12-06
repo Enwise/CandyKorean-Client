@@ -349,6 +349,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: "center",
+    marginBottom: 15,
   },
   title: {
     fontFamily: "Poppins-SemiBold",

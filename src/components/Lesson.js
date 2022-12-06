@@ -7,89 +7,106 @@ import {
   TouchableOpacity,
   Button,
   Platform,
+  Dimensions,
 } from "react-native";
 
 import GradientBtn from "../components/GradientButtonView";
 
 const Lesson = ({ navigation, lessonInfo }) => {
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("LessonInfo", {
-          lessonInfo: lessonInfo,
-        });
-      }}
-    >
-      <View style={styles.container}>
-        <View style={styles.lessonInfoContainer}>
-          <Image
-            style={styles.imageContainer}
-            source={lessonInfo.profileImgUrl}
-          ></Image>
-          <View style={styles.textContainer}>
-            <View style={styles.lessonNameContainer}>
-              <Text style={styles.lessonName}>{lessonInfo.className}</Text>
-            </View>
-            <View style={styles.lessonDescContainer}>
-              <Text style={styles.lessonDesc}>{lessonInfo.description}</Text>
+    <View style={styles.container}>
+      <View style={styles.lessonInfoShawdowContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("LessonInfo", {
+              lessonInfo: lessonInfo,
+            });
+          }}
+        >
+          <View style={styles.lessonInfoContainer}>
+            <Image
+              style={styles.imageContainer}
+              source={lessonInfo.profileImgUrl}
+            ></Image>
+            <View style={styles.textContainer}>
+              <View style={styles.lessonNameContainer}>
+                <Text style={styles.lessonName}>{lessonInfo.className}</Text>
+              </View>
+              <View style={styles.lessonDescContainer}>
+                <Text style={styles.lessonDesc}>{lessonInfo.description}</Text>
+              </View>
             </View>
           </View>
-        </View>
-
-        <GradientBtn
-          text={`${lessonInfo.currentUnit + "/" + lessonInfo.totalUnits} Units`}
-          viewStyle={{
-            borderRadius: 10,
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            zIndex: 3,
-            width: 80,
-            height: 30,
-            right: 0,
-            bottom: 0,
-          }}
-        />
-        <View style={styles.lessonDateContainer}>
-          <Text style={styles.lessonDateText}>
-            From {lessonInfo.startDate} - {lessonInfo.endDate}
-          </Text>
-        </View>
+          <GradientBtn
+            text={`${
+              lessonInfo.currentUnit + "/" + lessonInfo.totalUnits
+            } Units`}
+            viewStyle={{
+              borderRadius: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              zIndex: 3,
+              width: 80,
+              height: 30,
+              right: 5,
+              bottom: 5,
+            }}
+          />
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+
+      <View style={styles.lessonDateContainer}>
+        <Text style={styles.lessonDateText}>
+          From {lessonInfo.startDate} - {lessonInfo.endDate}
+        </Text>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    padding: 15,
-    position: "relative",
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height * 0.2,
+    backgroundColor: "#fff",
+    borderRadius: 9,
     marginBottom: 40,
+  },
+  lessonInfoShawdowContainer: {
     width: "100%",
-    height: 150,
-    borderRadius: 20,
-    // ...Platform.select({
-    //   ios: {
-    //     shadowColor: "rgba(0,0,0,0.2)",
-    //     shadowOpacity: 1,
-    //     shadowOffset: { height: 2, width: 2 },
-    //     shadowRadius: 2,
-    //   },
-    //   android: {
-    //     elevation: 3,
-    //     marginHorizontal: 0,
-    //   },
-    // }),
+
+    height: "100%",
+
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    padding: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        shadowColor: "lightgray",
+        elevation: 10,
+      },
+    }),
   },
   lessonInfoContainer: {
     flexDirection: "row",
     width: "100%",
+    height: "100%",
+    borderRadius: 9,
+    backgroundColor: "#fff",
   },
   imageContainer: {
     width: "40%",
     height: "100%",
     borderRadius: 20,
+    backgroundColor: "#fff",
   },
   img: {
     width: 150,
@@ -100,6 +117,7 @@ const styles = StyleSheet.create({
   textContainer: {
     marginLeft: 10,
     width: "60%",
+    backgroundColor: "#fff",
   },
   lessonName: {
     fontFamily: "Poppins-Medium",
@@ -128,9 +146,7 @@ const styles = StyleSheet.create({
   lessonDateContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    position: "absolute",
-    bottom: -20,
-    right: 20,
+    marginTop: 5,
   },
 
   lessonDateText: {

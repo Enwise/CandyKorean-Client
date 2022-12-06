@@ -87,23 +87,23 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
       </View>
 
       {isShowAll ? (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ClassInfo", {
-              classInfo: classInfo,
-            });
-            console.log("ClassInfo");
-          }}
-        >
-          <View style={styles.bottomShadowContainer}>
+        <View style={styles.bottomShadowContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ClassInfo", {
+                classInfo: classInfo,
+              });
+              console.log("ClassInfo");
+            }}
+          >
             <View style={styles.bottomContainer}>
               <Text style={styles.bottomText}>
                 Go to the lecture description
               </Text>
               <AntDesign name="right" size={10} color="#807F82" />
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       ) : null}
     </View>
   );
@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
     right: 6,
   },
   bottomShadowContainer: {
-    width: Dimensions.get("window").width * 0.93,
-    height: 30,
+    width: Dimensions.get("window").width * 0.95,
+    height: Dimensions.get("window").height * 0.04,
     marginTop: 10,
     borderRadius: 20,
     backgroundColor: "#fff",
@@ -161,26 +161,26 @@ const styles = StyleSheet.create({
       },
 
       android: {
+        shadowColor: "rgba(0,0,0,0.5)",
         elevation: 5,
       },
     }),
   },
   bottomContainer: {
-    width: Dimensions.get("window").width * 0.93,
-    height: 30,
-    borderRadius: 5,
+    width: "100%",
+    height: "100%",
+    borderRadius: 32,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingLeft: 5,
-    paddingRight: 20,
+    paddingRight: 5,
     backgroundColor: "#fff",
-    zIndex: 5,
   },
   bottomText: {
     fontFamily: "Poppins-Regular",
     color: "#807F82",
-
+    borderRadius: 32,
     backgroundColor: "#fff",
   },
   classImg: {
@@ -236,7 +236,7 @@ const dstyles = (isShowAll) =>
       width: isShowAll ? Dimensions.get("window").width * 0.93 : "100%",
       height: isShowAll ? 150 : 300,
       backgroundColor: "#fff",
-      borderRadius: 10,
+      borderRadius: 9,
       padding: 5,
       ...Platform.select({
         ios: isShowAll && {
@@ -248,6 +248,8 @@ const dstyles = (isShowAll) =>
 
         android: isShowAll && {
           elevation: 3,
+          shadowColor: "rgba(0,0,0,0.5)",
+
           marginHorizontal: 0,
         },
       }),
