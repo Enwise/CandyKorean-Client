@@ -96,7 +96,7 @@ const PaymentResult = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       {isSuccess ? (
-        <View>
+        <>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>
               Order Completed{"\n"}Thank you for purchasing!
@@ -107,7 +107,6 @@ const PaymentResult = ({ navigation, route }) => {
                   ? navigation.navigate("ClassMain")
                   : navigation.navigate("My");
               }}
-              style={{ position: "absolute", right: 10, top: 10 }}
             >
               <Ionicons name="ios-close-outline" size={24} color="black" />
             </TouchableOpacity>
@@ -175,35 +174,37 @@ const PaymentResult = ({ navigation, route }) => {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("item", item);
-                    navigation.navigate("ClassInfo", { classInfo: item });
-                  }}
-                >
-                  <View
-                    style={{
-                      ...styles.recommendItemContainer,
+                <View style={styles.recommendItemShadowContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log("item", item);
+                      navigation.navigate("ClassInfo", { classInfo: item });
                     }}
                   >
-                    <Image
-                      style={styles.imageContainer}
-                      source={item.imgUrl}
-                    ></Image>
-                    <View style={styles.recommendItemInfo}>
-                      <Text style={styles.recommendItemClassName}>
-                        {item.className}
-                      </Text>
-                      <Text style={styles.recommendItemTeacherName}>
-                        {item.teacherName}
-                      </Text>
+                    <View
+                      style={{
+                        ...styles.recommendItemContainer,
+                      }}
+                    >
+                      <Image
+                        style={styles.imageContainer}
+                        source={item.imgUrl}
+                      ></Image>
+                      <View style={styles.recommendItemInfo}>
+                        <Text style={styles.recommendItemClassName}>
+                          {item.className}
+                        </Text>
+                        <Text style={styles.recommendItemTeacherName}>
+                          {item.teacherName}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
               )}
             />
           </SafeAreaView>
-        </View>
+        </>
       ) : (
         <View style={styles.paymentFailedTextContainer}>
           <Text style={styles.paymentFailedText}>
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flex: 1,
     alignItems: "center",
-    marginTop: 50,
+    paddingTop: 50,
   },
   titleContainer: {
     backgroundColor: "#fff",
@@ -239,6 +240,9 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     width: Dimensions.get("window").width,
     height: 100,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
     backgroundColor: "#fff",
@@ -317,6 +321,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
+    width: Dimensions.get("window").width * 0.95,
   },
   totalText: { fontFamily: "Poppins-Medium", fontSize: 16, color: "#000" },
   totalPrice: {
@@ -343,7 +348,7 @@ const styles = StyleSheet.create({
   recommendContainer: {
     marginTop: 40,
     width: "100%",
-    height: 200,
+    height: Dimensions.get("window").height * 0.35,
     paddingLeft: 10,
   },
 
@@ -366,24 +371,57 @@ const styles = StyleSheet.create({
   },
   recommendListContainer: {
     width: Dimensions.get("window").width * 0.95,
-    height: Dimensions.get("window").height * 0.3,
+    height: "100%",
     paddingLeft: 10,
   },
-  recommendItemContainer: {
+  recommendItemShadowContainer: {
+    width: Dimensions.get("window").width * 0.35,
+    height: "85%",
     marginRight: 20,
-    width: Dimensions.get("window").width * 0.3,
+    borderRadius: 10,
+
+    backgroundColor: "#fff",
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        shadowColor: "gray",
+        elevation: 3,
+      },
+    }),
+  },
+  recommendItemContainer: {
+    alignItems: "center",
+    borderRadius: 10,
+    zIndex: 3,
+    width: "100%",
     height: "100%",
-    borderRadius: 15,
+    backgroundColor: "#fff",
   },
   imageContainer: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     width: "100%",
-    height: "80%",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+    height: "70%",
+    backgroundColor: "#fff",
+  },
+  recommendItemInfo: {
+    width: "95%",
+    height: "30%",
+    padding: 5,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    backgroundColor: "#fff",
   },
   recommendItemTeacherName: {
     color: "#807F82",
     fontSize: 12,
+    backgroundColor: "#fff",
   },
   paymentFailedTextContainer: {
     justifyContent: "center",
