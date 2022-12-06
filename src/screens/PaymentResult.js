@@ -8,15 +8,12 @@ import {
   Image,
   FlatList,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import StudyNowIcon from "../assets/icons/StudyNowIcon";
 import UnitIcon from "../assets/icons/UnitIcon";
-
-import SampleClassImg3 from "../assets/icons/lesson/SampleClassImg1";
-import SampleClassImg1 from "../assets/icons/level/SampleClassImg1";
-import SampleClassImg2 from "../assets/icons/level/SampleClassImg2";
 
 const PaymentResult = ({ navigation, route }) => {
   const [year, setYear] = useState();
@@ -25,7 +22,7 @@ const PaymentResult = ({ navigation, route }) => {
 
   const [recommendList, setRecommendList] = useState([
     {
-      imgUrl: <SampleClassImg1></SampleClassImg1>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun1",
       className: "class1",
       category: "K-culture",
@@ -35,7 +32,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: true,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun2",
       className: "class2",
       category: "K-history",
@@ -45,8 +42,9 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun3",
+
       className: "class3",
       category: "K-pop",
       level: "Lollipop",
@@ -55,7 +53,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun4",
       className: "class4",
       category: "K-culture",
@@ -65,7 +63,7 @@ const PaymentResult = ({ navigation, route }) => {
       isPurchased: false,
     },
     {
-      imgUrl: <SampleClassImg2></SampleClassImg2>,
+      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
       teacherName: "Kyungeun5",
       className: "class5",
       category: "K-culture",
@@ -105,7 +103,9 @@ const PaymentResult = ({ navigation, route }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("ClassMain");
+                route.params.returnToClass
+                  ? navigation.navigate("ClassMain")
+                  : navigation.navigate("My");
               }}
               style={{ position: "absolute", right: 10, top: 10 }}
             >
@@ -115,7 +115,10 @@ const PaymentResult = ({ navigation, route }) => {
           <View style={styles.purchasedItemContainer}>
             <Text style={styles.purchasedItemText}>Purchased product</Text>
             <View style={styles.purchasedItem}>
-              <SampleClassImg1 />
+              <Image
+                style={styles.purchasedItemImg}
+                source={require("../assets/icons/class_img/shin_yoo_jin_square.jpg")}
+              ></Image>
               <View style={styles.purchasedItemInfo}>
                 <Text style={styles.classNameText}>{item.className}</Text>
                 <View style={styles.categoryAndUnit}>
@@ -183,7 +186,10 @@ const PaymentResult = ({ navigation, route }) => {
                       ...styles.recommendItemContainer,
                     }}
                   >
-                    <SampleClassImg3 />
+                    <Image
+                      style={styles.imageContainer}
+                      source={item.imgUrl}
+                    ></Image>
                     <View style={styles.recommendItemInfo}>
                       <Text style={styles.recommendItemClassName}>
                         {item.className}
@@ -199,9 +205,11 @@ const PaymentResult = ({ navigation, route }) => {
           </SafeAreaView>
         </View>
       ) : (
-        <Text style={styles.paymentFailedText}>
-          Failed to payment.{"\n"}Please try again.
-        </Text>
+        <View style={styles.paymentFailedTextContainer}>
+          <Text style={styles.paymentFailedText}>
+            Failed to payment.{"\n"}Please try again.
+          </Text>
+        </View>
       )}
       {isSuccess ? null : (
         <TouchableOpacity
@@ -220,18 +228,20 @@ const PaymentResult = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: "center",
     backgroundColor: "#fff",
-    paddingBottom: 70,
-    paddingTop: 70,
+    flex: 1,
+    alignItems: "center",
+    marginTop: 50,
   },
   titleContainer: {
+    backgroundColor: "#fff",
     paddingLeft: 20,
     paddingRight: 20,
+    width: Dimensions.get("window").width,
+    height: 100,
   },
   title: {
+    backgroundColor: "#fff",
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
     color: "#000",
@@ -239,12 +249,19 @@ const styles = StyleSheet.create({
   purchasedItemContainer: {
     paddingLeft: 20,
     paddingRight: 20,
+    backgroundColor: "#fff",
+    width: Dimensions.get("window").width,
+    height: 150,
   },
   purchasedItem: {
     flexDirection: "row",
+    height: "80%",
   },
   purchasedItemImg: {
     marginRight: 15,
+    width: "30%",
+    height: "80%",
+    borderRadius: 10,
   },
   classNameText: {
     fontFamily: "Poppins-Medium",
@@ -308,6 +325,10 @@ const styles = StyleSheet.create({
     color: "#A160E2",
   },
   studyNowBtn: {
+    width: Dimensions.get("window").width,
+    height: 50,
+    paddingLeft: 20,
+    paddingRight: 20,
     position: "relative",
     flexDirection: "row",
     justifyContent: "center",
@@ -343,15 +364,20 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#807F82",
   },
-  recommendListContainer: {},
+  recommendListContainer: {
+    width: Dimensions.get("window").width * 0.95,
+    height: Dimensions.get("window").height * 0.3,
+    paddingLeft: 10,
+  },
   recommendItemContainer: {
-    marginRight: 10,
-    width: 100,
+    marginRight: 20,
+    width: Dimensions.get("window").width * 0.3,
+    height: "100%",
     borderRadius: 15,
   },
-  recommendItemImg: {
-    width: 100,
-    height: 100,
+  imageContainer: {
+    width: "100%",
+    height: "80%",
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
@@ -359,22 +385,25 @@ const styles = StyleSheet.create({
     color: "#807F82",
     fontSize: 12,
   },
+  paymentFailedTextContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: Dimensions.get("window").height - 80,
+    backgroundColor: "#fff",
+  },
   paymentFailedText: {
     textAlign: "center",
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
     color: "#000",
-    paddingTop: 200,
-    paddingBottom: 200,
   },
   backToPageBtn: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#A160E2",
-    borderRadius: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    height: 50,
+    borderRadius: 30,
+    width: Dimensions.get("window").width * 0.95,
+    height: Dimensions.get("window").height * 0.07,
   },
   backToPageText: {
     fontFamily: "Poppins-SemiBold",

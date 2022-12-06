@@ -4,8 +4,8 @@ import Svg, { Rect, Defs, LinearGradient, Stop } from "react-native-svg";
 function StudyNowIcon(props) {
   return (
     <Svg
-      width={350}
-      height={50}
+      width={"100%"}
+      height={"100%"}
       viewBox="0 0 350 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

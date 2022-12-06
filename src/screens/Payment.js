@@ -14,6 +14,8 @@ import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
+  const routes = navigation.getState()?.routes;
+  const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
   const [itemInfo, setItemInfo] = useState(route.params.item);
   const [payList, setPayList] = useState([itemInfo]);
 
@@ -21,9 +23,17 @@ const Payment = ({ navigation, route }) => {
   const [month, setMonth] = useState();
   const [date, setDate] = useState();
 
+  const [returnToClass, setReturnToClass] = useState(false);
+
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
+    console.log("prev : ", prevRoute.name);
+    if (prevRoute.name == "ClassInfo") {
+      setReturnToClass(true);
+    } else {
+      setReturnToClass(false);
+    }
     let now = new Date(); // 현재 날짜 및 시간
     let year = now.getFullYear(); // 연도
     setYear(year);
@@ -185,6 +195,7 @@ const Payment = ({ navigation, route }) => {
                   itemInfo: itemInfo,
                   totalPrice: totalPrice,
                   isSuccess: true,
+                  returnToClass,
                 });
               }}
             >
