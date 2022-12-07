@@ -3,6 +3,7 @@ import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-
 import BackButton from "../components/BackButton";
 import { launchImageLibrary } from 'react-native-image-picker';
 import {getUserById, updateUser} from "../modules/NetworkFunction";
+import AuthContext from "../contexts/AuthContext";
 
 
 const SERVER_URL = 'http://localhost:3000';
@@ -26,7 +27,7 @@ const createFormData = (photo, body = {}) => {
 const Setting = ({navigation}) => {
 
     const [menuNum, setMenuNum] = useState(0);
-    const [nickname, setNickname] = useState("peter");
+    const [nickname, setNickname] = useState();
 
     const [photo, setPhoto] = React.useState(null);
 
@@ -75,6 +76,20 @@ const Setting = ({navigation}) => {
 
     const [isUserLoaded, setIsUserLoaded] = useState(false);
     const [user, setUser] = useState([]);
+    const { authState } = React.useContext(AuthContext);
+
+    React.useEffect(() => {
+        getUserById(
+            authState.userId,
+            (d) => {
+                setNickname(d.data.name)
+            },
+            () => {},
+            (e) => {
+                console.log("getUserById error");
+            }
+        );
+    }, [authState]);
 
     return (
         <View style={styles.container}>
@@ -130,8 +145,8 @@ const Setting = ({navigation}) => {
                             onPress={() => {
                                 updateUser(
                                     {
-                                        userId:3,
-                                        nickname:"changed nickname"
+                                        userId:authState.userId,
+                                        name: nickname,
                                     },
                                     (d) => {
                                         console.log(d.data);

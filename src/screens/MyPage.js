@@ -87,39 +87,21 @@ const MyPage = ({ navigation }) => {
     // getUserById
 
     const [isUserLoaded, setIsUserLoaded] = useState(false);
-    const [user, setUser] = useState([]);
+    const [user, setUser] = React.useState(null);
 
-    useEffect(() => {
-        console.log("useEffect");
-
-        // levelList 불러오기
-        if (!isUserLoaded) {
-            console.log("useEffec1t");
-            getUserById(
-                2,
-                (d) => {
-                    console.log(d.data);
-                    // console.log("12");
-                    // let updatedLevelList = [...user];
-                    // d.data.map((item) => {
-                    //     console.log(item.enabled);
-                    //
-                    //     if (item.enabled) {
-                    //         updatedLevelList.push(item);
-                    //     }
-                    // });
-                    // console.log("updatedLevelList", updatedLevelList);
-                    // setUser(updatedLevelList);
-                    setUser(d.data);
-                },
-
-                setIsUserLoaded,
-                (e) => {
-                    console.log(e);
-                }
-            );
-        }
-    }, [isUserLoaded]);
+    React.useEffect(() => {
+        getUserById(
+            authState.userId,
+            (d) => {
+                console.log(d);
+                setUser(d.data);
+            },
+            () => {},
+            (e) => {
+                console.log("getUserById error");
+            }
+        );
+    }, [authState]);
 
     return (
         <View style={styles.container}>
@@ -135,7 +117,7 @@ const MyPage = ({ navigation }) => {
             >
                 <View>
                     <Text style={{ fontSize: 20, fontWeight: "400" }}>
-                        반가워요. {user.nickname}!
+                        반가워요. {user?.name}!
                     </Text>
                 </View>
                 <View style={{ display: "flex", flexDirection: "row-reverse" }}>
@@ -188,7 +170,7 @@ const MyPage = ({ navigation }) => {
                     }}
                 >
                     <Text style={{ fontSize: 16, fontWeight: "600", color: "#444345" }}>
-                        {user.nickname}
+                        {user?.name}
                     </Text>
                     <View style={{ height: 7 }} />
                     <TouchableOpacity
