@@ -130,10 +130,12 @@ const Setting = ({navigation}) => {
                             onPress={() => {
                                 updateUser(
                                     {
-                                        nickname:"러니ㅏㅓㄷㅈ"
+                                        userId:3,
+                                        nickname:"changed nickname"
                                     },
                                     (d) => {
                                         console.log(d.data);
+                                        setUser(d.data);
                                     },
 
                                     setIsUserLoaded,
