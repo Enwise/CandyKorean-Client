@@ -33,7 +33,7 @@ const MyPurchases = ({navigation}) => {
             {purchaseArr.map((item, idx)=>{
 
                 return (
-                    <View style={{display:"flex", flexDirection:"column", width:"90%", marginBottom:20}}>
+                    <View key={idx} style={{display:"flex", flexDirection:"column", width:"90%", marginBottom:20}}>
                         <Text style={{fontSize:14, fontWeight:"500", color:"#807F82", marginBottom:5}}>{item.No}</Text>
                         {/*,boxShadow:"0px 2px 10px rgba(0, 0, 0, 0.07)"*/}
                         <View style={{display:"flex", flexDirection:"column",borderRadius:9}}>
@@ -88,7 +88,7 @@ const MyPurchases = ({navigation}) => {
                                         <Text style={{fontSize:10, fontWeight:"500", color:"#807F82"}}>{item.price}</Text>
                                     </View>
                                     <View style={{width:"100%", height:0.5, backgroundColor:"#B8B5BC"}}/>
-                                    <View style={{display:"flex", flexDirection:"row" ,justifyContent:"space-between", marginTop:"5"}}>
+                                    <View style={{display:"flex", flexDirection:"row" ,justifyContent:"space-between", marginTop:5}}>
                                         <Text style={{fontSize:10, fontWeight:"500", color:"#444345"}}>Total</Text>
                                         <Text style={{fontSize:12, fontWeight:"500", color:"#A160E2"}}>{item.price}</Text>
                                     </View>
