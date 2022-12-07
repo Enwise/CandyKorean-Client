@@ -158,6 +158,7 @@ const Setting = ({navigation}) => {
                                         console.log(e);
                                     }
                                 );
+                                navigation.navigate("My");
                             }}
                         >
                             <Text>confirm</Text>
