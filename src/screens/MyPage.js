@@ -96,7 +96,7 @@ const MyPage = ({ navigation }) => {
         if (!isUserLoaded) {
             console.log("useEffec1t");
             getUserById(
-                3,
+                2,
                 (d) => {
                     console.log(d.data);
                     // console.log("12");
@@ -252,7 +252,7 @@ const MyPage = ({ navigation }) => {
                         selectedDotColor: "#166088",
 
                         dayTextColor: "#DBE9EE",
-                        textDisabledColor: "#729DAF",
+                        textDisabledColor: "#999999",
                         dotColor: "#DBE9EE",
 
                         monthTextColor: "#DBE9EE",
@@ -277,7 +277,7 @@ const MyPage = ({ navigation }) => {
                                 locations={[0, 1]}
                                 start={[0.025, 0.5]}
                                 end={[0.975, 0.5]}
-                                style={{}}
+                                style={{width: 20, height: 20, borderRadius:10}}
                             >
                                 <Text
                                     style={{
@@ -292,11 +292,11 @@ const MyPage = ({ navigation }) => {
                     }}
                     markingType={"period"}
                     markedDates={{
-                        "2022-11-15": { marked: true, dotColor: "#50cebb" },
+                        "2022-12-15": { marked: true, dotColor: "#50cebb" },
                         "2022-11-16": { marked: true, dotColor: "#50cebb" },
                         "2022-11-17": {
                             startingDay: true,
-                            color: "#50cebb",
+                            color: "#FFFFFF",
                             textColor: "white",
                         },
                         "2022-11-18": { color: "#70d7c7", textColor: "white" },
@@ -312,6 +312,9 @@ const MyPage = ({ navigation }) => {
                             color: "#50cebb",
                             textColor: "white",
                         },
+                        "2022-12-20": { color: "#70d7c7", textColor: "white" },
+                        "2022-12-21": { color: "#70d7c7", textColor: "white" },
+                        "2022-12-22": { color: "#70d7c7", textColor: "white" },
                     }}
                 />
             </View>
@@ -337,7 +340,7 @@ const MyPage = ({ navigation }) => {
                     Analysis
                 </Text>
 
-                <Image source={require("../assets/img/Group 2026.png")} />
+                <Image source={require("../assets/img/mypage-dommy-img.png")} />
             </View>
         </View>
     );
