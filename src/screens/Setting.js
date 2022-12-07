@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
 import { launchImageLibrary } from 'react-native-image-picker';
+import {getUserById, updateUser} from "../modules/NetworkFunction";
 
 
 const SERVER_URL = 'http://localhost:3000';
@@ -71,6 +72,10 @@ const Setting = ({navigation}) => {
 
     const [feedbackNum, setFeedbackNum] = useState(0);
 
+
+    const [isUserLoaded, setIsUserLoaded] = useState(false);
+    const [user, setUser] = useState([]);
+
     return (
         <View style={styles.container}>
 
@@ -122,7 +127,21 @@ const Setting = ({navigation}) => {
                             keyboardType="default"
                         />
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("My")}
+                            onPress={() => {
+                                updateUser(
+                                    {
+                                        nickname:"러니ㅏㅓㄷㅈ"
+                                    },
+                                    (d) => {
+                                        console.log(d.data);
+                                    },
+
+                                    setIsUserLoaded,
+                                    (e) => {
+                                        console.log(e);
+                                    }
+                                );
+                            }}
                         >
                             <Text>confirm</Text>
                         </TouchableOpacity>
