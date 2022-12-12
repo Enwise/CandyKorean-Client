@@ -54,6 +54,10 @@ const ClassInfo = ({ props, navigation, route }) => {
     }
   };
 
+  useEffect(() => {
+    console.log(classInfo.introVideoUrl);
+  }, []);
+
   return (
     <>
       <StatusBar translucent={false} hidden={true} />
@@ -125,7 +129,7 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.videoContainer}>
           <Video
-            source={classInfo.introVideoUrl}
+            source={{ uri: classInfo.introVideoUrl }}
             rate={1.0}
             useNativeControls={true}
             style={{ height: 500, width: 300 }}

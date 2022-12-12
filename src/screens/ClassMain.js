@@ -33,7 +33,8 @@ const ClassMain = ({ navigation }) => {
         // mp4 로 해야됨..서버에 mp4 파일 올려야됨
         // introVideoUrl: require("https://youtube.com/shorts/2sr2X_inOSg"),
         // introVideoUrl: require("../assets/videos/shin_yoo_jin/0차시(소개).mp4"),
-        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         className: "yoojin shin class",
         category: "K-culture",
         level: "Lollipop",
@@ -45,7 +46,8 @@ const ClassMain = ({ navigation }) => {
         id: 2,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
 
         teacherName: "Kyungeun2",
         className: "class2",
@@ -58,7 +60,8 @@ const ClassMain = ({ navigation }) => {
         id: 3,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
 
         teacherName: "Kyungeun3",
         className: "class3",
@@ -71,7 +74,8 @@ const ClassMain = ({ navigation }) => {
         id: 4,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
 
         teacherName: "Kyungeun4",
         className: "class4",
@@ -84,8 +88,8 @@ const ClassMain = ({ navigation }) => {
         id: 5,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "Kyungeun5",
         className: "class5",
         category: "K-culture",
