@@ -33,8 +33,7 @@ const ClassMain = ({ navigation }) => {
         // mp4 로 해야됨..서버에 mp4 파일 올려야됨
         // introVideoUrl: require("https://youtube.com/shorts/2sr2X_inOSg"),
         // introVideoUrl: require("../assets/videos/shin_yoo_jin/0차시(소개).mp4"),
-        introVideoUrl:
-          "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
         className: "yoojin shin class",
         category: "K-culture",
         level: "Lollipop",
@@ -46,6 +45,7 @@ const ClassMain = ({ navigation }) => {
         id: 2,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
 
         teacherName: "Kyungeun2",
         className: "class2",
@@ -58,6 +58,7 @@ const ClassMain = ({ navigation }) => {
         id: 3,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
 
         teacherName: "Kyungeun3",
         className: "class3",
@@ -70,6 +71,7 @@ const ClassMain = ({ navigation }) => {
         id: 4,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
 
         teacherName: "Kyungeun4",
         className: "class4",
@@ -82,6 +84,7 @@ const ClassMain = ({ navigation }) => {
         id: 5,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+        introVideoUrl: require("../assets/videos/0차시(소개).mp4"),
 
         teacherName: "Kyungeun5",
         className: "class5",
@@ -189,16 +192,17 @@ const ClassMain = ({ navigation }) => {
 
   useEffect(() => {
     console.log("useEffect");
+    console.log("getLevel data: ");
 
     // levelList 불러오기
     if (!isLevelListLoaded) {
       getLevels(
         {},
         (d) => {
-          console.log(d.data);
+          console.log("getLevel data: ", d.data);
           let updatedLevelList = [...levelList];
           d.data.map((item) => {
-            console.log(item.enabled);
+            console.log(item);
 
             if (item.enabled) {
               updatedLevelList.push(item);
@@ -213,9 +217,9 @@ const ClassMain = ({ navigation }) => {
           console.log(e);
         }
       );
- 
-
     }
+
+    setLevelList({ ...dummyCourseList });
   }, [isLevelListLoaded]);
 
   return (
@@ -225,14 +229,12 @@ const ClassMain = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        {levelList.map((levelItem) => {
-          console.log(levelItem);
+        {Object.keys(levelList).map((title) => {
           return (
             <Course
               navigation={navigation}
-              key={levelItem.level_id}
-              levelItem={levelItem}
-              classList={dummyCourseList[levelItem.name]}
+              title={title}
+              classList={dummyCourseList[title]}
               isShowAll={false}
               isMain={true}
             ></Course>

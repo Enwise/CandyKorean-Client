@@ -125,7 +125,7 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.videoContainer}>
           <Video
-            source={{ uri: classInfo.introVideoUrl }}
+            source={classInfo.introVideoUrl}
             rate={1.0}
             useNativeControls={true}
             style={{ height: 500, width: 300 }}

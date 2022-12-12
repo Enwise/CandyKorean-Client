@@ -30,9 +30,10 @@ const LessonVideo = ({ route, navigation }) => {
     <View style={styles.container}>
       <StatusBar translucent={false} hidden={true} />
       <Video
-        source={{
-          uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        }}
+        // source={{
+        //   uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        // }}
+        source={require("../assets/videos/0차시(소개).mp4")}
         rate={1.0}
         useNativeControls={true}
         resizeMode="stretch"
