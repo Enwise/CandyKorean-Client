@@ -104,7 +104,8 @@ const ClassMain = ({ navigation }) => {
 
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "K pop with Wang1",
         className: "class1",
         category: "K-culture",
@@ -116,7 +117,8 @@ const ClassMain = ({ navigation }) => {
         id: 7,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "K pop with Wang2",
         className: "class2",
         category: "K-culture",
@@ -129,7 +131,8 @@ const ClassMain = ({ navigation }) => {
 
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "K pop with Wang3",
         className: "class3",
         category: "K-culture",
@@ -141,7 +144,8 @@ const ClassMain = ({ navigation }) => {
         id: 9,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "K pop with Wang4",
         className: "class4",
         category: "K-culture",
@@ -155,7 +159,8 @@ const ClassMain = ({ navigation }) => {
         id: 10,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "shin",
         className: "class1",
         category: "K-culture",
@@ -167,7 +172,8 @@ const ClassMain = ({ navigation }) => {
         id: 11,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "kim",
         className: "class2",
         category: "K-culture",
@@ -179,7 +185,8 @@ const ClassMain = ({ navigation }) => {
         id: 12,
         imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
         profileUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
+        introVideoUrl:
+          "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         teacherName: "lee",
         className: "class3",
         category: "K-culture",

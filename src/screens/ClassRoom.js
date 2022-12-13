@@ -38,61 +38,71 @@ const ClassRoom = ({ navigation }) => {
           id: 1,
           unitNum: 1,
           unitName: "Asking how are you",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 2,
           unitNum: 2,
           unitName: "Greeting",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 3,
           unitNum: 3,
           unitName: "Reacting",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 4,
           unitNum: 4,
           unitName: "Asking formally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 5,
           unitNum: 5,
           unitName: "Answering formally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 6,
           unitNum: 6,
           unitName: "Suggesting formally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 7,
           unitNum: 7,
           unitName: "Suggesting informally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 8,
           unitNum: 8,
           unitName: "Asking to friends",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 9,
           unitNum: 9,
           unitName: "Asing to starangers (1)",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 10,
           unitNum: 10,
           unitName: "Asing to starangers (2)",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
       ],
     },
@@ -117,61 +127,71 @@ const ClassRoom = ({ navigation }) => {
           id: 11,
           unitNum: 1,
           unitName: "Asking how are you",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 12,
           unitNum: 2,
           unitName: "Greeting",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 13,
           unitNum: 3,
           unitName: "Reacting",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 14,
           unitNum: 4,
           unitName: "Asking formally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 15,
           unitNum: 5,
           unitName: "Answering formally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 16,
           unitNum: 6,
           unitName: "Suggesting formally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 17,
           unitNum: 7,
           unitName: "Suggesting informally",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 18,
           unitNum: 8,
           unitName: "Asking to friends",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 19,
           unitNum: 9,
           unitName: "Asing to starangers (1)",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
         {
           id: 20,
           unitNum: 10,
           unitName: "Asing to starangers (2)",
-          videoUrl: require("../assets/videos/0차시(소개).mp4"),
+          videoUrl:
+            "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
         },
       ],
     },
