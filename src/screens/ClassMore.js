@@ -19,7 +19,7 @@ const ClassMore = ({ navigation, route }) => {
   // 장바구니에서 Similar 눌렀을 때, level 정보 가져와서 그 레벨에 해당하는 class들만 가져와서 보여주기
 
   const title = route.params.title ?? route.params.maintitle;
-  const classList = route.params.classList;
+  const courseList = route.params.courseList;
 
   return (
     <View style={styles.courseContainer}>
@@ -43,7 +43,7 @@ const ClassMore = ({ navigation, route }) => {
           style={styles.classListContainer}
           horizontal={false}
           keyExtractor={(item) => String(item.id)}
-          data={classList}
+          data={courseList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (

@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height - 250,
+    height: Dimensions.get("window").height - 180,
     backgroundColor: "#fff",
     alignItems: "center",
   },

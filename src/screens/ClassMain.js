@@ -20,9 +20,74 @@ const ClassMain = ({ navigation }) => {
     "Mint Candy Level",
   ]);
 
+  // getLevels result
+  // {
+  //   "data": [
+  //       {
+  //           "level_id": 1,
+  //           "name": "롤리팝",
+  //           "enabled": false,
+  //           "info": "test",
+  //           "tutor": {
+  //               "tutor_id": 2,
+  //               "enabled": false,
+  //               "name": "imtutor3",
+  //               "img_url": "",
+  //               "profile_url": ""
+  //           }
+  //       },
+  //       {
+  //           "level_id": 2,
+  //           "name": "test",
+  //           "enabled": false,
+  //           "info": "",
+  //           "tutor": {
+  //               "tutor_id": 6,
+  //               "enabled": true,
+  //               "name": "yoojin shin",
+  //               "img_url": "",
+  //               "profile_url": ""
+  //           }
+  //       },
+
   // 객체 형태로 저장
   // key: 코스이름
   // value: 코스에 해당하는 수업 리스트
+
+  /* levels */
+  // id : level_id
+  // name : 레벨 이름
+  // info : 레벨 설명
+  // join : One Level to Many Courses (O)
+  // join : Many tutor to One Level (O)
+
+  /* Courses */
+  // name : 코스 이름
+  // category : 카테고리 이름
+  // price : 코스 가격
+  // join : One Course to Many Classes (O)
+  // join : One Course to One Tutor (X) -> #31 issue
+
+  /* Classes */
+  // join : One Classes to Many Contents (O)
+
+  /* Contents */
+  // units : 전체 유닛 갯수 : .length 활용
+  // introVideoUrl : 소개 영상 url -> 결과 list의 첫 번째 영상 video_url 사용
+  // video_url: 강의화면에서 사용될 영상 url
+
+  /* Tutors */
+  // 튜터 이름 : name
+  // 튜터 level 사진 : img_url
+  // 튜터 profile 사진 : profile_url
+
+  // useEffect 기공
+  // isPortait : 모두 true 로 해두기 -> #41 issue 추가될 예정
+
+ 
+
+  const [dataList, setDataList] = useState();
+  
   const [dummyCourseList, setDummyCourseList] = useState({
     "Lollipop Level": [
       {
@@ -215,7 +280,11 @@ const ClassMain = ({ navigation }) => {
           d.data.map((item) => {
             console.log(item);
 
-            if (item.enabled) {
+            if (
+              item.name === "Lollipop Level" ||
+              item.name === "Cotton Candy Level" ||
+              item.name === "Mint Candy Level"
+            ) {
               updatedLevelList.push(item);
             }
           });
@@ -230,7 +299,34 @@ const ClassMain = ({ navigation }) => {
       );
     }
 
-    setLevelList({ ...dummyCourseList });
+    setDataList([
+      {
+        "level_id" : 5,
+        "name" : "Lollipop Level",
+        "enabled": true,
+        "info": "K-Culture with influencers!",
+        "Course" : {
+          "course_id" : 1,
+          "name" : "yoojin shin class",
+          "price" : 1000, 
+        },
+       },
+       {
+        "level_id" : 6,
+        "name" : "Cotton Candy Level",
+        "enabled": true,
+        "info": "Standard Korean",
+        
+       },
+       {
+        "level_id" : 7,
+        "name" : "Mint Candy Level",
+        "enabled": true,
+        "info": "Lessons for TOPIK",
+       },
+    ])
+
+    console.log("levelList", levelList);
   }, [isLevelListLoaded]);
 
   return (
@@ -240,12 +336,12 @@ const ClassMain = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        {Object.keys(levelList).map((title) => {
+        {levelList.map((item) => {
           return (
             <Course
               navigation={navigation}
-              title={title}
-              classList={dummyCourseList[title]}
+              title={item.name}
+              levelItem={item}
               isShowAll={false}
               isMain={true}
             ></Course>

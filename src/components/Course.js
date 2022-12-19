@@ -7,43 +7,95 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import Class from "./Class";
 import { AntDesign } from "@expo/vector-icons";
+import { getCourses } from "../modules/NetworkFunction";
 
-const Course = ({ title, classList, isShowAll, navigation, isMain }) => {
+const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
+  // getCourse -> courseList 가져온 다음, 각 레벨에 따라서 분류
+  const [lollipopCourseList, setLollipopCourseList] = useState([]);
+  const [cottonCandyCourseList, setCottonCandyCourseList] = useState([]);
+  const [mintCandyCourseList, setMintCandyCourseList] = useState([]);
+
+  const [isCourseListLoaded, setIsCourseListLoaded] = useState(false);
+
+  // getCourses result
+  //    "data": [
+  //     {
+  //         "course_id": 1,
+  //         "name": "test3",
+  //         "price": 10000,
+  //         "info": "info",
+  //         "category": "기",
+  //         "view_count": 2,
+  //         "date_created": "2022-11-22T15:51:09.974Z",
+  //         "date_updated": "2022-11-22T15:51:09.974Z",
+  //         "level": {
+  //             "level_id": 1,
+  //             "name": "롤리팝",
+  //             "enabled": false,
+  //             "info": "test"
+  //         }
+  //     }
+  // ],
+
+  
+  useEffect(() => {
+    console.log(levelItem);
+
+    if (!isCourseListLoaded) {
+      getCourses(
+        {},
+        (d) => {
+          console.log("getCourse data: ", d.data);
+          let updatedLollipopCourseList = [...lollipopCourseList];
+          let updatedCottonCandyCourseList = [...cottonCandyCourseList];
+          let updatedMintCandyCourseList = [...mintCandyCourseList];
+
+          d.data.map((item) => {
+            console.log(item);
+            if (item.level.name === "Lollipop Level") {
+              updatedLollipopCourseList.push(item);
+            } else if (item.level.name === "Cotton Candy Level") {
+              updatedCottonCandyCourseList.push(item);
+            } else if (item.level.name === "Mint Candy Level") {
+              updatedMintCandyCourseList.push(item);
+            }
+          });
+          setLollipopCourseList(updatedLollipopCourseList);
+          setCottonCandyCourseList(updatedCottonCandyCourseList);
+          setMintCandyCourseList(updatedMintCandyCourseList);
+
+          console.log(lollipopCourseList);
+        },
+
+        setIsCourseListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+  }, [isCourseListLoaded]);
+
   const handleShowAllClass = () => {
-    // {
-    //   levelItem.name === "Lollipop Level"
-    //     ? navigation.navigate("ClassMore", {
-    //         classList: classList,
-    //         title: levelItem.name,
-    //       })
-    //     : null;
-    // }
     {
       title === "Lollipop Level"
         ? navigation.navigate("ClassMore", {
-            classList: classList,
-            title,
+            title: title,
+            courseList: lollipopCourseList,
           })
         : null;
     }
   };
-  useEffect(() => {}, []);
 
   return (
     <View style={styles.courseContainer}>
       <View style={styles.topContainer}>
         <View style={styles.topItem1}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.secondTitle}>
-            {title === "Lollipop Level"
-              ? "K-Culture with influencers!"
-              : "Cotton Candy Level"
-              ? "Standard Korean"
-              : "Lessons for TOPIK"}
-          </Text>
+          <Text style={styles.secondTitle}>{levelItem.info}</Text>
         </View>
         <View style={styles.topItem2}>
           <TouchableOpacity
@@ -64,8 +116,8 @@ const Course = ({ title, classList, isShowAll, navigation, isMain }) => {
             key={"_"}
             style={styles.classListContainer}
             horizontal={true}
-            keyExtractor={(item) => String(item.id)}
-            data={classList}
+            keyExtractor={(levelItem) => String(levelItem.level_id)}
+            data={lollipopCourseList}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
@@ -73,7 +125,7 @@ const Course = ({ title, classList, isShowAll, navigation, isMain }) => {
                 navigation={navigation}
                 classInfo={item}
                 isShowAll={isShowAll}
-                maintitle={title}
+                maintitle="Lollipop Level"
                 isMain={isMain}
               />
             )}
@@ -125,9 +177,10 @@ const styles = StyleSheet.create({
   },
 
   classListContainer: {
-    width: 350,
+    width: Dimensions.get('window').width,
     flexDirection: "row",
     paddingLeft: 20,
+    height: Dimensions.get('window').height * 0.4,
   },
 
   moreButton: {

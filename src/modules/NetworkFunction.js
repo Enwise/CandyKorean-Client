@@ -144,7 +144,7 @@ export const getCourses = async (
 ) => {
   const response = await getRequest("/course", reqParam, handleError);
   if (response !== null) {
-    setData(response.data.member);
+    setData(response.data);
     setIsReady(true);
   }
 };

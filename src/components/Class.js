@@ -14,8 +14,15 @@ import GradientBtn from "./GradientButtonView";
 import { AntDesign } from "@expo/vector-icons";
 
 const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
+  //https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_square.jpg
+  //https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_rect.jpg
   const [unitsNum, setUnitsNum] = useState(9);
   const [isWishList, setIsWishList] = useState(false);
+
+  const dummy_img_url =
+    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_rect.jpg";
+  const dummy_profile_url =
+    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_rect.jpg";
 
   const handleWishList = () => {
     console.log("handleWishList");
@@ -45,45 +52,59 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
           >
             <Image
               style={isShowAll ? styles.classProfileImg : styles.classImg}
-              source={isShowAll ? classInfo.profileUrl : classInfo.imgUrl}
+              // source={
+              //   isShowAll
+              //     ? classInfo.tutor.profile_url !== ""
+              //       ? classInfo.profileUrl
+              //       : dummy_profile_url
+              //     : classInfo.tutor.img_url !== ""
+              //     ? classInfo.img_url
+              //     : dummy_img_url
+              // }
+              source={isShowAll ? dummy_profile_url : dummy_img_url}
             ></Image>
           </TouchableOpacity>
         </View>
         <View style={dstyles(isShowAll).textContainer}>
           {isShowAll ? (
             <View style={styles.classNameAndHeart}>
-              <Text style={styles.className}>{classInfo.className}</Text>
+              <Text style={styles.className}>{classInfo.name}</Text>
               <TouchableOpacity
                 onPress={() => {
                   handleWishList();
                 }}
               >
+                <View style={{marginTop: 3,}}>
                 {isWishList ? (
-                  <AntDesign name="heart" size={24} color="#A160E2" />
+                  <AntDesign name="heart" size={22} color="#A160E2" />
                 ) : (
-                  <AntDesign name="hearto" size={24} color="#A160E2" />
+                  <AntDesign name="hearto" size={22} color="#A160E2" />
                 )}
+                </View>
               </TouchableOpacity>
             </View>
           ) : null}
           <View style={styles.teacherNameContainer}>
-            <Text style={styles.teacherName}>with {classInfo.teacherName}</Text>
+            <Text style={styles.teacherName}>
+              {/* with {classInfo.tutor.name ?? "dummy_tutor_name"} */}
+              with {classInfo.name}
+            </Text>
           </View>
-          {isShowAll ? (
+          
+        </View>
+        {isShowAll ? (
             <GradientBtn
               viewStyle={{
                 borderRadius: 10,
                 justifyContent: "center",
-                alignItems: "center",
                 padding: 5,
                 position: "absolute",
-                top: 30,
-                right: 0,
+                right: -5,
+                bottom: 5,
               }}
               text={`${classInfo.units} Units`}
             />
           ) : null}
-        </View>
       </View>
 
       {isShowAll ? (
@@ -116,7 +137,8 @@ const styles = StyleSheet.create({
   className: {
     marginBottom: 5,
     fontFamily: "Poppins-Medium",
-    fontSize: 16,
+    fontSize: 15,
+    marginRight:5,
   },
   teacherName: {
     marginBottom: 10,
@@ -131,6 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     marginTop: 3,
+   
   },
 
   unitsImg: {
@@ -213,8 +236,8 @@ const dstyles = (isShowAll) =>
           flexDirection: "column",
           borderRadius: 9,
           width: Dimensions.get("window").width * 0.95,
-          height: 170,
-          marginBottom: 60,
+          height: Dimensions.get('window').height * 0.2,
+          marginBottom: 80,
           marginTop: 10,
           alignItems: "center",
         }
@@ -232,9 +255,10 @@ const dstyles = (isShowAll) =>
       borderRadius: 10,
     },
     topContainer: {
+      position:'relative',
       flexDirection: isShowAll ? "row" : "column",
       width: isShowAll ? Dimensions.get("window").width * 0.93 : "100%",
-      height: isShowAll ? 150 : 300,
+      height: isShowAll ? "100%" : 300,
       backgroundColor: "#fff",
       borderRadius: 9,
       padding: 5,
@@ -258,7 +282,6 @@ const dstyles = (isShowAll) =>
     textContainer: {
       flexDirection: "column",
       width: "58%",
-      position: "relative",
     },
   });
 export default memo(Class);
