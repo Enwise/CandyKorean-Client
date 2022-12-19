@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Dimensions,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import { SwipeListView } from "react-native-swipe-list-view";
-import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
+import GradientBtn from "../components/GradientButtonView";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
@@ -26,6 +27,8 @@ const Payment = ({ navigation, route }) => {
   const [returnToClass, setReturnToClass] = useState(false);
 
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const [classInfo, setClassInfo] = useState(route.params.classInfo);
 
   useEffect(() => {
     console.log("prev : ", prevRoute.name);
@@ -50,6 +53,8 @@ const Payment = ({ navigation, route }) => {
       totalPrice += item.price;
     });
     setTotalPrice(totalPrice);
+
+    console.log(itemInfo);
   }, [payList, itemInfo]);
 
   const deleteItem = (id) => {
@@ -58,7 +63,7 @@ const Payment = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView
+    <View
       style={styles.container}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[0]}
@@ -83,108 +88,55 @@ const Payment = ({ navigation, route }) => {
           <Text style={styles.noSelectedText}>No Selected Items</Text>
         </View>
       ) : (
-        <View>
-          <View style={styles.payListContainer}>
-            <SwipeListView
-              data={payList}
-              // 어떻게 아이템을 렌더링 할 것인가
-              renderItem={({ item }) => (
-                <View style={styles.payListItem}>
-                  <View style={styles.classInfoContainer}>
-                    <View style={styles.classImgContainer}>
-                      {/* <Image
-                        style={styles.classImg}
-                        source={item.imgUrl}
-                      ></Image> */}
-                      <SampleClassImg1></SampleClassImg1>
-                    </View>
-                    <View style={styles.classInfoTextContainer}>
-                      <Text style={styles.classNameText}>{item.className}</Text>
-                      <View style={styles.categoryContainer}>
-                        <Text style={styles.cateogryText}>{item.category}</Text>
-                      </View>
-                      <View style={styles.priceTextContainer}>
-                        <Text style={styles.priceText}>
-                          $ {item.price === 0 ? "Free" : item.price}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.bottomContainer}>
-                    <View style={styles.courseDateTextContainer}>
-                      <Text style={styles.courseDateText}>
-                        Date : {year}-{month}-{date} ~ 수강가능기간 끝 날짜
-                      </Text>
-                    </View>
-                    <View style={styles.unitsNumContainer}>
-                      <Text style={styles.unitsNum}>{item.units} Units</Text>
-                    </View>
-                  </View>
+        <View style={styles.payListItem}>
+          <View style={styles.classInfoContainer}>
+            <Image
+              source={{
+                uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+              }}
+              style={styles.classImg}
+            ></Image>
+            <View style={styles.classInfoTextContainer}>
+              <Text style={styles.classNameText}>{itemInfo.name}</Text>
+              <View style={styles.categoryAndUnitContainer}>
+                <View style={styles.categoryContainer}>
+                  <Text style={styles.cateogryText}>{itemInfo.category}</Text>
                 </View>
-              )}
-              // 어떻게 숨겨진 아이템을 렌더링 할 것인가
-              renderHiddenItem={({ item }) => (
-                <View style={styles.swipeHiddenItemContainer}>
-                  <View style={styles.swipeHiddenItem}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("MyWishList", {
-                          isAddToCart: false,
-                        });
-                      }}
-                    >
-                      <Text style={styles.swipeHiddenItemText}>
-                        Return{"\n"}to cart
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.swipeHiddenItem}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        console.log("delete");
-                        deleteItem(item.id);
-                      }}
-                    >
-                      <Text style={styles.swipeHiddenItemText}>Delete</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-              rightOpenValue={-150}
-              previewRowKey={"0"}
-              previewOpenValue={-40}
-              previewOpenDelay={3000}
-              disableRightSwipe={true}
-              // leftOpenValue={0}
-            />
+                <GradientBtn
+                  // text={`${item.units} Units`}
+                  text="9 Units"
+                  textStyle={{
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: 10,
+                    fontFamily: "Poppins-Medium",
+                  }}
+                  viewStyle={{
+                    borderRadius: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 53,
+                    height: 19,
+                    marginLeft: 5,
+                  }}
+                />
+              </View>
+
+              <View style={styles.courseDateTextContainer}>
+                <Text style={styles.courseDateText}>
+                  {year}-{month}-{date} ~ 수강가능기간 끝 날짜
+                </Text>
+              </View>
+              {/* <View style={styles.unitsNumContainer}>
+              <Text style={styles.unitsNum}>{itemInfo.units} Units</Text>
+            </View> */}
+            </View>
           </View>
+
           <View style={styles.paymentAmountContainer}>
             <Text style={styles.paymentAmountText}>Payment amount</Text>
             <Text style={styles.paymentPriceText}>$ {totalPrice}</Text>
           </View>
-          {/* <View style={styles.summaryContainer}>
-            <Text>Summary</Text>
-            {payList.map((item) => {
-              return (
-                <View style={styles.summaryItem}>
-                  <View style={styles.summaryText}>
-                    <Text>{item.className}</Text>
-                    <Text>
-                      from {year}.{month}.{date} until 수강가능기간 끝날짜
-                    </Text>
-                  </View>
-                  <View style={styles.summaryPrice}>
-                    <Text>$ {item.price}</Text>
-                  </View>
-                </View>
-              );
-            })}
-            <View style={{ height: 1, backgroundColor: "#000" }}></View>
-            <View style={styles.totalPriceContainer}>
-              <Text>Total</Text>
-              <Text>$ {totalPrice}</Text>
-            </View>
-          </View> */}
           <View style={styles.howToPayContainer}>
             <Text style={styles.howToPayText}>How to pay</Text>
           </View>
@@ -200,7 +152,6 @@ const Payment = ({ navigation, route }) => {
               }}
             >
               <View style={styles.creditcardBtn}>
-                {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
                 <Text style={styles.creditcardText}>Credit card</Text>
               </View>
             </TouchableOpacity>
@@ -214,14 +165,170 @@ const Payment = ({ navigation, route }) => {
               }}
             >
               <View style={styles.paypalBtn}>
-                {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
                 <Text style={styles.paypalText}>Paypal</Text>
               </View>
             </TouchableOpacity>
           </View>
         </View>
+
+        // <View>
+        //   <View style={styles.payListContainer}>
+        //     <SwipeListView
+        //       data={payList}
+        //       // 어떻게 아이템을 렌더링 할 것인가
+        //       renderItem={({ item }) => (
+        //         <View style={styles.payListItem}>
+        //           <View style={styles.classInfoContainer}>
+        //             <Image
+        //               source={{
+        //                 uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+        //               }}
+        //               style={styles.classImg}
+        //             ></Image>
+        //             <View style={styles.classInfoTextContainer}>
+        //               <Text style={styles.classNameText}>{item.name}</Text>
+        //               <View style={styles.categoryAndUnitContainer}>
+        //                 <View style={styles.categoryContainer}>
+        //                   <Text style={styles.cateogryText}>
+        //                     {item.category}
+        //                   </Text>
+        //                 </View>
+        //                 <GradientBtn
+        //                   // text={`${item.units} Units`}
+        //                   text="9 Units"
+        //                   textStyle={{
+        //                     color: "white",
+        //                     textAlign: "center",
+        //                     fontSize: 10,
+        //                     fontFamily: "Poppins-Medium",
+        //                   }}
+        //                   viewStyle={{
+        //                     borderRadius: 10,
+        //                     justifyContent: "center",
+        //                     alignItems: "center",
+        //                     width: 53,
+        //                     height: 19,
+        //                     marginLeft: 5,
+        //                   }}
+        //                 />
+        //               </View>
+
+        //               <View style={styles.priceTextContainer}>
+        //                 <Text style={styles.priceText}>
+        //                   $ {item.price === 0 ? "Free" : item.price}
+        //                 </Text>
+        //               </View>
+        //             </View>
+        //           </View>
+        //           <View style={styles.bottomContainer}>
+        //             <View style={styles.courseDateTextContainer}>
+        //               <Text style={styles.courseDateText}>
+        //                 Date : {year}-{month}-{date} ~ 수강가능기간 끝 날짜
+        //               </Text>
+        //             </View>
+        //             <View style={styles.unitsNumContainer}>
+        //               <Text style={styles.unitsNum}>{item.units} Units</Text>
+        //             </View>
+        //           </View>
+        //         </View>
+        //       )}
+        //       // 어떻게 숨겨진 아이템을 렌더링 할 것인가
+        //       renderHiddenItem={({ item }) => (
+        //         <View style={styles.swipeHiddenItemContainer}>
+        //           <View style={styles.swipeHiddenItem}>
+        //             <TouchableOpacity
+        //               onPress={() => {
+        //                 navigation.navigate("MyWishList", {
+        //                   isAddToCart: false,
+        //                 });
+        //               }}
+        //             >
+        //               <Text style={styles.swipeHiddenItemText}>
+        //                 Return{"\n"}to cart
+        //               </Text>
+        //             </TouchableOpacity>
+        //           </View>
+        //           <View style={styles.swipeHiddenItem}>
+        //             <TouchableOpacity
+        //               onPress={() => {
+        //                 console.log("delete");
+        //                 deleteItem(item.id);
+        //               }}
+        //             >
+        //               <Text style={styles.swipeHiddenItemText}>Delete</Text>
+        //             </TouchableOpacity>
+        //           </View>
+        //         </View>
+        //       )}
+        //       rightOpenValue={-150}
+        //       previewRowKey={"0"}
+        //       previewOpenValue={-40}
+        //       previewOpenDelay={3000}
+        //       disableRightSwipe={true}
+        //       // leftOpenValue={0}
+        //     />
+        //   </View>
+
+        //   {/* <View style={styles.summaryContainer}>
+        //     <Text>Summary</Text>
+        //     {payList.map((item) => {
+        //       return (
+        //         <View style={styles.summaryItem}>
+        //           <View style={styles.summaryText}>
+        //             <Text>{item.className}</Text>
+        //             <Text>
+        //               from {year}.{month}.{date} until 수강가능기간 끝날짜
+        //             </Text>
+        //           </View>
+        //           <View style={styles.summaryPrice}>
+        //             <Text>$ {item.price}</Text>
+        //           </View>
+        //         </View>
+        //       );
+        //     })}
+        //     <View style={{ height: 1, backgroundColor: "#000" }}></View>
+        //     <View style={styles.totalPriceContainer}>
+        //       <Text>Total</Text>
+        //       <Text>$ {totalPrice}</Text>
+        //     </View>
+        //   </View> */}
+        //   <View style={styles.howToPayContainer}>
+        //     <Text style={styles.howToPayText}>How to pay</Text>
+        //   </View>
+        //   <View style={styles.paymentContainer}>
+        //     <TouchableOpacity
+        //       onPress={() => {
+        //         navigation.navigate("PaymentResult", {
+        //           itemInfo: itemInfo,
+        //           totalPrice: totalPrice,
+        //           isSuccess: true,
+        //           returnToClass,
+        //         });
+        //       }}
+        //     >
+        //       <View style={styles.creditcardBtn}>
+        //         {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
+        //         <Text style={styles.creditcardText}>Credit card</Text>
+        //       </View>
+        //     </TouchableOpacity>
+        //     <TouchableOpacity
+        //       onPress={() => {
+        //         navigation.navigate("PaymentResult", {
+        //           itemInfo: itemInfo,
+        //           totalPrice: totalPrice,
+        //           isSuccess: false,
+        //         });
+        //       }}
+        //     >
+        //       <View style={styles.paypalBtn}>
+        //         {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
+        //         <Text style={styles.paypalText}>Paypal</Text>
+        //       </View>
+        //     </TouchableOpacity>
+        //   </View>
+        // </View>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -234,6 +341,7 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: "column",
     backgroundColor: "white",
+    marginBottom: 20,
   },
   title: {
     fontSize: 20,
@@ -264,20 +372,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   payListItem: {
-    width: 350,
+    width: Dimensions.get("window").width,
     paddingLeft: 20,
     paddingRight: 20,
     position: "relative",
     marginBottom: 25,
-    zIndex: 2,
     backgroundColor: "white",
   },
 
   classInfoContainer: {
     flexDirection: "row",
+    marginBottom: 20,
+  },
+  classInfoTextContainer: {
+    width: "70%",
+    flexDirection: "column",
   },
   classImg: {
-    width: 100,
+    width: "30%",
     height: 100,
     borderRadius: 20,
     marginRight: 10,
@@ -288,6 +400,11 @@ const styles = StyleSheet.create({
     color: "#444345",
     marginBottom: 5,
   },
+  categoryAndUnitContainer: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+
   categoryContainer: {
     borderRadius: 20,
     flexDirection: "row",
@@ -313,6 +430,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
+  courseDateTextContainer: {
+    width: "100%",
+  },
+  courseDateText: {
+    fontFamily: "Poppins-Regular",
+    color: "#B8B5BC",
+    fontSize: 10,
+  },
   summaryItem: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -321,13 +446,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
   },
-  paymentContainer: {
-    flexDirection: "row",
-    marginTop: 20,
-    justifyContent: "space-evenly",
-    marginBottom: 20,
-  },
+
   paymentAmountContainer: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     paddingLeft: 20,
@@ -336,8 +457,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     borderRadius: 20,
-    marginLeft: 15,
-    marginRight: 15,
     height: 50,
     alignItems: "center",
   },
@@ -353,21 +472,28 @@ const styles = StyleSheet.create({
   },
   howToPayContainer: {
     marginTop: 20,
-    marginLeft: 20,
   },
   howToPayText: {
     fontFamily: "Poppins-Medium",
     fontSize: 16,
     color: "#B8B5BC",
   },
+  paymentContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+    marginBottom: 20,
+    width: "100%",
+    justifyContent: "space-evenly",
+  },
 
   creditcardBtn: {
+    width: Dimensions.get("screen").width / 2 - 20,
     justifyContent: "center",
     alignItems: "center",
-    width: 160,
     height: 40,
     backgroundColor: "#F1EFF4",
     borderRadius: 10,
+    marginRight: 5,
   },
   creditcardText: {
     fontFamily: "Poppins-Medium",
@@ -375,9 +501,10 @@ const styles = StyleSheet.create({
     color: "#807F82",
   },
   paypalBtn: {
+    width: Dimensions.get("screen").width / 2 - 20,
     justifyContent: "center",
     alignItems: "center",
-    width: 160,
+    marginLeft: 5,
     height: 40,
 
     backgroundColor: "#F1EFF4",

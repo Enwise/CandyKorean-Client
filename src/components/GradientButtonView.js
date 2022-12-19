@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-const GradientButtonView = ({ text, viewStyle }) => {
+const GradientButtonView = ({ text, textStyle, viewStyle }) => {
   return (
     <View>
       <LinearGradient
@@ -18,18 +18,10 @@ const GradientButtonView = ({ text, viewStyle }) => {
         end={[0.975, 0.5]}
         style={{ ...viewStyle }}
       >
-        <Text style={styles.text}>{text}</Text>
+        <Text style={{ ...textStyle }}>{text}</Text>
       </LinearGradient>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 14,
-    fontFamily: "Poppins-Medium",
-  },
-});
 export default GradientButtonView;

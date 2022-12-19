@@ -54,7 +54,7 @@ const ClassInfo = ({ props, navigation, route }) => {
   };
 
   useEffect(() => {
-    console.log(classInfo)
+    console.log(classInfo);
     // console.log(classInfo.introVideoUrl);
 
     // class, content, 그리고 tutor 정보 가져와야함
@@ -88,12 +88,20 @@ const ClassInfo = ({ props, navigation, route }) => {
         <View style={styles.topShadowContainer}>
           <View style={styles.topContainer}>
             <Image
-              source={{uri: 'https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg'}}
+              source={{
+                uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+              }}
               style={styles.imageContainer}
             ></Image>
             <View style={styles.textContainer}>
               <GradientBtn
                 text={`${classInfo.units} Units`}
+                textStyle={{
+                  color: "white",
+                  textAlign: "center",
+                  fontSize: 12,
+                  fontFamily: "Poppins-Medium",
+                }}
                 viewStyle={{
                   borderRadius: 10,
                   justifyContent: "center",
@@ -122,9 +130,7 @@ const ClassInfo = ({ props, navigation, route }) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.teacherNameContainer}>
-                <Text style={styles.teacherName}>
-                  with {classInfo.name}
-                </Text>
+                <Text style={styles.teacherName}>with {classInfo.name}</Text>
               </View>
             </View>
           </View>
@@ -150,9 +156,7 @@ const ClassInfo = ({ props, navigation, route }) => {
         </View>
 
         <View style={styles.classAndteacherContainer}>
-          <Text style={styles.classInfoText}>
-            {classInfo.info}
-          </Text>
+          <Text style={styles.classInfoText}>{classInfo.info}</Text>
           <Text style={styles.teacherInfoText}>Ph.D Korean education</Text>
         </View>
 

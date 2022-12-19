@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
   paymentFailedTextContainer: {
     justifyContent: "center",
     alignItems: "center",
-    height: Dimensions.get("window").height - 80,
+    height: Dimensions.get("window").height * 0.8,
     backgroundColor: "#fff",
   },
   paymentFailedText: {

@@ -53,7 +53,9 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               //     ? classInfo.img_url
               //     : dummy_img_url
               // }
-              source={{uri: 'https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg'}}
+              source={{
+                uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+              }}
             ></Image>
           </TouchableOpacity>
         </View>
@@ -66,12 +68,12 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
                   handleWishList();
                 }}
               >
-                <View style={{marginTop: 3,}}>
-                {isWishList ? (
-                  <AntDesign name="heart" size={22} color="#A160E2" />
-                ) : (
-                  <AntDesign name="hearto" size={22} color="#A160E2" />
-                )}
+                <View style={{ marginTop: 3 }}>
+                  {isWishList ? (
+                    <AntDesign name="heart" size={22} color="#A160E2" />
+                  ) : (
+                    <AntDesign name="hearto" size={22} color="#A160E2" />
+                  )}
                 </View>
               </TouchableOpacity>
             </View>
@@ -82,21 +84,26 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               with {classInfo.name}
             </Text>
           </View>
-          
         </View>
         {isShowAll ? (
-            <GradientBtn
-              viewStyle={{
-                borderRadius: 10,
-                justifyContent: "center",
-                padding: 5,
-                position: "absolute",
-                right: -5,
-                bottom: 5,
-              }}
-              text={`${classInfo.units} Units`}
-            />
-          ) : null}
+          <GradientBtn
+            viewStyle={{
+              borderRadius: 10,
+              justifyContent: "center",
+              padding: 5,
+              position: "absolute",
+              right: -5,
+              bottom: 5,
+            }}
+            textStyle={{
+              color: "white",
+              textAlign: "center",
+              fontSize: 14,
+              fontFamily: "Poppins-Medium",
+            }}
+            text={`${classInfo.units} Units`}
+          />
+        ) : null}
       </View>
 
       {isShowAll ? (
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontFamily: "Poppins-Medium",
     fontSize: 15,
-    marginRight:5,
+    marginRight: 5,
   },
   teacherName: {
     marginBottom: 10,
@@ -145,7 +152,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     marginTop: 3,
-   
   },
 
   unitsImg: {
@@ -228,10 +234,10 @@ const dstyles = (isShowAll) =>
           flexDirection: "column",
           borderRadius: 9,
           width: Dimensions.get("window").width * 0.95,
-          height: Dimensions.get('window').height * 0.2,
+          height: Dimensions.get("window").height * 0.2,
           marginBottom: 80,
           marginTop: 10,
-          
+
           alignItems: "center",
         }
       : {
@@ -248,7 +254,7 @@ const dstyles = (isShowAll) =>
       borderRadius: 10,
     },
     topContainer: {
-      position:'relative',
+      position: "relative",
       flexDirection: isShowAll ? "row" : "column",
       width: isShowAll ? Dimensions.get("window").width * 0.93 : "100%",
       height: isShowAll ? "100%" : 300,
