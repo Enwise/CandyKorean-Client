@@ -14,15 +14,8 @@ import GradientBtn from "./GradientButtonView";
 import { AntDesign } from "@expo/vector-icons";
 
 const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
-  //https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_square.jpg
-  //https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_rect.jpg
   const [unitsNum, setUnitsNum] = useState(9);
   const [isWishList, setIsWishList] = useState(false);
-
-  const dummy_img_url =
-    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_rect.jpg";
-  const dummy_profile_url =
-    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671094225509/shin_yoo_jin_rect.jpg";
 
   const handleWishList = () => {
     console.log("handleWishList");
@@ -44,7 +37,6 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               isMain &&
                 navigation.navigate("ClassInfo", {
                   classInfo: classInfo,
-                  maintitle: maintitle,
                   isMain: isMain,
                 });
             }}
@@ -61,7 +53,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               //     ? classInfo.img_url
               //     : dummy_img_url
               // }
-              source={isShowAll ? dummy_profile_url : dummy_img_url}
+              source={{uri: 'https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg'}}
             ></Image>
           </TouchableOpacity>
         </View>
@@ -239,6 +231,7 @@ const dstyles = (isShowAll) =>
           height: Dimensions.get('window').height * 0.2,
           marginBottom: 80,
           marginTop: 10,
+          
           alignItems: "center",
         }
       : {
@@ -246,7 +239,7 @@ const dstyles = (isShowAll) =>
           flexDirection: "column",
           marginRight: 5,
           alignItems: "center",
-          width: 170,
+          width: Dimensions.get("window").width * 0.5,
         },
     img: {
       width: isShowAll ? 130 : 140,
@@ -261,7 +254,7 @@ const dstyles = (isShowAll) =>
       height: isShowAll ? "100%" : 300,
       backgroundColor: "#fff",
       borderRadius: 9,
-      padding: 5,
+      padding: 11,
       ...Platform.select({
         ios: isShowAll && {
           shadowColor: "rgba(0,0,0,0.2)",

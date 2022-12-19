@@ -23,7 +23,6 @@ const ClassInfo = ({ props, navigation, route }) => {
   const [classInfo, setClassInfo] = useState(route.params.classInfo);
   const [isWishList, setIsWishList] = useState(false);
 
-  console.log(classInfo);
   const [url, setUrl] = useState("");
   //useEffect(async () => {}, []);
 
@@ -55,7 +54,11 @@ const ClassInfo = ({ props, navigation, route }) => {
   };
 
   useEffect(() => {
-    console.log(classInfo.introVideoUrl);
+    console.log(classInfo)
+    // console.log(classInfo.introVideoUrl);
+
+    // class, content, 그리고 tutor 정보 가져와야함
+    // class, content ->  Units 갯수가 얼마인지 알기위해
   }, []);
 
   return (
@@ -71,7 +74,7 @@ const ClassInfo = ({ props, navigation, route }) => {
         stickyHeaderIndices={[0]}
       >
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{classInfo.className}</Text>
+          <Text style={styles.title}>{classInfo.name}</Text>
           <View style={styles.backBtn}>
             <TouchableOpacity
               onPress={() => {
@@ -85,7 +88,7 @@ const ClassInfo = ({ props, navigation, route }) => {
         <View style={styles.topShadowContainer}>
           <View style={styles.topContainer}>
             <Image
-              source={classInfo.profileUrl}
+              source={{uri: 'https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg'}}
               style={styles.imageContainer}
             ></Image>
             <View style={styles.textContainer}>
@@ -104,7 +107,7 @@ const ClassInfo = ({ props, navigation, route }) => {
                 }}
               />
               <View style={styles.classNameHeartContainer}>
-                <Text style={styles.className}>{classInfo.className}</Text>
+                <Text style={styles.className}>{classInfo.name}</Text>
                 <TouchableOpacity
                   style={styles.heartContainer}
                   onPress={() => {
@@ -112,15 +115,15 @@ const ClassInfo = ({ props, navigation, route }) => {
                   }}
                 >
                   {isWishList ? (
-                    <AntDesign name="heart" size={24} color="#A160E2" />
+                    <AntDesign name="heart" size={22} color="#A160E2" />
                   ) : (
-                    <AntDesign name="hearto" size={24} color="#A160E2" />
+                    <AntDesign name="hearto" size={22} color="#A160E2" />
                   )}
                 </TouchableOpacity>
               </View>
               <View style={styles.teacherNameContainer}>
                 <Text style={styles.teacherName}>
-                  with {classInfo.teacherName}
+                  with {classInfo.name}
                 </Text>
               </View>
             </View>
@@ -148,7 +151,7 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.classAndteacherContainer}>
           <Text style={styles.classInfoText}>
-            Let's study real Korean formal language!
+            {classInfo.info}
           </Text>
           <Text style={styles.teacherInfoText}>Ph.D Korean education</Text>
         </View>
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     marginTop: 30,
     fontFamily: "Poppins-SemiBold",
     backgroundColor: "#fff",
@@ -211,7 +214,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: "absolute",
-    top: 40,
+    top: 35,
     left: 20,
   },
   img: {
@@ -267,7 +270,8 @@ const styles = StyleSheet.create({
   className: {
     marginBottom: 5,
     fontFamily: "Poppins-Medium",
-    fontSize: 16,
+    fontSize: 15,
+    marginRight: 5,
   },
   teacherName: {
     marginBottom: 10,
