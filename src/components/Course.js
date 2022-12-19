@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
   courseContainer: {
     marginTop: 40,
-    width: "100%",
+    width: Dimensions.get("window").width ,
   },
   topContainer: {
     width: "90%",
@@ -177,10 +177,10 @@ const styles = StyleSheet.create({
   },
 
   classListContainer: {
-    width: Dimensions.get('window').width,
+    width: Dimensions.get('window').width ,
     flexDirection: "row",
-    paddingLeft: 20,
-    height: Dimensions.get('window').height * 0.4,
+    paddingLeft: 5,
+    height: Dimensions.get('window').height * 0.45,
   },
 
   moreButton: {
