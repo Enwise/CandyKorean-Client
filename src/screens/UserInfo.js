@@ -196,16 +196,13 @@ const UserInfo = ({ navigation, route }) => {
         />
       </View>
       <BottomSheet
+        data={levelData}
+        select={levelSelect}
+        setSelect={setLevelSelect}
         visible={bottomSheetVisible}
         setVisible={setBottomSheetVisible}
         header={"Korean Level"}
-      >
-        <LevelSelect
-          data={levelData}
-          select={levelSelect}
-          onPress={(value) => setLevelSelect(value)}
-        />
-      </BottomSheet>
+      ></BottomSheet>
     </View>
   );
 };

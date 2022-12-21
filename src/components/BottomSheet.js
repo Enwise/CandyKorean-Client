@@ -13,7 +13,15 @@ import {
 import CloseIcon from "../assets/icons/CloseIcon";
 import LevelSelect from "./LevelSelect";
 
-const BottomSheet = ({ children, visible, setVisible, header }) => {
+const BottomSheet = ({
+  children,
+  visible,
+  setVisible,
+  header,
+  select,
+  data,
+  setSelect,
+}) => {
   const screenHeight = Dimensions.get("screen").height;
   const panY = React.useRef(new Animated.Value(screenHeight)).current;
   const translateY = panY.interpolate({
@@ -81,7 +89,16 @@ const BottomSheet = ({ children, visible, setVisible, header }) => {
               <CloseIcon />
             </TouchableOpacity>
           </View>
-          <View style={{ margin: 20 }}>{children}</View>
+          <View style={{ margin: 20 }}>
+            <LevelSelect
+              data={data}
+              select={select}
+              onPress={(value) => {
+                setSelect(value);
+                closeModal();
+              }}
+            />
+          </View>
         </Animated.View>
       </View>
     </Modal>
