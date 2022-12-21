@@ -54,7 +54,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               //     : dummy_img_url
               // }
               source={{
-                uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+                uri: classInfo.tutor.profile_url,
               }}
             ></Image>
           </TouchableOpacity>
@@ -62,13 +62,15 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
         <View style={dstyles(isShowAll).textContainer}>
           {isShowAll ? (
             <View style={styles.classNameAndHeart}>
-              <Text style={styles.className}>{classInfo.name}</Text>
+              <View style={styles.classNameContainer}>
+                <Text style={styles.className}>{classInfo.name}</Text>
+              </View>
               <TouchableOpacity
                 onPress={() => {
                   handleWishList();
                 }}
               >
-                <View style={{ marginTop: 3 }}>
+                <View style={{ position: "absolute", right: 0 }}>
                   {isWishList ? (
                     <AntDesign name="heart" size={22} color="#A160E2" />
                   ) : (
@@ -81,7 +83,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
           <View style={styles.teacherNameContainer}>
             <Text style={styles.teacherName}>
               {/* with {classInfo.tutor.name ?? "dummy_tutor_name"} */}
-              with {classInfo.name}
+              {classInfo.tutor.name}
             </Text>
           </View>
         </View>
@@ -133,6 +135,15 @@ const styles = StyleSheet.create({
   classContainer: {
     backgroundColor: "#fff",
   },
+  classNameAndHeart: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: Dimensions.get("window").width * 0.55,
+    position: "relative",
+  },
+  classNameContainer: {
+    width: "80%",
+  },
   className: {
     marginBottom: 5,
     fontFamily: "Poppins-Medium",
@@ -152,6 +163,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     marginTop: 3,
+    widht: "100%",
   },
 
   unitsImg: {
@@ -216,14 +228,10 @@ const styles = StyleSheet.create({
     height: 130,
     marginRight: 15,
   },
-  classNameAndHeart: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-  },
+
   imageContainer: {
     width: "35%",
-    marginRight: 15,
+    marginRight: 8,
   },
 });
 
@@ -243,9 +251,8 @@ const dstyles = (isShowAll) =>
       : {
           flex: 1,
           flexDirection: "column",
-          marginRight: 5,
           alignItems: "center",
-          width: Dimensions.get("window").width * 0.5,
+          width: Dimensions.get("window").width * 0.48,
         },
     img: {
       width: isShowAll ? 130 : 140,
@@ -280,7 +287,7 @@ const dstyles = (isShowAll) =>
 
     textContainer: {
       flexDirection: "column",
-      width: "58%",
+      width: "60%",
     },
   });
 export default memo(Class);

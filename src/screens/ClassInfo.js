@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-import { ResizeMode } from "expo-av";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
@@ -110,7 +109,7 @@ const ClassInfo = ({ props, navigation, route }) => {
                   zIndex: 3,
                   width: 70,
                   height: 30,
-                  right: 0,
+                  right: -10,
                   bottom: -120,
                 }}
               />
@@ -130,7 +129,9 @@ const ClassInfo = ({ props, navigation, route }) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.teacherNameContainer}>
-                <Text style={styles.teacherName}>with {classInfo.name}</Text>
+                <Text style={styles.teacherName}>
+                  with {classInfo.tutor.name}
+                </Text>
               </View>
             </View>
           </View>
@@ -138,10 +139,21 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.videoContainer}>
           <Video
-            source={{ uri: classInfo.introVideoUrl }}
+            usePoster={true}
+            // source={{ uri: classInfo.introVideoUrl }}
+            source={{
+              uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
+            }}
             rate={1.0}
             useNativeControls={true}
             style={{ height: 500, width: 300 }}
+            // posterSource={{
+            //   uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671471320710/shin_yoo_jin_rect.jpg",
+            // }}
+            // posterStyle={{
+            //   height: 500,
+            //   width: 300,
+            // }}
             resizeMode="stretch"
             isLooping
             onFullscreenUpdate={(status) => {
@@ -157,7 +169,6 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.classAndteacherContainer}>
           <Text style={styles.classInfoText}>{classInfo.info}</Text>
-          <Text style={styles.teacherInfoText}>Ph.D Korean education</Text>
         </View>
 
         {/* <TouchableOpacity
@@ -298,7 +309,7 @@ const styles = StyleSheet.create({
   classAndteacherContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 150,
+    marginTop: 50,
   },
 
   payBtn: {

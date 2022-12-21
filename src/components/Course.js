@@ -41,7 +41,6 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
   //     }
   // ],
 
-  
   useEffect(() => {
     console.log(levelItem);
 
@@ -57,6 +56,38 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
           d.data.map((item) => {
             console.log(item);
             if (item.level.name === "Lollipop Level") {
+              if (item.name === "Yoojin Teacher Course") {
+                // course_id : 3
+                item["tutor"] = {
+                  tutor_id: 11,
+                  enabled: true,
+                  name: "Yoojin",
+                  img_url: "",
+                  profile_url:
+                    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+                };
+              } else if (item.name === "Seongyeop Teacher Course") {
+                // course_id : 4
+                item["tutor"] = {
+                  tutor_id: 14,
+                  enabled: true,
+                  name: "Seongyeop",
+                  img_url: "",
+                  profile_url:
+                    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671641225531/seongyeop_profile.png",
+                };
+              } else if (item.name === "After Like Course") {
+                // course_id : 5
+                item["tutor"] = {
+                  tutor_id: 15,
+                  enabled: true,
+                  name: "Kyungeun",
+                  img_url: "",
+                  profile_url:
+                    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+                };
+              }
+              console.log("course : ", item);
               updatedLollipopCourseList.push(item);
             } else if (item.level.name === "Cotton Candy Level") {
               updatedCottonCandyCourseList.push(item);
@@ -122,6 +153,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <Class
+                key={item.course_id}
                 navigation={navigation}
                 classInfo={item}
                 isShowAll={isShowAll}
@@ -149,7 +181,7 @@ const styles = StyleSheet.create({
 
   courseContainer: {
     marginTop: 40,
-    width: Dimensions.get("window").width ,
+    width: Dimensions.get("window").width,
   },
   topContainer: {
     width: "90%",
@@ -177,10 +209,10 @@ const styles = StyleSheet.create({
   },
 
   classListContainer: {
-    width: Dimensions.get('window').width ,
+    width: Dimensions.get("window").width,
     flexDirection: "row",
     paddingLeft: 5,
-    height: Dimensions.get('window').height * 0.45,
+    height: Dimensions.get("window").height * 0.45,
   },
 
   moreButton: {
