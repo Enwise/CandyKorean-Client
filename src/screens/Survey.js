@@ -7,7 +7,6 @@ import {
   View,
 } from "react-native";
 import Constants from "expo-constants";
-import BottomSheet from "../components/BottomSheet";
 import GradientButton from "../components/GradientButton";
 import SurveyList from "../components/SurveyList";
 import BackButton from "../components/BackButton";
@@ -44,7 +43,7 @@ const Survey = ({ navigation, route }) => {
     "Movies",
     "K-Brands",
     "Fashion",
-    "Tv-Show",
+    "TV-Show",
     "K-Sports",
     "K-Games",
     "Webtoon",

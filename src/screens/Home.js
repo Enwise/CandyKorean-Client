@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import SmallLogoIcon from "../assets/icons/SmallLogoIcon";
-import NoticeIcon from "../assets/icons/NoticeIcon";
-
+import * as Linking from "expo-linking";
 import RecommendedLecture from "../components/RecommendedLecture";
 import { LinearGradient } from "expo-linear-gradient";
 import RecommendedLecList from "../components/RecommendedLecList";
@@ -22,6 +21,8 @@ import { Audio } from "expo-av";
 import AuthContext from "../contexts/AuthContext";
 import { getUserById } from "../modules/NetworkFunction";
 import RightIcon from "../assets/icons/RightIcon";
+import HomeCarousel from "../components/HomeCarousel";
+import LollipopBanner from "../assets/img/LollipopBanner";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -86,7 +87,10 @@ const Home = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ paddingBottom: 80, backgroundColor: "white" }}
+      contentContainerStyle={{
+        paddingBottom: 120,
+        backgroundColor: "white",
+      }}
       showsVerticalScrollIndicator={false}
     >
       <View>
@@ -103,9 +107,6 @@ const Home = () => {
         >
           <View style={styles.header}>
             <SmallLogoIcon />
-            <TouchableOpacity>
-              <NoticeIcon />
-            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -144,6 +145,7 @@ const Home = () => {
           <View style={{ width: 15 }} />
           <ProgressLecture />
         </ScrollView>
+
         <View style={{ marginTop: 41 }}>
           <View
             style={{
@@ -177,6 +179,44 @@ const Home = () => {
 
           <RecommendedLecList />
         </View>
+      </View>
+      <HomeCarousel />
+      <View style={{ marginTop: 37 }}>
+        <Text style={[styles.title]}>Free Korean Classes</Text>
+        <TouchableOpacity
+          style={{ marginVertical: 13 }}
+          activeOpacity={0.8}
+          onPress={() => {
+            Linking.openURL("https://www.instagram.com/candy._.korean");
+          }}
+        >
+          <Image source={require("../assets/img/img_instagram.png")} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => {
+            Linking.openURL("https://www.instagram.com/candy._.korean");
+          }}
+        >
+          <LinearGradient
+            colors={["#84E9FF", "#C284FF"]}
+            locations={[0, 1]}
+            start={[0.025, 0.5]}
+            end={[0.975, 0.5]}
+            style={styles.button}
+          >
+            <Text
+              style={{
+                fontFamily: "Poppins-SemiBold",
+                fontSize: 16,
+                color: "white",
+              }}
+            >
+              @candy._.korean
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -278,6 +318,32 @@ const styles = StyleSheet.create({
   content: {
     // paddingLeft: 20,
     marginTop: 42,
+  },
+  button: {
+    height: 38,
+    borderRadius: 10,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    paddingHorizontal: 7,
+    alignSelf: "center",
+  },
+  buttonContainer: {
+    borderRadius: 10,
+    alignSelf: "center",
+    ...Platform.select({
+      ios: {
+        shadowOpacity: 1,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowRadius: 4,
+        shadowColor: "rgba(0,0,0,0.25)",
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
 });
 

@@ -61,9 +61,9 @@ const UserInfo = ({ navigation, route }) => {
   const jobList = ["Students", "Worker", "Self-employment", "Unemployed"];
 
   React.useEffect(() => {
-    if (name && nationality) setEnableButton(true);
+    if (name && nationality && levelSelect) setEnableButton(true);
     else setEnableButton(false);
-  }, [name, nationality]);
+  }, [name, nationality, levelSelect]);
 
   return (
     <View style={styles.container}>
@@ -124,7 +124,10 @@ const UserInfo = ({ navigation, route }) => {
           </View>
 
           <View style={styles.title}>
-            <Text style={styles.titleText}>Korean Level</Text>
+            <Text style={styles.titleText}>
+              Korean Level<Text style={{ color: "#A160E2" }}> *</Text>
+            </Text>
+
             <TouchableOpacity
               style={styles.selectView}
               onPress={() => setBottomSheetVisible(true)}
@@ -176,6 +179,7 @@ const UserInfo = ({ navigation, route }) => {
           <DateTimePicker
             isVisible={datePickerVisible}
             mode="date"
+            display="spinner"
             onConfirm={(date) => {
               setDate(date.toLocaleDateString());
               setDatePickerVisible(false);
@@ -192,16 +196,13 @@ const UserInfo = ({ navigation, route }) => {
         />
       </View>
       <BottomSheet
+        data={levelData}
+        select={levelSelect}
+        setSelect={setLevelSelect}
         visible={bottomSheetVisible}
         setVisible={setBottomSheetVisible}
         header={"Korean Level"}
-      >
-        <LevelSelect
-          data={levelData}
-          select={levelSelect}
-          onPress={(value) => setLevelSelect(value)}
-        />
-      </BottomSheet>
+      ></BottomSheet>
     </View>
   );
 };
