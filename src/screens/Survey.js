@@ -62,6 +62,7 @@ const Survey = ({ navigation, route }) => {
       survey3: selected3,
     }),
     userId: authState.userId,
+    date_last_login: new Date(),
   };
   const handleSignUp = async () => {
     await updateUser(

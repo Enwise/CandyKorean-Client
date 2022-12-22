@@ -7,7 +7,12 @@ import AuthStack from "./src/navigation/AuthStack";
 import MainTab from "./src/navigation/MainTab";
 import { useFonts } from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createUser, login } from "./src/modules/NetworkFunction";
+import {
+  createUser,
+  getUserById,
+  login,
+  updateUser,
+} from "./src/modules/NetworkFunction";
 import AuthContext from "./src/contexts/AuthContext";
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +59,7 @@ export default function App() {
       userId: null,
     }
   );
+
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
@@ -65,10 +71,6 @@ export default function App() {
         // Restoring token failed
       }
 
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       dispatch({ type: "RESTORE_TOKEN", token: userToken, userId: userId });
     };
 
@@ -84,7 +86,7 @@ export default function App() {
         await login(
           data,
           (d) => {
-            console.log("data", d);
+            // console.log("data", d);
             setUserData(d.data);
             userToken = d.token.token;
             userId = d.data.user_id;
@@ -105,6 +107,7 @@ export default function App() {
             console.log("e", e);
           }
         }
+
         dispatch({ type: "SIGN_IN", token: userToken, userId: userId });
       },
       signOut: async () => {
@@ -113,7 +116,6 @@ export default function App() {
         dispatch({ type: "SIGN_OUT" });
       },
       signUp: async (data) => {
-        let userToken = "temp";
         // 서버에 회원가입 data 보내고 토큰 받아오기
         let isSignedUp = false;
         let userId = null;
