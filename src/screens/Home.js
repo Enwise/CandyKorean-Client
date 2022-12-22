@@ -19,7 +19,7 @@ import ProgressLecture from "../components/ProgressLecture";
 
 import { Audio } from "expo-av";
 import AuthContext from "../contexts/AuthContext";
-import { getUserById } from "../modules/NetworkFunction";
+import { getUserById, updateUser } from "../modules/NetworkFunction";
 import RightIcon from "../assets/icons/RightIcon";
 import HomeCarousel from "../components/HomeCarousel";
 import LollipopBanner from "../assets/img/LollipopBanner";
@@ -29,7 +29,36 @@ const windowHeight = Dimensions.get("window").height;
 const Home = () => {
   const { authState } = React.useContext(AuthContext);
   const [user, setUser] = React.useState(null);
+  const updateAttendance = async (
+    userId,
+    lastLoginDate,
+    continuous_attendance_day
+  ) => {
+    // user table의 마지막 로그인 날짜와 오늘 날짜 비교해서 연속 출석 일수 update
+    let today = new Date();
+    let lastLogin = new Date(lastLoginDate);
+    let diff = today.getDate() - lastLogin.getDate();
+    let update_data = { userId: userId, date_last_login: today };
 
+    if (diff === 1) {
+      update_data.continuous_attendance = continuous_attendance_day + 1;
+    } else {
+      update_data.continuous_attendance = 1;
+    }
+    await updateUser(
+      update_data,
+      (d) => {
+        if (d.message === "updated") {
+          console.log("연속 출석일수 update");
+        }
+        setUser(d.data);
+      },
+      () => {},
+      (e) => {
+        console.log("updateUser error", e);
+      }
+    );
+  };
   const months = [
     "Jan",
     "Feb",
@@ -73,16 +102,28 @@ const Home = () => {
   };
 
   React.useEffect(() => {
-    getUserById(
-      authState.userId,
-      (d) => {
-        setUser(d.data);
-      },
-      () => {},
-      (e) => {
-        console.log("getUserById error");
-      }
-    );
+    let lastLoginDate, continuous_attendance_day;
+    const getUser = async () => {
+      await getUserById(
+        authState.userId,
+        (d) => {
+          setUser(d.data);
+          lastLoginDate = d.data.date_last_login;
+          continuous_attendance_day = d.data.continuous_attendance;
+        },
+        () => {},
+        (e) => {
+          console.log("getUserById error");
+        }
+      );
+
+      updateAttendance(
+        authState.userId,
+        lastLoginDate,
+        continuous_attendance_day
+      );
+    };
+    getUser();
   }, [authState]);
 
   return (
@@ -123,7 +164,10 @@ const Home = () => {
                   {user ? user.name : ""}
                 </Text>
               </Text>
-              <Text style={styles.headerText}>3일째 연속 출석 중이에요</Text>
+              <Text style={styles.headerText}>
+                {user ? user.continuous_attendance : "1"}일째 연속 출석
+                중이에요!
+              </Text>
             </View>
           </View>
         </LinearGradient>
@@ -300,7 +344,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
     paddingVertical: 3,
     marginBottom: 10,
-    width: 91,
+    width: 97,
   },
   dateText: {
     fontFamily: "Poppins-Medium",
