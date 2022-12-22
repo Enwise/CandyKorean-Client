@@ -392,9 +392,13 @@ export const getTutorById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await getRequest("/tutor", reqParam, handleError);
+  const response = await getRequest(
+    "/tutor/" + reqParam.tutor_id,
+    reqParam,
+    handleError
+  );
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

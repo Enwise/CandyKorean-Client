@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Class from "./Class";
 import { AntDesign } from "@expo/vector-icons";
-import { getCourses } from "../modules/NetworkFunction";
+import { getCourses, getTutorById } from "../modules/NetworkFunction";
 
 const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
   // getCourse -> courseList 가져온 다음, 각 레벨에 따라서 분류
@@ -20,6 +20,8 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
   const [mintCandyCourseList, setMintCandyCourseList] = useState([]);
 
   const [isCourseListLoaded, setIsCourseListLoaded] = useState(false);
+
+  const [isTutorLoaded, setIsTutorLoaded] = useState(false);
 
   // getCourses result
   //    "data": [
@@ -56,50 +58,41 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
           d.data.map((item) => {
             console.log(item);
             if (item.level.name === "Lollipop Level") {
-              if (item.name === "Yoojin Teacher Course") {
+              if (
+                item.name === "Yoojin Teacher Course" ||
+                item.name === "Seongyeop Teacher Course" ||
+                item.name === "After Like Course"
+              ) {
                 // course_id : 3
                 // class_id: 14(ot) 3, 5~13
-                item["tutor"] = {
-                  tutor_id: 11,
-                  enabled: true,
-                  name: "Yoojin",
-                  img_url: "",
-                  profile_url:
-                    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
-                };
-              } else if (item.name === "Seongyeop Teacher Course") {
-                // course_id : 4
-                item["tutor"] = {
-                  tutor_id: 14,
-                  enabled: true,
-                  name: "Seongyeop",
-                  img_url: "",
-                  profile_url:
-                    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671641225531/seongyeop_profile.png",
-                };
-              } else if (item.name === "After Like Course") {
-                // course_id : 5
-                item["tutor"] = {
-                  tutor_id: 15,
-                  enabled: true,
-                  name: "Kyungeun",
-                  img_url: "",
-                  profile_url:
-                    "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
-                };
+                if (!isTutorLoaded) {
+                  getTutorById(
+                    {
+                      tutor_id: item.tutor_id,
+                    },
+                    (d) => {
+                      console.log(d);
+                      item["tutor"] = { ...d.data };
+                      updatedLollipopCourseList.push(item);
+                    },
+                    setIsTutorLoaded,
+                    (e) => {
+                      console.log(e);
+                    }
+                  );
+                }
               }
-              console.log("course : ", item);
-              updatedLollipopCourseList.push(item);
             } else if (item.level.name === "Cotton Candy Level") {
               updatedCottonCandyCourseList.push(item);
             } else if (item.level.name === "Mint Candy Level") {
               updatedMintCandyCourseList.push(item);
             }
+            setIsTutorLoaded(false);
           });
           setLollipopCourseList(updatedLollipopCourseList);
           setCottonCandyCourseList(updatedCottonCandyCourseList);
           setMintCandyCourseList(updatedMintCandyCourseList);
-
+          console.log("lollipopCourseList");
           console.log(lollipopCourseList);
         },
 
@@ -109,7 +102,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
         }
       );
     }
-  }, [isCourseListLoaded]);
+  }, [isCourseListLoaded, isTutorLoaded]);
 
   const handleShowAllClass = () => {
     {

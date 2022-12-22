@@ -20,9 +20,7 @@ const Payment = ({ navigation, route }) => {
   const [itemInfo, setItemInfo] = useState(route.params.item);
   const [payList, setPayList] = useState([itemInfo]);
 
-  const [year, setYear] = useState();
-  const [month, setMonth] = useState();
-  const [date, setDate] = useState();
+  const [unitsNum, setUnitsNum] = useState(route.params.unitsNum);
 
   const [returnToClass, setReturnToClass] = useState(false);
 
@@ -99,12 +97,9 @@ const Payment = ({ navigation, route }) => {
             <View style={styles.classInfoTextContainer}>
               <Text style={styles.classNameText}>{itemInfo.name}</Text>
               <View style={styles.categoryAndUnitContainer}>
-                <View style={styles.categoryContainer}>
-                  <Text style={styles.cateogryText}>{itemInfo.category}</Text>
-                </View>
                 <GradientBtn
-                  // text={`${item.units} Units`}
-                  text="9 Units"
+                  text={`${unitsNum} Units`}
+                  // text="9 Units"
                   textStyle={{
                     color: "white",
                     textAlign: "center",
@@ -122,11 +117,6 @@ const Payment = ({ navigation, route }) => {
                 />
               </View>
 
-              <View style={styles.courseDateTextContainer}>
-                <Text style={styles.courseDateText}>
-                  {year}-{month}-{date} ~ 수강가능기간 끝 날짜
-                </Text>
-              </View>
               {/* <View style={styles.unitsNumContainer}>
               <Text style={styles.unitsNum}>{itemInfo.units} Units</Text>
             </View> */}

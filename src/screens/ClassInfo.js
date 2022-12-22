@@ -50,11 +50,11 @@ const ClassInfo = ({ props, navigation, route }) => {
     // class, content ->  Units 갯수가 얼마인지 알기위해
 
     // course_id
-    // 3 : Yoojin
-    // class_id : 14 OT, 3 : 1차시, 5 ~ 13 : 2차시 ~ 10차시
+    // 1 : Yoojin
+    // class_id : OT: 1, 1차시 ~ 10차시 : 3 ~ 12
 
-    // 4 : Seongyeop
-    // 5 : Kyungeun
+    // 2 : Seongyeop
+    // 3 : Kyungeun
     if (!isClassLoaded) {
       let updatedClassList = [];
       getClasses(
@@ -68,7 +68,7 @@ const ClassInfo = ({ props, navigation, route }) => {
               if (
                 item.course.course_id == classInfo.course_id &&
                 item.name.length <= 5 &&
-                item.name !== "2차"
+                item.name !== "1차"
               ) {
                 updatedClassList.push(item);
               }
@@ -223,12 +223,12 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.classAndteacherContainer}>
           <Text style={styles.classInfoText}>{classInfo.info}</Text>
-          {classList.map((classItem) => {
+          {/* {classList.map((classItem) => {
             return <Text>{classItem.name}</Text>;
           })}
           {contentsList.map((contentItem) => {
             return <Text>{contentItem.name}</Text>;
-          })}
+          })} */}
         </View>
 
         {/* <TouchableOpacity
@@ -247,7 +247,10 @@ const ClassInfo = ({ props, navigation, route }) => {
         <TouchableOpacity
           onPress={() => {
             // const payList = [{ ...classInfo }];
-            navigation.navigate("Payment", { item: classInfo });
+            navigation.navigate("Payment", {
+              item: classInfo,
+              unitsNum: contentsList.length,
+            });
           }}
         >
           <View style={styles.payBtn}>
@@ -370,6 +373,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
+  },
+  classInfoText: {
+    padding: 10,
+    fontFamily: "Poppins-Regular",
   },
 
   payBtn: {
