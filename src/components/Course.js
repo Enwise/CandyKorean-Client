@@ -58,6 +58,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
             if (item.level.name === "Lollipop Level") {
               if (item.name === "Yoojin Teacher Course") {
                 // course_id : 3
+                // class_id: 14(ot) 3, 5~13
                 item["tutor"] = {
                   tutor_id: 11,
                   enabled: true,

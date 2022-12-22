@@ -16,30 +16,20 @@ import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 import GradientBtn from "../components/GradientButtonView";
+import { getClasses } from "../modules/NetworkFunction";
+import { getContents } from "../modules/NetworkFunction";
 
 const ClassInfo = ({ props, navigation, route }) => {
-  const [unitsNum, setUnitsNum] = useState(9);
   const [classInfo, setClassInfo] = useState(route.params.classInfo);
+  const [isMain, setIsMain] = useState(route.params.isMain);
   const [isWishList, setIsWishList] = useState(false);
+  const [isClassLoaded, setIsClassLoaded] = useState(false);
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
+  const [classList, setClassList] = useState([]);
+  const [contentsList, setContentsList] = useState([]);
+  const [isPortrait, setIsPortrait] = useState(true);
 
-  const [url, setUrl] = useState("");
-  //useEffect(async () => {}, []);
-
-  // const videoCompress = async () => {
-  //   await VideoCompress.compress(
-  //     "../assets/videos/shin_yoo_jin/1차시.mp4",
-  //     {
-  //       compressionMethod: "auto",
-  //     },
-  //     (progress) => {
-  //       console.log({ compression: progress });
-  //     }
-  //   ).then(async (compressedFileUrl) => {
-  //     return compressedFileUrl;
-  //   });
-  // };
-
-  const [isPortrait, setIsPortrait] = useState(classInfo.isPortrait); // false면 가로, true면 세로
+  const [introVideoUrl, setIntroVideoUrl] = useState("");
 
   const videoPlayer = useRef();
   const [videoStatus, setVideoStatus] = useState(3);
@@ -58,7 +48,71 @@ const ClassInfo = ({ props, navigation, route }) => {
 
     // class, content, 그리고 tutor 정보 가져와야함
     // class, content ->  Units 갯수가 얼마인지 알기위해
-  }, []);
+
+    // course_id
+    // 3 : Yoojin
+    // class_id : 14 OT, 3 : 1차시, 5 ~ 13 : 2차시 ~ 10차시
+
+    // 4 : Seongyeop
+    // 5 : Kyungeun
+    if (!isClassLoaded) {
+      let updatedClassList = [];
+      getClasses(
+        {},
+        (d) => {
+          console.log("getAllClasses");
+          console.log(d.data);
+
+          if (isMain) {
+            d.data.map((item) => {
+              if (
+                item.course.course_id == classInfo.course_id &&
+                item.name.length <= 5 &&
+                item.name !== "2차"
+              ) {
+                updatedClassList.push(item);
+              }
+            });
+          }
+          setClassList(updatedClassList);
+        },
+        setIsClassLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+
+    if (isClassLoaded && !isContentLoaded) {
+      let introVideoUrl = "";
+      let updatedContentList = [];
+      getContents(
+        {},
+        (d) => {
+          console.log("getAllContents");
+          classList.map((classItem) => {
+            d.data.map((contentItem) => {
+              if (classItem.class_id == contentItem.class_entity.class_id) {
+                updatedContentList.push(contentItem);
+                if (contentItem.name === "Orientation") {
+                  console.log(contentItem.video_url);
+                  console.log(contentItem.is_portrait);
+                  introVideoUrl = contentItem.video_url;
+                  setIsPortrait(contentItem.is_portrait);
+                  setIntroVideoUrl(introVideoUrl);
+                }
+              }
+            });
+          });
+          setContentsList(updatedContentList);
+        },
+        setIsContentLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+  }, [isClassLoaded, isContentLoaded, introVideoUrl, isPortrait]);
 
   return (
     <>
@@ -88,13 +142,13 @@ const ClassInfo = ({ props, navigation, route }) => {
           <View style={styles.topContainer}>
             <Image
               source={{
-                uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+                uri: classInfo.tutor.profile_url,
               }}
               style={styles.imageContainer}
             ></Image>
             <View style={styles.textContainer}>
               <GradientBtn
-                text={`${classInfo.units} Units`}
+                text={`${classList.length - 1} Units`}
                 textStyle={{
                   color: "white",
                   textAlign: "center",
@@ -142,7 +196,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             usePoster={true}
             // source={{ uri: classInfo.introVideoUrl }}
             source={{
-              uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
+              uri: introVideoUrl,
             }}
             rate={1.0}
             useNativeControls={true}
@@ -169,6 +223,12 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.classAndteacherContainer}>
           <Text style={styles.classInfoText}>{classInfo.info}</Text>
+          {classList.map((classItem) => {
+            return <Text>{classItem.name}</Text>;
+          })}
+          {contentsList.map((contentItem) => {
+            return <Text>{contentItem.name}</Text>;
+          })}
         </View>
 
         {/* <TouchableOpacity

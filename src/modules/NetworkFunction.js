@@ -78,7 +78,7 @@ export const getContents = async (
 ) => {
   const response = await getRequest("/content", reqParam, handleError);
   if (response !== null) {
-    setData(response.data.member);
+    setData(response.data);
     setIsReady(true);
   }
 };
