@@ -42,7 +42,8 @@ const Home = () => {
 
     if (diff === 1) {
       update_data.continuous_attendance = continuous_attendance_day + 1;
-    } else {
+    }
+    if (diff > 1) {
       update_data.continuous_attendance = 1;
     }
     await updateUser(
