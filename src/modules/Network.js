@@ -20,6 +20,8 @@ const postRequest = async (endpoint, data, handleError) => {
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "post",
+      data: data,
+
     });
     return response;
   } catch (error) {
@@ -34,6 +36,7 @@ const putRequest = async (endpoint, data, handleError) => {
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "put",
+      data: data,
     });
     return response;
   } catch (error) {
