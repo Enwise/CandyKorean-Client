@@ -25,7 +25,6 @@ const Payment = ({ navigation, route }) => {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
-
   useEffect(() => {
     console.log("prev : ", prevRoute.name);
     if (prevRoute.name == "ClassInfo") {
@@ -33,7 +32,6 @@ const Payment = ({ navigation, route }) => {
     } else {
       setReturnToClass(false);
     }
-    
 
     let totalPrice = 0;
     // payList.append(item);
@@ -80,7 +78,13 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.classInfoContainer}>
             <Image
               source={{
-                uri: itemInfo.tutor.profile_url,
+                // uri: itemInfo.tutor.profile_url,
+                uri:
+                  itemInfo.name === "Yoojin Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
+                    : itemInfo.name === "Seongyeop Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
+                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
               }}
               style={styles.classImg}
             ></Image>

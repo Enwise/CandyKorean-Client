@@ -64,7 +64,13 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               //     : dummy_img_url
               // }
               source={{
-                uri: classInfo.tutor.profile_url,
+                // uri: classInfo.tutor.profile_url,
+                uri:
+                  classInfo.name === "Yoojin Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
+                    : classInfo.name === "Seongyeop Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
+                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
               }}
             ></Image>
           </TouchableOpacity>
@@ -136,8 +142,11 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
                     classInfo.name == "Seongyeop Teacher Course" ||
                     classInfo.name == "After Like Course") &&
                   10,
-                  isPortrait: (classInfo.name == "Yoojin Teacher Course" ||
-                  classInfo.name == "Seongyeop Teacher Course" ? true : false)
+                isPortrait:
+                  classInfo.name == "Yoojin Teacher Course" ||
+                  classInfo.name == "Seongyeop Teacher Course"
+                    ? true
+                    : false,
               });
               console.log("ClassInfo");
             }}
