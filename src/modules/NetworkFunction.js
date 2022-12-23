@@ -271,9 +271,10 @@ export const getQuizById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await getRequest("/quiz", reqParam, handleError);
+  const { quiz_id } = reqParam;
+  const response = await getRequest(`/quiz/${quiz_id}`, reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

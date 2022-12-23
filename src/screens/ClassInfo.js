@@ -54,7 +54,10 @@ const ClassInfo = ({ props, navigation, route }) => {
     // class_id : OT: 1, 1차시 ~ 10차시 : 3 ~ 12
 
     // 2 : Seongyeop
+    // class_id : OT: 13, 1차시 ~ 10차시 : 15 ~ 24
+
     // 3 : Kyungeun
+    // class_id : OT: 25, 1강 ~ 10강 : 26 ~ 35
     if (!isClassLoaded) {
       let updatedClassList = [];
       getClasses(
@@ -66,8 +69,7 @@ const ClassInfo = ({ props, navigation, route }) => {
           if (isMain) {
             d.data.map((item) => {
               if (
-                item.course.course_id == classInfo.course_id &&
-                item.name.length <= 5 &&
+                item.course.course_id === classInfo.course_id &&
                 item.name !== "1차"
               ) {
                 updatedClassList.push(item);
@@ -94,11 +96,20 @@ const ClassInfo = ({ props, navigation, route }) => {
             d.data.map((contentItem) => {
               if (classItem.class_id == contentItem.class_entity.class_id) {
                 updatedContentList.push(contentItem);
-                if (contentItem.name === "Orientation") {
+                if (
+                  contentItem.name === "Orientation" ||
+                  contentItem.name === "OT_SeongyeopT"
+                ) {
                   console.log(contentItem.video_url);
                   console.log(contentItem.is_portrait);
                   introVideoUrl = contentItem.video_url;
                   setIsPortrait(contentItem.is_portrait);
+                  setIntroVideoUrl(introVideoUrl);
+                } else if (contentItem.name === "OT_KyungeunT") {
+                  console.log(contentItem.video_url);
+                  console.log(contentItem.is_portrait);
+                  introVideoUrl = contentItem.video_url;
+                  setIsPortrait(!contentItem.is_portrait);
                   setIntroVideoUrl(introVideoUrl);
                 }
               }
@@ -200,7 +211,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             }}
             rate={1.0}
             useNativeControls={true}
-            style={{ height: 500, width: 300 }}
+            style={{ height: 500, width: 300, backgroundColor: "#000" }}
             // posterSource={{
             //   uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671471320710/shin_yoo_jin_rect.jpg",
             // }}
@@ -208,8 +219,9 @@ const ClassInfo = ({ props, navigation, route }) => {
             //   height: 500,
             //   width: 300,
             // }}
-            resizeMode="stretch"
+            resizeMode={isPortrait ? "stretch" : "contain"}
             isLooping
+            shouldPlay
             onFullscreenUpdate={(status) => {
               // console.log(status);
               const videoStatus = status.fullscreenUpdate; // 1이면 전체화면 표시완료, 3이면 닫기 완료

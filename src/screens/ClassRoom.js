@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import Lesson from "../components/Lesson";
+import { getQuizById } from '../modules/NetworkFunction';
 
 const ClassRoom = ({ navigation }) => {
   // 객체 형태로 저장
@@ -355,6 +356,18 @@ const ClassRoom = ({ navigation }) => {
     //   ],
     // },
   ]);
+
+  useEffect(() => {
+
+    getQuizById({quiz_id : 4}, (d) => {
+      console.log(d.data.json);
+
+      const obj = JSON.parse(d.data.json);
+      console.log(obj['1']["hi"]);
+
+    }, () => {}, (e) => {console.log(e)})
+
+  }, [])
 
   return (
     <View style={styles.container}>
