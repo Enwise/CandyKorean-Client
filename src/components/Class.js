@@ -25,7 +25,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
   useEffect(() => {
     // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
 
-    console.log("!!!!!!classInfo!!!!!!", classInfo);
+    // console.log("!!!!!!classInfo!!!!!!", classInfo);
 
     if (
       classInfo.name === "Yoojin Teacher Course" ||

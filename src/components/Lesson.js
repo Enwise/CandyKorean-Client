@@ -1,4 +1,5 @@
 import React, { memo, useState } from "react";
+import { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,8 +12,68 @@ import {
 } from "react-native";
 
 import GradientBtn from "../components/GradientButtonView";
+import { getClasses, getContents } from "../modules/NetworkFunction";
 
 const Lesson = ({ navigation, lessonInfo }) => {
+  const [isClassListLoaded, setIsClassListLoaded] = useState(false);
+  const [classList, setClassList] = useState([]);
+
+  const [isContentListLoaded, setIsContentListLoaded] = useState(false);
+  const [contentsList, setContentsList] = useState([]);
+
+  useEffect(() => {
+    if (!isClassListLoaded) {
+      getClasses(
+        {},
+        (d) => {
+          d.data.map((item) => {
+            if (
+              item.course_id == lessonInfo.course_id &&
+              (item.name != "1차" || item.name != "OT_Seongyeop")
+            ) {
+              setClassList((classList) => [...classList, item]);
+            }
+          });
+        },
+        setIsClassListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+    if (isClassListLoaded && !isContentListLoaded) {
+      getContents(
+        {},
+        (d) => {
+          classList.map((classItem) => {
+            d.data.map((contentItem) => {
+              if (
+                classItem.class_id == contentItem.class_entity.class_id &&
+                !(
+                  contentItem.name == "Orientation" ||
+                  contentItem.name == "OT_SeongyeopT" ||
+                  contentItem.name == "OT_KyungeunT"
+                )
+              ) {
+                if (classItem.course.name === "After Like Course") {
+                  contentItem["is_portrait"] = false;
+                }
+                setContentsList((contentsList) => [
+                  ...contentsList,
+                  contentItem,
+                ]);
+              }
+            });
+          });
+        },
+        setIsContentListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+  }, [isClassListLoaded, isContentListLoaded]);
+
   return (
     <View style={styles.container}>
       <View style={styles.lessonInfoShawdowContainer}>
@@ -20,27 +81,42 @@ const Lesson = ({ navigation, lessonInfo }) => {
           onPress={() => {
             navigation.navigate("LessonInfo", {
               lessonInfo: lessonInfo,
+              classList: classList,
+              contentsList: contentsList,
             });
           }}
         >
           <View style={styles.lessonInfoContainer}>
             <Image
               style={styles.imageContainer}
-              source={lessonInfo.profileImgUrl}
+              source={{
+                uri:
+                  lessonInfo.name == "Yoojin Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
+                    : lessonInfo.name == "Seongyeop Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
+                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+              }}
             ></Image>
             <View style={styles.textContainer}>
               <View style={styles.lessonNameContainer}>
-                <Text style={styles.lessonName}>{lessonInfo.className}</Text>
+                <Text style={styles.lessonName}>{lessonInfo.name}</Text>
               </View>
               <View style={styles.lessonDescContainer}>
-                <Text style={styles.lessonDesc}>{lessonInfo.description}</Text>
+                <Text style={styles.lessonDesc}>
+                  {lessonInfo.info.split("\n")[0]}
+                </Text>
               </View>
             </View>
           </View>
           <GradientBtn
-            text={`${
-              lessonInfo.currentUnit + "/" + lessonInfo.totalUnits
-            } Units`}
+            text={`${contentsList.length} Units`}
+            textStyle={{
+              color: "white",
+              textAlign: "center",
+              fontSize: 14,
+              fontFamily: "Poppins-Medium",
+            }}
             viewStyle={{
               borderRadius: 10,
               justifyContent: "center",
@@ -54,12 +130,6 @@ const Lesson = ({ navigation, lessonInfo }) => {
             }}
           />
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.lessonDateContainer}>
-        <Text style={styles.lessonDateText}>
-          From {lessonInfo.startDate} - {lessonInfo.endDate}
-        </Text>
       </View>
     </View>
   );

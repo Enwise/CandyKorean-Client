@@ -5,7 +5,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 
 const LessonVideo = ({ route, navigation }) => {
-  const [isPortrait, setIsPortrait] = useState(true); // false면 가로, true면 세로
+  const isPortrait = route.params.isPortrait;
   const [isFullScreen, setIsFullScreen] = useState(false);
   const videoPlayer = useRef();
   const [videoStatus, setVideoStatus] = useState(3);
@@ -34,11 +34,11 @@ const LessonVideo = ({ route, navigation }) => {
         //   uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
         // }}
         source={{
-          uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/video1.mp4",
+          uri: route.params.video_url,
         }}
         rate={1.0}
         useNativeControls={true}
-        resizeMode="stretch"
+        resizeMode={"contain"}
         style={dstyles(videoStatus).video}
         isLooping
         onFullscreenUpdate={(status) => {
@@ -49,6 +49,7 @@ const LessonVideo = ({ route, navigation }) => {
         }}
         slider={{ visible: true }}
         ref={videoPlayer}
+        shouldPlay
       />
       <View style={styles.lectureNoteContainer}>
         <Text style={styles.lectureNote}>강의노트</Text>
@@ -74,6 +75,7 @@ const dstyles = (videoStatus) =>
     video: {
       height: videoStatus === 1 ? Dimensions.get("window").height : "60%",
       zIndex: videoStatus === 1 ? 3 : 1,
+      backgroundColor: "#000",
     },
   });
 

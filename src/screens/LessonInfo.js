@@ -23,24 +23,36 @@ import Dialog, {
 import GradientBtn from "../components/GradientButtonView";
 
 const LessonInfo = ({ navigation, route }) => {
-  const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
+  const lessonInfo = route.params.lessonInfo;
+  const classList = route.params.classList;
+  const contentsList = route.params.contentsList;
+
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
   const [clickedUnit, setClickedUnit] = useState(0);
 
+  const [currentClassId, setCurrentClassId] = useState(
+    contentsList[0].class_id
+  );
+
   const goToCurrentVideo = () => {
     navigation.navigate("LessonVideo", {
-      curriculumInfo: lessonInfo.curriculum[lessonInfo.currentUnit - 1],
-      isPortrait: lessonInfo.isPortrait,
+      video_url: contentsList[0].video_url,
+      isPortrait: contentsList[0].is_portrait,
     });
   };
 
-  const goToVideo = (unitNum, isReview) => {
+  const goToVideo = (content_id, isReview) => {
     if (!isReview) {
-      console.log(unitNum);
+      console.log(content_id);
+
+      const clickedContent = contentsList.find(
+        (content) => content.content_id == content_id
+      );
+
       navigation.navigate("LessonVideo", {
-        curriculumInfo: lessonInfo.curriculum[unitNum - 1],
-        isPortrait: lessonInfo.isPortrait,
+        video_url: clickedContent.video_url,
+        isPortrait: clickedContent.is_portrait,
       });
     } else {
       navigation.navigate("LessonVideo", {
@@ -49,6 +61,11 @@ const LessonInfo = ({ navigation, route }) => {
       });
     }
   };
+
+  useEffect(() => {
+    console.log("contentsList", contentsList);
+    console.log(classList[0].course.name);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -65,7 +82,14 @@ const LessonInfo = ({ navigation, route }) => {
         <View style={styles.lessonInfoContainer}>
           <Image
             style={styles.imageContainer}
-            source={lessonInfo.profileImgUrl}
+            source={{
+              uri:
+                lessonInfo.name == "Yoojin Teacher Course"
+                  ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
+                  : lessonInfo.name == "Seongyeop Teacher Course"
+                  ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
+                  : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+            }}
           ></Image>
 
           <View style={styles.textContainer}>
@@ -74,7 +98,13 @@ const LessonInfo = ({ navigation, route }) => {
             </View>
 
             <GradientBtn
-              text={`${lessonInfo.totalUnits} Units`}
+              text={`${contentsList.length} Units`}
+              textStyle={{
+                color: "white",
+                textAlign: "center",
+                fontSize: 12,
+                fontFamily: "Poppins-Medium",
+              }}
               viewStyle={{
                 borderRadius: 15,
                 justifyContent: "center",
@@ -130,36 +160,40 @@ const LessonInfo = ({ navigation, route }) => {
           key={"_"}
           style={styles.curriculumListContainer}
           keyExtractor={(item) => String(item.id)}
-          data={lessonInfo.curriculum}
+          data={contentsList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.curriculumItem}>
               <TouchableOpacity
                 onPress={() => {
-                  goToVideo(item.unitNum, false);
+                  goToVideo(item.content_id, false);
                 }}
               >
                 <View style={styles.unitNum}>
-                  <Text style={styles.unitNumText}>Unit {item.unitNum}</Text>
+                  <Text style={styles.unitNumText}>
+                    {item.class_entity.name.includes("Seongyeop")
+                      ? item.class_entity.name.split("_")[0]
+                      : item.class_entity.name}
+                  </Text>
                 </View>
               </TouchableOpacity>
 
               <View style={styles.unitInfo}>
                 <TouchableOpacity
                   onPress={() => {
-                    goToVideo(item.unitNum, false);
+                    goToVideo(item.content_id, false);
                   }}
                 >
                   <View style={styles.unitTitle}>
-                    <Text style={styles.unitTitleText}>{item.unitName}</Text>
+                    <Text style={styles.unitTitleText}>{item.name}</Text>
                   </View>
                 </TouchableOpacity>
 
                 <View style={styles.unitBottomContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      goToVideo(item.unitNum, false);
+                      goToVideo(item.content_id, false);
                     }}
                   >
                     <View style={styles.unitStudyContainer}>
@@ -169,7 +203,7 @@ const LessonInfo = ({ navigation, route }) => {
                   <TouchableOpacity
                     onPress={() => {
                       setVisible(true);
-                      setClickedUnit(item.unitNum);
+                      setClickedUnit(0);
                     }}
                   >
                     <View style={styles.unitQuizContainer}>

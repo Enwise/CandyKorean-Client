@@ -19,6 +19,8 @@ import {
   getCourseById,
   getCourses,
   getAllPurchasedCoursesByUserId,
+  getTutorById,
+  getLevelById,
 } from "../modules/NetworkFunction";
 
 const PaymentResult = ({ navigation, route }) => {
@@ -76,7 +78,7 @@ const PaymentResult = ({ navigation, route }) => {
   //   },
   // ]);
   const [isSuccess, setIsSuccess] = useState(route.params.isSuccess);
-  const [item, setItem] = useState(route.params.itemInfo);
+  const [itemInfo, setItemInfo] = useState(route.params.itemInfo);
   const [courseList, setCourseList] = useState([]);
 
   const [level_id, setLevel_id] = useState(0);
@@ -84,18 +86,22 @@ const PaymentResult = ({ navigation, route }) => {
   const [isRecommendListLoaded, setIsRecommendListLoaded] = useState(false);
 
   const [recommendList, setRecommendList] = useState([]);
+  const [isTutorLoaded, setIsTutorLoaded] = useState(false);
 
   const [isPurchasedListLoaded, setIsPurchasedListLoaded] = useState(false);
   const [purchasedList, setPurchasedList] = useState([]);
 
+  const [title, setTitle] = useState("");
+  const [isLevelLoaded, setIsLevelLoaded] = useState(false);
+
   // level 정보 이용해서, 그 level 에 해당하는 class정보들 가져와야함!
   // 맨 밑 Recommend에 보여주기 위해서
   useEffect(() => {
-    console.log(item);
+    console.log(itemInfo);
 
     if (!isCourseLoaded) {
       getCourseById(
-        { course_id: item.course_id },
+        { course_id: itemInfo.course_id },
         (d) => {
           console.log(d.data);
           setLevel_id(d.data.level_id);
@@ -111,7 +117,18 @@ const PaymentResult = ({ navigation, route }) => {
       console.log("--------------------");
       console.log("level_id", level_id);
       console.log("--------------------");
-
+      if (!isLevelLoaded) {
+        getLevelById(
+          { level_id: level_id },
+          (d) => {
+            setTitle(d.data.name);
+          },
+          setIsLevelLoaded,
+          (e) => {
+            console.log(e);
+          }
+        );
+      }
       getAllPurchasedCoursesByUserId(
         { userId: route.params.user_id },
         (d) => {
@@ -143,16 +160,47 @@ const PaymentResult = ({ navigation, route }) => {
           console.log("--------------------");
 
           d.data.map((course_item) => {
-            if (
-              course_item.level.level_id == level_id &&
-              !purchasedList.includes(course_item.course_id)
-            ) {
-              setRecommendList((recommendList) => [
-                ...recommendList,
-                course_item,
-              ]);
+            // if (
+            //   course_item.level.level_id == level_id &&
+            //   !purchasedList.includes(course_item.course_id)
+            // ) {
+            //   console.log("--------------------");
+            //   console.log("recommend list making...");
+            //   console.log(course_item);
+            //   console.log("--------------------");
+            //   setRecommendList((recommendList) => [
+            //     ...recommendList,
+            //     course_item,
+            //   ]);
+            // }
+            if (course_item.level.level_id == level_id) {
+              if (
+                course_item.name === "Yoojin Teacher Course" ||
+                course_item.name === "Seongyeop Teacher Course" ||
+                course_item.name === "After Like Course"
+              ) {
+                if (!isTutorLoaded) {
+                  getTutorById(
+                    {
+                      tutor_id: course_item.tutor_id,
+                    },
+                    (d) => {
+                      console.log(d);
+                      course_item["tutor"] = { ...d.data };
+                      setCourseList((courseList) => [
+                        ...courseList,
+                        course_item,
+                      ]);
+                    },
+                    setIsTutorLoaded,
+                    (e) => {
+                      console.log(e);
+                    }
+                  );
+                }
+              }
             }
-            setCourseList((courseList) => [...courseList, course_item]);
+            setIsTutorLoaded(false);
           });
         },
         setIsRecommendListLoaded,
@@ -164,15 +212,22 @@ const PaymentResult = ({ navigation, route }) => {
     console.log("recommendList", recommendList);
   }, [
     isSuccess,
-    item,
     isCourseLoaded,
     isPurchasedListLoaded,
     isRecommendListLoaded,
     level_id,
+    isLevelLoaded,
+    title,
   ]);
 
   const goToClassMore = () => {
-    navigation.navigate("ClassMore", { courseList: courseList });
+    navigation.navigate("Class", {
+      screen: "ClassMore",
+      params: {
+        courseList: courseList,
+        title: title,
+      },
+    });
   };
 
   return (
@@ -198,17 +253,17 @@ const PaymentResult = ({ navigation, route }) => {
             <View style={styles.purchasedItem}>
               <Image
                 style={styles.purchasedItemImg}
-                source={{ uri: item.tutor.profile_url }}
+                source={{ uri: itemInfo.tutor.profile_url }}
               ></Image>
               <View style={styles.purchasedItemInfo}>
-                <Text style={styles.classNameText}>{item.name}</Text>
+                <Text style={styles.classNameText}>{itemInfo.name}</Text>
                 <View style={styles.categoryAndUnit}>
                   <View style={styles.unitContainer}>
                     <UnitIcon />
                     <Text style={styles.unitText}>
-                      {item.name === "Yoojin Teacher Course" ||
-                      item.name === "Seongyeop Teacher Course" ||
-                      item.name === "After Like Course"
+                      {itemInfo.name === "Yoojin Teacher Course" ||
+                      itemInfo.name === "Seongyeop Teacher Course" ||
+                      itemInfo.name === "After Like Course"
                         ? 10
                         : 0}{" "}
                       Units
@@ -220,7 +275,7 @@ const PaymentResult = ({ navigation, route }) => {
           </View>
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>Total payment amount</Text>
-            <Text style={styles.totalPrice}>$ {item.price}</Text>
+            <Text style={styles.totalPrice}>$ {itemInfo.price}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -245,9 +300,10 @@ const PaymentResult = ({ navigation, route }) => {
                 <Text style={styles.recommendMore}>MORE {">"}</Text>
               </TouchableOpacity>
             </View>
+
             <FlatList
               key={"_"}
-              data={recommendList}
+              data={courseList}
               style={{
                 ...styles.recommendListContainer,
               }}
@@ -255,13 +311,16 @@ const PaymentResult = ({ navigation, route }) => {
               horizontal={true}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
-              renderItem={({ recommendItem }) => (
+              renderItem={({ item }) => (
                 <View style={styles.recommendItemShadowContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      console.log("recommendItem", recommendItem);
-                      navigation.navigate("ClassInfo", {
-                        classInfo: recommendItem,
+                      console.log("recommendItem", item);
+                      navigation.navigate("Class", {
+                        screen: "ClassInfo",
+                        params: {
+                          classInfo: item,
+                        },
                       });
                     }}
                   >
@@ -273,25 +332,15 @@ const PaymentResult = ({ navigation, route }) => {
                       <Image
                         style={styles.imageContainer}
                         source={{
-                          uri:
-                            recommendItem.name == "Yoojin Teacher Course"
-                              ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
-                              : recommendItem.name ===
-                                "Seongyeop Teacher Course"
-                              ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
-                              : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+                          uri: item.tutor.profile_url,
                         }}
                       ></Image>
                       <View style={styles.recommendItemInfo}>
                         <Text style={styles.recommendItemClassName}>
-                          {recommendItem.name}
+                          {item.name}
                         </Text>
                         <Text style={styles.recommendItemTeacherName}>
-                          {recommendItem.name == "Yoojin Teacher Course"
-                            ? "Yoojin"
-                            : recommendItem.name == "Seongyeop Teacher Course"
-                            ? "Seongyeop"
-                            : "Kyungeun"}
+                          {item.tutor.name}
                         </Text>
                       </View>
                     </View>
@@ -312,7 +361,7 @@ const PaymentResult = ({ navigation, route }) => {
       {isSuccess ? null : (
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Payment", { itemInfo: item });
+            navigation.navigate("Payment", { itemInfo: itemInfo });
           }}
         >
           <View style={styles.backToPageBtn}>
