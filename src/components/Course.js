@@ -56,7 +56,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
           let updatedMintCandyCourseList = [...mintCandyCourseList];
 
           d.data.map((item) => {
-            console.log(item);
+            // console.log(item);
             if (item.level.name === "Lollipop Level") {
               if (
                 item.name === "Yoojin Teacher Course" ||

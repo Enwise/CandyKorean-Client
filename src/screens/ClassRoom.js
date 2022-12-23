@@ -10,6 +10,7 @@ import {
 
 import Lesson from "../components/Lesson";
 import { getQuizById } from '../modules/NetworkFunction';
+import AuthContext from "../contexts/AuthContext";
 
 const ClassRoom = ({ navigation }) => {
   // 객체 형태로 저장
@@ -356,6 +357,7 @@ const ClassRoom = ({ navigation }) => {
     //   ],
     // },
   ]);
+  const { authState } = React.useContext(AuthContext);
 
   useEffect(() => {
 
@@ -366,6 +368,9 @@ const ClassRoom = ({ navigation }) => {
       console.log(obj['1']["hi"]);
 
     }, () => {}, (e) => {console.log(e)})
+
+    console.log('user id')
+    console.log(authState);
 
   }, [])
 

@@ -20,6 +20,19 @@ const ClassMore = ({ navigation, route }) => {
 
   const title = route.params.title ?? route.params.maintitle;
   const courseList = route.params.courseList;
+  const [classList, setClassList] = useState([]);
+  const [isClassLoaded, setIsClassLoaded] = useState(false);
+  const [introVideoList, setIntroVideoList] = useState([]);
+
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
+
+  useEffect(() => {
+    console.log("--------------------------------");
+    console.log("ClassMore useEffect");
+    console.log("courseList", courseList);
+
+    console.log("--------------------------------");
+  }, [isClassLoaded]);
 
   return (
     <View style={styles.courseContainer}>

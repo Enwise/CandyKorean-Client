@@ -14,7 +14,7 @@ import GradientBtn from "./GradientButtonView";
 import { AntDesign } from "@expo/vector-icons";
 
 const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
-  const [unitsNum, setUnitsNum] = useState(9);
+  const [unitsNum, setUnitsNum] = useState();
   const [isWishList, setIsWishList] = useState(false);
 
   const handleWishList = () => {
@@ -24,7 +24,17 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
 
   useEffect(() => {
     // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
-  }, []);
+
+    console.log("!!!!!!classInfo!!!!!!", classInfo);
+
+    if (
+      classInfo.name === "Yoojin Teacher Course" ||
+      classInfo.name === "Seongyeop Teacher Course" ||
+      classInfo.name === "After Like Course"
+    ) {
+      setUnitsNum(10);
+    }
+  }, [unitsNum]);
 
   console.log(isShowAll);
 
@@ -103,7 +113,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               fontSize: 14,
               fontFamily: "Poppins-Medium",
             }}
-            text={`${classInfo.units} Units`}
+            text={`${unitsNum} Units`}
           />
         ) : null}
       </View>
@@ -114,6 +124,20 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
             onPress={() => {
               navigation.navigate("ClassInfo", {
                 classInfo: classInfo,
+                isMain: false,
+                introVideoUrl:
+                  classInfo.name == "Yoojin Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671715828798.0%EC%B0%A8%EC%8B%9C%28%EC%86%8C%EA%B0%9C%29.mp4"
+                    : classInfo.name == "Seongyeop Teacher Course"
+                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671775511025.OT.mp4"
+                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671777501479.OT.mp4",
+                unitsNum:
+                  (classInfo.name == "Yoojin Teacher Course" ||
+                    classInfo.name == "Seongyeop Teacher Course" ||
+                    classInfo.name == "After Like Course") &&
+                  10,
+                  isPortrait: (classInfo.name == "Yoojin Teacher Course" ||
+                  classInfo.name == "Seongyeop Teacher Course" ? true : false)
               });
               console.log("ClassInfo");
             }}

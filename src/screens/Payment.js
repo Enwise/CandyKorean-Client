@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-import { SwipeListView } from "react-native-swipe-list-view";
 import GradientBtn from "../components/GradientButtonView";
 
 const Payment = ({ navigation, route }) => {
@@ -26,7 +25,6 @@ const Payment = ({ navigation, route }) => {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const [classInfo, setClassInfo] = useState(route.params.classInfo);
 
   useEffect(() => {
     console.log("prev : ", prevRoute.name);
@@ -35,15 +33,7 @@ const Payment = ({ navigation, route }) => {
     } else {
       setReturnToClass(false);
     }
-    let now = new Date(); // 현재 날짜 및 시간
-    let year = now.getFullYear(); // 연도
-    setYear(year);
-
-    let month = now.getMonth() + 1;
-    setMonth(month);
-
-    let date = now.getDate();
-    setDate(date);
+    
 
     let totalPrice = 0;
     // payList.append(item);
@@ -90,7 +80,7 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.classInfoContainer}>
             <Image
               source={{
-                uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
+                uri: itemInfo.tutor.profile_url,
               }}
               style={styles.classImg}
             ></Image>

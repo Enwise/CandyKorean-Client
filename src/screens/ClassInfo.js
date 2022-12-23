@@ -22,6 +22,7 @@ import { getContents } from "../modules/NetworkFunction";
 const ClassInfo = ({ props, navigation, route }) => {
   const [classInfo, setClassInfo] = useState(route.params.classInfo);
   const [isMain, setIsMain] = useState(route.params.isMain);
+
   const [isWishList, setIsWishList] = useState(false);
   const [isClassLoaded, setIsClassLoaded] = useState(false);
   const [isContentLoaded, setIsContentLoaded] = useState(false);
@@ -30,6 +31,7 @@ const ClassInfo = ({ props, navigation, route }) => {
   const [isPortrait, setIsPortrait] = useState(true);
 
   const [introVideoUrl, setIntroVideoUrl] = useState("");
+  const [unitsNum, setUnitsNum] = useState(-1);
 
   const videoPlayer = useRef();
   const [videoStatus, setVideoStatus] = useState(3);
@@ -43,7 +45,22 @@ const ClassInfo = ({ props, navigation, route }) => {
   };
 
   useEffect(() => {
-    console.log(classInfo);
+    console.log("----------------introvideoUrl--------------------");
+    console.log(route.params.introVideoUrl);
+    console.log("----------------introvideoUrl--------------------");
+
+    console.log("----------------unitsNum--------------------");
+    console.log(route.params.unitsNum);
+    console.log("----------------unitsNum--------------------");
+
+    console.log("----------------isPortrait--------------------");
+    console.log(route.params.isPortrait);
+    console.log("----------------isPortrait--------------------");
+
+    // console.log(classInfo);
+    
+
+    console.log(classInfo.course_id);
     // console.log(classInfo.introVideoUrl);
 
     // class, content, 그리고 tutor 정보 가져와야함
@@ -64,12 +81,12 @@ const ClassInfo = ({ props, navigation, route }) => {
         {},
         (d) => {
           console.log("getAllClasses");
-          console.log(d.data);
+          // console.log(d.data);
 
           if (isMain) {
             d.data.map((item) => {
               if (
-                item.course.course_id === classInfo.course_id &&
+                item.course_id == route.params.classInfo.course_id &&
                 item.name !== "1차"
               ) {
                 updatedClassList.push(item);
@@ -100,14 +117,14 @@ const ClassInfo = ({ props, navigation, route }) => {
                   contentItem.name === "Orientation" ||
                   contentItem.name === "OT_SeongyeopT"
                 ) {
-                  console.log(contentItem.video_url);
-                  console.log(contentItem.is_portrait);
+                  // console.log(contentItem.video_url);
+                  // console.log(contentItem.is_portrait);
                   introVideoUrl = contentItem.video_url;
                   setIsPortrait(contentItem.is_portrait);
                   setIntroVideoUrl(introVideoUrl);
                 } else if (contentItem.name === "OT_KyungeunT") {
-                  console.log(contentItem.video_url);
-                  console.log(contentItem.is_portrait);
+                  // console.log(contentItem.video_url);
+                  // console.log(contentItem.is_portrait);
                   introVideoUrl = contentItem.video_url;
                   setIsPortrait(!contentItem.is_portrait);
                   setIntroVideoUrl(introVideoUrl);
@@ -123,7 +140,26 @@ const ClassInfo = ({ props, navigation, route }) => {
         }
       );
     }
-  }, [isClassLoaded, isContentLoaded, introVideoUrl, isPortrait]);
+    
+    if (route.params.introVideoUrl) {
+      setIntroVideoUrl(route.params.introVideoUrl);
+    }
+    if (route.params.unitsNum) {
+      setUnitsNum(route.params.unitsNum);
+    }
+
+    if (route.params.isPortrait === true || route.params.isPortrait === false) {
+      setIsPortrait(route.params.isPortrait);
+    }
+  }, [
+    isClassLoaded,
+    isContentLoaded,
+    introVideoUrl,
+    isPortrait,
+    introVideoUrl,
+    unitsNum,
+    isPortrait,
+  ]);
 
   return (
     <>
@@ -159,7 +195,11 @@ const ClassInfo = ({ props, navigation, route }) => {
             ></Image>
             <View style={styles.textContainer}>
               <GradientBtn
-                text={`${classList.length - 1} Units`}
+                text={
+                  unitsNum !== -1
+                    ? unitsNum + " Units"
+                    : classList.length - 1 + " Units"
+                }
                 textStyle={{
                   color: "white",
                   textAlign: "center",
@@ -258,10 +298,11 @@ const ClassInfo = ({ props, navigation, route }) => {
           </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
+            videoPlayer.current.pauseAsync();
             // const payList = [{ ...classInfo }];
             navigation.navigate("Payment", {
               item: classInfo,
-              unitsNum: contentsList.length,
+              unitsNum: unitsNum !== -1 ? unitsNum : classList.length - 1
             });
           }}
         >

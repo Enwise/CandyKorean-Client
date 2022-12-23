@@ -84,10 +84,8 @@ const ClassMain = ({ navigation }) => {
   // useEffect 기공
   // isPortait : 모두 true 로 해두기 -> #41 issue 추가될 예정
 
- 
-
   const [dataList, setDataList] = useState();
-  
+
   const [dummyCourseList, setDummyCourseList] = useState({
     "Lollipop Level": [
       {
@@ -278,7 +276,7 @@ const ClassMain = ({ navigation }) => {
           console.log("getLevel data: ", d.data);
           let updatedLevelList = [...levelList];
           d.data.map((item) => {
-            console.log(item);
+            // console.log(item);
 
             if (
               item.name === "Lollipop Level" ||
@@ -298,33 +296,6 @@ const ClassMain = ({ navigation }) => {
         }
       );
     }
-
-    setDataList([
-      {
-        "level_id" : 5,
-        "name" : "Lollipop Level",
-        "enabled": true,
-        "info": "K-Culture with influencers!",
-        "Course" : {
-          "course_id" : 1,
-          "name" : "yoojin shin class",
-          "price" : 1000, 
-        },
-       },
-       {
-        "level_id" : 6,
-        "name" : "Cotton Candy Level",
-        "enabled": true,
-        "info": "Standard Korean",
-        
-       },
-       {
-        "level_id" : 7,
-        "name" : "Mint Candy Level",
-        "enabled": true,
-        "info": "Lessons for TOPIK",
-       },
-    ])
 
     console.log("levelList", levelList);
   }, [isLevelListLoaded]);

@@ -6,7 +6,6 @@ const getRequest = async (endpoint, data, handleError) => {
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "get",
-      data: data,
     });
     return response;
   } catch (error) {
@@ -21,7 +20,6 @@ const postRequest = async (endpoint, data, handleError) => {
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "post",
-      data: data,
     });
     return response;
   } catch (error) {
@@ -36,7 +34,6 @@ const putRequest = async (endpoint, data, handleError) => {
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "put",
-      data: data,
     });
     return response;
   } catch (error) {
@@ -51,7 +48,6 @@ const deleteRequest = async (endpoint, data, handleError) => {
     const response = await axios({
       url: SERVER_URI + endpoint,
       method: "delete",
-      data: data,
     });
     return response;
   } catch (error) {
