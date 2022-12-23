@@ -66,9 +66,9 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               source={{
                 // uri: classInfo.tutor.profile_url,
                 uri:
-                  classInfo.name === "Yoojin Teacher Course"
+                  classInfo.tutor.name === "Yoojin"
                     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
-                    : classInfo.name === "Seongyeop Teacher Course"
+                    : classInfo.tutor.name === "Seongyeop"
                     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
                     : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
               }}

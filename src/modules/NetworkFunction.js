@@ -155,9 +155,14 @@ export const getCourseById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await getRequest("/course", reqParam, handleError);
+  const { course_id } = reqParam;
+  const response = await getRequest(
+    `/course/${course_id}`,
+    reqParam,
+    handleError
+  );
   if (response !== null) {
-    setData(response.data.member);
+    setData(response.data);
     setIsReady(true);
   }
 };
@@ -195,6 +200,56 @@ export const deleteCourse = async (
   const response = await deleteRequest("/course", reqParam, handleError);
   if (response !== null) {
     setData();
+    setIsReady(true);
+  }
+};
+
+/* PurchasedCourses */
+
+export const getAllPurchasedCourses = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await getRequest("/purchased_course", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const getAllPurchasedCoursesByUserId = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const { userId } = reqParam;
+  const response = await getRequest(
+    `/purchased_course/${userId}`,
+    reqParam,
+    handleError
+  );
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const createPurchasedCourse = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await postRequest(
+    "/purchased_course",
+    reqParam,
+    handleError
+  );
+  if (response !== null) {
+    setData(response.data);
     setIsReady(true);
   }
 };

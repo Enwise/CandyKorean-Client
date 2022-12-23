@@ -19,7 +19,7 @@ const ClassMore = ({ navigation, route }) => {
   // 장바구니에서 Similar 눌렀을 때, level 정보 가져와서 그 레벨에 해당하는 class들만 가져와서 보여주기
 
   const title = route.params.title ?? route.params.maintitle;
-  const courseList = route.params.courseList;
+  const [courseList, setCourseList] = useState(route.params.courseList);
   const [classList, setClassList] = useState([]);
   const [isClassLoaded, setIsClassLoaded] = useState(false);
   const [introVideoList, setIntroVideoList] = useState([]);

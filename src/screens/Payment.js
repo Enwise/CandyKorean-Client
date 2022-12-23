@@ -11,9 +11,15 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 import GradientBtn from "../components/GradientButtonView";
+import AuthContext from "../contexts/AuthContext";
+
+import { createPurchasedCourse } from "../modules/NetworkFunction";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
+  const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState(authState.userId);
+
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
   const [itemInfo, setItemInfo] = useState(route.params.item);
@@ -25,7 +31,19 @@ const Payment = ({ navigation, route }) => {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const [isCoursePurchased, setIsCoursePurchased] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const deleteItem = (id) => {
+    console.log("delete");
+    setPayList(payList.filter((item) => item.id !== id));
+  };
+
   useEffect(() => {
+    console.log("iteminfo ID----------------------");
+    console.log(itemInfo.course_id);
+    console.log("iteminfo----------------------");
+
     console.log("prev : ", prevRoute.name);
     if (prevRoute.name == "ClassInfo") {
       setReturnToClass(true);
@@ -41,11 +59,49 @@ const Payment = ({ navigation, route }) => {
     setTotalPrice(totalPrice);
 
     console.log(itemInfo);
-  }, [payList, itemInfo]);
+  }, [payList, itemInfo, isSuccess, isCoursePurchased]);
 
-  const deleteItem = (id) => {
-    console.log("delete");
-    setPayList(payList.filter((item) => item.id !== id));
+  // navigation.goBack();
+  const handlePayment = () => {
+    // 결제 프로세스
+
+    // 만약 성공이면??
+    setIsSuccess(true);
+    // 결제 성공시에는 결제 내역을 DB에 저장해야됨!
+
+    if (!isCoursePurchased) {
+      createPurchasedCourse(
+        { user_id: 6, course_id: itemInfo.course_id },
+        (d) => {
+          // console.log(d);
+          console.log("-========================-");
+          console.log("purchased success");
+          console.log("-========================-");
+
+          navigation.navigate("PaymentResult", {
+            user_id: 6,
+            itemInfo: itemInfo,
+            totalPrice: totalPrice,
+            isSuccess: true,
+            returnToClass,
+          });
+        },
+        setIsCoursePurchased,
+        (e) => {
+          console.log(e.message);
+          console.log("-========================-");
+          console.log("purchased fail");
+          console.log("-========================-");
+          navigation.navigate("PaymentResult", {
+            user_id: 6,
+            itemInfo: itemInfo,
+            totalPrice: totalPrice,
+            isSuccess: false,
+            returnToClass,
+          });
+        }
+      );
+    }
   };
 
   return (
@@ -127,12 +183,7 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.paymentContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("PaymentResult", {
-                  itemInfo: itemInfo,
-                  totalPrice: totalPrice,
-                  isSuccess: true,
-                  returnToClass,
-                });
+                handlePayment();
               }}
             >
               <View style={styles.creditcardBtn}>

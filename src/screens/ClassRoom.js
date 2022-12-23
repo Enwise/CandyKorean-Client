@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import Lesson from "../components/Lesson";
-import { getQuizById } from '../modules/NetworkFunction';
+import { getQuizById } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
 const ClassRoom = ({ navigation }) => {
@@ -357,22 +357,28 @@ const ClassRoom = ({ navigation }) => {
     //   ],
     // },
   ]);
+
+  const [courseList, setCourseList] = useState([]);
   const { authState } = React.useContext(AuthContext);
 
   useEffect(() => {
+    getQuizById(
+      { quiz_id: 4 },
+      (d) => {
+        console.log(d.data.json);
 
-    getQuizById({quiz_id : 4}, (d) => {
-      console.log(d.data.json);
+        const obj = JSON.parse(d.data.json);
+        console.log(obj["1"]["hi"]);
+      },
+      () => {},
+      (e) => {
+        console.log(e);
+      }
+    );
 
-      const obj = JSON.parse(d.data.json);
-      console.log(obj['1']["hi"]);
-
-    }, () => {}, (e) => {console.log(e)})
-
-    console.log('user id')
+    console.log("user id"); //
     console.log(authState);
-
-  }, [])
+  }, []);
 
   return (
     <View style={styles.container}>
