@@ -570,3 +570,30 @@ export const login = async (reqParam, setData, setIsReady, handleError) => {
     setIsReady(true);
   }
 };
+
+/* LearnedClass */
+export const getLearnedClasses = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await getRequest("/learned_class", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const createLearnedClass = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await postRequest("/learned_class", reqParam, handleError);
+  if (response !== null) {
+    setData();
+    setIsReady(true);
+  }
+};
