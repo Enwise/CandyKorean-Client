@@ -15,83 +15,221 @@ import { Ionicons } from "@expo/vector-icons";
 import StudyNowIcon from "../assets/icons/StudyNowIcon";
 import UnitIcon from "../assets/icons/UnitIcon";
 
+import {
+  getCourseById,
+  getCourses,
+  getAllPurchasedCoursesByUserId,
+  getTutorById,
+  getLevelById,
+} from "../modules/NetworkFunction";
+
 const PaymentResult = ({ navigation, route }) => {
-  const [year, setYear] = useState();
-  const [month, setMonth] = useState();
-  const [date, setDate] = useState();
+  // const [recommendList, setRecommendList] = useState([
+  //   {
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     teacherName: "Kyungeun1",
+  //     className: "class1",
+  //     category: "K-culture",
+  //     level: "Lollipop",
+  //     units: 10,
+  //     price: 100,
+  //     isPurchased: true,
+  //   },
+  //   {
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     teacherName: "Kyungeun2",
+  //     className: "class2",
+  //     category: "K-history",
+  //     level: "Lollipop",
+  //     units: 10,
+  //     price: 100,
+  //     isPurchased: false,
+  //   },
+  //   {
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     teacherName: "Kyungeun3",
 
-  const [recommendList, setRecommendList] = useState([
-    {
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-      teacherName: "Kyungeun1",
-      className: "class1",
-      category: "K-culture",
-      level: "Lollipop",
-      units: 10,
-      price: 100,
-      isPurchased: true,
-    },
-    {
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-      teacherName: "Kyungeun2",
-      className: "class2",
-      category: "K-history",
-      level: "Lollipop",
-      units: 10,
-      price: 100,
-      isPurchased: false,
-    },
-    {
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-      teacherName: "Kyungeun3",
+  //     className: "class3",
+  //     category: "K-pop",
+  //     level: "Lollipop",
+  //     units: 10,
+  //     price: 100,
+  //     isPurchased: false,
+  //   },
+  //   {
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     teacherName: "Kyungeun4",
+  //     className: "class4",
+  //     category: "K-culture",
+  //     level: "Lollipop",
+  //     units: 10,
+  //     price: 100,
+  //     isPurchased: false,
+  //   },
+  //   {
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     teacherName: "Kyungeun5",
+  //     className: "class5",
+  //     category: "K-culture",
+  //     level: "Lollipop",
+  //     units: 10,
+  //     price: 100,
+  //     isPurchased: false,
+  //   },
+  // ]);
+  const [isSuccess, setIsSuccess] = useState(route.params.isSuccess);
+  const [itemInfo, setItemInfo] = useState(route.params.itemInfo);
+  const [courseList, setCourseList] = useState([]);
 
-      className: "class3",
-      category: "K-pop",
-      level: "Lollipop",
-      units: 10,
-      price: 100,
-      isPurchased: false,
-    },
-    {
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-      teacherName: "Kyungeun4",
-      className: "class4",
-      category: "K-culture",
-      level: "Lollipop",
-      units: 10,
-      price: 100,
-      isPurchased: false,
-    },
-    {
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-      teacherName: "Kyungeun5",
-      className: "class5",
-      category: "K-culture",
-      level: "Lollipop",
-      units: 10,
-      price: 100,
-      isPurchased: false,
-    },
-  ]);
+  const [level_id, setLevel_id] = useState(0);
+  const [isCourseLoaded, setIsCourseLoaded] = useState(false);
+  const [isRecommendListLoaded, setIsRecommendListLoaded] = useState(false);
+
+  const [recommendList, setRecommendList] = useState([]);
+  const [isTutorLoaded, setIsTutorLoaded] = useState(false);
+
+  const [isPurchasedListLoaded, setIsPurchasedListLoaded] = useState(false);
+  const [purchasedList, setPurchasedList] = useState([]);
+
+  const [title, setTitle] = useState("");
+  const [isLevelLoaded, setIsLevelLoaded] = useState(false);
 
   // level 정보 이용해서, 그 level 에 해당하는 class정보들 가져와야함!
   // 맨 밑 Recommend에 보여주기 위해서
   useEffect(() => {
-    let now = new Date(); // 현재 날짜 및 시간
-    let year = now.getFullYear(); // 연도
-    setYear(year);
+    console.log(itemInfo);
 
-    let month = now.getMonth() + 1;
-    setMonth(month);
+    if (!isCourseLoaded) {
+      getCourseById(
+        { course_id: itemInfo.course_id },
+        (d) => {
+          console.log(d.data);
+          setLevel_id(d.data.level_id);
+        },
+        setIsCourseLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
 
-    let date = now.getDate();
-    setDate(date);
+    if (isCourseLoaded && !isPurchasedListLoaded) {
+      console.log("--------------------");
+      console.log("level_id", level_id);
+      console.log("--------------------");
+      if (!isLevelLoaded) {
+        getLevelById(
+          { level_id: level_id },
+          (d) => {
+            setTitle(d.data.name);
+          },
+          setIsLevelLoaded,
+          (e) => {
+            console.log(e);
+          }
+        );
+      }
+      getAllPurchasedCoursesByUserId(
+        { userId: route.params.user_id },
+        (d) => {
+          d.data.map((course_item) => {
+            setPurchasedList((purchasedList) => [
+              ...purchasedList,
+              course_item.course_id,
+            ]);
+          });
+        },
+        setIsPurchasedListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
 
-    console.log(isSuccess);
-    console.log(item);
-  }, [isSuccess, item]);
-  const [isSuccess, setIsSuccess] = useState(route.params.isSuccess);
-  const [item, setItem] = useState(route.params.itemInfo);
+    if (isCourseLoaded && isPurchasedListLoaded && !isRecommendListLoaded) {
+      console.log("--------------------");
+      console.log("purchasedList", purchasedList);
+      console.log("--------------------");
+
+      getCourses(
+        () => {},
+        (d) => {
+          console.log("--------------------");
+          console.log("payment result courselist");
+          console.log(d.data);
+          console.log("--------------------");
+
+          d.data.map((course_item) => {
+            // if (
+            //   course_item.level.level_id == level_id &&
+            //   !purchasedList.includes(course_item.course_id)
+            // ) {
+            //   console.log("--------------------");
+            //   console.log("recommend list making...");
+            //   console.log(course_item);
+            //   console.log("--------------------");
+            //   setRecommendList((recommendList) => [
+            //     ...recommendList,
+            //     course_item,
+            //   ]);
+            // }
+            if (course_item.level.level_id == level_id) {
+              if (
+                course_item.name === "Conversational Korean Course" ||
+                course_item.name === "Survival Korean Course" ||
+                course_item.name === "After Like Course"
+              ) {
+                // if (!isTutorLoaded) {
+                //   getTutorById(
+                //     {
+                //       tutor_id: course_item.tutor_id,
+                //     },
+                //     (d) => {
+                //       console.log(d);
+                //       course_item["tutor"] = { ...d.data };
+                      
+                //     },
+                //     setIsTutorLoaded,
+                //     (e) => {
+                //       console.log(e);
+                //     }
+                //   );
+                // }
+                setCourseList((courseList) => [
+                  ...courseList,
+                  course_item,
+                ]);
+              }
+            }
+            setIsTutorLoaded(false);
+          });
+        },
+        setIsRecommendListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+    console.log("recommendList", recommendList);
+  }, [
+    isSuccess,
+    isCourseLoaded,
+    isPurchasedListLoaded,
+    isRecommendListLoaded,
+    level_id,
+    isLevelLoaded,
+    title,
+  ]);
+
+  const goToClassMore = () => {
+    navigation.navigate("Class", {
+      screen: "ClassMore",
+      params: {
+        courseList: courseList,
+        title: title,
+      },
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -116,30 +254,29 @@ const PaymentResult = ({ navigation, route }) => {
             <View style={styles.purchasedItem}>
               <Image
                 style={styles.purchasedItemImg}
-                source={require("../assets/icons/class_img/shin_yoo_jin_square.jpg")}
+                source={{ uri: itemInfo.tutor.profile_url }}
               ></Image>
               <View style={styles.purchasedItemInfo}>
-                <Text style={styles.classNameText}>{item.className}</Text>
+                <Text style={styles.classNameText}>{itemInfo.name}</Text>
                 <View style={styles.categoryAndUnit}>
-                  <View style={styles.cateogryContainer}>
-                    <Text style={styles.categoryText}>{item.category}</Text>
-                  </View>
                   <View style={styles.unitContainer}>
                     <UnitIcon />
-                    <Text style={styles.unitText}>{item.units} Units</Text>
+                    <Text style={styles.unitText}>
+                      {itemInfo.name === "Conversational Korean Course" ||
+                      itemInfo.name === "Survival Korean Course" ||
+                      itemInfo.name === "After Like Course"
+                        ? 10
+                        : 0}{" "}
+                      Units
+                    </Text>
                   </View>
-                </View>
-                <View style={styles.dateContainer}>
-                  <Text style={styles.dateText}>
-                    2022-09-30 ~ {year}-{month}-{date}
-                  </Text>
                 </View>
               </View>
             </View>
           </View>
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>Total payment amount</Text>
-            <Text style={styles.totalPrice}>$ {item.price}</Text>
+            <Text style={styles.totalPrice}>$ {itemInfo.price}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -157,15 +294,17 @@ const PaymentResult = ({ navigation, route }) => {
               <TouchableOpacity
                 onPress={() => {
                   // Lollipop level의 classList를 넘겨줘야함
-                  navigation.navigate("ClassMore", { title: "Lollipop Level" });
+                  // navigation.navigate("ClassMore", { title: "Lollipop Level" });
+                  goToClassMore();
                 }}
               >
                 <Text style={styles.recommendMore}>MORE {">"}</Text>
               </TouchableOpacity>
             </View>
+
             <FlatList
               key={"_"}
-              data={recommendList}
+              data={courseList}
               style={{
                 ...styles.recommendListContainer,
               }}
@@ -177,8 +316,13 @@ const PaymentResult = ({ navigation, route }) => {
                 <View style={styles.recommendItemShadowContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      console.log("item", item);
-                      navigation.navigate("ClassInfo", { classInfo: item });
+                      console.log("recommendItem", item);
+                      navigation.navigate("Class", {
+                        screen: "ClassInfo",
+                        params: {
+                          classInfo: item,
+                        },
+                      });
                     }}
                   >
                     <View
@@ -188,14 +332,16 @@ const PaymentResult = ({ navigation, route }) => {
                     >
                       <Image
                         style={styles.imageContainer}
-                        source={item.imgUrl}
+                        source={{
+                          uri: item.tutor.profile_url,
+                        }}
                       ></Image>
                       <View style={styles.recommendItemInfo}>
                         <Text style={styles.recommendItemClassName}>
-                          {item.className}
+                          {item.name}
                         </Text>
                         <Text style={styles.recommendItemTeacherName}>
-                          {item.teacherName}
+                          {item.tutor.name}
                         </Text>
                       </View>
                     </View>
@@ -208,14 +354,15 @@ const PaymentResult = ({ navigation, route }) => {
       ) : (
         <View style={styles.paymentFailedTextContainer}>
           <Text style={styles.paymentFailedText}>
-            Failed to payment.{"\n"}Please try again.
+            Failed to payment.{"\n"}You may have already bought this course.
+            {"\n"}If not, try again.
           </Text>
         </View>
       )}
       {isSuccess ? null : (
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Payment", { itemInfo: item });
+            navigation.navigate("Payment", { itemInfo: itemInfo });
           }}
         >
           <View style={styles.backToPageBtn}>

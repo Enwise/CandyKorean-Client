@@ -184,73 +184,74 @@ const QuizResult = ({ navigation, route }) => {
       <View style={styles.nextBtnContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("LessonInfo", {
-              lessonInfo: {
-                id: 1,
-                imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
-                profileImgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-                teacherName: "Kyungeun1",
-                className: "class1",
-                category: "K-culture",
-                level: "Lollipop",
-                currentUnit: 4,
-                totalUnits: 10,
-                price: 100,
-                startDate: "2021-01-01",
-                endDate: "2021-01-31",
-                description: "Let's study real Korean\n formal language!",
-                isPortrait: true, // is세로? -> true면 세로, false면 가로
+            // navigation.navigate("LessonInfo", {
+            //   lessonInfo: {
+            //     id: 1,
+            //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
+            //     profileImgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+            //     teacherName: "Kyungeun1",
+            //     className: "class1",
+            //     category: "K-culture",
+            //     level: "Lollipop",
+            //     currentUnit: 4,
+            //     totalUnits: 10,
+            //     price: 100,
+            //     startDate: "2021-01-01",
+            //     endDate: "2021-01-31",
+            //     description: "Let's study real Korean\n formal language!",
+            //     isPortrait: true, // is세로? -> true면 세로, false면 가로
 
-                curriculum: [
-                  {
-                    unitNum: 1,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/1차시.mp4"),
-                  },
-                  {
-                    unitNum: 2,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/2차시.mp4"),
-                  },
-                  {
-                    unitNum: 3,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/3차시.mp4"),
-                  },
-                  {
-                    unitNum: 4,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/4차시.mp4"),
-                  },
-                  {
-                    unitNum: 5,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/5차시.mp4"),
-                  },
-                  {
-                    unitNum: 6,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/6차시.mp4"),
-                  },
-                  {
-                    unitNum: 7,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/7차시.mp4"),
-                  },
-                  {
-                    unitNum: 8,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/8차시.mp4"),
-                  },
-                  {
-                    unitNum: 9,
-                    unitName: "Greetings 안녕하세요",
-                    // videoUrl: require("../assets/videos/shin_yoo_jin/9차시.mp4"),
-                  },
-                ],
-              },
-            });
+            //     curriculum: [
+            //       {
+            //         unitNum: 1,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/1차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 2,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/2차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 3,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/3차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 4,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/4차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 5,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/5차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 6,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/6차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 7,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/7차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 8,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/8차시.mp4"),
+            //       },
+            //       {
+            //         unitNum: 9,
+            //         unitName: "Greetings 안녕하세요",
+            //         // videoUrl: require("../assets/videos/shin_yoo_jin/9차시.mp4"),
+            //       },
+            //     ],
+            //   },
+            // });
             // 나중엔 어떤 lesson 에 해당하는 quiz 인지 알기 위해 lessonNo 를 같이 넘겨줘야 함
+            navigation.navigate("LessonInfo")
           }}
         >
           <QuizNextButton></QuizNextButton>

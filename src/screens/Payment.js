@@ -11,9 +11,15 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 import GradientBtn from "../components/GradientButtonView";
+import AuthContext from "../contexts/AuthContext";
+
+import { createPurchasedCourse } from "../modules/NetworkFunction";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
+  const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState(authState.userId);
+
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
   const [itemInfo, setItemInfo] = useState(route.params.item);
@@ -25,7 +31,19 @@ const Payment = ({ navigation, route }) => {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const [isCoursePurchased, setIsCoursePurchased] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const deleteItem = (id) => {
+    console.log("delete");
+    setPayList(payList.filter((item) => item.id !== id));
+  };
+
   useEffect(() => {
+    console.log("iteminfo ID----------------------");
+    console.log(itemInfo.course_id);
+    console.log("iteminfo----------------------");
+
     console.log("prev : ", prevRoute.name);
     if (prevRoute.name == "ClassInfo") {
       setReturnToClass(true);
@@ -41,11 +59,49 @@ const Payment = ({ navigation, route }) => {
     setTotalPrice(totalPrice);
 
     console.log(itemInfo);
-  }, [payList, itemInfo]);
+  }, [payList, itemInfo, isSuccess, isCoursePurchased]);
 
-  const deleteItem = (id) => {
-    console.log("delete");
-    setPayList(payList.filter((item) => item.id !== id));
+  // navigation.goBack();
+  const handlePayment = () => {
+    // 결제 프로세스
+
+    // 만약 성공이면??
+    setIsSuccess(true);
+    // 결제 성공시에는 결제 내역을 DB에 저장해야됨!
+
+    if (!isCoursePurchased) {
+      createPurchasedCourse(
+        { user_id: 13, course_id: itemInfo.course_id },
+        (d) => {
+          // console.log(d);
+          console.log("-========================-");
+          console.log("purchased success");
+          console.log("-========================-");
+
+          navigation.navigate("PaymentResult", {
+            user_id: 13,
+            itemInfo: itemInfo,
+            totalPrice: totalPrice,
+            isSuccess: true,
+            returnToClass,
+          });
+        },
+        setIsCoursePurchased,
+        (e) => {
+          console.log(e.message);
+          console.log("-========================-");
+          console.log("purchased fail");
+          console.log("-========================-");
+          navigation.navigate("PaymentResult", {
+            user_id: 13,
+            itemInfo: itemInfo,
+            totalPrice: totalPrice,
+            isSuccess: false,
+            returnToClass,
+          });
+        }
+      );
+    }
   };
 
   return (
@@ -80,11 +136,7 @@ const Payment = ({ navigation, route }) => {
               source={{
                 // uri: itemInfo.tutor.profile_url,
                 uri:
-                  itemInfo.name === "Yoojin Teacher Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
-                    : itemInfo.name === "Seongyeop Teacher Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
-                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+                  itemInfo.tutor.profile_url,
               }}
               style={styles.classImg}
             ></Image>
@@ -127,12 +179,7 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.paymentContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("PaymentResult", {
-                  itemInfo: itemInfo,
-                  totalPrice: totalPrice,
-                  isSuccess: true,
-                  returnToClass,
-                });
+                handlePayment();
               }}
             >
               <View style={styles.creditcardBtn}>
@@ -154,163 +201,6 @@ const Payment = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-
-        // <View>
-        //   <View style={styles.payListContainer}>
-        //     <SwipeListView
-        //       data={payList}
-        //       // 어떻게 아이템을 렌더링 할 것인가
-        //       renderItem={({ item }) => (
-        //         <View style={styles.payListItem}>
-        //           <View style={styles.classInfoContainer}>
-        //             <Image
-        //               source={{
-        //                 uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg",
-        //               }}
-        //               style={styles.classImg}
-        //             ></Image>
-        //             <View style={styles.classInfoTextContainer}>
-        //               <Text style={styles.classNameText}>{item.name}</Text>
-        //               <View style={styles.categoryAndUnitContainer}>
-        //                 <View style={styles.categoryContainer}>
-        //                   <Text style={styles.cateogryText}>
-        //                     {item.category}
-        //                   </Text>
-        //                 </View>
-        //                 <GradientBtn
-        //                   // text={`${item.units} Units`}
-        //                   text="9 Units"
-        //                   textStyle={{
-        //                     color: "white",
-        //                     textAlign: "center",
-        //                     fontSize: 10,
-        //                     fontFamily: "Poppins-Medium",
-        //                   }}
-        //                   viewStyle={{
-        //                     borderRadius: 10,
-        //                     justifyContent: "center",
-        //                     alignItems: "center",
-        //                     width: 53,
-        //                     height: 19,
-        //                     marginLeft: 5,
-        //                   }}
-        //                 />
-        //               </View>
-
-        //               <View style={styles.priceTextContainer}>
-        //                 <Text style={styles.priceText}>
-        //                   $ {item.price === 0 ? "Free" : item.price}
-        //                 </Text>
-        //               </View>
-        //             </View>
-        //           </View>
-        //           <View style={styles.bottomContainer}>
-        //             <View style={styles.courseDateTextContainer}>
-        //               <Text style={styles.courseDateText}>
-        //                 Date : {year}-{month}-{date} ~ 수강가능기간 끝 날짜
-        //               </Text>
-        //             </View>
-        //             <View style={styles.unitsNumContainer}>
-        //               <Text style={styles.unitsNum}>{item.units} Units</Text>
-        //             </View>
-        //           </View>
-        //         </View>
-        //       )}
-        //       // 어떻게 숨겨진 아이템을 렌더링 할 것인가
-        //       renderHiddenItem={({ item }) => (
-        //         <View style={styles.swipeHiddenItemContainer}>
-        //           <View style={styles.swipeHiddenItem}>
-        //             <TouchableOpacity
-        //               onPress={() => {
-        //                 navigation.navigate("MyWishList", {
-        //                   isAddToCart: false,
-        //                 });
-        //               }}
-        //             >
-        //               <Text style={styles.swipeHiddenItemText}>
-        //                 Return{"\n"}to cart
-        //               </Text>
-        //             </TouchableOpacity>
-        //           </View>
-        //           <View style={styles.swipeHiddenItem}>
-        //             <TouchableOpacity
-        //               onPress={() => {
-        //                 console.log("delete");
-        //                 deleteItem(item.id);
-        //               }}
-        //             >
-        //               <Text style={styles.swipeHiddenItemText}>Delete</Text>
-        //             </TouchableOpacity>
-        //           </View>
-        //         </View>
-        //       )}
-        //       rightOpenValue={-150}
-        //       previewRowKey={"0"}
-        //       previewOpenValue={-40}
-        //       previewOpenDelay={3000}
-        //       disableRightSwipe={true}
-        //       // leftOpenValue={0}
-        //     />
-        //   </View>
-
-        //   {/* <View style={styles.summaryContainer}>
-        //     <Text>Summary</Text>
-        //     {payList.map((item) => {
-        //       return (
-        //         <View style={styles.summaryItem}>
-        //           <View style={styles.summaryText}>
-        //             <Text>{item.className}</Text>
-        //             <Text>
-        //               from {year}.{month}.{date} until 수강가능기간 끝날짜
-        //             </Text>
-        //           </View>
-        //           <View style={styles.summaryPrice}>
-        //             <Text>$ {item.price}</Text>
-        //           </View>
-        //         </View>
-        //       );
-        //     })}
-        //     <View style={{ height: 1, backgroundColor: "#000" }}></View>
-        //     <View style={styles.totalPriceContainer}>
-        //       <Text>Total</Text>
-        //       <Text>$ {totalPrice}</Text>
-        //     </View>
-        //   </View> */}
-        //   <View style={styles.howToPayContainer}>
-        //     <Text style={styles.howToPayText}>How to pay</Text>
-        //   </View>
-        //   <View style={styles.paymentContainer}>
-        //     <TouchableOpacity
-        //       onPress={() => {
-        //         navigation.navigate("PaymentResult", {
-        //           itemInfo: itemInfo,
-        //           totalPrice: totalPrice,
-        //           isSuccess: true,
-        //           returnToClass,
-        //         });
-        //       }}
-        //     >
-        //       <View style={styles.creditcardBtn}>
-        //         {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
-        //         <Text style={styles.creditcardText}>Credit card</Text>
-        //       </View>
-        //     </TouchableOpacity>
-        //     <TouchableOpacity
-        //       onPress={() => {
-        //         navigation.navigate("PaymentResult", {
-        //           itemInfo: itemInfo,
-        //           totalPrice: totalPrice,
-        //           isSuccess: false,
-        //         });
-        //       }}
-        //     >
-        //       <View style={styles.paypalBtn}>
-        //         {/* <Image source={require("../assets/img/btn-purple.png")}></Image> */}
-        //         <Text style={styles.paypalText}>Paypal</Text>
-        //       </View>
-        //     </TouchableOpacity>
-        //   </View>
-        // </View>
       )}
     </View>
   );

@@ -20,8 +20,7 @@ import { getClasses } from "../modules/NetworkFunction";
 import { getContents } from "../modules/NetworkFunction";
 
 const ClassInfo = ({ props, navigation, route }) => {
-  const [classInfo, setClassInfo] = useState(route.params.classInfo);
-  const [isMain, setIsMain] = useState(route.params.isMain);
+  const [isMain, setIsMain] = useState(route.params?.isMain);
 
   const [isWishList, setIsWishList] = useState(false);
   const [isClassLoaded, setIsClassLoaded] = useState(false);
@@ -32,6 +31,7 @@ const ClassInfo = ({ props, navigation, route }) => {
 
   const [introVideoUrl, setIntroVideoUrl] = useState("");
   const [unitsNum, setUnitsNum] = useState(-1);
+  const classInfo = route.params.classInfo;
 
   const videoPlayer = useRef();
   const [videoStatus, setVideoStatus] = useState(3);
@@ -45,6 +45,9 @@ const ClassInfo = ({ props, navigation, route }) => {
   };
 
   useEffect(() => {
+    console.log("----------------classInfo--------------------");
+    console.log(route.params.classInfo);
+
     console.log("----------------introvideoUrl--------------------");
     console.log(route.params.introVideoUrl);
     console.log("----------------introvideoUrl--------------------");
@@ -58,7 +61,6 @@ const ClassInfo = ({ props, navigation, route }) => {
     console.log("----------------isPortrait--------------------");
 
     // console.log(classInfo);
-    
 
     console.log(classInfo.course_id);
     // console.log(classInfo.introVideoUrl);
@@ -140,7 +142,7 @@ const ClassInfo = ({ props, navigation, route }) => {
         }
       );
     }
-    
+
     if (route.params.introVideoUrl) {
       setIntroVideoUrl(route.params.introVideoUrl);
     }
@@ -175,7 +177,7 @@ const ClassInfo = ({ props, navigation, route }) => {
       >
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{classInfo.name}</Text>
-          <View style={styles.backBtn}>
+          {/* <View style={styles.backBtn}>
             <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
@@ -183,7 +185,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             >
               <AntDesign name="left" size={20} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         <View style={styles.topShadowContainer}>
           <View style={styles.topContainer}>
@@ -302,7 +304,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             // const payList = [{ ...classInfo }];
             navigation.navigate("Payment", {
               item: classInfo,
-              unitsNum: unitsNum !== -1 ? unitsNum : classList.length - 1
+              unitsNum: unitsNum !== -1 ? unitsNum : classList.length - 1,
             });
           }}
         >
@@ -345,7 +347,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: "absolute",
-    top: 35,
+    top: 5,
     left: 20,
   },
   img: {

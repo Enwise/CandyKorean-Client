@@ -22,33 +22,64 @@ import Dialog, {
 
 import GradientBtn from "../components/GradientButtonView";
 
+import { getCourseById } from '../modules/NetworkFunction';
+
 const LessonInfo = ({ navigation, route }) => {
-  const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
+  const [lessonInfo, setLessonInfo] = route.params.lessonInfo;
+  const [contentsList, setContentsList] = route.params.contentsList;
+
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
   const [clickedUnit, setClickedUnit] = useState(0);
 
+  const [isCourseLoaded, setIsCourseLoaded] = useState(false);
+  const [tutor_profile_url, setTutorProfileUrl] = useState('');
+
+  const [clickedContentId, setClickedContentId] = useState(
+    contentsList[0].content_id
+  );
+
   const goToCurrentVideo = () => {
     navigation.navigate("LessonVideo", {
-      curriculumInfo: lessonInfo.curriculum[lessonInfo.currentUnit - 1],
-      isPortrait: lessonInfo.isPortrait,
+      video_url: contentsList[0].video_url,
+      isPortrait: contentsList[0].is_portrait,
     });
   };
 
-  const goToVideo = (unitNum, isReview) => {
-    if (!isReview) {
-      console.log(unitNum);
-      navigation.navigate("LessonVideo", {
-        curriculumInfo: lessonInfo.curriculum[unitNum - 1],
-        isPortrait: lessonInfo.isPortrait,
-      });
-    } else {
-      navigation.navigate("LessonVideo", {
-        curriculumInfo: lessonInfo.curriculum[clickedUnit - 1],
-        isPortrait: lessonInfo.isPortrait,
-      });
-    }
+  const goToVideo = (content_id) => {
+    console.log(content_id);
+
+    const clickedContent = contentsList.find(
+      (content) => content.content_id == content_id
+    );
+
+    navigation.navigate("LessonVideo", {
+      video_url: clickedContent.video_url,
+      isPortrait: clickedContent.is_portrait,
+    });
   };
+
+  // contentsList
+  // yoojin
+  // 1~10차시 == 2 ~ 11
+
+  // seongyeop
+  // 1~10차시 == 17 ~ 26
+
+  // kyungeun
+  // 1~10강 == 28 ~ 37
+
+  useEffect(() => {
+    console.log("contentsList", contentsList);
+    
+    if (!isCourseLoaded) {
+      getCourseById({course_id : contentsList[0].class_entity.course_id}, (d) => {
+        setTutorProfileUrl(d.data.tutor.profile_url);
+      }, setIsCourseLoaded, (e) => {console.log(e)})
+    }
+
+
+  }, [isCourseLoaded]);
 
   return (
     <View style={styles.container}>
@@ -65,7 +96,10 @@ const LessonInfo = ({ navigation, route }) => {
         <View style={styles.lessonInfoContainer}>
           <Image
             style={styles.imageContainer}
-            source={lessonInfo.profileImgUrl}
+            source={{
+              uri:
+              tutor_profile_url
+            }}
           ></Image>
 
           <View style={styles.textContainer}>
@@ -74,7 +108,13 @@ const LessonInfo = ({ navigation, route }) => {
             </View>
 
             <GradientBtn
-              text={`${lessonInfo.totalUnits} Units`}
+              text={`${contentsList.length} Units`}
+              textStyle={{
+                color: "white",
+                textAlign: "center",
+                fontSize: 12,
+                fontFamily: "Poppins-Medium",
+              }}
               viewStyle={{
                 borderRadius: 15,
                 justifyContent: "center",
@@ -104,7 +144,7 @@ const LessonInfo = ({ navigation, route }) => {
             <TouchableOpacity
               onPress={() => {
                 setVisible(true);
-                setClickedUnit(lessonInfo.currentUnit);
+                setClickedContentId(contentsList[0].content_id);
               }}
             >
               <View style={styles.quizBtn}>
@@ -130,36 +170,40 @@ const LessonInfo = ({ navigation, route }) => {
           key={"_"}
           style={styles.curriculumListContainer}
           keyExtractor={(item) => String(item.id)}
-          data={lessonInfo.curriculum}
+          data={contentsList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.curriculumItem}>
               <TouchableOpacity
                 onPress={() => {
-                  goToVideo(item.unitNum, false);
+                  goToVideo(item.content_id, false);
                 }}
               >
                 <View style={styles.unitNum}>
-                  <Text style={styles.unitNumText}>Unit {item.unitNum}</Text>
+                  <Text style={styles.unitNumText}>
+                    {item.class_entity.name.includes("Seongyeop")
+                      ? item.class_entity.name.split("_")[0]
+                      : item.class_entity.name}
+                  </Text>
                 </View>
               </TouchableOpacity>
 
               <View style={styles.unitInfo}>
                 <TouchableOpacity
                   onPress={() => {
-                    goToVideo(item.unitNum, false);
+                    goToVideo(item.content_id, false);
                   }}
                 >
                   <View style={styles.unitTitle}>
-                    <Text style={styles.unitTitleText}>{item.unitName}</Text>
+                    <Text style={styles.unitTitleText}>{item.name}</Text>
                   </View>
                 </TouchableOpacity>
 
                 <View style={styles.unitBottomContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      goToVideo(item.unitNum, false);
+                      goToVideo(item.content_id, false);
                     }}
                   >
                     <View style={styles.unitStudyContainer}>
@@ -169,14 +213,14 @@ const LessonInfo = ({ navigation, route }) => {
                   <TouchableOpacity
                     onPress={() => {
                       setVisible(true);
-                      setClickedUnit(item.unitNum);
+                      setClickedContentId(item.content_id);
                     }}
                   >
                     <View style={styles.unitQuizContainer}>
                       <View style={styles.unitQuizLeftContainer}>
                         <Text style={styles.unitQuizLeftText}>Quiz</Text>
                       </View>
-                      <Text style={styles.unitQuizNumText}>5/7</Text>
+                      {/* <Text style={styles.unitQuizNumText}>5/7</Text> */}
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -266,7 +310,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(true);
                 setVisible(false);
-                goToVideo(0, true);
+                goToVideo(clickedContentId, true);
 
                 console.log("review: ", review);
               }}
@@ -321,7 +365,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(false);
                 setVisible(false);
-                navigation.navigate("LessonQuiz", { lessonId: lessonInfo.id });
+                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList });
               }}
             />
           </DialogFooter>

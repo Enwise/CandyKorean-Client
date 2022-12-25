@@ -155,8 +155,12 @@ export const getCourseById = async (
   setIsReady,
   handleError
 ) => {
-  const course_id = reqParam;
-  const response = await getRequest(`/course/${course_id}`, handleError);
+  const { course_id } = reqParam;
+  const response = await getRequest(
+    `/course/${course_id}`,
+    reqParam,
+    handleError
+  );
   if (response !== null) {
     setData(response.data);
     setIsReady(true);
@@ -200,6 +204,56 @@ export const deleteCourse = async (
   }
 };
 
+/* PurchasedCourses */
+
+export const getAllPurchasedCourses = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await getRequest("/purchased_course", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const getAllPurchasedCoursesByUserId = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const { userId } = reqParam;
+  const response = await getRequest(
+    `/purchased_course/${userId}`,
+    reqParam,
+    handleError
+  );
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const createPurchasedCourse = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await postRequest(
+    "/purchased_course",
+    reqParam,
+    handleError
+  );
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
 /* Levels */
 export const getLevels = async (reqParam, setData, setIsReady, handleError) => {
   const response = await getRequest("/level", reqParam, handleError);
@@ -214,9 +268,10 @@ export const getLevelById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await getRequest("/level", reqParam, handleError);
+  const { level_id } = reqParam;
+  const response = await getRequest(`/level${level_id}`, reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
@@ -261,7 +316,7 @@ export const deleteLevel = async (
 export const getQuizs = async (reqParam, setData, setIsReady, handleError) => {
   const response = await getRequest("/quiz", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

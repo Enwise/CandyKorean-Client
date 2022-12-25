@@ -14,138 +14,109 @@ import QuizNextButton from "../assets/icons/quiz/QuizNextButton";
 import QuizCorrect from "../assets/icons/quiz/QuizCorrect";
 import QuizWrong from "../assets/icons/quiz/QuizWrong";
 
+import { getQuizById, getQuizs } from '../modules/NetworkFunction';
+
 const LessonQuiz = ({ route, navigation }) => {
-  const [lessonId, setLessonId] = useState(route.params.lessonId);
+  const [content_id, setContent_id] = useState(route.params.content_id);
+  const [contentsList, setContentsList] = useState(route.params.contentsList);
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
 
   const [isChecked, setIsChecked] = useState({
     isNext: false,
     isCorrect: false,
   });
-  // const [selectedList, setSelectedList] = useState([]);
+
+   // contentsList
+  // yoojin
+  // 1~10차시 == 2 ~ 11 : content_id
+  // 1차시 == 2, 2차시 == 3, 3차시 == 4, 4차시 == 5, 5차시 == 39, 6차시 == 40, 7차시 == 41, 8차시 == 9, 9차시 == 10, 10차시 == 11
+  // quiz_id
+  // 1차시 : 9, 10, 11, 
+  // 2차시: 12, 14
+  // 3차시 : 
+
+  // seongyeop
+  // 1~10차시 == 17 ~ 26
+
+  // kyungeun
+  // 1~10강 == 28 ~ 37
+
+  // quiz_style
+  // arrange: 문장 배열 능력
+  // sentence: 문장 완성 능력
+  // word: 어휘 능력
+  // grammer: 문법 능력
+  // dialog: 상황 이해 능력
 
   // lessonId 를 활용한 quiz 정보 가져오기
-  const [quizList, setQuizList] = useState([
+
+
+  const [dummyQuizList, setDummyQuizList] = useState([
     {
       id: 1,
       style: "arrange",
-      json: {
-        question: "What happend?",
-        answer: {
-          1: {
-            text: "무슨",
-            order: 1,
-            is_selected: false,
-          },
-          2: {
-            text: "일",
-            order: 2,
-            is_selected: false,
-          },
-          3: {
-            text: "있었어요?",
-            order: 3,
-            is_selected: false,
-          },
-        },
-      },
+json: { "question": "Let's go on a trip this fall!", "answer": { "1": { "text": "이번", "order": 1, "is_selected": false }, "2": { "text": "가을에", "order": 2, "is_selected": false}, "3": { "text": "여행", "order": 3, "is_selected": false}, "4": { "text": "가자!", "order": 4, "is_selected": false}}}
+,
     },
     {
       id: 2,
-      style: "select_sentence",
-      json: {
-        question: "What’s up?",
-        answer: {
-          1: {
-            text: "어떤 일 있었어요?",
-            correct: false,
-            is_selected: false,
-          },
-          2: {
-            text: "무슨 일 있었어요?",
-            correct: false,
-            is_selected: false,
-          },
-          3: {
-            text: "별일 없었어요?",
-            correct: true,
-            is_selected: false,
-          },
-        },
-      },
+      style: "sentence",
+json: { "question": "What time does this store close(the door)?", "answer": {"1": {"text": "지금이 몇 시인가요?", "correct": false, "is_selected": false}, "2": { "text": "몇 시에 가게를 가나요?", "correct": false, "is_selected": false}, "3": {"text": "몇 시에 이 가게가 문을 닫나요?", "correct": true, "is_selected": false }}}
+,
+    },
+    // ’
+    {
+      id: 3,
+      style: "word",
+json: {"question": "Q. 'Where is...' in Korean?","answer": {"1": {"text": "언제인가요?","correct": false,"is_selected": false},"2": {"text": "얼마인가요?","correct": false,"is_selected": false}, "3": {"text": "어디인가요?","correct": true,"is_selected": false}}}
+,
     },
     {
       id: 4,
-      style: "select_word",
-      json: {
-        question: 'Q. "be delicious" in Korean?',
-        answer: {
-          1: {
-            text: "멋지다",
-            correct: false,
-            is_selected: false,
-          },
-          2: {
-            text: "재밌다",
-            correct: false,
-            is_selected: false,
-          },
-          3: {
-            text: "맛있다",
-            correct: true,
-            is_selected: false,
-          },
-        },
-      },
+      style: "grammar",
+json: {"question": "Q. What grammar should you use when asking to somebody with courtesy/a very ncie manner?","answer": {"1": {"text": "-니?","correct": false,"is_selected": false},"2": {"text": "-(으)ㄴ가요?","correct": false,"is_selected": false},"3": {"text": "-나요?","correct": true,"is_selected": false}}}
+,
     },
     {
-      id: 3,
-      style: "select_dialog",
-      json: {
-        question: {
-          A: {
-            eng: "Where are you going?",
-            kor: "어디에 가세요?",
-            is_question: true,
-            is_selected: false,
-          },
-          B: {
-            eng: "I am trying to go to a bank",
-            kor: "저는 은행에 가려고 해요.",
-            is_question: false,
-            is_selected: false,
-          },
-        },
-        answer: {
-          1: {
-            text: "어디에 가세요?",
-            correct: true,
-            is_selected: false,
-          },
-          2: {
-            text: "언제 가세요?",
-            correct: false,
-
-            is_selected: false,
-          },
-          3: {
-            text: "지금 가세요?",
-            correct: false,
-            is_selected: false,
-          },
-        },
-      },
+      id: 5,
+      style: "dialog",
+json: {"question": {"A": {"eng": "Does this bus go to the City Hall Station?","kor": "이 버스가 시청역으로 가나요?","is_question": true,"is_selected": false},"B": {"eng": "Yes, it goes to the City Hall Station","kor": "네, 갑니다.","is_question": false,"is_selected": false}}, "answer": {"1": {"text": "이 버스가 시청 역으로 가나요?","correct": true,"is_selected": false},"2": {"text": "이 버스가 시청 역에 있나요?","correct": false,"is_selected": false},"3": {"text": "이 버스가 시청 역에서 오나요?","correct": false,"is_selected": false}}}
+,
     },
   ]);
 
   const [resultList, setResultList] = useState([]);
   const [selectedList, setSelectedList] = useState([]);
 
+  const [isQuizListLoaded, setIsQuizListLoaded] = useState(false);
+  const [quizList, setQuizList] = useState([]);
+
   useEffect(() => {
     console.log("useEffect");
-  }, [currentQuizIdx, quizList, isChecked, selectedList]);
 
-  console.log(lessonId);
+    if(!isQuizListLoaded) {
+    for (let i = 9; i < 12; i++) {
+
+        getQuizs({}, (d) => {
+
+          d.data.map((quizItem) => {
+            
+            if(quizItem.content_id === content_id){
+              let parsedQuizItem = JSON.parse(quizItem.json);
+              console.log(parsedQuizItem)
+              quizItem.json = parsedQuizItem;
+              console.log(quizItem);
+              setQuizList((quizList) => {
+                return [...quizList, quizItem];
+              });
+            }
+          });
+        }, setIsQuizListLoaded, (e) => {console.log(e)})
+    }
+  }
+
+  }, [currentQuizIdx, isChecked, selectedList, isQuizListLoaded]);
+
 
   const updateSelected = (key) => {
     let updatedQuizList = [...quizList];
@@ -281,8 +252,8 @@ const LessonQuiz = ({ route, navigation }) => {
     if (quizList[currentQuizIdx].style == "arrange") {
       return "Translate this sentence";
     } else if (
-      quizList[currentQuizIdx].style == "select_sentence" ||
-      quizList[currentQuizIdx].style == "select_dialog"
+      quizList[currentQuizIdx].style == "sentence" ||
+      quizList[currentQuizIdx].style == "dialog"
     ) {
       return "Select the correct sentence";
     } else {
@@ -310,8 +281,11 @@ const LessonQuiz = ({ route, navigation }) => {
     return count;
   };
 
+  
+
   return (
-    <View style={styles.container}>
+    isQuizListLoaded &&
+    (<View style={styles.container}>
       <View style={styles.firstContainer}>
         <View style={styles.topContainer}>
           <View style={styles.titleContainer}>
@@ -341,14 +315,11 @@ const LessonQuiz = ({ route, navigation }) => {
       </View>
 
       <View style={styles.secondContainer}>
-        {quizList[currentQuizIdx].style !== "select_dialog" ? (
-          <View style={styles.quizQuestionContainer}>
-            <View style={styles.quizQuestionWordsContainer}>
-              <Text style={styles.questionText}>
-                {" "}
+        {quizList[currentQuizIdx].style !== "dialog" ? (
+          <View style={questionTextstyles(quizList[currentQuizIdx].style).quizQuestionContainer}>
+              <Text style={questionTextstyles(quizList[currentQuizIdx].style).questionText}>
                 {quizList[currentQuizIdx].json.question}
               </Text>
-            </View>
             {quizList[currentQuizIdx].style === "arrange" ? (
               <View style={styles.quizQuestionWordsNum}>
                 <Text style={styles.quizQuestionWordsNumText}>
@@ -479,7 +450,7 @@ const LessonQuiz = ({ route, navigation }) => {
               )}
             </View>
           </>
-        ) : quizList[currentQuizIdx].style === "select_sentence" ? (
+        ) : quizList[currentQuizIdx].style === "sentence" ? (
           <>
             <View style={styles.resultContainer}></View>
             <View
@@ -551,7 +522,7 @@ const LessonQuiz = ({ route, navigation }) => {
               )}
             </View>
           </>
-        ) : quizList[currentQuizIdx].style === "select_word" ? (
+        ) : quizList[currentQuizIdx].style === "word"|| quizList[currentQuizIdx].style === "grammer" ? (
           <>
             <View style={styles.resultContainer}></View>
             <View
@@ -757,7 +728,7 @@ const LessonQuiz = ({ route, navigation }) => {
           )
         ) : null}
       </View>
-    </View>
+    </View>)
   );
 };
 
@@ -821,38 +792,9 @@ const styles = StyleSheet.create({
     flex: 0.5,
     width: Dimensions.get("window").width,
   },
-  quizQuestionContainer: {
-    borderRadius: 10,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    width: "90%",
-    height: 50,
-    alignItems: "center",
-    paddingLeft: 10,
-    justifyContent: "space-between",
-    paddingRight: 10,
+  
 
-    ...Platform.select({
-      ios: {
-        shadowColor: "rgba(0,0,0,0.2)",
-        shadowOpacity: 1,
-        shadowOffset: { height: 2, width: 2 },
-        shadowRadius: 2,
-      },
-
-      android: {
-        elevation: 10,
-        marginHorizontal: 0,
-      },
-    }),
-  },
-  quizQuestionWordsContainer: {
-    flexDirection: "row",
-  },
-  questionText: {
-    fontFamily: "Poppins-Regular",
-    fontSize: 16,
-  },
+  
   koreanWordContainer: {
     marginRight: 5,
   },
@@ -998,6 +940,39 @@ const styles = StyleSheet.create({
   },
 });
 
+const questionTextstyles = (quizStyle) => 
+StyleSheet.create({
+  quizQuestionContainer: {
+    borderRadius: 10,
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    width: "90%",
+    height: quizStyle === 'grammer' ? '20%' : '10%',
+    alignItems: "center",
+    paddingLeft: 10,
+    justifyContent: "space-between",
+    paddingRight: 10,
+
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0,0.2)",
+        shadowOpacity: 1,
+        shadowOffset: { height: 2, width: 2 },
+        shadowRadius: 2,
+      },
+
+      android: {
+        elevation: 10,
+        marginHorizontal: 0,
+      },
+    }),
+  },
+  questionText: {
+    fontFamily: "Poppins-Regular",
+    fontSize: quizStyle === 'grammer' ? 14 : 16,
+  },
+})
+
 const dialog_text_styles = (isQuestion) =>
   StyleSheet.create({
     quizDialog_A_eng_text: {
@@ -1038,7 +1013,7 @@ const quiz_word_styles = (isNext, correct, isSelected) =>
         },
       }),
     },
-    // select_word
+    // word
     quizWordSelectionRowContainer: {
       flexDirection: "row",
       justifyContent: "center",
@@ -1248,7 +1223,7 @@ const selection_styles = (quiz_style) =>
           },
 
     arrowContainer:
-      quiz_style === "arrange" || quiz_style === "select_dialog"
+      quiz_style === "arrange" || quiz_style === "dialog"
         ? {
             marginTop: 30,
             height: 30,

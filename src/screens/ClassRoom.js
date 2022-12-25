@@ -9,7 +9,10 @@ import {
 } from "react-native";
 
 import Lesson from "../components/Lesson";
-import { getQuizById } from '../modules/NetworkFunction';
+import {
+  getAllPurchasedCoursesByUserId,
+  getCourses,
+} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
 const ClassRoom = ({ navigation }) => {
@@ -357,27 +360,64 @@ const ClassRoom = ({ navigation }) => {
     //   ],
     // },
   ]);
+
+  const [purchasedCourseList, setPurchasedCourseList] = useState([]);
+  const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
 
+  const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
+    useState(false);
+
+  const [isClassListLoaded, setIsClassListLoaded] = useState(false);
+  const [text, setText] = useState("");
+
+  useState(false);
+
   useEffect(() => {
+    
 
-    getQuizById({quiz_id : 4}, (d) => {
-      console.log(d.data.json);
+    console.log("user id"); //
+    console.log(authState.userId);
 
-      const obj = JSON.parse(d.data.json);
-      console.log(obj['1']["hi"]);
-
-    }, () => {}, (e) => {console.log(e)})
-
-    console.log('user id')
-    console.log(authState);
-
-  }, [])
+    if (!isPurchasedCourseListLoaded) {
+      getAllPurchasedCoursesByUserId(
+        { userId: 13 },
+        (d) => {
+          console.log("purchasedCourse : ", d.data);
+          d.data.map((item) => {
+            let purchasedCourse;
+            getCourses(
+              { },
+              (d) => {
+                d.data.map((courseItem) => {
+                  if (courseItem.course_id === item.course_id) {
+                    purchasedCourse = courseItem;
+                    console.log("purchasedCourse : ", purchasedCourse);
+                    setPurchasedCourseList((prev) => [...prev, purchasedCourse]);
+                  }
+                })
+                
+              },
+              () => {},
+              (e) => {
+                console.log(e);
+              }
+            );
+          });
+        },
+        setIsPurchasedCourseListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+  }, [authState.userId, isPurchasedCourseListLoaded]);
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>My ClassRoom</Text>
+
       </View>
       <SafeAreaView nestedScrollEnabled={true}>
         <FlatList
@@ -386,7 +426,7 @@ const ClassRoom = ({ navigation }) => {
           style={styles.classListContainer}
           horizontal={false}
           keyExtractor={(item) => String(item.id)}
-          data={dummyLessonList}
+          data={purchasedCourseList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -394,6 +434,7 @@ const ClassRoom = ({ navigation }) => {
           )}
         ></FlatList>
       </SafeAreaView>
+      
     </View>
   );
 };
