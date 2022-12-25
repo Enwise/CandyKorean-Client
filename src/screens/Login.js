@@ -3,6 +3,8 @@ import Constants from "expo-constants";
 import {
   Alert,
   Dimensions,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -38,7 +40,10 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" && "padding"}
+    >
       <View
         style={{
           flex: 8,
@@ -69,7 +74,7 @@ const Login = ({ navigation }) => {
           onPress={() => handleLogin()}
         />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
