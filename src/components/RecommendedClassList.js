@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { getCourses } from "../modules/NetworkFunction";
 import RecommendedClass from "./RecommendedClass";
 
-const RecommendedClassList = () => {
+const RecommendedClassList = ({ navigation }) => {
   const [courses, setCourses] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
   React.useEffect(() => {
@@ -11,6 +11,7 @@ const RecommendedClassList = () => {
       {},
       (d) => {
         setCourses(d.data);
+
       },
       () => {},
       (e) => {
@@ -25,8 +26,8 @@ const RecommendedClassList = () => {
         return (
           <RecommendedClass
             key={index}
-            tutor={course.tutor}
-            thumbnail={course.thumbnail}
+            course={course}
+            navigation={navigation}
           />
         );
       })}

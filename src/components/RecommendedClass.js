@@ -7,22 +7,42 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 // 추천 강의 컴포넌트
-const RecommendedClass = ({ thumbnail, tutor }) => {
+const RecommendedClass = ({ navigation, course }) => {
   // 강의 썸네일, 강사 프로필 사진, 강사 이름, 시청자 수, 업로드 날짜 필요
+  const { thumbnail, tutor, view_count, date_updated } = course;
+  const today = new Date();
+  const date = new Date(date_updated);
+  const diff = Math.ceil(
+    (today.getTime() - date.getTime()) / (1000 * 3600 * 24)
+  );
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity="0.8">
+    <TouchableOpacity
+      style={styles.container}
+      activeOpacity="0.8"
+      onPress={() => {
+        console.log("클래스 정보로 이동", course);
+        navigation.navigate("Class", {
+          screen: "ClassInfo",
+          params: {
+            classInfo: course,
+            isMain: true,
+          },
+        });
+      }}
+    >
       <View style={styles.thumbnail}>
-        <Image style={styles.image} source={thumbnail} />
+        <Image style={styles.image} source={{ uri: thumbnail }} />
       </View>
       <View style={styles.description}>
         <View style={styles.imgContainer}>
-          <Image style={styles.tutorImg} source={tutor.profile_url} />
+          <Image style={styles.tutorImg} source={{ uri: tutor.profile_url }} />
         </View>
         <Text style={styles.tutorName}>{tutor.name}</Text>
-        <Text style={styles.text}>viewers</Text>
-        <Text style={styles.text}>3days ago</Text>
+        <Text style={styles.text}>viewers {view_count}</Text>
+        <Text style={styles.text}>{diff}days ago</Text>
       </View>
     </TouchableOpacity>
   );
@@ -33,22 +53,7 @@ const styles = StyleSheet.create({
     // height: 213,
     backgroundColor: "white",
     marginBottom: 25,
-    // ...Platform.select({
-    //   ios: {
-    //     shadowOpacity: 1,
-    //     shadowOffset: {
-    //       width: 2,
-    //       height: 4,
-    //     },
-    //     shadowColor: "rgba(0, 0, 0, 0.07)",
-    //     shadowRadius: 10,
-    //   },
-    //   android: {
-    //     elevation: 5,
-    //   },
-    // }),
     backgroundColor: "white",
-    borderBottomWidth: 1,
   },
   thumbnail: {
     height: 213,
