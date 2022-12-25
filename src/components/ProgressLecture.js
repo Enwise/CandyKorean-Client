@@ -43,7 +43,7 @@ const ProgressLecture = ({ userId }) => {
       const data = filterData.map(async (item) => {
         let courseName, tutorId, tutorName;
         await getCourseById(
-          item.class.course_id,
+          { course_id: item.class.course_id },
           (d) => {
             courseName = d.data.name;
             tutorId = d.data.tutor_id;
