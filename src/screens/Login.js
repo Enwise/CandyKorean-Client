@@ -12,7 +12,6 @@ import Logo from "../components/Logo";
 import GradientButton from "../components/GradientButton";
 import LoginInput from "../components/LoginInput";
 import AuthContext from "../contexts/AuthContext";
-import RecommendedLecList from "../components/RecommendedLecList";
 const windowWidth = Dimensions.get("window").width;
 const Login = ({ navigation }) => {
   const { signIn, authState } = React.useContext(AuthContext);

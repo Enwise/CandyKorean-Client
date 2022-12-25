@@ -155,9 +155,10 @@ export const getCourseById = async (
   setIsReady,
   handleError
 ) => {
-  const response = await getRequest("/course", reqParam, handleError);
+  const course_id = reqParam;
+  const response = await getRequest(`/course/${course_id}`, handleError);
   if (response !== null) {
-    setData(response.data.member);
+    setData(response.data);
     setIsReady(true);
   }
 };

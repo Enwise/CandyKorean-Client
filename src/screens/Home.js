@@ -12,9 +12,8 @@ import {
 import Constants from "expo-constants";
 import SmallLogoIcon from "../assets/icons/SmallLogoIcon";
 import * as Linking from "expo-linking";
-import RecommendedLecture from "../components/RecommendedLecture";
 import { LinearGradient } from "expo-linear-gradient";
-import RecommendedLecList from "../components/RecommendedLecList";
+import RecommendedClassList from "../components/RecommendedClassList";
 import ProgressLecture from "../components/ProgressLecture";
 
 import { Audio } from "expo-av";
@@ -23,10 +22,11 @@ import { getUserById, updateUser } from "../modules/NetworkFunction";
 import RightIcon from "../assets/icons/RightIcon";
 import HomeCarousel from "../components/HomeCarousel";
 import LollipopBanner from "../assets/img/LollipopBanner";
+import { NavigationHelpersContext } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-const Home = () => {
+const Home = ({ navigation }) => {
   const { authState } = React.useContext(AuthContext);
   const [user, setUser] = React.useState(null);
   const updateAttendance = async (
@@ -50,7 +50,7 @@ const Home = () => {
       update_data,
       (d) => {
         if (d.message === "updated") {
-          console.log("연속 출석일수 update");
+          // console.log("연속 출석일수 update");
         }
         setUser(d.data);
       },
@@ -175,23 +175,9 @@ const Home = () => {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.title}>Lecture in progress</Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            paddingVertical: 12,
-          }}
-        >
-          <ProgressLecture />
-          <View style={{ width: 15 }} />
-          <ProgressLecture />
-          <View style={{ width: 15 }} />
-          <ProgressLecture />
-        </ScrollView>
+        <ProgressLecture userId={authState.userId} />
 
-        <View style={{ marginTop: 41 }}>
+        <View style={{ marginTop: 0 }}>
           <View
             style={{
               flexDirection: "row",
@@ -200,12 +186,17 @@ const Home = () => {
               paddingEnd: 15,
             }}
           >
-            <Text style={[styles.title]}>Recommended Lecture</Text>
+            <Text style={[styles.title]}>Recommended Class</Text>
             <TouchableOpacity
               style={{
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "row",
+              }}
+              onPress={() => {
+                navigation.reset({
+                  routes: [{ name: "Class", screen: "ClassMain" }],
+                });
               }}
             >
               <Text
@@ -222,7 +213,7 @@ const Home = () => {
             </TouchableOpacity>
           </View>
 
-          <RecommendedLecList />
+          <RecommendedClassList navigation={navigation} />
         </View>
       </View>
       <HomeCarousel />
