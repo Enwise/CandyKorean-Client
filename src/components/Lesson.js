@@ -80,8 +80,6 @@ const Lesson = ({ navigation, lessonInfo }) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("LessonInfo", {
-              lessonInfo: lessonInfo,
-              classList: classList,
               contentsList: contentsList,
             });
           }}
@@ -90,12 +88,7 @@ const Lesson = ({ navigation, lessonInfo }) => {
             <Image
               style={styles.imageContainer}
               source={{
-                uri:
-                  lessonInfo.name == "Yoojin Teacher Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
-                    : lessonInfo.name == "Seongyeop Teacher Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
-                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+                uri: lessonInfo.tutor.profile_url
               }}
             ></Image>
             <View style={styles.textContainer}>
@@ -104,7 +97,7 @@ const Lesson = ({ navigation, lessonInfo }) => {
               </View>
               <View style={styles.lessonDescContainer}>
                 <Text style={styles.lessonDesc}>
-                  {lessonInfo.info.split("\n")[0]}
+                  {lessonInfo.info.split(".")[0] + "."}
                 </Text>
               </View>
             </View>

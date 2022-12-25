@@ -177,7 +177,7 @@ const ClassInfo = ({ props, navigation, route }) => {
       >
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{classInfo.name}</Text>
-          <View style={styles.backBtn}>
+          {/* <View style={styles.backBtn}>
             <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
@@ -185,7 +185,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             >
               <AntDesign name="left" size={20} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         <View style={styles.topShadowContainer}>
           <View style={styles.topContainer}>
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: "absolute",
-    top: 35,
+    top: 5,
     left: 20,
   },
   img: {

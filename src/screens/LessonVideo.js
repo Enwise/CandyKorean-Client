@@ -52,7 +52,7 @@ const LessonVideo = ({ route, navigation }) => {
         shouldPlay
       />
       <View style={styles.lectureNoteContainer}>
-        <Text style={styles.lectureNote}>강의노트</Text>
+        <Text style={styles.lectureNote}>Lecture Note</Text>
       </View>
     </View>
   );

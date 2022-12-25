@@ -22,17 +22,21 @@ import Dialog, {
 
 import GradientBtn from "../components/GradientButtonView";
 
+import { getCourseById } from '../modules/NetworkFunction';
+
 const LessonInfo = ({ navigation, route }) => {
-  const lessonInfo = route.params.lessonInfo;
-  const classList = route.params.classList;
-  const contentsList = route.params.contentsList;
+  const [lessonInfo, setLessonInfo] = route.params.lessonInfo;
+  const [contentsList, setContentsList] = route.params.contentsList;
 
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
   const [clickedUnit, setClickedUnit] = useState(0);
 
-  const [currentClassId, setCurrentClassId] = useState(
-    contentsList[0].class_id
+  const [isCourseLoaded, setIsCourseLoaded] = useState(false);
+  const [tutor_profile_url, setTutorProfileUrl] = useState('');
+
+  const [clickedContentId, setClickedContentId] = useState(
+    contentsList[0].content_id
   );
 
   const goToCurrentVideo = () => {
@@ -42,30 +46,40 @@ const LessonInfo = ({ navigation, route }) => {
     });
   };
 
-  const goToVideo = (content_id, isReview) => {
-    if (!isReview) {
-      console.log(content_id);
+  const goToVideo = (content_id) => {
+    console.log(content_id);
 
-      const clickedContent = contentsList.find(
-        (content) => content.content_id == content_id
-      );
+    const clickedContent = contentsList.find(
+      (content) => content.content_id == content_id
+    );
 
-      navigation.navigate("LessonVideo", {
-        video_url: clickedContent.video_url,
-        isPortrait: clickedContent.is_portrait,
-      });
-    } else {
-      navigation.navigate("LessonVideo", {
-        curriculumInfo: lessonInfo.curriculum[clickedUnit - 1],
-        isPortrait: lessonInfo.isPortrait,
-      });
-    }
+    navigation.navigate("LessonVideo", {
+      video_url: clickedContent.video_url,
+      isPortrait: clickedContent.is_portrait,
+    });
   };
+
+  // contentsList
+  // yoojin
+  // 1~10차시 == 2 ~ 11
+
+  // seongyeop
+  // 1~10차시 == 17 ~ 26
+
+  // kyungeun
+  // 1~10강 == 28 ~ 37
 
   useEffect(() => {
     console.log("contentsList", contentsList);
-    console.log(classList[0].course.name);
-  }, []);
+    
+    if (!isCourseLoaded) {
+      getCourseById({course_id : contentsList[0].class_entity.course_id}, (d) => {
+        setTutorProfileUrl(d.data.tutor.profile_url);
+      }, setIsCourseLoaded, (e) => {console.log(e)})
+    }
+
+
+  }, [isCourseLoaded]);
 
   return (
     <View style={styles.container}>
@@ -84,11 +98,7 @@ const LessonInfo = ({ navigation, route }) => {
             style={styles.imageContainer}
             source={{
               uri:
-                lessonInfo.name == "Yoojin Teacher Course"
-                  ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
-                  : lessonInfo.name == "Seongyeop Teacher Course"
-                  ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
-                  : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+              tutor_profile_url
             }}
           ></Image>
 
@@ -134,7 +144,7 @@ const LessonInfo = ({ navigation, route }) => {
             <TouchableOpacity
               onPress={() => {
                 setVisible(true);
-                setClickedUnit(lessonInfo.currentUnit);
+                setClickedContentId(contentsList[0].content_id);
               }}
             >
               <View style={styles.quizBtn}>
@@ -203,14 +213,14 @@ const LessonInfo = ({ navigation, route }) => {
                   <TouchableOpacity
                     onPress={() => {
                       setVisible(true);
-                      setClickedUnit(0);
+                      setClickedContentId(item.content_id);
                     }}
                   >
                     <View style={styles.unitQuizContainer}>
                       <View style={styles.unitQuizLeftContainer}>
                         <Text style={styles.unitQuizLeftText}>Quiz</Text>
                       </View>
-                      <Text style={styles.unitQuizNumText}>5/7</Text>
+                      {/* <Text style={styles.unitQuizNumText}>5/7</Text> */}
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -300,7 +310,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(true);
                 setVisible(false);
-                goToVideo(0, true);
+                goToVideo(clickedContentId, true);
 
                 console.log("review: ", review);
               }}
@@ -355,7 +365,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(false);
                 setVisible(false);
-                navigation.navigate("LessonQuiz", { lessonId: lessonInfo.id });
+                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList });
               }}
             />
           </DialogFooter>

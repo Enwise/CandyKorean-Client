@@ -316,7 +316,7 @@ export const deleteLevel = async (
 export const getQuizs = async (reqParam, setData, setIsReady, handleError) => {
   const response = await getRequest("/quiz", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

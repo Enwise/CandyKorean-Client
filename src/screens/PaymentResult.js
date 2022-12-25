@@ -175,29 +175,30 @@ const PaymentResult = ({ navigation, route }) => {
             // }
             if (course_item.level.level_id == level_id) {
               if (
-                course_item.name === "Yoojin Teacher Course" ||
-                course_item.name === "Seongyeop Teacher Course" ||
+                course_item.name === "Conversational Korean Course" ||
+                course_item.name === "Survival Korean Course" ||
                 course_item.name === "After Like Course"
               ) {
-                if (!isTutorLoaded) {
-                  getTutorById(
-                    {
-                      tutor_id: course_item.tutor_id,
-                    },
-                    (d) => {
-                      console.log(d);
-                      course_item["tutor"] = { ...d.data };
-                      setCourseList((courseList) => [
-                        ...courseList,
-                        course_item,
-                      ]);
-                    },
-                    setIsTutorLoaded,
-                    (e) => {
-                      console.log(e);
-                    }
-                  );
-                }
+                // if (!isTutorLoaded) {
+                //   getTutorById(
+                //     {
+                //       tutor_id: course_item.tutor_id,
+                //     },
+                //     (d) => {
+                //       console.log(d);
+                //       course_item["tutor"] = { ...d.data };
+                      
+                //     },
+                //     setIsTutorLoaded,
+                //     (e) => {
+                //       console.log(e);
+                //     }
+                //   );
+                // }
+                setCourseList((courseList) => [
+                  ...courseList,
+                  course_item,
+                ]);
               }
             }
             setIsTutorLoaded(false);
@@ -261,8 +262,8 @@ const PaymentResult = ({ navigation, route }) => {
                   <View style={styles.unitContainer}>
                     <UnitIcon />
                     <Text style={styles.unitText}>
-                      {itemInfo.name === "Yoojin Teacher Course" ||
-                      itemInfo.name === "Seongyeop Teacher Course" ||
+                      {itemInfo.name === "Conversational Korean Course" ||
+                      itemInfo.name === "Survival Korean Course" ||
                       itemInfo.name === "After Like Course"
                         ? 10
                         : 0}{" "}

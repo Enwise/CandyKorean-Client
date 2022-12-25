@@ -10,10 +10,8 @@ import {
 
 import Lesson from "../components/Lesson";
 import {
-  getQuizById,
   getAllPurchasedCoursesByUserId,
-  getCourseById,
-  getTutorById,
+  getCourses,
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
@@ -371,23 +369,12 @@ const ClassRoom = ({ navigation }) => {
     useState(false);
 
   const [isClassListLoaded, setIsClassListLoaded] = useState(false);
+  const [text, setText] = useState("");
 
   useState(false);
 
   useEffect(() => {
-    getQuizById(
-      { quiz_id: 4 },
-      (d) => {
-        console.log(d.data.json);
-
-        const obj = JSON.parse(d.data.json);
-        console.log(obj["1"]["hi"]);
-      },
-      () => {},
-      (e) => {
-        console.log(e);
-      }
-    );
+    
 
     console.log("user id"); //
     console.log(authState.userId);
@@ -399,23 +386,17 @@ const ClassRoom = ({ navigation }) => {
           console.log("purchasedCourse : ", d.data);
           d.data.map((item) => {
             let purchasedCourse;
-            getCourseById(
-              { course_id: item.course_id },
+            getCourses(
+              { },
               (d) => {
-                purchasedCourse = d.data;
-
-                // getTutorById(
-                //   { tutor_id: purchasedCourse.tutor_id },
-                //   (d) => {
-                //     purchasedCourse["tutor"] = d.data;
-                //   },
-                //   () => {},
-                //   (e) => {
-                //     console.log(e);
-                //   }
-                // );
-                console.log("purchasedCourse : ", purchasedCourse);
-                setPurchasedCourseList((prev) => [...prev, purchasedCourse]);
+                d.data.map((courseItem) => {
+                  if (courseItem.course_id === item.course_id) {
+                    purchasedCourse = courseItem;
+                    console.log("purchasedCourse : ", purchasedCourse);
+                    setPurchasedCourseList((prev) => [...prev, purchasedCourse]);
+                  }
+                })
+                
               },
               () => {},
               (e) => {
@@ -436,6 +417,7 @@ const ClassRoom = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>My ClassRoom</Text>
+
       </View>
       <SafeAreaView nestedScrollEnabled={true}>
         <FlatList
@@ -452,6 +434,7 @@ const ClassRoom = ({ navigation }) => {
           )}
         ></FlatList>
       </SafeAreaView>
+      
     </View>
   );
 };

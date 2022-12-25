@@ -45,7 +45,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
 
   useEffect(() => {
     console.log(levelItem);
-
+    console.log('Course useEffect')
     if (!isCourseListLoaded) {
       getCourses(
         {},
@@ -58,36 +58,37 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
           d.data.map((item) => {
             // console.log(item);
             if (item.level.name === "Lollipop Level") {
-              if (
-                item.name === "Yoojin Teacher Course" ||
-                item.name === "Seongyeop Teacher Course" ||
-                item.name === "After Like Course"
-              ) {
-                // course_id : 3
-                // class_id: 14(ot) 3, 5~13
-                if (!isTutorLoaded) {
-                  getTutorById(
-                    {
-                      tutor_id: item.tutor_id,
-                    },
-                    (d) => {
-                      console.log(d);
-                      item["tutor"] = { ...d.data };
-                      updatedLollipopCourseList.push(item);
-                    },
-                    setIsTutorLoaded,
-                    (e) => {
-                      console.log(e);
-                    }
-                  );
-                }
-              }
+              // if (
+              //   item.name === "Yoojin Teacher Course" ||
+              //   item.name === "Seongyeop Teacher Course" ||
+              //   item.name === "After Like Course"
+              // ) {
+              //   // course_id : 3
+              //   // class_id: 14(ot) 3, 5~13
+              //   if (!isTutorLoaded) {
+              //     getTutorById(
+              //       {
+              //         tutor_id: item.tutor_id,
+              //       },
+              //       (d) => {
+              //         console.log(d);
+              //         item["tutor"] = { ...d.data };
+              //         updatedLollipopCourseList.push(item);
+              //       },
+              //       setIsTutorLoaded,
+              //       (e) => {
+              //         console.log(e);
+              //       }
+              //     );
+              //   }
+              // }
+              updatedLollipopCourseList.push(item);
+
             } else if (item.level.name === "Cotton Candy Level") {
               updatedCottonCandyCourseList.push(item);
             } else if (item.level.name === "Mint Candy Level") {
               updatedMintCandyCourseList.push(item);
             }
-            setIsTutorLoaded(false);
           });
           setLollipopCourseList(updatedLollipopCourseList);
           setCottonCandyCourseList(updatedCottonCandyCourseList);
@@ -102,13 +103,13 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
         }
       );
     }
-  }, [isCourseListLoaded, isTutorLoaded]);
+  }, [isCourseListLoaded]);
 
   const handleShowAllClass = () => {
     {
-      title === "Lollipop Level"
+      levelItem.name === "Lollipop Level"
         ? navigation.navigate("ClassMore", {
-            title: title,
+            title: levelItem.name,
             courseList: lollipopCourseList,
           })
         : null;
@@ -119,7 +120,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
     <View style={styles.courseContainer}>
       <View style={styles.topContainer}>
         <View style={styles.topItem1}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{levelItem.name}</Text>
           <Text style={styles.secondTitle}>{levelItem.info}</Text>
         </View>
         <View style={styles.topItem2}>
@@ -134,7 +135,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
           </TouchableOpacity>
         </View>
       </View>
-      {title === "Lollipop Level" ? (
+      {levelItem.name == "Lollipop Level" ? (
         <SafeAreaView nestedScrollEnabled={true} style={{ width: "100%" }}>
           <FlatList
             numColumns={1}

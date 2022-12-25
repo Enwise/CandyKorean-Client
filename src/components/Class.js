@@ -13,7 +13,7 @@ import GradientBtn from "./GradientButtonView";
 
 import { AntDesign } from "@expo/vector-icons";
 
-const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
+const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
   const [unitsNum, setUnitsNum] = useState();
   const [isWishList, setIsWishList] = useState(false);
 
@@ -23,13 +23,14 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
   };
 
   useEffect(() => {
+    console.log("class useEffect")
     // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
 
     // console.log("!!!!!!classInfo!!!!!!", classInfo);
 
     if (
-      classInfo.name === "Yoojin Teacher Course" ||
-      classInfo.name === "Seongyeop Teacher Course" ||
+      classInfo.name === "Conversational Korean Course" ||
+      classInfo.name === "Survival Korean Course" ||
       classInfo.name === "After Like Course"
     ) {
       setUnitsNum(10);
@@ -66,11 +67,7 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
               source={{
                 // uri: classInfo.tutor.profile_url,
                 uri:
-                  classInfo.tutor.name === "Yoojin"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
-                    : classInfo.tutor.name === "Seongyeop"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
-                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+                  classInfo.tutor.profile_url
               }}
             ></Image>
           </TouchableOpacity>
@@ -132,19 +129,19 @@ const Class = ({ maintitle, classInfo, navigation, isShowAll, isMain }) => {
                 classInfo: classInfo,
                 isMain: false,
                 introVideoUrl:
-                  classInfo.name == "Yoojin Teacher Course"
+                  classInfo.name == "Conversational Korean Course"
                     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671715828798.0%EC%B0%A8%EC%8B%9C%28%EC%86%8C%EA%B0%9C%29.mp4"
-                    : classInfo.name == "Seongyeop Teacher Course"
+                    : classInfo.name == "Survival Korean Course"
                     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671775511025.OT.mp4"
                     : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671777501479.OT.mp4",
                 unitsNum:
-                  (classInfo.name == "Yoojin Teacher Course" ||
-                    classInfo.name == "Seongyeop Teacher Course" ||
+                  (classInfo.name == "Conversational Korean Course" ||
+                    classInfo.name == "Survival Korean Course" ||
                     classInfo.name == "After Like Course") &&
                   10,
                 isPortrait:
-                  classInfo.name == "Yoojin Teacher Course" ||
-                  classInfo.name == "Seongyeop Teacher Course"
+                  classInfo.name == "Conversational Korean Course" ||
+                  classInfo.name == "Survival Korean Course"
                     ? true
                     : false,
               });

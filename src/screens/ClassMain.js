@@ -119,22 +119,22 @@ const ClassMain = ({ navigation }) => {
         }
       );
     }
+    
 
     console.log("levelList", levelList);
   }, [isLevelListLoaded]);
 
   return (
-    <View style={styles.container}>
+     <View style={styles.container}>
       <ScrollView
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        {levelList.map((item) => {
+        {isLevelListLoaded && levelList.map((item) => {
           return (
             <Course
               navigation={navigation}
-              title={item.name}
               levelItem={item}
               isShowAll={false}
               isMain={true}

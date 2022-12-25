@@ -136,11 +136,7 @@ const Payment = ({ navigation, route }) => {
               source={{
                 // uri: itemInfo.tutor.profile_url,
                 uri:
-                  itemInfo.name === "Yoojin Teacher Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671463082652/shin_yoo_jin_square.jpg"
-                    : itemInfo.name === "Seongyeop Teacher Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639572154/seongyeop_profile.png"
-                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671639914673/kyungeun_profile.png",
+                  itemInfo.tutor.profile_url,
               }}
               style={styles.classImg}
             ></Image>
