@@ -175,7 +175,7 @@ const Home = ({ navigation }) => {
       </View>
 
       <View style={styles.content}>
-        <ProgressLecture userId={authState.userId} />
+        <ProgressLecture userId={authState.userId} navigation={navigation} />
 
         <View style={{ marginTop: 0 }}>
           <View
