@@ -609,7 +609,9 @@ export const getAllWishlist = async (reqParam, setData, setIsReady, handleError)
 };
 
 export const getWishlistByUser = async (reqParam, setData, setIsReady, handleError) => {
-  const response = await getRequest("/wishlist", reqParam, handleError);
+  const { user_id } = reqParam;
+
+  const response = await getRequest(`/wishlist/${user_id}`, reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);

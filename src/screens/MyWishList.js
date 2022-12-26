@@ -20,218 +20,176 @@ import Dialog, {
 } from "react-native-popup-dialog";
 import { Ionicons } from "@expo/vector-icons";
 import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
+import { getWishlistByUser, getCourseById, deleteWishlist } from "../modules/NetworkFunction";
+import AuthContext from "../contexts/AuthContext";
 
 const MyWishList = ({ navigation, route }) => {
-  const [isAdd, setIsAdd] = useState(route.params.isAdd ?? false);
-  const [isSelectAll, setIsSelectAll] = useState(false);
-  const [selectedCount, setSelectedCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
 
-  // const [wishList, setWishList] = useState([]);
-  const [wishListLength, setWishListLength] = useState(0);
+  const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState("");
+
   const [dialogVisible, setDialogVisible] = useState(false);
 
   const [selectedId, setSelectedId] = useState(null);
+  const [isWishListLoaded, setIsWishListLoaded] = useState(false);
+  
+  const [courseIdList, setCourseIdList] = useState([]);
+  const [courseList, setCourseList] = useState([]);
+
 
   // 장바구니에 담긴 상품들 불러오기
   useEffect(() => {
-    // console.log(route.params.classInfo);
+    
+    setUserId(authState.userId);
+    console.log('user_id', userId)
 
-    // let newPrice = 0;
-    // wishList.map((item) => {
-    //   newPrice += item.price;
-    // });
-    // setTotalPrice(newPrice);
-    if (isAdd) {
-      const classInfo = route.params.classInfo;
-      const newProduct = {
-        id: Date.now(),
-        imgUrl: classInfo.imgUrl,
-        category: classInfo.category,
-        className: classInfo.className,
-        level: classInfo.level,
-        price: classInfo.price,
-        units: classInfo.units,
-        checked: false,
-      };
-      setWishList([...wishList, newProduct]);
-      setIsAdd(false);
-    }
-    setWishListLength(wishList.length);
-  }, [
-    isSelectAll,
-    wishList,
-    totalPrice,
-    selectedCount,
-    wishListLength,
-    dialogVisible,
-  ]);
+    
+    if(!isWishListLoaded){
+      getWishlistByUser(
+        { user_id : userId },
+        (d) => {
+          let updatedCourseList = [];
+          d.data.map((wishItem) => {
 
-  const [wishList, setWishList] = useState([
-    {
-      id: 1,
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-      className: "Trip Korean",
-      price: 0,
-      category: "K-culture",
-      checked: false,
-      level: "Lollipop",
-      units: 10,
-      isSelected: false,
-    },
-    {
-      id: 2,
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+            console.log("wishItem", wishItem)
+            console.log("-----------------");
+            
+            if(wishItem.checked){
+              getCourseById(
+                {course_id : wishItem.course_id},
+                (d) => {
+                console.log("wow")
+                let newData = d.data;
+                newData['isSelected'] = false;
+                updatedCourseList.push(newData);
+                setCourseList([...updatedCourseList]);
+              },
+              () => {},
+              (e) => {console.log(e)} 
+              )
+            }
+            
+            
+          })
+          
+        console.log('courseList', courseList)
+      },
+      setIsWishListLoaded,
+      (e) => {
+        console.log(e);
+      })}
 
-      className: "Real Voca in K-Drama",
-      price: 15,
-      category: "K-culture",
-      checked: false,
-      level: "CottonCandy",
-      units: 10,
-      isSelected: false,
-    },
-    {
-      id: 3,
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  }, [ isWishListLoaded, courseList]);
+  //   {
+  //     id: 1,
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     className: "Trip Korean",
+  //     price: 0,
+  //     category: "K-culture",
+  //     checked: false,
+  //     level: "Lollipop",
+  //     units: 10,
+  //     isSelected: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
 
-      className: "Real Voca in K-Drama",
-      price: 15,
-      category: "K-culture",
-      checked: false,
-      level: "Lollipop",
-      units: 10,
-      isSelected: false,
-    },
-    {
-      id: 4,
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     className: "Real Voca in K-Drama",
+  //     price: 15,
+  //     category: "K-culture",
+  //     checked: false,
+  //     level: "CottonCandy",
+  //     units: 10,
+  //     isSelected: false,
+  //   },
+  //   {
+  //     id: 3,
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
 
-      className: "Real Voca in K-Drama",
-      price: 15,
-      category: "K-culture",
-      checked: false,
-      level: "Lollipop",
-      units: 10,
-      isSelected: false,
-    },
+  //     className: "Real Voca in K-Drama",
+  //     price: 15,
+  //     category: "K-culture",
+  //     checked: false,
+  //     level: "Lollipop",
+  //     units: 10,
+  //     isSelected: false,
+  //   },
+  //   {
+  //     id: 4,
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
 
-    {
-      id: 5,
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     className: "Real Voca in K-Drama",
+  //     price: 15,
+  //     category: "K-culture",
+  //     checked: false,
+  //     level: "Lollipop",
+  //     units: 10,
+  //     isSelected: false,
+  //   },
 
-      className: "Real Voca in K-Drama",
-      price: 15,
-      category: "K-culture",
-      checked: false,
-      level: "Lollipop",
-      units: 10,
-      isSelected: false,
-    },
-    {
-      id: 6,
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //   {
+  //     id: 5,
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
 
-      className: "Real Voca in K-Drama",
-      price: 15,
-      category: "K-culture",
-      checked: false,
-      level: "Lollipop",
-      units: 10,
-      isSelected: false,
-    },
-    {
-      id: 7,
-      imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
+  //     className: "Real Voca in K-Drama",
+  //     price: 15,
+  //     category: "K-culture",
+  //     checked: false,
+  //     level: "Lollipop",
+  //     units: 10,
+  //     isSelected: false,
+  //   },
+  //   {
+  //     id: 6,
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
 
-      className: "Real Voca in K-Drama",
-      price: 15,
-      category: "K-culture",
-      checked: false,
-      level: "Lollipop",
-      units: 10,
-      isSelected: false,
-    },
-  ]);
+  //     className: "Real Voca in K-Drama",
+  //     price: 15,
+  //     category: "K-culture",
+  //     checked: false,
+  //     level: "Lollipop",
+  //     units: 10,
+  //     isSelected: false,
+  //   },
+  //   {
+  //     id: 7,
+  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
 
-  const changeCheckColor = (id = "default") => {
-    console.log(id);
-    let count = 0;
-    if (id === "default") {
-      if (isSelectAll) {
-        setIsSelectAll(false);
-        const newWishList = wishList.map((item) => {
-          return { ...item, checked: false };
-        });
-        setWishList(newWishList);
-        changePrice(newWishList);
-        setSelectedCount(0);
-      } else {
-        setIsSelectAll(true);
-        const newWishList = wishList.map((item) => {
-          return { ...item, checked: true };
-        });
-        setWishList(newWishList);
-        changePrice(newWishList);
-        setSelectedCount(wishList.length);
-      }
-    } else {
-      let isAllSelected = true;
-      let newWishList = wishList.map((item) => {
-        if (item.id === id) {
-          item.checked = !item.checked;
-        }
-        return item;
-      });
-      setWishList(newWishList);
-
-      wishList.map((item) => {
-        if (!item.checked) {
-          isAllSelected = false;
-        } else {
-          count += 1;
-        }
-      });
-      if (isAllSelected) {
-        setIsSelectAll(true);
-      } else {
-        setIsSelectAll(false);
-      }
-      setSelectedCount(count);
-      changePrice(newWishList);
-    }
-  };
-
-  const changePrice = (wishList) => {
-    console.log("changePrice");
-    let newPrice = 0;
-    wishList.map((item) => {
-      if (item.checked) {
-        newPrice += item.price;
-      }
-    });
-    setTotalPrice(newPrice);
-  };
+  //     className: "Real Voca in K-Drama",
+  //     price: 15,
+  //     category: "K-culture",
+  //     checked: false,
+  //     level: "Lollipop",
+  //     units: 10,
+  //     isSelected: false,
+  //   },
+  // ]);
 
   const deleteItem = (id) => {
     console.log(id);
-    const newWishList = wishList.filter((item) => item.id !== id);
-    setWishList(newWishList);
-  };
+    const newCourseList = courseList.filter((item) => item.course_id !== id);
+    setCourseList(newCourseList);
 
-  const checkBuyNow = (id) => {
-    const newWishList = wishList.filter((item) => item.id === id);
-    return newWishList;
+    deleteWishlist(
+      { user_id : userId, course_id : id },
+      (d) => {
+        console.log("delete success");
+      },
+      () => {},
+      (e) => {console.log(e)}
+    )
+
   };
 
   const updateSelected = (id) => {
-    const newWishList = wishList.map((item) => {
-      if (item.id === id) {
+    const newCourseList = courseList.map((item) => {
+      if (item.course_id === id) {
         item.isSelected = !item.isSelected;
       }
       return item;
     });
-    setWishList(newWishList);
+    setCourseList(newCourseList);
   };
 
   return (
@@ -283,111 +241,81 @@ const MyWishList = ({ navigation, route }) => {
         </View> */}
       </View>
 
-      {wishListLength === 0 ? (
-        <View style={styles.wishListEmptyContainer}>
-          <Text style={styles.wishListEmptyText}>Your Wishlist is empty</Text>
-        </View>
-      ) : (
+      {courseList.length !== 0 ? (
+        
         <View style={styles.flatListContainer}>
-          <FlatList
-            contentContainerstyle={{
-              ...styles.wishListContainer,
-              alignItems: "center",
-            }}
-            numColumns={1}
-            key={"_"}
-            data={wishList}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            // 어떻게 아이템을 렌더링 할 것인가
-            renderItem={({ item }) => (
-              <View style={{ ...dstyles(item.isSelected).wishListItem }}>
-                <View style={styles.classInfoShadowContainer}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      updateSelected(item.id);
-                    }}
-                  >
-                    <View style={styles.classInfoContainer}>
-                      <Image
-                        style={styles.classImgContainer}
-                        source={item.imgUrl}
-                      ></Image>
-                      <View style={styles.classInfoTextContainer}>
-                        <View style={styles.classInfoTopContainer}>
-                          <Text style={styles.classNameText}>
-                            {item.className}
-                          </Text>
-                          <TouchableOpacity
-                            onPress={() => {
-                              setDialogVisible(true);
-                              setSelectedId(item.id);
-                            }}
-                          >
-                            <AntDesign name="heart" size={24} color="#A160E2" />
-                          </TouchableOpacity>
-                        </View>
+        <FlatList
+          contentContainerstyle={{
+            ...styles.wishListContainer,
+            alignItems: "center",
+          }}
+          numColumns={1}
+          key={"_"}
+          data={courseList}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          // 어떻게 아이템을 렌더링 할 것인가
+          renderItem={({ item }) => (
+            <View style={{ ...dstyles(item.isSelected).wishListItem }}>
+              <View style={styles.classInfoShadowContainer}>
+                <TouchableOpacity
+                  onPress={() => {
+                    updateSelected(item.course_id);
+                  }}
+                >
+                  <View style={styles.classInfoContainer}>
+                    <Image
+                      style={styles.classImgContainer}
+                      source={{ uri: item.thumbnail }}
+                    ></Image>
+                    <View style={styles.classInfoTextContainer}>
+                      <View style={styles.classInfoTopContainer}>
+                        <Text style={styles.classNameText}>
+                          {item.name}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setDialogVisible(true);
+                            setSelectedId(item.course_id);
+                          }}
+                        >
+                          <AntDesign name="heart" size={24} color="#A160E2" />
+                        </TouchableOpacity>
+                      </View>
 
-                        <View style={styles.categoryContainer}>
-                          <Text style={styles.cateogryText}>
-                            {item.category}
-                          </Text>
-                        </View>
-                        <View style={styles.priceTextContainer}>
-                          <Text style={styles.priceText}>
-                            $ {item.price === 0 ? "Free" : item.price}
-                          </Text>
-                        </View>
+                      {/* <View style={styles.categoryContainer}>
+                        <Text style={styles.cateogryText}>
+                          {item.category}
+                        </Text>
+                      </View> */}
+                      <View style={styles.priceTextContainer}>
+                        <Text style={styles.priceText}>
+                          $ {item.price === 0 ? "Free" : item.price}
+                        </Text>
                       </View>
                     </View>
-                  </TouchableOpacity>
-                </View>
-                {item.isSelected ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      // const payList = checkBuyNow(item.id);
-                      navigation.navigate("Payment", { item: item });
-                    }}
-                  >
-                    <View style={styles.buyNowBtn}>
-                      <Text style={styles.buyNowBtnText}>BUY NOW</Text>
-                    </View>
-                  </TouchableOpacity>
-                ) : null}
+                  </View>
+                </TouchableOpacity>
               </View>
-            )}
-            // 어떻게 숨겨진 아이템을 렌더링 할 것인가
-            //   renderHiddenItem={({ item }) => (
-            //     <View style={styles.swipeHiddenItemContainer}>
-            //       <View style={styles.swipeHiddenItem}>
-            //         <TouchableOpacity
-            //           onPress={() => {
-            //             navigation.navigate("ClassMore", { title: item.level });
-            //           }}
-            //         >
-            //           <Text style={styles.swipeHiddenItemText}>Similar</Text>
-            //         </TouchableOpacity>
-            //       </View>
-            //       <View style={styles.swipeHiddenItem}>
-            //         <TouchableOpacity
-            //           onPress={() => {
-            //             console.log("delete");
-            //             deleteItem(item.id);
-            //           }}
-            //         >
-            //           <Text style={styles.swipeHiddenItemText}>Delete</Text>
-            //         </TouchableOpacity>
-            //       </View>
-            //     </View>
-            //   )}
-            //   rightOpenValue={-150}
-            //   previewRowKey={"0"}
-            //   previewOpenValue={-40}
-            //   previewOpenDelay={3000}
-            //   disableRightSwipe={true}
-            //   // leftOpenValue={0}
-            // />
-          ></FlatList>
+              {item.isSelected ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    // const payList = checkBuyNow(item.id);
+                    navigation.navigate("Payment", { item: item, unitsNum: 10 });
+                  }}
+                >
+                  <View style={styles.buyNowBtn}>
+                    <Text style={styles.buyNowBtnText}>BUY NOW</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          )}
+        ></FlatList>
+      </View>
+      ) : (
+        <View style={styles.wishListEmptyContainer}>
+          <Text style={styles.wishListEmptyText}>Your Wishlist is empty</Text>
         </View>
       )}
       <Dialog

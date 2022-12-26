@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
 
-import { createPurchasedCourse } from "../modules/NetworkFunction";
+import { createPurchasedCourse, getTutorById } from "../modules/NetworkFunction";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
@@ -33,6 +33,8 @@ const Payment = ({ navigation, route }) => {
 
   const [isCoursePurchased, setIsCoursePurchased] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const [imgUrl, setImgUrl] = useState("");
 
   const deleteItem = (id) => {
     console.log("delete");
@@ -59,7 +61,17 @@ const Payment = ({ navigation, route }) => {
     setTotalPrice(totalPrice);
 
     console.log(itemInfo);
-  }, [payList, itemInfo, isSuccess, isCoursePurchased]);
+
+    getTutorById(
+      { tutor_id : itemInfo.tutor_id }, 
+      (d) => {
+        console.log('img_url', d.data.profile_url)
+        setImgUrl(d.data.profile_url)
+      },
+      () => {},
+      (e) => {console.log(e)}
+    )
+  }, [payList, itemInfo, isSuccess, isCoursePurchased, imgUrl]);
 
   // navigation.goBack();
   const handlePayment = () => {
@@ -104,6 +116,7 @@ const Payment = ({ navigation, route }) => {
     }
   };
 
+
   return (
     <View
       style={styles.container}
@@ -135,8 +148,7 @@ const Payment = ({ navigation, route }) => {
             <Image
               source={{
                 // uri: itemInfo.tutor.profile_url,
-                uri:
-                  itemInfo.tutor.profile_url,
+                uri: imgUrl,
               }}
               style={styles.classImg}
             ></Image>
