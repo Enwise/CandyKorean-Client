@@ -128,22 +128,22 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
               navigation.navigate("ClassInfo", {
                 classInfo: classInfo,
                 isMain: false,
-                introVideoUrl:
-                  classInfo.name == "Conversational Korean Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671715828798.0%EC%B0%A8%EC%8B%9C%28%EC%86%8C%EA%B0%9C%29.mp4"
-                    : classInfo.name == "Survival Korean Course"
-                    ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671775511025.OT.mp4"
-                    : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671777501479.OT.mp4",
-                unitsNum:
-                  (classInfo.name == "Conversational Korean Course" ||
-                    classInfo.name == "Survival Korean Course" ||
-                    classInfo.name == "After Like Course") &&
-                  10,
-                isPortrait:
-                  classInfo.name == "Conversational Korean Course" ||
-                  classInfo.name == "Survival Korean Course"
-                    ? true
-                    : false,
+                // introVideoUrl:
+                //   classInfo.name == "Conversational Korean Course"
+                //     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671715828798.0%EC%B0%A8%EC%8B%9C%28%EC%86%8C%EA%B0%9C%29.mp4"
+                //     : classInfo.name == "Survival Korean Course"
+                //     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671775511025.OT.mp4"
+                //     : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671777501479.OT.mp4",
+                // unitsNum:
+                //   (classInfo.name == "Conversational Korean Course" ||
+                //     classInfo.name == "Survival Korean Course" ||
+                //     classInfo.name == "After Like Course") &&
+                //   10,
+                // isPortrait:
+                //   classInfo.name == "Conversational Korean Course" ||
+                //   classInfo.name == "Survival Korean Course"
+                //     ? true
+                //     : false,
               });
               console.log("ClassInfo");
             }}

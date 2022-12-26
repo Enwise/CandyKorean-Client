@@ -597,3 +597,39 @@ export const createLearnedClass = async (
     setIsReady(true);
   }
 };
+
+/* Wishlist */
+
+export const getAllWishlist = async (reqParam, setData, setIsReady, handleError) => {
+  const response = await getRequest("/wishlist", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const getWishlistByUser = async (reqParam, setData, setIsReady, handleError) => {
+  const response = await getRequest("/wishlist", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+
+export const createWishlist = async (reqParam, setData, setIsReady, handleError) => {
+  const response = await postRequest("/wishlist", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+
+export const deleteWishlist = async (reqParam, setData, setIsReady, handleError) => {
+  const response = await deleteRequest("/wishlist", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};

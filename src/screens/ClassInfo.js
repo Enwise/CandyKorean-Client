@@ -17,13 +17,13 @@ import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 import GradientBtn from "../components/GradientButtonView";
-import { getClasses } from "../modules/NetworkFunction";
-import { getContents } from "../modules/NetworkFunction";
+import { getClasses, getContents, getWishlistByUser, createWishlist, deleteWishlist } from "../modules/NetworkFunction";
+import AuthContext from "../contexts/AuthContext";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [isMain, setIsMain] = useState(route.params?.isMain);
   
-  const [isWishList, setIsWishList] = useState(false);
+  const [isWish, setIsWish] = useState(false);
   const [isClassLoaded, setIsClassLoaded] = useState(false);
   const [isContentLoaded, setIsContentLoaded] = useState(false);
   const [classList, setClassList] = useState([]);
@@ -33,9 +33,15 @@ const ClassInfo = ({ props, navigation, route }) => {
   const [introVideoUrl, setIntroVideoUrl] = useState("");
   const [unitsNum, setUnitsNum] = useState(-1);
   const classInfo = route.params.classInfo;
+  const [isProcessLoaded, setIsProcessLoaded] = useState(false);
 
   const videoPlayer = useRef();
   const [videoStatus, setVideoStatus] = useState(3);
+  const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState("");
+
+  const [isWishLoaded, setIsWishLoaded] = useState(false);
+
 
   const setOrientation = (status) => {
     if (status === 1 && !isPortrait) {
@@ -56,31 +62,56 @@ const ClassInfo = ({ props, navigation, route }) => {
     return false
   }
 
+  const handleWishlist = () => {
+    console.log('wishlist heart clicked')
+    console.log('isWish', isWish)
+    if (isWish) {
+      deleteWishlist(
+        {user_id: authState.user_id, course_id: classInfo.course_id },
+        (d) => {
+          console.log('delete wishlist success')
+          setIsWish(false);
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+
+        }
+      );
+    } else {
+      createWishlist(
+        {user_id: userId, course_id: classInfo.course_id, checked: true },
+        (d) => {
+          console.log('create wishlist success')
+          setIsWish(true);
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+
+
+  }
+
   useEffect(() => {
+
+    console.log(authState.userId);
+    setUserId(authState.userId);
 
     BackHandler.addEventListener('hardwareBackPress', handlePressBack);
     
-
+    setIsProcessLoaded(false);
 
     console.log("----------------classInfo--------------------");
     console.log(route.params.classInfo);
 
-    console.log("----------------introvideoUrl--------------------");
-    console.log(route.params.introVideoUrl);
-    console.log("----------------introvideoUrl--------------------");
-
-    console.log("----------------unitsNum--------------------");
-    console.log(route.params.unitsNum);
-    console.log("----------------unitsNum--------------------");
-
-    console.log("----------------isPortrait--------------------");
-    console.log(route.params.isPortrait);
-    console.log("----------------isPortrait--------------------");
-
     // console.log(classInfo);
 
     console.log(classInfo.course_id);
-    // console.log(classInfo.introVideoUrl);
+    
+ // console.log(classInfo.introVideoUrl);
 
     // class, content, 그리고 tutor 정보 가져와야함
     // class, content ->  Units 갯수가 얼마인지 알기위해
@@ -95,94 +126,94 @@ const ClassInfo = ({ props, navigation, route }) => {
     // 3 : Kyungeun
     // class_id : OT: 25, 1강 ~ 10강 : 26 ~ 35
     
-      console.log('isClassLoading')
-      let updatedClassList = [];
-      getClasses(
-        {},
-        (d) => {
-          console.log("getAllClasses");
-          // console.log(d.data);
+    console.log('isClassLoading')
+    let updatedClassList = [];
+    getClasses(
+      {},
+      (d) => {
+        console.log("getAllClasses");
+        // console.log(d.data);
 
-          
-            d.data.map((item) => {
-              if (
-                item.course_id == route.params.classInfo.course_id
-              ) {
-                updatedClassList.push(item.class_id);
-              }
-            });
-          
-          setClassList(updatedClassList);
-        },
-        setIsClassLoaded,
-        (e) => {
-          console.log(e);
-        }
-      );
-    
+        
+          d.data.map((item) => {
+            if (
+              item.course_id == route.params.classInfo.course_id
+            ) {
+              updatedClassList.push(item.class_id);
+            }
+          });
+        
+        setClassList(updatedClassList);
+      },
+      setIsClassLoaded,
+      (e) => {
+        console.log(e);
+      }
+    );
+  
 
+  
+    console.log('isContentLoading')
     
-      console.log('isContentLoading')
-      
-      getContents(
-        {},
-        (d) => {
-          console.log("getAllContents");
-    
-            d.data.map((contentItem) => {
-              
+    getContents(
+      {},
+      (d) => {
+        console.log("getAllContents");
+  
+          d.data.map((contentItem) => {
             
-              if (
-                contentItem.name == "Orientation" && contentItem.class_entity.course_id == route.params.classInfo.course_id
-                || contentItem.name == "OT_SeongyeopT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
-                || contentItem.name == "OT_KyungeunT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
-                
-                ) {
-                  console.log('video url', introVideoUrl);
-                  setIntroVideoUrl(contentItem.video_url);
-                  // console.log(contentItem.video_url);
-                  // console.log(contentItem.is_portrait);
-                  if (contentItem.name == "Orientation" || contentItem.name == "OT_SeongyeopT") {
-                  setIsPortrait(contentItem.is_portrait);
-                  } else if (contentItem.name == "OT_KyungeunT") {
-                  setIsPortrait(!contentItem.is_portrait);
-                  }
-                } 
-              
-            });
           
+            if (
+              contentItem.name == "Orientation" && contentItem.class_entity.course_id == route.params.classInfo.course_id
+              || contentItem.name == "OT_SeongyeopT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
+              || contentItem.name == "OT_KyungeunT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
+              
+              ) {
+                console.log('video url', introVideoUrl);
+                setIntroVideoUrl(contentItem.video_url);
+                // console.log(contentItem.video_url);
+                // console.log(contentItem.is_portrait);
+                if (contentItem.name == "Orientation" || contentItem.name == "OT_SeongyeopT") {
+                setIsPortrait(contentItem.is_portrait);
+                } else if (contentItem.name == "OT_KyungeunT") {
+                setIsPortrait(!contentItem.is_portrait);
+                }
+              } 
+            
+          });
+        
+      },
+      setIsContentLoaded,
+      (e) => {
+        console.log(e);
+      }
+    );
+
+    if(!isWishLoaded){
+      getWishlistByUser(
+        {user_id: authState.userId},
+        (d) => {
+          console.log("getWishlists");
+          console.log(d.data);
+          d.data.map((item) => {
+            if (item.course_id == route.params.classInfo.course_id && item.user_id == userId) {
+              setIsWish(true);
+            } 
+          });
+          setIsWishLoaded(true);
         },
-        setIsContentLoaded,
+        () => {},
         (e) => {
           console.log(e);
         }
       );
-    
-
-    if (route.params.introVideoUrl) {
-      setIntroVideoUrl(route.params.introVideoUrl);
-    }
-    if (route.params.unitsNum) {
-      setUnitsNum(route.params.unitsNum);
     }
 
-    if (route.params.isPortrait === true || route.params.isPortrait === false) {
-      setIsPortrait(route.params.isPortrait);
-    }
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
     }
     
-  }, [
-    isClassLoaded,
-    isContentLoaded,
-    introVideoUrl,
-    isPortrait,
-    unitsNum,
-    isPortrait,
-    classInfo,
-    
-  ]);
+  }, [route.params.classInfo, isWish, isWishLoaded, userId]);
 
   return (
     <>
@@ -246,10 +277,10 @@ const ClassInfo = ({ props, navigation, route }) => {
                 <TouchableOpacity
                   style={styles.heartContainer}
                   onPress={() => {
-                    setIsWishList(!isWishList);
+                    handleWishlist();
                   }}
                 >
-                  {isWishList ? (
+                  {isWish ? (
                     <AntDesign name="heart" size={22} color="#A160E2" />
                   ) : (
                     <AntDesign name="hearto" size={22} color="#A160E2" />
