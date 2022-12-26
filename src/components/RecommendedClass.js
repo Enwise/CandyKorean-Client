@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { StackActions, NavigationActions } from '@react-navigation/native';
 
 // 추천 강의 컴포넌트
 const RecommendedClass = ({ navigation, course }) => {
@@ -28,9 +29,27 @@ const RecommendedClass = ({ navigation, course }) => {
           screen: "ClassInfo",
           params: {
             classInfo: course,
-            isMain: true,
+            isMain: false,
           },
         });
+
+        // StackActions.reset({
+        //   index: 0,
+        //   actions: [NavigationActions.navigate({
+        //     routeName: 'ClassInfo',
+        //     params: {
+        //       classInfo: course,
+        //       isMain: false,
+        //     },
+        //   })]
+        // })
+
+        // navigation.reset({routes: [{name : "ClassInfo", params: {
+        //   classInfo: course,
+        //   isMain: false,
+        // },}]})
+
+       
       }}
     >
       <View style={styles.thumbnail}>

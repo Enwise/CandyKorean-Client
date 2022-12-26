@@ -15,7 +15,7 @@ import ClassRoomInactive from "../assets/icons/ClassRoomInactive";
 import MyPageInactive from "../assets/icons/MyPageInactive";
 import PremiumInactive from "../assets/icons/PremiumInactive";
 import HomeInactive from "../assets/icons/HomeInactive";
-
+import ClassMain from '../screens/ClassMain';
 import ClassRoom from "../screens/ClassRoom";
 import { Platform, Text } from "react-native";
 import MyPageStack from "./MyPageStack";

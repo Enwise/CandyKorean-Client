@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  BackHandler
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -21,7 +22,7 @@ import { getContents } from "../modules/NetworkFunction";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [isMain, setIsMain] = useState(route.params?.isMain);
-
+  
   const [isWishList, setIsWishList] = useState(false);
   const [isClassLoaded, setIsClassLoaded] = useState(false);
   const [isContentLoaded, setIsContentLoaded] = useState(false);
@@ -44,7 +45,23 @@ const ClassInfo = ({ props, navigation, route }) => {
     }
   };
 
+  const handlePressBack = () => {
+
+    videoPlayer.current.pauseAsync();
+
+    if (navigation?.canGoBack()){
+      navigation.goBack();
+      return true
+    } 
+    return false
+  }
+
   useEffect(() => {
+
+    BackHandler.addEventListener('hardwareBackPress', handlePressBack);
+    
+
+
     console.log("----------------classInfo--------------------");
     console.log(route.params.classInfo);
 
@@ -77,7 +94,8 @@ const ClassInfo = ({ props, navigation, route }) => {
 
     // 3 : Kyungeun
     // class_id : OT: 25, 1강 ~ 10강 : 26 ~ 35
-    if (!isClassLoaded) {
+    
+      console.log('isClassLoading')
       let updatedClassList = [];
       getClasses(
         {},
@@ -85,16 +103,15 @@ const ClassInfo = ({ props, navigation, route }) => {
           console.log("getAllClasses");
           // console.log(d.data);
 
-          if (isMain) {
+          
             d.data.map((item) => {
               if (
-                item.course_id == route.params.classInfo.course_id &&
-                item.name !== "1차"
+                item.course_id == route.params.classInfo.course_id
               ) {
-                updatedClassList.push(item);
+                updatedClassList.push(item.class_id);
               }
             });
-          }
+          
           setClassList(updatedClassList);
         },
         setIsClassLoaded,
@@ -102,46 +119,45 @@ const ClassInfo = ({ props, navigation, route }) => {
           console.log(e);
         }
       );
-    }
+    
 
-    if (isClassLoaded && !isContentLoaded) {
-      let introVideoUrl = "";
-      let updatedContentList = [];
+    
+      console.log('isContentLoading')
+      
       getContents(
         {},
         (d) => {
           console.log("getAllContents");
-          classList.map((classItem) => {
+    
             d.data.map((contentItem) => {
-              if (classItem.class_id == contentItem.class_entity.class_id) {
-                updatedContentList.push(contentItem);
-                if (
-                  contentItem.name === "Orientation" ||
-                  contentItem.name === "OT_SeongyeopT"
+              
+            
+              if (
+                contentItem.name == "Orientation" && contentItem.class_entity.course_id == route.params.classInfo.course_id
+                || contentItem.name == "OT_SeongyeopT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
+                || contentItem.name == "OT_KyungeunT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
+                
                 ) {
+                  console.log('video url', introVideoUrl);
+                  setIntroVideoUrl(contentItem.video_url);
                   // console.log(contentItem.video_url);
                   // console.log(contentItem.is_portrait);
-                  introVideoUrl = contentItem.video_url;
+                  if (contentItem.name == "Orientation" || contentItem.name == "OT_SeongyeopT") {
                   setIsPortrait(contentItem.is_portrait);
-                  setIntroVideoUrl(introVideoUrl);
-                } else if (contentItem.name === "OT_KyungeunT") {
-                  // console.log(contentItem.video_url);
-                  // console.log(contentItem.is_portrait);
-                  introVideoUrl = contentItem.video_url;
+                  } else if (contentItem.name == "OT_KyungeunT") {
                   setIsPortrait(!contentItem.is_portrait);
-                  setIntroVideoUrl(introVideoUrl);
-                }
-              }
+                  }
+                } 
+              
             });
-          });
-          setContentsList(updatedContentList);
+          
         },
         setIsContentLoaded,
         (e) => {
           console.log(e);
         }
       );
-    }
+    
 
     if (route.params.introVideoUrl) {
       setIntroVideoUrl(route.params.introVideoUrl);
@@ -153,14 +169,19 @@ const ClassInfo = ({ props, navigation, route }) => {
     if (route.params.isPortrait === true || route.params.isPortrait === false) {
       setIsPortrait(route.params.isPortrait);
     }
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
+    }
+    
   }, [
     isClassLoaded,
     isContentLoaded,
     introVideoUrl,
     isPortrait,
-    introVideoUrl,
     unitsNum,
     isPortrait,
+    classInfo,
+    
   ]);
 
   return (
@@ -177,15 +198,16 @@ const ClassInfo = ({ props, navigation, route }) => {
       >
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{classInfo.name}</Text>
-          {/* <View style={styles.backBtn}>
+          <View style={styles.backBtn}>
             <TouchableOpacity
               onPress={() => {
-                navigation.goBack();
+                // navigation.goBack();
+                navigation.reset({routes: [{name: "ClassMain"}]})
               }}
             >
               <AntDesign name="left" size={20} color="black" /> 
             </TouchableOpacity>
-          </View> */}
+          </View>
         </View>
         <View style={styles.topShadowContainer}>
           <View style={styles.topContainer}>
@@ -198,9 +220,8 @@ const ClassInfo = ({ props, navigation, route }) => {
             <View style={styles.textContainer}>
               <GradientBtn
                 text={
-                  unitsNum !== -1
-                    ? unitsNum + " Units"
-                    : classList.length - 1 + " Units"
+                  classInfo.name == "Conversational Korean Course" || classInfo.name == "Survival Korean Course" || classInfo.name == "After Like Course"
+                    ? 10 + " Units" : 0 + " Units"
                 }
                 textStyle={{
                   color: "white",
@@ -304,7 +325,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             // const payList = [{ ...classInfo }];
             navigation.navigate("Payment", {
               item: classInfo,
-              unitsNum: unitsNum !== -1 ? unitsNum : classList.length - 1,
+              unitsNum : 10,
             });
           }}
         >
