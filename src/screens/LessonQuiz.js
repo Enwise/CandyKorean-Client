@@ -39,6 +39,7 @@ const LessonQuiz = ({ route, navigation }) => {
 
   // kyungeun
   // 1~10강 == 28 ~ 37
+  // part1 == 28, part2 == 29, part3 == 30, part4 == 31, part5 == 32, part6 == 33, part7 == 34, part8 == 35, part9 == 36, part10 == 37
 
   // quiz_style
   // arrange: 문장 배열 능력
@@ -54,32 +55,32 @@ const LessonQuiz = ({ route, navigation }) => {
     {
       id: 1,
       style: "arrange",
-json: { "question": "Where can I pay?", "answer": { "1": { "text": "어디서", "order": 1, "is_selected": false }, "2": { "text": "계산", "order": 2, "is_selected": false}, "3": { "text": "해요?", "order": 3, "is_selected": false}}}
+json: { "question": "You should keep your legs with no movements, and you should move your arms quickly in here.", "answer": { "1": { "text": "다리는", "order": 1, "is_selected": false }, "2": { "text": "가만히", "order": 2, "is_selected": false}, "3": { "text": "있고", "order": 3, "is_selected": false}, "4": { "text": "팔은", "order": 4, "is_selected": false} , "5": { "text": "빠르게", "order": 5, "is_selected": false}, "6": { "text": "움직이세요", "order": 6, "is_selected": false}}}
 ,
     },
     {
       id: 2,
       style: "sentence",
-json: { "question": "Can you speak slowly?", "answer": {"1": {"text": "진짜 말해주실 수 있나요?", "correct": false, "is_selected": false}, "2": { "text": "지금 말해주실 수 있나요?", "correct": false, "is_selected": false}, "3": {"text": "천천히 말해주실 수 있나요?", "correct": true, "is_selected": false }}}
+json: { "question": "Sweep your arms.", "answer": {"1": {"text": "팔을 쓸어 올리세요.", "correct": true, "is_selected": false}, "2": { "text": "한 걸음 앞으로 나가세요.", "correct": false, "is_selected": false}, "3": {"text": "허리를 빼면서 뒤로 걸어 가세요.", "correct": false, "is_selected": false }}}
 ,
     },
     // ’
     {
       id: 3,
       style: "word",
-json: {"question": "Q. 'My legs hurt.' in Korean?","answer": {"1": {"text": "다리가 아파","correct": true,"is_selected": false},"2": {"text": "팔이 아파","correct": false,"is_selected": false}}}
+json: {"question": "Q. 'Choreography' in Korean?","answer": {"1": {"text": "안무","correct": true,"is_selected": false},"2": {"text": "무릎","correct": false,"is_selected": false}}}
 ,
     },
     {
       id: 4,
       style: "grammar",
-json: {"question": "Q. What grammar should you use when you say 'Please speak slowly' in casual way?","answer": {"1": {"text": "-아/어 줘","correct": true,"is_selected": false},"2": {"text": "-아/어 주세요","correct": false,"is_selected": false}}}
+json: {"question": "Q. What grammar should you use when you express past tense?","answer": {"1": {"text": "-(으)면","correct": false,"is_selected": false},"2": {"text": "-았/었/했어요","correct": true,"is_selected": false}}}
 ,
     },
     {
       id: 5,
       style: "dialog",
-json: {"question": {"A": {"eng": "How much is it?","kor": "총 얼마에요?","is_question": true,"is_selected": false},"B": {"eng": "It's 16,000 won.","kor": "만 육천 원이에요.","is_question": false,"is_selected": false} }, "answer": {"1": {"text": "무게가 어떻게 돼요?","correct": false,"is_selected": false},"2": {"text": "카운터 어디에 있어요?","correct": false,"is_selected": false},"3": {"text": "총 얼마에요?","correct": true,"is_selected": false}}}
+json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나 걸려요?","is_question": true,"is_selected": false},"B": {"eng": "It takes around 30 minutes.","kor": "30분쯤 걸려요.","is_question": false,"is_selected": false} }, "answer": {"1": {"text": "그곳까지 어떻게 가요?","correct": false,"is_selected": false},"2": {"text": "그곳까지 얼마나 걸려요?","correct": true,"is_selected": false},"3": {"text": "그곳까지 누구하고 같이 가요?","correct": false,"is_selected": false}}}
 ,
     },
   ]);
