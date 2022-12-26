@@ -12,18 +12,57 @@ import {
 import GradientBtn from "./GradientButtonView";
 
 import { AntDesign } from "@expo/vector-icons";
+import { createWishlist, deleteWishlist, getWishlistByUser } from "../modules/NetworkFunction";
+import AuthContext from "../contexts/AuthContext";
+
 
 const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
   const [unitsNum, setUnitsNum] = useState();
-  const [isWishList, setIsWishList] = useState(false);
+  const [isWish, setIsWish] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [isWishLoaded, setIsWishLoaded] = useState(false);
 
-  const handleWishList = () => {
-    console.log("handleWishList");
-    setIsWishList(!isWishList);
-  };
+  const { authState } = React.useContext(AuthContext);
+
+  const handleWishlist = () => {
+    console.log('wishlist heart clicked')
+    console.log('isWish', isWish)
+    if (isWish) {
+      deleteWishlist(
+        {user_id: authState.user_id, course_id: classInfo.course_id },
+        (d) => {
+          console.log('delete wishlist success')
+          setIsWish(false);
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+
+        }
+      );
+    } else {
+      createWishlist(
+        {user_id: userId, course_id: classInfo.course_id, checked: true },
+        (d) => {
+          console.log('create wishlist success')
+          setIsWish(true);
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+
+
+  }
+
+  
 
   useEffect(() => {
     console.log("class useEffect")
+    console.log(authState.userId);
+    setUserId(authState.userId);
     // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
 
     // console.log("!!!!!!classInfo!!!!!!", classInfo);
@@ -35,7 +74,28 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
     ) {
       setUnitsNum(10);
     }
-  }, [unitsNum]);
+
+    if(!isWishLoaded){
+      getWishlistByUser(
+        {user_id: userId},
+        (d) => {
+          console.log("getWishlists");
+          console.log(d.data);
+          d.data.map((item) => {
+            if (item.course_id == classInfo.course_id && item.user_id == userId) {
+              setIsWish(true);
+            } 
+          });
+          setIsWishLoaded(true);
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+
+  }, [unitsNum, isWish, isWishLoaded]);
 
   console.log(isShowAll);
 
@@ -80,11 +140,11 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  handleWishList();
+                  handleWishlist();
                 }}
               >
                 <View style={{ position: "absolute", right: 0 }}>
-                  {isWishList ? (
+                  {isWish ? (
                     <AntDesign name="heart" size={22} color="#A160E2" />
                   ) : (
                     <AntDesign name="hearto" size={22} color="#A160E2" />
