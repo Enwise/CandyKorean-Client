@@ -24,59 +24,7 @@ import {
 } from "../modules/NetworkFunction";
 
 const PaymentResult = ({ navigation, route }) => {
-  // const [recommendList, setRecommendList] = useState([
-  //   {
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-  //     teacherName: "Kyungeun1",
-  //     className: "class1",
-  //     category: "K-culture",
-  //     level: "Lollipop",
-  //     units: 10,
-  //     price: 100,
-  //     isPurchased: true,
-  //   },
-  //   {
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-  //     teacherName: "Kyungeun2",
-  //     className: "class2",
-  //     category: "K-history",
-  //     level: "Lollipop",
-  //     units: 10,
-  //     price: 100,
-  //     isPurchased: false,
-  //   },
-  //   {
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-  //     teacherName: "Kyungeun3",
 
-  //     className: "class3",
-  //     category: "K-pop",
-  //     level: "Lollipop",
-  //     units: 10,
-  //     price: 100,
-  //     isPurchased: false,
-  //   },
-  //   {
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-  //     teacherName: "Kyungeun4",
-  //     className: "class4",
-  //     category: "K-culture",
-  //     level: "Lollipop",
-  //     units: 10,
-  //     price: 100,
-  //     isPurchased: false,
-  //   },
-  //   {
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-  //     teacherName: "Kyungeun5",
-  //     className: "class5",
-  //     category: "K-culture",
-  //     level: "Lollipop",
-  //     units: 10,
-  //     price: 100,
-  //     isPurchased: false,
-  //   },
-  // ]);
   const [isSuccess, setIsSuccess] = useState(route.params.isSuccess);
   const [itemInfo, setItemInfo] = useState(route.params.itemInfo);
   const [courseList, setCourseList] = useState([]);

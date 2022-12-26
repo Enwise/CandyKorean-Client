@@ -27,6 +27,20 @@ export const getClassById = async (
   }
 };
 
+export const getClassesCountByCourseId = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const { id } = reqParam;
+  const response = await getRequest(`/class/count/${id}`, reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
 export const createClass = async (
   reqParam,
   setData,

@@ -17,7 +17,7 @@ import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 import GradientBtn from "../components/GradientButtonView";
-import { getClasses, getContents, getWishlistByUser, createWishlist, deleteWishlist } from "../modules/NetworkFunction";
+import { getClasses, getContents, getWishlistByUser, createWishlist, deleteWishlist, getClassesCountByCourseId } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
 const ClassInfo = ({ props, navigation, route }) => {
@@ -31,7 +31,6 @@ const ClassInfo = ({ props, navigation, route }) => {
   const [isPortrait, setIsPortrait] = useState(true);
 
   const [introVideoUrl, setIntroVideoUrl] = useState("");
-  const [unitsNum, setUnitsNum] = useState(-1);
   const classInfo = route.params.classInfo;
   const [isProcessLoaded, setIsProcessLoaded] = useState(false);
 
@@ -41,7 +40,9 @@ const ClassInfo = ({ props, navigation, route }) => {
   const [userId, setUserId] = useState("");
 
   const [isWishLoaded, setIsWishLoaded] = useState(false);
-
+  
+  const [isClassCountLoaded, setIsClassCountLoaded] = useState(false);
+  const [unitsNum, setUnitsNum] = useState(0);
 
   const setOrientation = (status) => {
     if (status === 1 && !isPortrait) {
@@ -209,11 +210,22 @@ const ClassInfo = ({ props, navigation, route }) => {
       );
     }
 
+    if(!isClassCountLoaded) {
+      getClassesCountByCourseId(
+        {
+          id : route.params.classInfo.course_id
+        },
+        (d) => { setUnitsNum(d.data) },
+        setIsClassCountLoaded,
+        (e) => {console.log(e)}
+      )
+    }
+
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
     }
     
-  }, [route.params.classInfo, isWish, isWishLoaded, userId]);
+  }, [route.params.classInfo, isWish, isWishLoaded, userId, unitsNum, isClassCountLoaded]);
 
   return (
     <>
@@ -251,8 +263,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             <View style={styles.textContainer}>
               <GradientBtn
                 text={
-                  classInfo.name == "Conversational Korean Course" || classInfo.name == "Survival Korean Course" || classInfo.name == "After Like Course"
-                    ? 10 + " Units" : 0 + " Units"
+                  `${unitsNum - 1} Units`
                 }
                 textStyle={{
                   color: "white",

@@ -290,7 +290,7 @@ const MyWishList = ({ navigation, route }) => {
                       </View> */}
                       <View style={styles.priceTextContainer}>
                         <Text style={styles.priceText}>
-                          $ {item.price === 0 ? "Free" : item.price}
+                          {item.price === 0 ? "Free" : item.price} won
                         </Text>
                       </View>
                     </View>

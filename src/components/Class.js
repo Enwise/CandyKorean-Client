@@ -12,17 +12,19 @@ import {
 import GradientBtn from "./GradientButtonView";
 
 import { AntDesign } from "@expo/vector-icons";
-import { createWishlist, deleteWishlist, getWishlistByUser } from "../modules/NetworkFunction";
+import { createWishlist, deleteWishlist, getWishlistByUser, getClassesCountByCourseId } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
 
 const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
-  const [unitsNum, setUnitsNum] = useState();
   const [isWish, setIsWish] = useState(false);
   const [userId, setUserId] = useState("");
   const [isWishLoaded, setIsWishLoaded] = useState(false);
 
   const { authState } = React.useContext(AuthContext);
+
+  const [isClassCountLoaded, setIsClassCountLoaded] = useState(false);
+  const [unitsNum, setUnitsNum] = useState(0);
 
   const handleWishlist = () => {
     console.log('wishlist heart clicked')
@@ -67,14 +69,6 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
 
     // console.log("!!!!!!classInfo!!!!!!", classInfo);
 
-    if (
-      classInfo.name === "Conversational Korean Course" ||
-      classInfo.name === "Survival Korean Course" ||
-      classInfo.name === "After Like Course"
-    ) {
-      setUnitsNum(10);
-    }
-
     if(!isWishLoaded){
       getWishlistByUser(
         {user_id: userId},
@@ -95,7 +89,18 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
       );
     }
 
-  }, [unitsNum, isWish, isWishLoaded]);
+    if(!isClassCountLoaded) {
+      getClassesCountByCourseId(
+        {
+          id : classInfo.course_id
+        },
+        (d) => { setUnitsNum(d.data) },
+        setIsClassCountLoaded,
+        (e) => {console.log(e)}
+      )
+    }
+
+  }, [isWish, isWishLoaded,isClassCountLoaded, unitsNum]);
 
   console.log(isShowAll);
 
@@ -176,7 +181,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
               fontSize: 14,
               fontFamily: "Poppins-Medium",
             }}
-            text={`${unitsNum} Units`}
+            text={`${unitsNum - 1} Units`}
           />
         ) : null}
       </View>

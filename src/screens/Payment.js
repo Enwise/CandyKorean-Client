@@ -13,17 +13,17 @@ import { AntDesign } from "@expo/vector-icons";
 import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
 
-import { createPurchasedCourse, getTutorById } from "../modules/NetworkFunction";
+import { createPurchasedCourse, getTutorById, getAllPurchasedCoursesByUserId } from "../modules/NetworkFunction";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
   const { authState } = React.useContext(AuthContext);
+  // const [userId, setUserId] = useState(authState.userId);
   const [userId, setUserId] = useState(authState.userId);
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
   const [itemInfo, setItemInfo] = useState(route.params.item);
-  const [payList, setPayList] = useState([itemInfo]);
 
   const [unitsNum, setUnitsNum] = useState(route.params.unitsNum);
 
@@ -32,16 +32,17 @@ const Payment = ({ navigation, route }) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const [isCoursePurchased, setIsCoursePurchased] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
 
   const [imgUrl, setImgUrl] = useState("");
+  
+  const [purchasedCourseList, setPurchasedCourseList] = useState([]);
+  const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] = useState(false);
 
-  const deleteItem = (id) => {
-    console.log("delete");
-    setPayList(payList.filter((item) => item.id !== id));
-  };
+  
 
   useEffect(() => {
+    
     console.log("iteminfo ID----------------------");
     console.log(itemInfo.course_id);
     console.log("iteminfo----------------------");
@@ -53,12 +54,7 @@ const Payment = ({ navigation, route }) => {
       setReturnToClass(false);
     }
 
-    let totalPrice = 0;
-    // payList.append(item);
-    payList.forEach((item) => {
-      totalPrice += item.price;
-    });
-    setTotalPrice(totalPrice);
+
 
     console.log(itemInfo);
 
@@ -71,7 +67,26 @@ const Payment = ({ navigation, route }) => {
       () => {},
       (e) => {console.log(e)}
     )
-  }, [payList, itemInfo, isSuccess, isCoursePurchased, imgUrl]);
+
+    if(!isPurchasedCourseListLoaded) {
+      let updatedPurchasedCourseList = [];
+
+      getAllPurchasedCoursesByUserId(
+        { userId : userId},
+
+        (d) => {
+          d.data.map((item) => {
+            console.log('item', item.course_id)
+            updatedPurchasedCourseList.push(item.course_id);
+            setPurchasedCourseList([...updatedPurchasedCourseList]);
+          })
+        },
+        setIsPurchasedCourseListLoaded,
+        (e) => { console.log(e) }) 
+
+  }
+  console.log('purchasedCourseList', purchasedCourseList)
+}, [ itemInfo, isSuccess, isCoursePurchased, imgUrl, userId, isPurchasedCourseListLoaded, purchasedCourseList]);
 
   // navigation.goBack();
   const handlePayment = () => {
@@ -80,40 +95,59 @@ const Payment = ({ navigation, route }) => {
     // 만약 성공이면??
     // setIsSuccess(true);
     // 결제 성공시에는 결제 내역을 DB에 저장해야됨!
-
-    if (!isCoursePurchased) {
-      createPurchasedCourse(
-        { user_id: 13, course_id: itemInfo.course_id },
-        (d) => {
-          // console.log(d);
-          console.log("-========================-");
-          console.log("purchased success");
-          console.log("-========================-");
-
-          navigation.navigate("PaymentResult", {
-            user_id: 13,
-            itemInfo: itemInfo,
-            totalPrice: totalPrice,
-            isSuccess: true,
-            returnToClass,
-          });
-        },
-        setIsCoursePurchased,
-        (e) => {
-          console.log(e.message);
-          console.log("-========================-");
-          console.log("purchased fail");
-          console.log("-========================-");
-          navigation.navigate("PaymentResult", {
-            user_id: 13,
-            itemInfo: itemInfo,
-            totalPrice: totalPrice,
-            isSuccess: false,
-            returnToClass,
-          });
-        }
-      );
+    console.log("handlePayment")
+    
+    if(purchasedCourseList.includes(itemInfo.course_id)) {
+      console.log('purchase fail')
+      setIsSuccess(false)
+    } else {
+      console.log('purchase success')
+      setIsSuccess(true);
     }
+
+    if(isSuccess) {
+      if (!isCoursePurchased) {
+        createPurchasedCourse(
+          { user_id: userId, course_id: itemInfo.course_id },
+          (d) => {
+            // console.log(d);
+            console.log("-========================-");
+            console.log("purchased success");
+            console.log("-========================-");
+  
+            navigation.navigate("PaymentResult", {
+              user_id: userId,
+              itemInfo: itemInfo,
+              isSuccess: true,
+              returnToClass,
+            });
+          },
+          setIsCoursePurchased,
+          (e) => {
+            setIsSuccess(false);
+            console.log(e.message);
+            console.log("-========================-");
+            console.log("purchased fail");
+            console.log("-========================-");
+           
+          }
+        );
+      }
+    } else {
+      navigation.navigate("PaymentResult", {
+        user_id: userId,
+        itemInfo: itemInfo,
+        isSuccess: false,
+        returnToClass,
+      });
+    }
+    
+    
+    
+
+    
+
+    
   };
 
 
@@ -138,11 +172,7 @@ const Payment = ({ navigation, route }) => {
         </View>
       </View>
 
-      {payList.length === 0 ? (
-        <View style={styles.noSelectedTextContainer}>
-          <Text style={styles.noSelectedText}>No Selected Items</Text>
-        </View>
-      ) : (
+    
         <View style={styles.payListItem}>
           <View style={styles.classInfoContainer}>
             <Image
@@ -183,7 +213,7 @@ const Payment = ({ navigation, route }) => {
 
           <View style={styles.paymentAmountContainer}>
             <Text style={styles.paymentAmountText}>Payment amount</Text>
-            <Text style={styles.paymentPriceText}>$ {totalPrice}</Text>
+            <Text style={styles.paymentPriceText}>{itemInfo.price} Won</Text>
           </View>
           {/* <View style={styles.howToPayContainer}>
             <Text style={styles.howToPayText}>How to pay</Text>
@@ -213,7 +243,7 @@ const Payment = ({ navigation, route }) => {
             </TouchableOpacity> */}
           </View>
         </View>
-      )}
+      
     </View>
   );
 };

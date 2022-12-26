@@ -23,6 +23,9 @@ const ClassRoom = ({ navigation }) => {
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
+  // const [userId, setUserId] = useState(authState.userId);
+  const [userId, setUserId] = useState(authState.userId);
+
 
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
     useState(false);
@@ -37,22 +40,22 @@ const ClassRoom = ({ navigation }) => {
 
     console.log("user id"); //
     console.log(authState.userId);
+    // setUserId(authState.userId);
 
     if (!isPurchasedCourseListLoaded) {
       getAllPurchasedCoursesByUserId(
-        { userId: 13 },
+        { userId: userId },
         (d) => {
           console.log("purchasedCourse : ", d.data);
+          let updatedPurchasedCourseList = [];
           d.data.map((item) => {
-            let purchasedCourse;
             getCourses(
               { },
               (d) => {
                 d.data.map((courseItem) => {
-                  if (courseItem.course_id === item.course_id) {
-                    purchasedCourse = courseItem;
-                    console.log("purchasedCourse : ", purchasedCourse);
-                    setPurchasedCourseList((prev) => [...prev, purchasedCourse]);
+                  if (courseItem.course_id == item.course_id) {
+                    updatedPurchasedCourseList.push(courseItem);
+                    setPurchasedCourseList([...updatedPurchasedCourseList]);
                   }
                 })
                 
@@ -70,7 +73,7 @@ const ClassRoom = ({ navigation }) => {
         }
       );
     }
-  }, [authState.userId, isPurchasedCourseListLoaded]);
+  }, [isPurchasedCourseListLoaded, purchasedCourseList, userId]);
 
   return (
     <View style={styles.container}>
