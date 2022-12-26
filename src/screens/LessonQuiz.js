@@ -31,13 +31,11 @@ const LessonQuiz = ({ route, navigation }) => {
   // yoojin
   // 1~10차시 == 2 ~ 11 : content_id
   // 1차시 == 2, 2차시 == 3, 3차시 == 4, 4차시 == 5, 5차시 == 39, 6차시 == 40, 7차시 == 41, 8차시 == 9, 9차시 == 10, 10차시 == 11
-  // quiz_id
-  // 1차시 : 9, 10, 11, 
-  // 2차시: 12, 14
-  // 3차시 : 
+
 
   // seongyeop
   // 1~10차시 == 17 ~ 26
+  // 1차시 == 17, 2차시 == 18, 3차시 == 19, 4차시 == 20, 5차시 == 21, 6차시 == 22, 7차시 == 23, 8차시 == 24, 9차시 == 25, 10차시 == 26
 
   // kyungeun
   // 1~10강 == 28 ~ 37
@@ -56,20 +54,20 @@ const LessonQuiz = ({ route, navigation }) => {
     {
       id: 1,
       style: "arrange",
-json: { "question": "Let's go on a trip this fall!", "answer": { "1": { "text": "이번", "order": 1, "is_selected": false }, "2": { "text": "가을에", "order": 2, "is_selected": false}, "3": { "text": "여행", "order": 3, "is_selected": false}, "4": { "text": "가자!", "order": 4, "is_selected": false}}}
+json: { "question": "(when someone is leaving you) Bye.", "answer": { "1": { "text": "안녕히", "order": 1, "is_selected": false }, "2": { "text": "가세요", "order": 2, "is_selected": false}}}
 ,
     },
     {
       id: 2,
       style: "sentence",
-json: { "question": "What time does this store close(the door)?", "answer": {"1": {"text": "지금이 몇 시인가요?", "correct": false, "is_selected": false}, "2": { "text": "몇 시에 가게를 가나요?", "correct": false, "is_selected": false}, "3": {"text": "몇 시에 이 가게가 문을 닫나요?", "correct": true, "is_selected": false }}}
+json: { "question": "I'm a student.", "answer": {"1": {"text": "저는 의사입니다.", "correct": false, "is_selected": false}, "2": { "text": "저는 학생입니다.", "correct": true, "is_selected": false}, "3": {"text": "저는 선생님입니다.", "correct": false, "is_selected": false }}}
 ,
     },
     // ’
     {
       id: 3,
       style: "word",
-json: {"question": "Q. 'Where is...' in Korean?","answer": {"1": {"text": "언제인가요?","correct": false,"is_selected": false},"2": {"text": "얼마인가요?","correct": false,"is_selected": false}, "3": {"text": "어디인가요?","correct": true,"is_selected": false}}}
+json: {"question": "Q. 'I'm sorry.' in Korean?","answer": {"1": {"text": "감사합니다.","correct": false,"is_selected": false},"2": {"text": "고맙습니다.","correct": false,"is_selected": false}, "3": {"text": "죄송합니다.","correct": true,"is_selected": false}}}
 ,
     },
     {
@@ -81,7 +79,7 @@ json: {"question": "Q. What grammar should you use when asking to somebody with 
     {
       id: 5,
       style: "dialog",
-json: {"question": {"A": {"eng": "Does this bus go to the City Hall Station?","kor": "이 버스가 시청역으로 가나요?","is_question": true,"is_selected": false},"B": {"eng": "Yes, it goes to the City Hall Station","kor": "네, 갑니다.","is_question": false,"is_selected": false}}, "answer": {"1": {"text": "이 버스가 시청 역으로 가나요?","correct": true,"is_selected": false},"2": {"text": "이 버스가 시청 역에 있나요?","correct": false,"is_selected": false},"3": {"text": "이 버스가 시청 역에서 오나요?","correct": false,"is_selected": false}}}
+json: {"question": {"A": {"eng": "Please give me a cup of coffee","kor": "커피 한 잔 주세요.","is_question": false,"is_selected": false},"B": {"eng": "Here you are.","kor": "여기 있어요","is_question": false,"is_selected": false},"A": {"eng": "Thank you.","kor": "고마워요.","is_question": true,"is_selected": false} }, "answer": {"1": {"text": "고마워요.","correct": true,"is_selected": false},"2": {"text": "미안해요.","correct": false,"is_selected": false},"3": {"text": "죄송해요.","correct": false,"is_selected": false}}}
 ,
     },
   ]);
@@ -952,7 +950,7 @@ StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff",
     width: "90%",
-    height: quizStyle === 'grammer' ? '20%' : '10%',
+    height: quizStyle === 'grammar' ? '20%' : '10%',
     alignItems: "center",
     paddingLeft: 10,
     justifyContent: "space-between",

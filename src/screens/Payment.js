@@ -63,10 +63,10 @@ const Payment = ({ navigation, route }) => {
 
   // navigation.goBack();
   const handlePayment = () => {
-    // 결제 프로세스
+    // 결제 프로세스 여기에 필요!
 
     // 만약 성공이면??
-    setIsSuccess(true);
+    // setIsSuccess(true);
     // 결제 성공시에는 결제 내역을 DB에 저장해야됨!
 
     if (!isCoursePurchased) {
@@ -173,9 +173,9 @@ const Payment = ({ navigation, route }) => {
             <Text style={styles.paymentAmountText}>Payment amount</Text>
             <Text style={styles.paymentPriceText}>$ {totalPrice}</Text>
           </View>
-          <View style={styles.howToPayContainer}>
+          {/* <View style={styles.howToPayContainer}>
             <Text style={styles.howToPayText}>How to pay</Text>
-          </View>
+          </View> */}
           <View style={styles.paymentContainer}>
             <TouchableOpacity
               onPress={() => {
@@ -183,10 +183,10 @@ const Payment = ({ navigation, route }) => {
               }}
             >
               <View style={styles.creditcardBtn}>
-                <Text style={styles.creditcardText}>Credit card</Text>
+                <Text style={styles.creditcardText}>BUY NOW</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 navigation.navigate("PaymentResult", {
                   itemInfo: itemInfo,
@@ -198,7 +198,7 @@ const Payment = ({ navigation, route }) => {
               <View style={styles.paypalBtn}>
                 <Text style={styles.paypalText}>Paypal</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       )}
