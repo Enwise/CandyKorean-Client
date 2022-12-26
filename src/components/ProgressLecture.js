@@ -10,12 +10,13 @@ import {
   View,
 } from "react-native";
 import {
+  getContents,
   getCourseById,
   getLearnedClasses,
   getTutorById,
 } from "../modules/NetworkFunction";
 
-const ProgressLecture = ({ userId }) => {
+const ProgressLecture = ({ userId, navigation }) => {
   // 강의 이름, 썸네일, 코스(클래스)이름, 강사 이름, 현재 몇강인지
   // 강의 이름 -> getLearnedClasses class.name
   // 썸네일 -> getLearnedClasses class.thumbnail
@@ -41,7 +42,7 @@ const ProgressLecture = ({ userId }) => {
       );
 
       const data = filterData.map(async (item) => {
-        let courseName, tutorId, tutorName;
+        let courseName, tutorId, tutorName, contents;
         await getCourseById(
           { course_id: item.class.course_id },
           (d) => {
@@ -63,7 +64,26 @@ const ProgressLecture = ({ userId }) => {
             console.log(e);
           }
         );
-
+        await getContents(
+          {},
+          (d) => {
+            contents = d.data.filter((content) => {
+              return (
+                content.class_entity.class_id === item.class_id &&
+                content.enabled
+              );
+            });
+          },
+          () => {},
+          (e) => {
+            console.log(e);
+          }
+        );
+        if (contents[0] !== undefined) {
+          item.className = contents[0].name;
+          item.is_portrait = contents[0].is_portrait;
+          item.video_url = contents[0].video_url;
+        }
         item.courseName = courseName;
         item.tutorName = tutorName;
         return item;
@@ -112,6 +132,15 @@ const ProgressLecture = ({ userId }) => {
           key={index}
           style={styles.container}
           activeOpacity="0.8"
+          onPress={() => {
+            navigation.navigate("ClassRoom", {
+              screen: "LessonVideo",
+              params: {
+                video_url: item.video_url,
+                is_portrait: item.is_portrait,
+              },
+            });
+          }}
         >
           <View style={styles.thumbnail}>
             <Image
@@ -121,7 +150,7 @@ const ProgressLecture = ({ userId }) => {
             <CurrentClassComponent unit={item.class.unit} />
           </View>
           <View style={styles.description}>
-            <Text style={styles.lectureTitle}>{item.class.name}</Text>
+            <Text style={styles.lectureTitle}>{item.className}</Text>
             <Text style={styles.lectureDescription}>{item.courseName}</Text>
             <Text style={styles.lectureTeacher}>Teacher. {item.tutorName}</Text>
           </View>
