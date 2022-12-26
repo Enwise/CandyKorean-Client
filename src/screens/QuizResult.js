@@ -15,6 +15,8 @@ import QuizFail from "../assets/icons/quiz/QuizFail";
 
 const QuizResult = ({ navigation, route }) => {
   const [resultList, setResultList] = useState(route.params.resultList);
+  const lessonInfo = route.params.lessonInfo;
+  const contentsList = route.params.contentsList;
   const [correct, setCorrect] = useState(0);
   const [wrong, setWrong] = useState(0);
   const [resultRatio, setResultRatio] = useState(0);
@@ -251,7 +253,7 @@ const QuizResult = ({ navigation, route }) => {
             //   },
             // });
             // 나중엔 어떤 lesson 에 해당하는 quiz 인지 알기 위해 lessonNo 를 같이 넘겨줘야 함
-            navigation.navigate("LessonInfo")
+            navigation.navigate("LessonInfo", {lessonInfo: lessonInfo, contentsList: contentsList})
           }}
         >
           <QuizNextButton></QuizNextButton>

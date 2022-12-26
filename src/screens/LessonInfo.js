@@ -22,11 +22,11 @@ import Dialog, {
 
 import GradientBtn from "../components/GradientButtonView";
 
-import { getCourseById } from '../modules/NetworkFunction';
+import { getCourseById, getCourses } from '../modules/NetworkFunction';
 
 const LessonInfo = ({ navigation, route }) => {
-  const [lessonInfo, setLessonInfo] = route.params.lessonInfo;
-  const [contentsList, setContentsList] = route.params.contentsList;
+  const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
+  const [contentsList, setContentsList] = useState(route.params.contentsList);
 
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
@@ -73,11 +73,18 @@ const LessonInfo = ({ navigation, route }) => {
     console.log("contentsList", contentsList);
     
     if (!isCourseLoaded) {
-      getCourseById({course_id : contentsList[0].class_entity.course_id}, (d) => {
-        setTutorProfileUrl(d.data.tutor.profile_url);
+      getCourses({}, (d) => {
+        d.data.map((courseItem) => {
+          if (courseItem.course_id == contentsList[0].class_entity.course_id){
+            setTutorProfileUrl(courseItem.tutor.profile_url);
+            console.log(tutor_profile_url)
+            return;
+          }
+        })
+        
+        
       }, setIsCourseLoaded, (e) => {console.log(e)})
     }
-
 
   }, [isCourseLoaded]);
 
@@ -97,8 +104,8 @@ const LessonInfo = ({ navigation, route }) => {
           <Image
             style={styles.imageContainer}
             source={{
-              uri:
-              tutor_profile_url
+              uri:tutor_profile_url
+              
             }}
           ></Image>
 
@@ -182,9 +189,7 @@ const LessonInfo = ({ navigation, route }) => {
               >
                 <View style={styles.unitNum}>
                   <Text style={styles.unitNumText}>
-                    {item.class_entity.name.includes("Seongyeop")
-                      ? item.class_entity.name.split("_")[0]
-                      : item.class_entity.name}
+                    Unit {item.class_entity.unit}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -365,7 +370,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(false);
                 setVisible(false);
-                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList });
+                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo });
               }}
             />
           </DialogFooter>

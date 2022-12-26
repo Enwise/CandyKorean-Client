@@ -183,7 +183,7 @@ const ClassInfo = ({ props, navigation, route }) => {
                 navigation.goBack();
               }}
             >
-              <AntDesign name="left" size={20} color="black" />
+              <AntDesign name="left" size={20} color="black" /> 
             </TouchableOpacity>
           </View> */}
         </View>

@@ -18,7 +18,8 @@ import { getQuizById, getQuizs } from '../modules/NetworkFunction';
 
 const LessonQuiz = ({ route, navigation }) => {
   const [content_id, setContent_id] = useState(route.params.content_id);
-  const [contentsList, setContentsList] = useState(route.params.contentsList);
+  const contentsList = route.params.contentsList;
+  const lessonInfo = route.params.lessonInfo;
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
 
   const [isChecked, setIsChecked] = useState({
@@ -92,16 +93,16 @@ json: {"question": {"A": {"eng": "Does this bus go to the City Hall Station?","k
   const [quizList, setQuizList] = useState([]);
 
   useEffect(() => {
-    console.log("useEffect");
+    console.log("content_id", content_id);
+    console.log("---------------------------");
 
     if(!isQuizListLoaded) {
-    for (let i = 9; i < 12; i++) {
 
         getQuizs({}, (d) => {
 
           d.data.map((quizItem) => {
-            
-            if(quizItem.content_id === content_id){
+            console.log(quizItem)
+            if(quizItem.content.content_id == content_id){
               let parsedQuizItem = JSON.parse(quizItem.json);
               console.log(parsedQuizItem)
               quizItem.json = parsedQuizItem;
@@ -111,8 +112,10 @@ json: {"question": {"A": {"eng": "Does this bus go to the City Hall Station?","k
               });
             }
           });
-        }, setIsQuizListLoaded, (e) => {console.log(e)})
-    }
+        }, 
+        setIsQuizListLoaded, 
+        (e) => {console.log(e)}
+        )
   }
 
   }, [currentQuizIdx, isChecked, selectedList, isQuizListLoaded]);
@@ -303,7 +306,7 @@ json: {"question": {"A": {"eng": "Does this bus go to the City Hall Station?","k
         </View>
         <View style={styles.quizStatusContainer}>
           <View style={styles.quizStatusTopContainer}>
-            <Text style={styles.quizTitle}>{getQuizName()}</Text>
+            <Text style={styles.quizTitle}>{isQuizListLoaded && getQuizName()}</Text>
             <Text style={styles.quizNum}>
               {currentQuizIdx + 1}/{quizList.length}
             </Text>
@@ -709,6 +712,8 @@ json: {"question": {"A": {"eng": "Does this bus go to the City Hall Station?","k
               if (currentQuizIdx === quizList.length - 1) {
                 navigation.navigate("QuizResult", {
                   resultList: resultList,
+                  lessonInfo: lessonInfo,
+                  contentsList: contentsList,
                 });
               } else {
                 nextQuiz();
