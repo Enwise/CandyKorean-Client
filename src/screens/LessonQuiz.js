@@ -14,14 +14,17 @@ import QuizNextButton from "../assets/icons/quiz/QuizNextButton";
 import QuizCorrect from "../assets/icons/quiz/QuizCorrect";
 import QuizWrong from "../assets/icons/quiz/QuizWrong";
 import AuthContext from "../contexts/AuthContext";
+import { useIsFocused } from '@react-navigation/native'; 
+
 
 const LessonQuiz = ({ route, navigation }) => {
   
   const [content_id, setContent_id] = useState(route.params.content_id);
-  const contentsList = route.params.contentsList;
+  const [contentsList, setContentsList] = useState(route.params.contentsList);
   const lessonInfo = route.params.lessonInfo;
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
   const [quizList, setQuizList] = useState(route.params.quizList);
+  const [solvedQuizNumList, setSolvedQuizNumList] = useState(route.params.solvedQuizNumList);
   const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
 
   const { authState } = React.useContext(AuthContext);
@@ -31,6 +34,8 @@ const LessonQuiz = ({ route, navigation }) => {
     isNext: false,
     isCorrect: false,
   });
+  const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
+
 
    // contentsList
   // yoojin
@@ -55,7 +60,7 @@ const LessonQuiz = ({ route, navigation }) => {
 
   // lessonId 를 활용한 quiz 정보 가져오기
 
-
+  // ------------- 지우기 말기!!!!!!!!!!!! ------------------------
   const [dummyQuizList, setDummyQuizList] = useState([
     {
       id: 1,
@@ -97,7 +102,7 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
   // const [quizList, setQuizList] = useState([]);
 
   useEffect(() => {
-    console.log("content_id", content_id);
+    console.log("quizList", quizList);
     console.log("---------------------------");
 
 
@@ -105,10 +110,25 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
         let updatedQuizList = [];
         quizList.map((quizItem) => {
           console.log(quizItem);
-          
-            let parsedQuizItem = JSON.parse(quizItem.json);
-            console.log(parsedQuizItem)
-            quizItem.json = parsedQuizItem;
+            if(typeof quizItem.json === "string" || quizItem.json instanceof String){
+              let parsedQuizItem = JSON.parse(quizItem.json);
+              console.log(parsedQuizItem)
+              quizItem.json = parsedQuizItem;
+            } 
+
+            
+              let answer = quizItem.json.answer;
+              let updatedAnswer = {};
+              Object.keys(answer).map((key) => {
+                updatedAnswer[key] = {
+                  ...answer[key],
+                  is_selected: false,
+                }
+              })
+              quizItem.json.answer = updatedAnswer;
+
+
+
             updatedQuizList.push(quizItem);
         })
         setQuizList([...updatedQuizList]);
@@ -116,7 +136,7 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
         setIsQuizListLoaded(true);
       }
 
-  }, [currentQuizIdx, isChecked, selectedList, isQuizListLoaded]);
+  }, [currentQuizIdx, isChecked, quizList, selectedList, isQuizListLoaded, isFocused]);
 
 
   const updateSelected = (key) => {
@@ -699,6 +719,7 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
                 if (currentQuizIdx === quizList.length - 1) {
                   navigation.navigate("QuizResult", {
                     resultList: resultList,
+                    solvedQuizNumList: solvedQuizNumList,
                     solvedQuizList: solvedQuizList,
                     contentsList: contentsList,
                     lessonInfo: lessonInfo,
@@ -730,7 +751,9 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
                   resultList: resultList,
                   lessonInfo: lessonInfo,
                   contentsList: contentsList,
+                  solvedQuizNumList: solvedQuizNumList,
                   solvedQuizList: solvedQuizList,
+                  
                 });
               } else {
                 nextQuiz();

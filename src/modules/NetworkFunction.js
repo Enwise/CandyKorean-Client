@@ -418,7 +418,7 @@ export const createSolvedQuiz = async (
 ) => {
   const response = await postRequest("/solved_quiz", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
@@ -431,7 +431,7 @@ export const updateSolvedQuiz = async (
 ) => {
   const response = await putRequest("/solved_quiz", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };

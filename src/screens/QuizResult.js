@@ -16,13 +16,14 @@ import QuizFail from "../assets/icons/quiz/QuizFail";
 import AuthContext from "../contexts/AuthContext";
 
 import { useIsFocused } from '@react-navigation/native'; 
-import { getSolvedQuizsByUser, createSolvedQuiz, updateSolvedQuiz } from '../modules/NetworkFunction';
+import { createSolvedQuiz, updateSolvedQuiz } from '../modules/NetworkFunction';
 
 const QuizResult = ({ navigation, route }) => {
   const [resultList, setResultList] = useState(route.params.resultList);
-  const [solvedQuizList, setSolvedQuizList] = useState([]);
+  const [solvedQuizNumList, setSolvedQuizNumList] = useState(route.params.solvedQuizNumList);
+  const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
   const lessonInfo = route.params.lessonInfo;
-  const contentsList = route.params.contentsList;
+  const [contentsList, setContentsList] = useState(route.params.contentsList);
   const [correct, setCorrect] = useState(0);
   const [wrong, setWrong] = useState(0);
   const [resultRatio, setResultRatio] = useState(0);
@@ -35,15 +36,15 @@ const QuizResult = ({ navigation, route }) => {
 
   useEffect(() => {
 
-    getSolvedQuizsByUser({user_id : userId}, (d) => {
-      setSolvedQuizList(d.data);
-      console.log("solvedQuizList loaded");
-    },
-    () => {}, (e) => {console.log(e)})
+    // getSolvedQuizsByUser({user_id : userId}, (d) => {
+    //   setSolvedQuizList(d.data);
+    //   console.log("solvedQuizList loaded");
+    // },
+    // () => {}, (e) => {console.log(e)})
 
     console.log('resultlist', resultList);
     console.log('-----------------------')
-    console.log('solvedQuizList', solvedQuizList);
+    console.log('solvedQuizList', solvedQuizNumList);
     let correct = 0;
     let wrong = 0;
     resultList.map((item) => {
@@ -59,13 +60,12 @@ const QuizResult = ({ navigation, route }) => {
     setResultRatio((correct / resultList.length) * 100);
 
     resultList.map((item) => {
-      
+      console.log("item", item)
       let isExist = false;
-      solvedQuizList.map((solvedQuiz) => {
-        if(solvedQuiz.quiz_id === item.quiz_id){
-          isExist = true;
-        }
-      })
+      
+      if(solvedQuizNumList.includes( item.quiz_id)) {
+        isExist = true;
+      }
       if(isExist){
         updateSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
           console.log("solvedQuiz updated");
@@ -81,6 +81,29 @@ const QuizResult = ({ navigation, route }) => {
     })
 
   }, [isFocused]);
+
+  const updateSolvedQuizStatus = () => {
+    resultList.map((item) => {
+      console.log("item", item)
+      let isExist = false;
+      
+      if(solvedQuizNumList.includes( item.quiz_id)) {
+        isExist = true;
+      }
+      if(isExist){
+        updateSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
+          console.log("solvedQuiz updated");
+        },
+        () => {}, (e) => {console.log(e)})
+      }else{
+        createSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
+          console.log("solvedQuiz created");
+        },
+        () => {}, (e) => {console.log(e)})
+      }
+
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -230,74 +253,9 @@ const QuizResult = ({ navigation, route }) => {
       <View style={styles.nextBtnContainer}>
         <TouchableOpacity
           onPress={() => {
-            // navigation.navigate("LessonInfo", {
-            //   lessonInfo: {
-            //     id: 1,
-            //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_rect.jpg"),
-            //     profileImgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-            //     teacherName: "Kyungeun1",
-            //     className: "class1",
-            //     category: "K-culture",
-            //     level: "Lollipop",
-            //     currentUnit: 4,
-            //     totalUnits: 10,
-            //     price: 100,
-            //     startDate: "2021-01-01",
-            //     endDate: "2021-01-31",
-            //     description: "Let's study real Korean\n formal language!",
-            //     isPortrait: true, // is세로? -> true면 세로, false면 가로
-
-            //     curriculum: [
-            //       {
-            //         unitNum: 1,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/1차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 2,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/2차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 3,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/3차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 4,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/4차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 5,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/5차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 6,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/6차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 7,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/7차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 8,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/8차시.mp4"),
-            //       },
-            //       {
-            //         unitNum: 9,
-            //         unitName: "Greetings 안녕하세요",
-            //         // videoUrl: require("../assets/videos/shin_yoo_jin/9차시.mp4"),
-            //       },
-            //     ],
-            //   },
-            // });
+            updateSolvedQuizStatus();
             // 나중엔 어떤 lesson 에 해당하는 quiz 인지 알기 위해 lessonNo 를 같이 넘겨줘야 함
-            navigation.navigate("LessonInfo", {lessonInfo: lessonInfo, contentsList: contentsList})
+            navigation.navigate("LessonInfo", {lessonInfo: lessonInfo, contentsList: contentsList, solvedQuizList: solvedQuizList})
           }}
         >
           <QuizNextButton></QuizNextButton>

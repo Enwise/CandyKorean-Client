@@ -80,6 +80,7 @@ const Lesson = ({ navigation, lessonInfo, quizList, solvedQuizList }) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("LessonInfo", {
+              lessonInfo: lessonInfo,
               contentsList: contentsList,
               quizList: quizList,
               solvedQuizList: solvedQuizList,

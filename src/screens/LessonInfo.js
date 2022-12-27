@@ -23,16 +23,21 @@ import Dialog, {
 import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
 
-import { getCourses } from '../modules/NetworkFunction';
+import { getCourses, getSolvedQuizsByUser } from '../modules/NetworkFunction';
 import { useIsFocused } from '@react-navigation/native'; 
-import { includes } from 'lodash';
 
 
 const LessonInfo = ({ navigation, route }) => {
-  const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
+
+
   const [contentsList, setContentsList] = useState(route.params.contentsList);
+  
+  const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
+  // const [contentsList, setContentsList] = useState(route.params.contentsList);
   const [quizList, setQuizList] = useState(route.params.quizList);
   const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
+  const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
+
   const [solvedQuizNumList, setSolvedQuizNumList] = useState([]);
 
   const [visible, setVisible] = useState(false);
@@ -89,10 +94,16 @@ const LessonInfo = ({ navigation, route }) => {
   // 1~10강 == 28 ~ 37
   // part1 == 28, part2 == 29, part3 == 30, part4 == 31, part5 == 32, part6 == 33, part7 == 34, part8 == 35, part9 == 36, part10 == 37
 
-  useEffect(() => {
-    
-    
-    if (!isCourseLoaded) {
+  
+
+  useEffect(() => {    
+
+   
+    getSolvedQuizsByUser({user_id : userId}, (d) => {
+      setSolvedQuizList(d.data);
+      console.log("solvedQuizList loaded");
+    }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+  
       getCourses({}, (d) => {
         d.data.map((courseItem) => {
           if (courseItem.course_id == contentsList[0].class_entity.course_id){
@@ -104,7 +115,7 @@ const LessonInfo = ({ navigation, route }) => {
         
         
       }, setIsCourseLoaded, (e) => {console.log(e)})
-    }
+    
     solvedQuizList.map((solvedItem) => {
       setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
     })
@@ -120,7 +131,6 @@ const LessonInfo = ({ navigation, route }) => {
         if (quiz) {
           content.totalQuizNum = quiz.length;
           content.quiz = quiz;
-          console.log('quizquiz', content.quiz)
           quiz.map((q) => {
             if(solvedQuizNumList.includes(q.quiz_id)){
             let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
@@ -136,13 +146,11 @@ const LessonInfo = ({ navigation, route }) => {
 
           }
           })
-
           
           content.solvedQuizNum = solvedQuizNum;
         } else {
           content.totalQuizNum = 0;
         }
-        console.log('quiz length', quiz.length)
 
 
       })
@@ -152,7 +160,7 @@ const LessonInfo = ({ navigation, route }) => {
 
       
 
-  }, [isFocused, isQuizReady]);
+  }, [isSolvedQuizListLoaded, isFocused]);
 
 
 
@@ -288,7 +296,7 @@ const LessonInfo = ({ navigation, route }) => {
                       setVisible(true);
                       setClickedContentId(item.content_id);
                       setStartQuizList(item.quiz)
-                      console.log('item.quiz', item.quiz)
+                      console.log("---------------------------------")
                     }}
                   >
                     <View style={styles.unitQuizContainer}>
@@ -440,7 +448,8 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(false);
                 setVisible(false);
-                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo, quizList: startQuizList, solvedQuizList: solvedQuizList });
+                
+                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo, quizList: startQuizList, solvedQuizList: solvedQuizList, solvedQuizNumList: solvedQuizNumList });
               }}
             />
           </DialogFooter>

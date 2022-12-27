@@ -49,15 +49,11 @@ const ClassRoom = ({ route, navigation }) => {
 
   useEffect(() => {
     
-    console.log("authState.userId"); //
 
-    console.log("user id"); //
-    console.log(authState.userId);
     // setUserId(authState.userId);
         getAllPurchasedCoursesByUserId(
           { userId: userId },
           (d) => {
-            console.log("purchasedCourse : ", d.data);
             let updatedPurchasedCourseList = [];
             d.data.map((item) => {
               getCourses(
@@ -96,7 +92,6 @@ const ClassRoom = ({ route, navigation }) => {
         console.log("solvedQuizList loaded");
       },
       setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-      console.log("solvedQuizList", solvedQuizList);
   }, [isFocused, isSolvedQuizListLoaded]);
 
   return (
