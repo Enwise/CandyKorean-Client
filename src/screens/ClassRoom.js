@@ -13,10 +13,11 @@ import {
   getAllPurchasedCoursesByUserId,
   getCourses,
   getAllQuizs,
+  getSolvedQuizsByUser,
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native'; 
 
 const ClassRoom = ({ route, navigation }) => {
   // 객체 형태로 저장
@@ -39,8 +40,10 @@ const ClassRoom = ({ route, navigation }) => {
 
   const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
 
-  const [quizList, setQuizList] = useState([]); // 맞춘 갯수 / 총 갯수
+  const [quizList, setQuizList] = useState([]); 
   const [isQuizListLoaded, setIsQuizListLoaded] = useState(false);
+  const [solvedQuizList, setSolvedQuizList] = useState([]); 
+  const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
 
   useState(false);
 
@@ -87,8 +90,14 @@ const ClassRoom = ({ route, navigation }) => {
         console.log("quizList loaded");
       }, setIsQuizListLoaded, (e) => {console.log(e)}
       )
-    
-  }, [isFocused]);
+
+      getSolvedQuizsByUser({user_id : userId}, (d) => {
+        setSolvedQuizList(d.data);
+        console.log("solvedQuizList loaded");
+      },
+      setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+      console.log("solvedQuizList", solvedQuizList);
+  }, [isFocused, isSolvedQuizListLoaded]);
 
   return (
     <View style={styles.container}>
@@ -110,7 +119,7 @@ const ClassRoom = ({ route, navigation }) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <Lesson navigation={navigation} lessonInfo={item} quizList={quizList}/>
+            <Lesson navigation={navigation} lessonInfo={item} quizList={quizList} solvedQuizList={solvedQuizList}/>
           )}
         ></FlatList>
       </SafeAreaView>)}

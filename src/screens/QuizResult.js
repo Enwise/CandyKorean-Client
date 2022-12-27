@@ -8,25 +8,46 @@ import {
   Image,
 } from "react-native";
 
+
 import QuizNextButton from "../assets/icons/quiz/QuizNextButton";
 import QuizPerfect from "../assets/icons/quiz/QuizPerfect";
 import QuizSuccess from "../assets/icons/quiz/QuizSuccess";
 import QuizFail from "../assets/icons/quiz/QuizFail";
+import AuthContext from "../contexts/AuthContext";
+
+import { useIsFocused } from '@react-navigation/native'; 
+import { getSolvedQuizsByUser, createSolvedQuiz, updateSolvedQuiz } from '../modules/NetworkFunction';
 
 const QuizResult = ({ navigation, route }) => {
   const [resultList, setResultList] = useState(route.params.resultList);
+  const [solvedQuizList, setSolvedQuizList] = useState([]);
   const lessonInfo = route.params.lessonInfo;
   const contentsList = route.params.contentsList;
   const [correct, setCorrect] = useState(0);
   const [wrong, setWrong] = useState(0);
   const [resultRatio, setResultRatio] = useState(0);
 
+  const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState(authState.userId);
+
+  const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
+
+
   useEffect(() => {
-    console.log(resultList);
+
+    getSolvedQuizsByUser({user_id : userId}, (d) => {
+      setSolvedQuizList(d.data);
+      console.log("solvedQuizList loaded");
+    },
+    () => {}, (e) => {console.log(e)})
+
+    console.log('resultlist', resultList);
+    console.log('-----------------------')
+    console.log('solvedQuizList', solvedQuizList);
     let correct = 0;
     let wrong = 0;
     resultList.map((item) => {
-      if (item) {
+      if (item.is_correct) {
         correct++;
       } else {
         wrong++;
@@ -36,7 +57,30 @@ const QuizResult = ({ navigation, route }) => {
     setWrong(wrong);
 
     setResultRatio((correct / resultList.length) * 100);
-  }, []);
+
+    resultList.map((item) => {
+      
+      let isExist = false;
+      solvedQuizList.map((solvedQuiz) => {
+        if(solvedQuiz.quiz_id === item.quiz_id){
+          isExist = true;
+        }
+      })
+      if(isExist){
+        updateSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
+          console.log("solvedQuiz updated");
+        },
+        () => {}, (e) => {console.log(e)})
+      }else{
+        createSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
+          console.log("solvedQuiz created");
+        },
+        () => {}, (e) => {console.log(e)})
+      }
+
+    })
+
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>

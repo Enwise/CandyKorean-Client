@@ -392,6 +392,51 @@ export const deleteQuiz = async (
   }
 };
 
+/* SolvedQuiz */
+export const getSolvedQuizs = async (reqParam, setData, setIsReady, handleError) => {
+  const response = await getRequest("/solved_quiz", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const getSolvedQuizsByUser = async (reqParam, setData, setIsReady, handleError) => {
+  const { user_id } = reqParam;
+  const response = await getRequest(`/solved_quiz/${user_id}`, reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const createSolvedQuiz = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await postRequest("/solved_quiz", reqParam, handleError);
+  if (response !== null) {
+    setData();
+    setIsReady(true);
+  }
+};
+
+export const updateSolvedQuiz = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await putRequest("/solved_quiz", reqParam, handleError);
+  if (response !== null) {
+    setData();
+    setIsReady(true);
+  }
+};
+
+
 /* Slides */
 export const getSlides = async (reqParam, setData, setIsReady, handleError) => {
   const response = await getRequest("/slide", reqParam, handleError);

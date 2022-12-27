@@ -13,14 +13,19 @@ import { AntDesign } from "@expo/vector-icons";
 import QuizNextButton from "../assets/icons/quiz/QuizNextButton";
 import QuizCorrect from "../assets/icons/quiz/QuizCorrect";
 import QuizWrong from "../assets/icons/quiz/QuizWrong";
-
-import { getQuizById, getQuizs } from '../modules/NetworkFunction';
+import AuthContext from "../contexts/AuthContext";
 
 const LessonQuiz = ({ route, navigation }) => {
+  
   const [content_id, setContent_id] = useState(route.params.content_id);
   const contentsList = route.params.contentsList;
   const lessonInfo = route.params.lessonInfo;
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
+  const [quizList, setQuizList] = useState(route.params.quizList);
+  const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
+
+  const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState(authState.userId);
 
   const [isChecked, setIsChecked] = useState({
     isNext: false,
@@ -89,33 +94,27 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
   const [selectedList, setSelectedList] = useState([]);
 
   const [isQuizListLoaded, setIsQuizListLoaded] = useState(false);
-  const [quizList, setQuizList] = useState([]);
+  // const [quizList, setQuizList] = useState([]);
 
   useEffect(() => {
     console.log("content_id", content_id);
     console.log("---------------------------");
 
-    if(!isQuizListLoaded) {
 
-        getQuizs({}, (d) => {
-
-          d.data.map((quizItem) => {
-            console.log(quizItem)
-            if(quizItem.content.content_id == content_id){
-              let parsedQuizItem = JSON.parse(quizItem.json);
-              console.log(parsedQuizItem)
-              quizItem.json = parsedQuizItem;
-              console.log(quizItem);
-              setQuizList((quizList) => {
-                return [...quizList, quizItem];
-              });
-            }
-          });
-        }, 
-        setIsQuizListLoaded, 
-        (e) => {console.log(e)}
-        )
-  }
+    if(!isQuizListLoaded){
+        let updatedQuizList = [];
+        quizList.map((quizItem) => {
+          console.log(quizItem);
+          
+            let parsedQuizItem = JSON.parse(quizItem.json);
+            console.log(parsedQuizItem)
+            quizItem.json = parsedQuizItem;
+            updatedQuizList.push(quizItem);
+        })
+        setQuizList([...updatedQuizList]);
+        console.log(quizList);
+        setIsQuizListLoaded(true);
+      }
 
   }, [currentQuizIdx, isChecked, selectedList, isQuizListLoaded]);
 
@@ -194,11 +193,19 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
       if (isCorrect) {
         updatedisChecked.isCorrect = true;
         updatedisChecked.isNext = true;
-        updatedResultList.push(true);
+        updatedResultList.push({
+          user_id: userId,
+          is_correct: true,
+          quiz_id: quizList[currentQuizIdx].quiz_id,
+        });
       } else {
         updatedisChecked.isCorrect = false;
         updatedisChecked.isNext = true;
-        updatedResultList.push(false);
+        updatedResultList.push({
+          user_id: userId,
+          is_correct: false,
+          quiz_id: quizList[currentQuizIdx].quiz_id,
+        });
       }
       setIsChecked(updatedisChecked);
       setResultList(updatedResultList);
@@ -215,11 +222,19 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
       if (isCorrect) {
         updatedisChecked.isCorrect = true;
         updatedisChecked.isNext = true;
-        updatedResultList.push(true);
+        updatedResultList.push({
+          user_id: userId,
+          is_correct: true,
+          quiz_id: quizList[currentQuizIdx].quiz_id,
+        });
       } else {
         updatedisChecked.isCorrect = false;
         updatedisChecked.isNext = true;
-        updatedResultList.push(false);
+        updatedResultList.push({
+          user_id: userId,
+          is_correct: false,
+          quiz_id: quizList[currentQuizIdx].quiz_id,
+        });
       }
       setIsChecked(updatedisChecked);
       setResultList(updatedResultList);
@@ -286,8 +301,7 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
   
 
   return (
-    isQuizListLoaded &&
-    (<View style={styles.container}>
+    isQuizListLoaded && (<View style={styles.container}>
       <View style={styles.firstContainer}>
         <View style={styles.topContainer}>
           <View style={styles.titleContainer}>
@@ -685,6 +699,9 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
                 if (currentQuizIdx === quizList.length - 1) {
                   navigation.navigate("QuizResult", {
                     resultList: resultList,
+                    solvedQuizList: solvedQuizList,
+                    contentsList: contentsList,
+                    lessonInfo: lessonInfo,
                   });
                 } else {
                   nextQuiz();
@@ -713,6 +730,7 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
                   resultList: resultList,
                   lessonInfo: lessonInfo,
                   contentsList: contentsList,
+                  solvedQuizList: solvedQuizList,
                 });
               } else {
                 nextQuiz();

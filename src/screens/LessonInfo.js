@@ -21,13 +21,19 @@ import Dialog, {
 } from "react-native-popup-dialog";
 
 import GradientBtn from "../components/GradientButtonView";
+import AuthContext from "../contexts/AuthContext";
 
 import { getCourses } from '../modules/NetworkFunction';
+import { useIsFocused } from '@react-navigation/native'; 
+import { includes } from 'lodash';
+
 
 const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
   const [contentsList, setContentsList] = useState(route.params.contentsList);
   const [quizList, setQuizList] = useState(route.params.quizList);
+  const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
+  const [solvedQuizNumList, setSolvedQuizNumList] = useState([]);
 
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
@@ -41,6 +47,14 @@ const LessonInfo = ({ navigation, route }) => {
   );
 
   const [isQuizReady, setIsQuizReady] = useState(false);
+
+  const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState(authState.userId);
+
+  const [startQuizList, setStartQuizList] = useState([]); // 퀴즈 시작하기 버튼 누르면 해당 컨텐츠의 퀴즈 리스트가 들어감
+
+  const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
+
 
   const goToCurrentVideo = () => {
     navigation.navigate("LessonVideo", {
@@ -76,7 +90,7 @@ const LessonInfo = ({ navigation, route }) => {
   // part1 == 28, part2 == 29, part3 == 30, part4 == 31, part5 == 32, part6 == 33, part7 == 34, part8 == 35, part9 == 36, part10 == 37
 
   useEffect(() => {
-    console.log("contentsList", contentsList);
+    
     
     if (!isCourseLoaded) {
       getCourses({}, (d) => {
@@ -91,25 +105,54 @@ const LessonInfo = ({ navigation, route }) => {
         
       }, setIsCourseLoaded, (e) => {console.log(e)})
     }
-    console.log('quizList', quizList)
-
-  
+    solvedQuizList.map((solvedItem) => {
+      setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
+    })
+    console.log("solvedQuizNumList : ",  solvedQuizNumList)
+    
       contentsList.map((content) => {
+
         let id = content.content_id;
+        let solvedQuizNum = 0;
         let quiz = quizList.filter((quiz) => {
           return quiz.content.content_id == id;
         });
         if (quiz) {
           content.totalQuizNum = quiz.length;
+          content.quiz = quiz;
+          console.log('quizquiz', content.quiz)
+          quiz.map((q) => {
+            if(solvedQuizNumList.includes(q.quiz_id)){
+            let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
+              return solvedQuizItem.quiz_id == q.quiz_id;
+            })
+
+            console.log('foundSolvedQuizItem', foundSolvedQuizItem)
+            console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
+
+            if(foundSolvedQuizItem.is_correct){
+              solvedQuizNum += 1;
+            }
+
+          }
+          })
+
+          
+          content.solvedQuizNum = solvedQuizNum;
         } else {
           content.totalQuizNum = 0;
         }
         console.log('quiz length', quiz.length)
-        setIsQuizReady(true);
-      })
-    
 
-  }, [isCourseLoaded, isQuizReady]);
+
+      })
+
+      
+      setIsQuizReady(true)
+
+      
+
+  }, [isFocused, isQuizReady]);
 
 
 
@@ -244,13 +287,15 @@ const LessonInfo = ({ navigation, route }) => {
                     onPress={() => {
                       setVisible(true);
                       setClickedContentId(item.content_id);
+                      setStartQuizList(item.quiz)
+                      console.log('item.quiz', item.quiz)
                     }}
                   >
                     <View style={styles.unitQuizContainer}>
                       <View style={styles.unitQuizLeftContainer}>
                         <Text style={styles.unitQuizLeftText}>Quiz</Text>
                       </View>
-                      <Text style={styles.unitQuizNumText}>0/{item.totalQuizNum}</Text>
+                      <Text style={styles.unitQuizNumText}>{item.solvedQuizNum}/{item.totalQuizNum}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -395,7 +440,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(false);
                 setVisible(false);
-                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo });
+                navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo, quizList: startQuizList, solvedQuizList: solvedQuizList });
               }}
             />
           </DialogFooter>
