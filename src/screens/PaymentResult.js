@@ -62,29 +62,17 @@ const PaymentResult = ({ navigation, route }) => {
     }
 
     if (isCourseLoaded && !isPurchasedListLoaded) {
+      let updatedPurchasedList = []
       console.log("--------------------");
       console.log("level_id", level_id);
       console.log("--------------------");
-      if (!isLevelLoaded) {
-        getLevelById(
-          { level_id: level_id },
-          (d) => {
-            setTitle(d.data.name);
-          },
-          setIsLevelLoaded,
-          (e) => {
-            console.log(e);
-          }
-        );
-      }
+      
       getAllPurchasedCoursesByUserId(
         { userId: route.params.user_id },
         (d) => {
           d.data.map((course_item) => {
-            setPurchasedList((purchasedList) => [
-              ...purchasedList,
-              course_item.course_id,
-            ]);
+            updatedPurchasedList.push(course_item.course_id)
+            setPurchasedList([...updatedPurchasedList])
           });
         },
         setIsPurchasedListLoaded,
@@ -92,6 +80,7 @@ const PaymentResult = ({ navigation, route }) => {
           console.log(e);
         }
       );
+      console.log(purchasedList)
     }
 
     if (isCourseLoaded && isPurchasedListLoaded && !isRecommendListLoaded) {
@@ -106,21 +95,23 @@ const PaymentResult = ({ navigation, route }) => {
           console.log("payment result courselist");
           console.log(d.data);
           console.log("--------------------");
+          let updatedRecommendList = [];
 
           d.data.map((course_item) => {
-            // if (
-            //   course_item.level.level_id == level_id &&
-            //   !purchasedList.includes(course_item.course_id)
-            // ) {
-            //   console.log("--------------------");
-            //   console.log("recommend list making...");
-            //   console.log(course_item);
-            //   console.log("--------------------");
-            //   setRecommendList((recommendList) => [
-            //     ...recommendList,
-            //     course_item,
-            //   ]);
-            // }
+            if (
+              course_item.level_id == level_id &&
+              !purchasedList.includes(course_item.course_id)
+            ) {
+              console.log("--------------------");
+              console.log("recommend list making...");
+              console.log(course_item);
+              console.log("--------------------");
+              updatedRecommendList.push(course_item);
+              setRecommendList([...recommendList]);
+              console.log('----')
+              console.log(recommendList)
+              console.log('----')
+            }
             if (course_item.level.level_id == level_id) {
               if (
                 course_item.name === "Conversational Korean Course" ||
@@ -158,6 +149,9 @@ const PaymentResult = ({ navigation, route }) => {
         }
       );
     }
+
+    
+
     console.log("recommendList", recommendList);
   }, [
     isSuccess,
@@ -166,6 +160,7 @@ const PaymentResult = ({ navigation, route }) => {
     isRecommendListLoaded,
     level_id,
     isLevelLoaded,
+    recommendList,
     title,
   ]);
 
@@ -174,7 +169,6 @@ const PaymentResult = ({ navigation, route }) => {
       screen: "ClassMore",
       params: {
         courseList: courseList,
-        title: title,
       },
     });
   };
@@ -202,7 +196,7 @@ const PaymentResult = ({ navigation, route }) => {
             <View style={styles.purchasedItem}>
               <Image
                 style={styles.purchasedItemImg}
-                source={{ uri: itemInfo.tutor.profile_url }}
+                source={{ uri: route.params.imgUrl }}
               ></Image>
               <View style={styles.purchasedItemInfo}>
                 <Text style={styles.classNameText}>{itemInfo.name}</Text>
@@ -224,7 +218,7 @@ const PaymentResult = ({ navigation, route }) => {
           </View>
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>Total payment amount</Text>
-            <Text style={styles.totalPrice}>$ {itemInfo.price}</Text>
+            <Text style={styles.totalPrice}>$ {itemInfo.price - 1}.99</Text>
           </View>
           <TouchableOpacity
             onPress={() => {

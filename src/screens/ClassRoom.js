@@ -15,16 +15,19 @@ import {
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
-const ClassRoom = ({ navigation }) => {
+import { useIsFocused } from '@react-navigation/native';
+
+const ClassRoom = ({ route, navigation }) => {
   // 객체 형태로 저장
   // key: 코스이름
   // value: 코스에 해당하는 수업 리스트
 
+  
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
   // const [userId, setUserId] = useState(authState.userId);
-  const [userId, setUserId] = useState(authState.userId);
+  const [userId, setUserId] = useState(17);
 
 
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
@@ -33,47 +36,49 @@ const ClassRoom = ({ navigation }) => {
   const [isClassListLoaded, setIsClassListLoaded] = useState(false);
   const [text, setText] = useState("");
 
+  const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
+
   useState(false);
 
   useEffect(() => {
     
+    console.log("authState.userId"); //
 
     console.log("user id"); //
     console.log(authState.userId);
     // setUserId(authState.userId);
-
-    if (!isPurchasedCourseListLoaded) {
-      getAllPurchasedCoursesByUserId(
-        { userId: userId },
-        (d) => {
-          console.log("purchasedCourse : ", d.data);
-          let updatedPurchasedCourseList = [];
-          d.data.map((item) => {
-            getCourses(
-              { },
-              (d) => {
-                d.data.map((courseItem) => {
-                  if (courseItem.course_id == item.course_id) {
-                    updatedPurchasedCourseList.push(courseItem);
-                    setPurchasedCourseList([...updatedPurchasedCourseList]);
-                  }
-                })
-                
-              },
-              () => {},
-              (e) => {
-                console.log(e);
-              }
-            );
-          });
-        },
-        setIsPurchasedCourseListLoaded,
-        (e) => {
-          console.log(e);
-        }
-      );
-    }
-  }, [isPurchasedCourseListLoaded, purchasedCourseList, userId]);
+        getAllPurchasedCoursesByUserId(
+          { userId: userId },
+          (d) => {
+            console.log("purchasedCourse : ", d.data);
+            let updatedPurchasedCourseList = [];
+            d.data.map((item) => {
+              getCourses(
+                { },
+                (d) => {
+                  d.data.map((courseItem) => {
+                    if (courseItem.course_id == item.course_id) {
+                      updatedPurchasedCourseList.push(courseItem);
+                      setPurchasedCourseList([...updatedPurchasedCourseList]);
+                    }
+                  })
+                  
+                },
+                () => {},
+                (e) => {
+                  console.log(e);
+                }
+              );
+            });
+          },
+          setIsPurchasedCourseListLoaded,
+          (e) => {
+            console.log(e);
+          }
+        );
+      
+    
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
