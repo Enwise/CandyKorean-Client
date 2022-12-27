@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#FDFDFD",
     paddingTop: Constants.statusBarHeight,
   },
 });

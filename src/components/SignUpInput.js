@@ -25,6 +25,7 @@ const SignUpInput = ({ placeholder, value, handleChange, isValid }) => {
               ? true
               : false
           }
+          placeholderTextColor="#B8B5BC"
         />
         {value ? isValid ? <CheckIcon /> : <ErrorIcon /> : null}
       </View>

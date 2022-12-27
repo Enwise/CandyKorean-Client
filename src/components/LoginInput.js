@@ -19,6 +19,7 @@ const LoginInput = ({ placeholder, value, handleChange, isSuccess }) => {
           placeholder={placeholder}
           onChangeText={handleChange}
           secureTextEntry={placeholder === "Password" ? true : false}
+          placeholderTextColor="#B8B5BC"
         />
       </View>
       {placeholder === "Email" && value && !isSuccess ? (
