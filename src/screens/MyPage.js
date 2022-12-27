@@ -103,6 +103,32 @@ const MyPage = ({ navigation }) => {
         );
     }, [authState]);
 
+    // const AbilityBar = (amount, total) => {
+    //
+    //
+    //     const rate = amount / total * 171;
+    //
+    //     return (
+    //         <View
+    //             style={{
+    //                 width:171,
+    //                 backgroundColor:"#F1EFF4",
+    //                 borderRadius:50,
+    //             }}
+    //         >
+    //             <View style={{
+    //                 width: {rate},
+    //                 backgroundColor:"#A160E2",
+    //                 borderRadius:50,
+    //             }}>
+    //                 <Text>
+    //                     fsd
+    //                 </Text>
+    //             </View>
+    //         </View>
+    //     );
+    // }
+
     return (
         <View style={styles.container}>
             <View
@@ -316,13 +342,368 @@ const MyPage = ({ navigation }) => {
                         fontWeight: "600",
                         color: "#444345",
                         marginTop: 15,
-                        marginBottom: 15,
                     }}
                 >
                     Analysis
                 </Text>
 
-                <Image source={require("../assets/img/mypage-dommy-img.png")} />
+
+                <View
+                    style={{
+                        width: "100%",
+                        marginTop: 15,
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent:"space-between"
+                    }}
+                >
+
+                    <View style={{
+                        display: "flex",
+                        flexDirection: "column",
+                    }}>
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems:"center",
+                            marginBottom:10
+                        }}>
+                            <Image source={require("../assets/img/mypage-ability-text1.png")}  style={{width:56}}/>
+                            <View style={{marginLeft:15}}>
+                                <View
+                                    style={{
+                                        width:171,
+                                        height:21,
+                                        backgroundColor:"#F1EFF4",
+                                        borderRadius:50,
+                                    }}
+                                >
+                                    <View style={{
+                                        width: 40,
+                                        height:21,
+                                        backgroundColor:"#A160E2",
+                                        borderRadius:50,
+                                        display:"flex",
+                                        alignItems:"center",
+                                        justifyContent:"center"
+                                    }}>
+                                        <Text style={{
+                                            marginLeft:"auto",
+                                            marginRight:9,
+                                            fontSize: 10,
+                                            fontWeight: "400",
+                                            color: "#FDFDFD",
+                                        }}>
+                                            40
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems:"center",
+                            marginBottom:10
+                        }}>
+                            <Image source={require("../assets/img/mypage-ability-text2.png")}  style={{width:56}}/>
+                            <View style={{marginLeft:15}}>
+                                <View
+                                    style={{
+                                        width:171,
+                                        height:21,
+                                        backgroundColor:"#F1EFF4",
+                                        borderRadius:50,
+                                    }}
+                                >
+                                    <View style={{
+                                        width: 80,
+                                        height:21,
+                                        backgroundColor:"#A160E2",
+                                        borderRadius:50,
+                                        display:"flex",
+                                        alignItems:"center",
+                                        justifyContent:"center"
+                                    }}>
+                                        <Text style={{
+                                            marginLeft:"auto",
+                                            marginRight:9,
+                                            fontSize: 10,
+                                            fontWeight: "400",
+                                            color: "#FDFDFD",
+                                        }}>
+                                            80
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems:"center"
+                        }}>
+                            <Image source={require("../assets/img/mypage-ability-text3.png")}  style={{width:56}}/>
+                            <View style={{marginLeft:15}}>
+                                <View
+                                    style={{
+                                        width:171,
+                                        height:21,
+                                        backgroundColor:"#F1EFF4",
+                                        borderRadius:50,
+                                    }}
+                                >
+                                    <View style={{
+                                        width: 100,
+                                        height:21,
+                                        backgroundColor:"#A160E2",
+                                        borderRadius:50,
+                                        display:"flex",
+                                        alignItems:"center",
+                                        justifyContent:"center"
+                                    }}>
+                                        <Text style={{
+                                            marginLeft:"auto",
+                                            marginRight:9,
+                                            fontSize: 10,
+                                            fontWeight: "400",
+                                            color: "#FDFDFD",
+                                        }}>
+                                            100
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+
+
+                    </View>
+
+                    <View style={{
+                        marginLeft:22,
+                        backgroundColor:"#A160E2",
+                        borderRadius:13,
+                        width:80,
+                        display:"flex",
+                        flexDirection:"column",
+                        alignItems:"center",
+                    }}>
+
+                        <Text
+                            style={{
+                                fontSize: 10,
+                                fontWeight: "500",
+                                color: "#FFFFFF",
+                                marginTop:10
+                            }}
+                        >
+                            Total score
+                        </Text>
+                        <View
+                            style={{
+                                width:40,
+                                height:40,
+                                borderRadius:20,
+                                backgroundColor:"#FDFDFD",
+                                display:"flex",
+                                justifyContent:"center",
+                                alignItems:"center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    fontWeight: "600",
+                                    color: "#A160E2",
+                                }}
+                            >
+                                220
+                            </Text>
+
+                        </View>
+                    </View>
+
+                </View>
+
+                <TouchableOpacity
+                    onPress={() => {
+                        // navigation.navigate("ClassMain");
+                        navigation.navigate("ClassMore", {
+                            title: "Lollipop Level",
+                            courseList: {
+                                "data": [
+                                    {
+                                        "course_id": 1,
+                                        "name": "Conversational Korean Course",
+                                        "price": 0,
+                                        "info": "Learn Situational Korean and lots of useful expressions with Yoojin T. You'll be able to speak in Korean the most natural way",
+                                        "category": "category",
+                                        "view_count": 0,
+                                        "date_created": "2022-12-22T12:57:32.412Z",
+                                        "date_updated": "2022-12-26T18:15:12.000Z",
+                                        "tutor_id": 11,
+                                        "level_id": 5,
+                                        "thumbnail": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671816780722.%EC%8D%B8%EB%84%A4%EC%9D%BC3-%EC%9C%A0%EC%A7%84T.JPG",
+                                        "level": {
+                                            "level_id": 5,
+                                            "name": "Lollipop Level",
+                                            "enabled": false,
+                                            "info": "K-Culture with influencers!"
+                                        },
+                                        "tutor": {
+                                            "tutor_id": 11,
+                                            "enabled": true,
+                                            "name": "Yoojin",
+                                            "img_url": "",
+                                            "profile_url": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671993517133.shin_yoo_jin_square.jpg",
+                                            "introduction": ""
+                                        }
+                                    },
+                                    {
+                                        "course_id": 2,
+                                        "name": "Survival Korean Course",
+                                        "price": 0,
+                                        "info": "Learn Survival Korean with Seongyeop T. You'll be able to learn the most commonly used Korean expressions.",
+                                        "category": "category",
+                                        "view_count": 0,
+                                        "date_created": "2022-12-22T13:01:59.487Z",
+                                        "date_updated": "2022-12-26T18:19:08.000Z",
+                                        "tutor_id": 15,
+                                        "level_id": 5,
+                                        "thumbnail": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1672053527589.%EC%8D%B8%EB%84%A4%EC%9D%BC3-%EC%84%B1%EC%97%BDT.JPG",
+                                        "level": {
+                                            "level_id": 5,
+                                            "name": "Lollipop Level",
+                                            "enabled": false,
+                                            "info": "K-Culture with influencers!"
+                                        },
+                                        "tutor": {
+                                            "tutor_id": 15,
+                                            "enabled": true,
+                                            "name": "Seongyeop",
+                                            "img_url": "",
+                                            "profile_url": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671993756664.seongyeop_profile.png",
+                                            "introduction": ""
+                                        }
+                                    },
+                                    {
+                                        "course_id": 3,
+                                        "name": "After Like Course",
+                                        "price": 0,
+                                        "info": "Learn Korean and K-pop together with Kyungeun T. She'll be teaching K-pop dance skills and how to describe them in Korean. Be a K-pop master with this course!",
+                                        "category": "category",
+                                        "view_count": 0,
+                                        "date_created": "2022-12-22T13:07:03.623Z",
+                                        "date_updated": "2022-12-26T18:19:44.000Z",
+                                        "tutor_id": 14,
+                                        "level_id": 5,
+                                        "thumbnail": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671816844583.%EC%8D%B8%EB%84%A4%EC%9D%BC3-%EA%B2%BD%EC%9D%80T.JPG",
+                                        "level": {
+                                            "level_id": 5,
+                                            "name": "Lollipop Level",
+                                            "enabled": false,
+                                            "info": "K-Culture with influencers!"
+                                        },
+                                        "tutor": {
+                                            "tutor_id": 14,
+                                            "enabled": true,
+                                            "name": "Kyungeun",
+                                            "img_url": "",
+                                            "profile_url": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671993606249.kyungeun_profile.png",
+                                            "introduction": ""
+                                        }
+                                    },
+                                    {
+                                        "course_id": 5,
+                                        "name": "test",
+                                        "price": 0,
+                                        "info": "testinfo",
+                                        "category": "category_test",
+                                        "view_count": 0,
+                                        "date_created": "2022-12-26T18:42:30.276Z",
+                                        "date_updated": "2022-12-26T18:42:30.276Z",
+                                        "tutor_id": 1,
+                                        "level_id": 1,
+                                        "thumbnail": "",
+                                        "level": {
+                                            "level_id": 1,
+                                            "name": "롤리팝",
+                                            "enabled": false,
+                                            "info": "test"
+                                        },
+                                        "tutor": {
+                                            "tutor_id": 1,
+                                            "enabled": false,
+                                            "name": "tutor_change",
+                                            "img_url": "123",
+                                            "profile_url": "123123",
+                                            "introduction": ""
+                                        }
+                                    },
+                                    {
+                                        "course_id": 6,
+                                        "name": "test2",
+                                        "price": 0,
+                                        "info": "testinfo",
+                                        "category": "category_test",
+                                        "view_count": 0,
+                                        "date_created": "2022-12-27T09:28:18.575Z",
+                                        "date_updated": "2022-12-27T09:28:18.575Z",
+                                        "tutor_id": 1,
+                                        "level_id": 1,
+                                        "thumbnail": "",
+                                        "level": {
+                                            "level_id": 1,
+                                            "name": "롤리팝",
+                                            "enabled": false,
+                                            "info": "test"
+                                        },
+                                        "tutor": {
+                                            "tutor_id": 1,
+                                            "enabled": false,
+                                            "name": "tutor_change",
+                                            "img_url": "123",
+                                            "profile_url": "123123",
+                                            "introduction": ""
+                                        }
+                                    }
+                                ],
+                                "message": "findAll"
+                            },
+                        })
+                    }}
+                >
+                    <View
+                        style={{
+                            marginTop:15,
+                            borderWidth:1,
+                            borderColor:"#B8B5BC",
+                            borderRadius:50,
+                            height:24,
+                            width:"100%",
+                            display:"flex",
+                            justifyContent:"space-between",
+                            alignItems:"center",
+                            paddingLeft:17,
+                            paddingRight:10,
+                            flexDirection:"row",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 10,
+                                fontWeight: "500",
+                                color: "#B8B5BC",
+                            }}
+                        >
+                            How to improve your Korean Level
+                        </Text>
+                        <Image source={require("../assets/img/mypage-right-icon.png")}/>
+                    </View>
+                </TouchableOpacity>
+
             </View>
         </View>
     );
