@@ -12,7 +12,7 @@ const TutorList = ({ tutor }) => {
   const renderItem = ({ item }) => (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
-        <Image style={styles.img} source={item.img} />
+        <Image style={styles.img} source={{ uri: item.profile_url }} />
       </View>
       <Text style={styles.nameText}>{item.name}</Text>
     </View>

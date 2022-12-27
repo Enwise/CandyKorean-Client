@@ -15,9 +15,9 @@ import BackButton from "../components/BackButton";
 import TutoringHistory from "../components/TutoringHistory";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-const Tutoring = ({ navigation }) => {
+const Tutoring = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
-
+  const { course, tutors } = route.params;
   const ex_history = [
     {
       name: "Amy",
@@ -55,7 +55,7 @@ const Tutoring = ({ navigation }) => {
               marginTop: 42,
             }}
           >
-            K-Culture with Influencers!
+            {course.name}
           </Text>
           <View style={styles.gatherTownImg}>
             <Image source={require("../assets/img/gather_town_ex.png")} />
@@ -67,33 +67,37 @@ const Tutoring = ({ navigation }) => {
               color: "#807F82",
             }}
           >
-            K-Culture with Influencers -Culture {"\n"}with Influencers!
+            {course.info}
           </Text>
         </View>
 
         <View style={styles.line}></View>
         <View style={styles.content}>
           <Text style={styles.title}>Tutors</Text>
-          <Tutor
-            onPress={() => {
-              setModalVisible(true);
-            }}
-          />
-          <Tutor
-            onPress={() => {
-              setModalVisible(true);
-            }}
-          />
+          {tutors.map((tutor, index) => {
+            return (
+              <Tutor
+                key={index}
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+                tutor={tutor}
+                disabled={tutor.tutor_id !== course.tutor_id}
+              />
+            );
+          })}
         </View>
         <View style={styles.line2}></View>
         <View style={styles.content}>
           <Text style={styles.title}>Tutoring history</Text>
-          <TutoringHistory tutoring={ex_history} />
+          {/* <TutoringHistory tutoring={ex_history} /> */}
         </View>
         <AlertDialog
           visible={modalVisible}
           setModalVisible={setModalVisible}
-          url={"https://www.google.co.kr"}
+          url={
+            "https://app.gather.town/app/rcStwsUdkfF8lpoI/Candy%20Korean_class%20room"
+          }
         />
       </ScrollView>
     </View>

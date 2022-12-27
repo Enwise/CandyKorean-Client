@@ -2,6 +2,7 @@ import React from "react";
 import {
   Dimensions,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,31 +14,113 @@ import * as Progress from "react-native-progress";
 import PremiumEnter from "../assets/icons/PremiumEnter";
 import TutorList from "../components/TutorList";
 import GradientButton from "../components/GradientButton";
+import AuthContext from "../contexts/AuthContext";
+import {
+  getAllPurchasedCoursesByUserId,
+  getCourseById,
+  getTutors,
+} from "../modules/NetworkFunction";
 const windowWidth = Dimensions.get("window").width;
 const Premium = ({ navigation }) => {
-  const [isPaid, setIsPaid] = React.useState(false);
-  const tutors = [
-    {
-      name: "Amy",
-      img: require("../assets/img/tutor_ex1.png"),
-    },
-    {
-      name: "Jake",
-      img: require("../assets/img/tutor_ex2.png"),
-    },
-    {
-      name: "Herry",
-      img: require("../assets/img/gather_town_ex.png"),
-    },
-    {
-      name: "Bony",
-      img: require("../assets/img/gather_town_ex.png"),
-    },
-  ];
+  const { authState } = React.useContext(AuthContext);
+  const [purchasedCourse, setPurchasedCourse] = React.useState([]);
+  const [tutors, setTutors] = React.useState([]);
+  React.useEffect(() => {
+    const getPremiumCourse = async () => {
+      let purchased_course = [];
+      await getAllPurchasedCoursesByUserId(
+        { userId: authState.userId },
+        (d) => {
+          purchased_course = d.data;
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+        }
+      );
+      let courses = [];
+      purchased_course.map(async (item) => {
+        // console.log(item);
+        await getCourseById(
+          { course_id: item.course_id },
+          (d) => {
+            courses.push(d.data);
+          },
+          () => {},
+          (e) => {
+            console.log(e);
+          }
+        );
+      });
+      setPurchasedCourse(courses);
+      await getTutors(
+        {},
+        (d) => {
+          const tutor = d.data.filter((item) => {
+            return item.enabled;
+          });
+          setTutors(tutor);
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+        }
+      );
+    };
+    getPremiumCourse();
+  }, []);
 
+  const PremiumCourse = purchasedCourse.map((course, index) => {
+    return (
+      <TouchableOpacity
+        key={index}
+        activeOpacity={0.9}
+        onPress={() => {
+          navigation.navigate("Tutoring", { course: course, tutors: tutors });
+        }}
+        style={{ marginBottom: 42 }}
+      >
+        <View style={styles.courseContainer}>
+          <View style={{ paddingVertical: 15 }}>
+            <Image
+              source={require("../assets/img/gather_town_ex.png")}
+              style={styles.img}
+            />
+          </View>
+
+          <View style={styles.bottom}>
+            <Text
+              style={{
+                fontFamily: "Poppins-Medium",
+                color: "white",
+                fontSize: 16,
+              }}
+            >
+              {course.name}
+            </Text>
+            <PremiumEnter />
+          </View>
+        </View>
+        <View style={styles.progress}>
+          <View style={styles.progressHeader}>
+            <Text style={styles.progressText}>Number of times tutored</Text>
+            <Text style={styles.progressText}>7/10</Text>
+          </View>
+          <Progress.Bar
+            progress={0.7}
+            height={7}
+            color={"#A160E2"}
+            unfilledColor={"#F1EFF4"}
+            width={windowWidth - 40}
+            borderColor={"#F1EFF4"}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  });
   return (
     <View style={styles.container}>
-      {!isPaid ? (
+      {purchasedCourse.length === 0 ? (
         <>
           <View style={{ marginLeft: 20 }}>
             <Text style={styles.headerText}>
@@ -64,56 +147,15 @@ const Premium = ({ navigation }) => {
           </View>
         </>
       ) : (
-        <View style={{ paddingHorizontal: 20 }}>
+        <ScrollView style={{ paddingHorizontal: 20 }}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Premium Course</Text>
             <Text style={styles.text}>
               Meet the tutor in the metaverse space
             </Text>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => {
-              navigation.navigate("Tutoring");
-            }}
-          >
-            <View style={styles.courseContainer}>
-              <View style={{ paddingVertical: 15 }}>
-                <Image
-                  source={require("../assets/img/gather_town_ex.png")}
-                  style={styles.img}
-                />
-              </View>
-
-              <View style={styles.bottom}>
-                <Text
-                  style={{
-                    fontFamily: "Poppins-Medium",
-                    color: "white",
-                    fontSize: 16,
-                  }}
-                >
-                  K-Culture with Influencers!
-                </Text>
-                <PremiumEnter />
-              </View>
-            </View>
-            <View style={styles.progress}>
-              <View style={styles.progressHeader}>
-                <Text style={styles.progressText}>Number of times tutored</Text>
-                <Text style={styles.progressText}>7/10</Text>
-              </View>
-              <Progress.Bar
-                progress={0.7}
-                height={7}
-                color={"#A160E2"}
-                unfilledColor={"#F1EFF4"}
-                width={windowWidth - 40}
-                borderColor={"#F1EFF4"}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
+          {PremiumCourse}
+        </ScrollView>
       )}
     </View>
   );

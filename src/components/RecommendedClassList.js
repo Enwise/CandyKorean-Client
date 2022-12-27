@@ -10,7 +10,10 @@ const RecommendedClassList = ({ navigation }) => {
     getCourses(
       {},
       (d) => {
-        setCourses(d.data);
+        const course = d.data.filter((item) => {
+          return item.tutor.enabled;
+        });
+        setCourses(course);
 
       },
       () => {},

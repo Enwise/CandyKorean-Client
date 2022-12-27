@@ -9,20 +9,21 @@ import {
   View,
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
-const Tutor = ({ onPress, disabled }) => {
+const Tutor = ({ onPress, disabled, tutor }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
-        <Image
-          style={styles.img}
-          source={require("../assets/img/tutor_ex1.png")}
-        />
+        <Image style={styles.img} source={{ uri: tutor.profile_url }} />
       </View>
       <View style={styles.tutorProfile}>
-        <Text style={styles.tutorName}>강사 이름</Text>
-        <Text style={styles.tutorDescription}>강사 소개</Text>
+        <Text style={styles.tutorName}>{tutor.name}</Text>
+        <Text style={styles.tutorDescription}>{tutor.info}</Text>
       </View>
-      <TouchableOpacity style={styles.button(disabled)} onPress={onPress}>
+      <TouchableOpacity
+        style={styles.button(disabled)}
+        onPress={onPress}
+        disabled={disabled}
+      >
         <Text style={styles.buttonText}>Get tutored</Text>
       </TouchableOpacity>
     </View>

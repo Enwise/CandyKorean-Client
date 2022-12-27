@@ -34,7 +34,11 @@ export const getClassesCountByCourseId = async (
   handleError
 ) => {
   const { id } = reqParam;
-  const response = await getRequest(`/class/count/${id}`, reqParam, handleError);
+  const response = await getRequest(
+    `/class/count/${id}`,
+    reqParam,
+    handleError
+  );
   if (response !== null) {
     setData(response.data);
     setIsReady(true);
@@ -452,7 +456,7 @@ export const deleteSlide = async (
 export const getTutors = async (reqParam, setData, setIsReady, handleError) => {
   const response = await getRequest("/tutor", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
@@ -614,7 +618,12 @@ export const createLearnedClass = async (
 
 /* Wishlist */
 
-export const getAllWishlist = async (reqParam, setData, setIsReady, handleError) => {
+export const getAllWishlist = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
   const response = await getRequest("/wishlist", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
@@ -622,18 +631,25 @@ export const getAllWishlist = async (reqParam, setData, setIsReady, handleError)
   }
 };
 
-export const getWishlistByUser = async (reqParam, setData, setIsReady, handleError) => {
-  const { user_id } = reqParam;
-
-  const response = await getRequest(`/wishlist/${user_id}`, reqParam, handleError);
+export const getWishlistByUser = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await getRequest("/wishlist", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);
   }
 };
 
-
-export const createWishlist = async (reqParam, setData, setIsReady, handleError) => {
+export const createWishlist = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
   const response = await postRequest("/wishlist", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
@@ -641,8 +657,12 @@ export const createWishlist = async (reqParam, setData, setIsReady, handleError)
   }
 };
 
-
-export const deleteWishlist = async (reqParam, setData, setIsReady, handleError) => {
+export const deleteWishlist = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
   const response = await deleteRequest("/wishlist", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
