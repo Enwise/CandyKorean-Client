@@ -18,8 +18,8 @@ import { createPurchasedCourse, getTutorById, getAllPurchasedCoursesByUserId } f
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
   const { authState } = React.useContext(AuthContext);
-  // const [userId, setUserId] = useState(authState.userId);
-  const [userId, setUserId] = useState(17);
+  const [userId, setUserId] = useState(authState.userId);
+  // const [userId, setUserId] = useState(17);
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
@@ -173,7 +173,6 @@ const Payment = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-
     
         <View style={styles.payListItem}>
           <View style={styles.classInfoContainer}>

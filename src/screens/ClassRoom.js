@@ -12,6 +12,7 @@ import Lesson from "../components/Lesson";
 import {
   getAllPurchasedCoursesByUserId,
   getCourses,
+  getAllQuizs,
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
@@ -26,8 +27,8 @@ const ClassRoom = ({ route, navigation }) => {
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
-  // const [userId, setUserId] = useState(authState.userId);
-  const [userId, setUserId] = useState(17);
+  const [userId, setUserId] = useState(authState.userId);
+  // const [userId, setUserId] = useState(17);
 
 
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
@@ -37,6 +38,9 @@ const ClassRoom = ({ route, navigation }) => {
   const [text, setText] = useState("");
 
   const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
+
+  const [quizList, setQuizList] = useState([]); // 맞춘 갯수 / 총 갯수
+  const [isQuizListLoaded, setIsQuizListLoaded] = useState(false);
 
   useState(false);
 
@@ -77,6 +81,12 @@ const ClassRoom = ({ route, navigation }) => {
           }
         );
       
+      getAllQuizs(() => {},
+      (d) => {
+        setQuizList(d.data);
+        console.log("quizList loaded");
+      }, setIsQuizListLoaded, (e) => {console.log(e)}
+      )
     
   }, [isFocused]);
 
@@ -100,7 +110,7 @@ const ClassRoom = ({ route, navigation }) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <Lesson navigation={navigation} lessonInfo={item} />
+            <Lesson navigation={navigation} lessonInfo={item} quizList={quizList}/>
           )}
         ></FlatList>
       </SafeAreaView>)}

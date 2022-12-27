@@ -22,11 +22,12 @@ import Dialog, {
 
 import GradientBtn from "../components/GradientButtonView";
 
-import { getCourseById, getCourses } from '../modules/NetworkFunction';
+import { getCourses } from '../modules/NetworkFunction';
 
 const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
   const [contentsList, setContentsList] = useState(route.params.contentsList);
+  const [quizList, setQuizList] = useState(route.params.quizList);
 
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
@@ -38,6 +39,8 @@ const LessonInfo = ({ navigation, route }) => {
   const [clickedContentId, setClickedContentId] = useState(
     contentsList[0].content_id
   );
+
+  const [isQuizReady, setIsQuizReady] = useState(false);
 
   const goToCurrentVideo = () => {
     navigation.navigate("LessonVideo", {
@@ -58,16 +61,19 @@ const LessonInfo = ({ navigation, route }) => {
       isPortrait: clickedContent.is_portrait,
     });
   };
-
-  // contentsList
+ // contentsList
   // yoojin
-  // 1~10차시 == 2 ~ 11
+  // 1~10차시 == 2 ~ 11 : content_id
+  // 1차시 == 2, 2차시 == 3, 3차시 == 4, 4차시 == 5, 5차시 == 39, 6차시 == 40, 7차시 == 41, 8차시 == 9, 9차시 == 10, 10차시 == 11
+
 
   // seongyeop
   // 1~10차시 == 17 ~ 26
+  // 1차시 == 17, 2차시 == 18, 3차시 == 19, 4차시 == 20, 5차시 == 21, 6차시 == 22, 7차시 == 23, 8차시 == 24, 9차시 == 25, 10차시 == 26
 
   // kyungeun
   // 1~10강 == 28 ~ 37
+  // part1 == 28, part2 == 29, part3 == 30, part4 == 31, part5 == 32, part6 == 33, part7 == 34, part8 == 35, part9 == 36, part10 == 37
 
   useEffect(() => {
     console.log("contentsList", contentsList);
@@ -85,8 +91,27 @@ const LessonInfo = ({ navigation, route }) => {
         
       }, setIsCourseLoaded, (e) => {console.log(e)})
     }
+    console.log('quizList', quizList)
 
-  }, [isCourseLoaded]);
+  
+      contentsList.map((content) => {
+        let id = content.content_id;
+        let quiz = quizList.filter((quiz) => {
+          return quiz.content.content_id == id;
+        });
+        if (quiz) {
+          content.totalQuizNum = quiz.length;
+        } else {
+          content.totalQuizNum = 0;
+        }
+        console.log('quiz length', quiz.length)
+        setIsQuizReady(true);
+      })
+    
+
+  }, [isCourseLoaded, isQuizReady]);
+
+
 
   return (
     <View style={styles.container}>
@@ -225,7 +250,7 @@ const LessonInfo = ({ navigation, route }) => {
                       <View style={styles.unitQuizLeftContainer}>
                         <Text style={styles.unitQuizLeftText}>Quiz</Text>
                       </View>
-                      {/* <Text style={styles.unitQuizNumText}>5/7</Text> */}
+                      <Text style={styles.unitQuizNumText}>0/{item.totalQuizNum}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>

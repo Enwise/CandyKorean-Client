@@ -14,7 +14,7 @@ import {
 import GradientBtn from "../components/GradientButtonView";
 import { getClasses, getContents } from "../modules/NetworkFunction";
 
-const Lesson = ({ navigation, lessonInfo }) => {
+const Lesson = ({ navigation, lessonInfo, quizList }) => {
   const [isClassListLoaded, setIsClassListLoaded] = useState(false);
   const [classList, setClassList] = useState([]);
 
@@ -81,6 +81,7 @@ const Lesson = ({ navigation, lessonInfo }) => {
           onPress={() => {
             navigation.navigate("LessonInfo", {
               contentsList: contentsList,
+              quizList: quizList,
             });
           }}
         >
