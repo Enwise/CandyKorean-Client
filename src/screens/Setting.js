@@ -103,6 +103,36 @@ const Setting = ({navigation}) => {
                 <View style={{marginLeft:100}}>
                     <Text style={{fontSize:20, fontWeight:"600"}}>{menuArr[menuNum]}</Text>
                 </View>
+                {
+                    menuNum === 1 ?
+                        <TouchableOpacity
+                            style={{marginLeft:100}}
+                            onPress={() => {
+                                updateUser(
+                                    {
+                                        userId:authState.userId,
+                                        name: nickname,
+                                    },
+                                    (d) => {
+                                        console.log(d.data);
+                                        setUser(d.data);
+                                    },
+
+                                    setIsUserLoaded,
+                                    (e) => {
+                                        console.log(e);
+                                    }
+                                );
+                                navigation.navigate("My");
+                            }}
+                        >
+                            <Image
+                                source={require("../assets/img/mypage-ok-icon.png")}
+                            />
+                        </TouchableOpacity>
+                        :
+                        ""
+                }
             </View>
             <View style={{height:40}}/>
 
@@ -133,36 +163,14 @@ const Setting = ({navigation}) => {
                                 source={require("../assets/img/sample_class_img2.png")}
                                 style={{width:200, height:200, borderRadius:100}}
                             />
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setNickname}
+                                value={nickname}
+                                placeholder= "기존 닉네임"
+                                keyboardType="default"
+                            />
                         </View>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setNickname}
-                            value={nickname}
-                            placeholder= "기존 닉네임"
-                            keyboardType="default"
-                        />
-                        <TouchableOpacity
-                            onPress={() => {
-                                updateUser(
-                                    {
-                                        userId:authState.userId,
-                                        name: nickname,
-                                    },
-                                    (d) => {
-                                        console.log(d.data);
-                                        setUser(d.data);
-                                    },
-
-                                    setIsUserLoaded,
-                                    (e) => {
-                                        console.log(e);
-                                    }
-                                );
-                                navigation.navigate("My");
-                            }}
-                        >
-                            <Text>confirm</Text>
-                        </TouchableOpacity>
 
                     </View>
                     :
@@ -267,7 +275,8 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         margin: 12,
-        borderBottom:"1px solid #B8B5BC",
+        borderBottomColor:"#B8B5BC",
+        borderBottomWidth:1,
         padding: 10,
     },
 });
