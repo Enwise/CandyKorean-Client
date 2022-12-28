@@ -10,6 +10,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import AuthContext from "../contexts/AuthContext";
 import {getCourses, getLevels, getUserById} from "../modules/NetworkFunction";
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const MyPage = ({ navigation }) => {
     const { signOut, authState } = React.useContext(AuthContext);
@@ -102,6 +104,21 @@ const MyPage = ({ navigation }) => {
             }
         );
     }, [authState]);
+
+    //
+    // React.useEffect(() => {
+    //     getUserById(
+    //         authState.userId,
+    //         (d) => {
+    //             console.log(d);
+    //             setUser(d.data);
+    //         },
+    //         () => {},
+    //         (e) => {
+    //             console.log("getUserById error");
+    //         }
+    //     );
+    // }, [authState]);
 
     // const AbilityBar = (amount, total) => {
     //
