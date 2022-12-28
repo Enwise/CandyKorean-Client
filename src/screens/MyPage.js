@@ -9,7 +9,7 @@ import { VERTICAL } from "react-native/Libraries/Components/ScrollView/ScrollVie
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import AuthContext from "../contexts/AuthContext";
-import {getLevels, getUserById} from "../modules/NetworkFunction";
+import {getCourses, getLevels, getUserById} from "../modules/NetworkFunction";
 
 const MyPage = ({ navigation }) => {
     const { signOut, authState } = React.useContext(AuthContext);
@@ -128,6 +128,72 @@ const MyPage = ({ navigation }) => {
     //         </View>
     //     );
     // }
+    const [lollipopCourseList, setLollipopCourseList] = useState([]);
+    const [cottonCandyCourseList, setCottonCandyCourseList] = useState([]);
+    const [mintCandyCourseList, setMintCandyCourseList] = useState([]);
+
+    const [isCourseListLoaded, setIsCourseListLoaded] = useState(false);
+
+    useEffect(() => {
+        console.log('Course useEffect')
+        if (!isCourseListLoaded) {
+            getCourses(
+                {},
+                (d) => {
+                    console.log("getCourse data: ", d.data);
+                    let updatedLollipopCourseList = [...lollipopCourseList];
+                    let updatedCottonCandyCourseList = [...cottonCandyCourseList];
+                    let updatedMintCandyCourseList = [...mintCandyCourseList];
+
+                    d.data.map((item) => {
+                        // console.log(item);
+                        if (item.level.name === "Lollipop Level") {
+                            // if (
+                            //   item.name === "Yoojin Teacher Course" ||
+                            //   item.name === "Seongyeop Teacher Course" ||
+                            //   item.name === "After Like Course"
+                            // ) {
+                            //   // course_id : 3
+                            //   // class_id: 14(ot) 3, 5~13
+                            //   if (!isTutorLoaded) {
+                            //     getTutorById(
+                            //       {
+                            //         tutor_id: item.tutor_id,
+                            //       },
+                            //       (d) => {
+                            //         console.log(d);
+                            //         item["tutor"] = { ...d.data };
+                            //         updatedLollipopCourseList.push(item);
+                            //       },
+                            //       setIsTutorLoaded,
+                            //       (e) => {
+                            //         console.log(e);
+                            //       }
+                            //     );
+                            //   }
+                            // }
+                            updatedLollipopCourseList.push(item);
+
+                        } else if (item.level.name === "Cotton Candy Level") {
+                            updatedCottonCandyCourseList.push(item);
+                        } else if (item.level.name === "Mint Candy Level") {
+                            updatedMintCandyCourseList.push(item);
+                        }
+                    });
+                    setLollipopCourseList(updatedLollipopCourseList);
+                    setCottonCandyCourseList(updatedCottonCandyCourseList);
+                    setMintCandyCourseList(updatedMintCandyCourseList);
+                    console.log("lollipopCourseList");
+                    console.log(lollipopCourseList);
+                },
+
+                setIsCourseListLoaded,
+                (e) => {
+                    console.log(e);
+                }
+            );
+        }
+    }, [isCourseListLoaded]);
 
     return (
         <View style={styles.container}>
@@ -532,146 +598,7 @@ const MyPage = ({ navigation }) => {
                         // navigation.navigate("ClassMain");
                         navigation.navigate("ClassMore", {
                             title: "Lollipop Level",
-                            courseList: {
-                                "data": [
-                                    {
-                                        "course_id": 1,
-                                        "name": "Conversational Korean Course",
-                                        "price": 0,
-                                        "info": "Learn Situational Korean and lots of useful expressions with Yoojin T. You'll be able to speak in Korean the most natural way",
-                                        "category": "category",
-                                        "view_count": 0,
-                                        "date_created": "2022-12-22T12:57:32.412Z",
-                                        "date_updated": "2022-12-26T18:15:12.000Z",
-                                        "tutor_id": 11,
-                                        "level_id": 5,
-                                        "thumbnail": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671816780722.%EC%8D%B8%EB%84%A4%EC%9D%BC3-%EC%9C%A0%EC%A7%84T.JPG",
-                                        "level": {
-                                            "level_id": 5,
-                                            "name": "Lollipop Level",
-                                            "enabled": false,
-                                            "info": "K-Culture with influencers!"
-                                        },
-                                        "tutor": {
-                                            "tutor_id": 11,
-                                            "enabled": true,
-                                            "name": "Yoojin",
-                                            "img_url": "",
-                                            "profile_url": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671993517133.shin_yoo_jin_square.jpg",
-                                            "introduction": ""
-                                        }
-                                    },
-                                    {
-                                        "course_id": 2,
-                                        "name": "Survival Korean Course",
-                                        "price": 0,
-                                        "info": "Learn Survival Korean with Seongyeop T. You'll be able to learn the most commonly used Korean expressions.",
-                                        "category": "category",
-                                        "view_count": 0,
-                                        "date_created": "2022-12-22T13:01:59.487Z",
-                                        "date_updated": "2022-12-26T18:19:08.000Z",
-                                        "tutor_id": 15,
-                                        "level_id": 5,
-                                        "thumbnail": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1672053527589.%EC%8D%B8%EB%84%A4%EC%9D%BC3-%EC%84%B1%EC%97%BDT.JPG",
-                                        "level": {
-                                            "level_id": 5,
-                                            "name": "Lollipop Level",
-                                            "enabled": false,
-                                            "info": "K-Culture with influencers!"
-                                        },
-                                        "tutor": {
-                                            "tutor_id": 15,
-                                            "enabled": true,
-                                            "name": "Seongyeop",
-                                            "img_url": "",
-                                            "profile_url": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671993756664.seongyeop_profile.png",
-                                            "introduction": ""
-                                        }
-                                    },
-                                    {
-                                        "course_id": 3,
-                                        "name": "After Like Course",
-                                        "price": 0,
-                                        "info": "Learn Korean and K-pop together with Kyungeun T. She'll be teaching K-pop dance skills and how to describe them in Korean. Be a K-pop master with this course!",
-                                        "category": "category",
-                                        "view_count": 0,
-                                        "date_created": "2022-12-22T13:07:03.623Z",
-                                        "date_updated": "2022-12-26T18:19:44.000Z",
-                                        "tutor_id": 14,
-                                        "level_id": 5,
-                                        "thumbnail": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671816844583.%EC%8D%B8%EB%84%A4%EC%9D%BC3-%EA%B2%BD%EC%9D%80T.JPG",
-                                        "level": {
-                                            "level_id": 5,
-                                            "name": "Lollipop Level",
-                                            "enabled": false,
-                                            "info": "K-Culture with influencers!"
-                                        },
-                                        "tutor": {
-                                            "tutor_id": 14,
-                                            "enabled": true,
-                                            "name": "Kyungeun",
-                                            "img_url": "",
-                                            "profile_url": "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671993606249.kyungeun_profile.png",
-                                            "introduction": ""
-                                        }
-                                    },
-                                    {
-                                        "course_id": 5,
-                                        "name": "test",
-                                        "price": 0,
-                                        "info": "testinfo",
-                                        "category": "category_test",
-                                        "view_count": 0,
-                                        "date_created": "2022-12-26T18:42:30.276Z",
-                                        "date_updated": "2022-12-26T18:42:30.276Z",
-                                        "tutor_id": 1,
-                                        "level_id": 1,
-                                        "thumbnail": "",
-                                        "level": {
-                                            "level_id": 1,
-                                            "name": "롤리팝",
-                                            "enabled": false,
-                                            "info": "test"
-                                        },
-                                        "tutor": {
-                                            "tutor_id": 1,
-                                            "enabled": false,
-                                            "name": "tutor_change",
-                                            "img_url": "123",
-                                            "profile_url": "123123",
-                                            "introduction": ""
-                                        }
-                                    },
-                                    {
-                                        "course_id": 6,
-                                        "name": "test2",
-                                        "price": 0,
-                                        "info": "testinfo",
-                                        "category": "category_test",
-                                        "view_count": 0,
-                                        "date_created": "2022-12-27T09:28:18.575Z",
-                                        "date_updated": "2022-12-27T09:28:18.575Z",
-                                        "tutor_id": 1,
-                                        "level_id": 1,
-                                        "thumbnail": "",
-                                        "level": {
-                                            "level_id": 1,
-                                            "name": "롤리팝",
-                                            "enabled": false,
-                                            "info": "test"
-                                        },
-                                        "tutor": {
-                                            "tutor_id": 1,
-                                            "enabled": false,
-                                            "name": "tutor_change",
-                                            "img_url": "123",
-                                            "profile_url": "123123",
-                                            "introduction": ""
-                                        }
-                                    }
-                                ],
-                                "message": "findAll"
-                            },
+                            courseList: lollipopCourseList,
                         })
                     }}
                 >

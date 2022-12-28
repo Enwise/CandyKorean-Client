@@ -11,6 +11,7 @@ import Payment from "../screens/Payment";
 import PaymentResult from "../screens/PaymentResult";
 import ClassInfo from "../screens/ClassInfo";
 import ClassMain from "../screens/ClassMain";
+import ClassMore from "../screens/ClassMore";
 
 const Stack = createNativeStackNavigator();
 
@@ -63,6 +64,7 @@ const MyPageStack = ({ navigation, route }) => {
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="PaymentResult" component={PaymentResult} />
       <Stack.Screen name="ClassInfo" component={ClassInfo} />
+      <Stack.Screen name="ClassMore" component={ClassMore} />
     </Stack.Navigator>
   );
 };
