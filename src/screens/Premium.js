@@ -18,6 +18,7 @@ import AuthContext from "../contexts/AuthContext";
 import {
   getAllPurchasedCoursesByUserId,
   getCourseById,
+  getPremiumCourses,
   getTutors,
 } from "../modules/NetworkFunction";
 const windowWidth = Dimensions.get("window").width;
@@ -40,11 +41,11 @@ const Premium = ({ navigation }) => {
       );
       let courses = [];
       purchased_course.map(async (item) => {
-        // console.log(item);
+        // is_premium: true 인 course만 가져오기
         await getCourseById(
           { course_id: item.course_id },
           (d) => {
-            courses.push(d.data);
+            if(d.data.is_premium) courses.push(d.data);
           },
           () => {},
           (e) => {
@@ -68,6 +69,7 @@ const Premium = ({ navigation }) => {
       );
     };
     getPremiumCourse();
+     
   }, []);
 
   const PremiumCourse = purchasedCourse.map((course, index) => {
@@ -147,7 +149,7 @@ const Premium = ({ navigation }) => {
           </View>
         </>
       ) : (
-        <ScrollView style={{ paddingHorizontal: 20 }}>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom:80 }} >
           <View style={styles.header}>
             <Text style={styles.headerText}>Premium Course</Text>
             <Text style={styles.text}>
