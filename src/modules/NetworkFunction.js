@@ -167,6 +167,20 @@ export const getCourses = async (
   }
 };
 
+export const getPremiumCourses = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await getRequest("/course/premium", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+  
+
 export const getCourseById = async (
   reqParam,
   setData,
@@ -642,6 +656,19 @@ export const getLearnedClasses = async (
   handleError
 ) => {
   const response = await getRequest("/learned_class", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const getPremiumLearnedClasses = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await getRequest("/learned_class/premium", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);
