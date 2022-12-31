@@ -1,9 +1,12 @@
 import React, {useState} from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
+import {getAllPurchasedCoursesByUserId, getUserById} from "../modules/NetworkFunction";
+import AuthContext from "../contexts/AuthContext";
 const MyPurchases = ({navigation}) => {
 
     const [isOpen, setIsOpen] = useState(0);
+    const { signOut, authState } = React.useContext(AuthContext);
     const purchaseArr = [
         {
             No: "20220903TC",
@@ -20,6 +23,24 @@ const MyPurchases = ({navigation}) => {
             period: "2022.09.27 - 2023.03.27",
         },
     ]
+
+    const [isUserLoaded, setIsUserLoaded] = useState(false);
+    const [user, setUser] = React.useState(null);
+
+
+    React.useEffect(() => {
+        getAllPurchasedCoursesByUserId(
+            authState.userId,
+            (d) => {
+                console.log(d);
+                setUser(d.data);
+            },
+            () => {},
+            (e) => {
+                console.log("getUserById error");
+            }
+        );
+    }, [authState]);
 
     return (
         <View style={styles.container}>
