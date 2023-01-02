@@ -91,6 +91,8 @@ const Setting = ({navigation}) => {
         );
     }, [authState]);
 
+
+
     return (
         <View style={styles.container}>
 
@@ -167,7 +169,7 @@ const Setting = ({navigation}) => {
                                 style={styles.input}
                                 onChangeText={setNickname}
                                 value={nickname}
-                                placeholder= "기존 닉네임"
+                                placeholder= ""
                                 keyboardType="default"
                             />
                         </View>

@@ -10,7 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import AuthContext from "../contexts/AuthContext";
 import {getCourses, getLevels, getUserById} from "../modules/NetworkFunction";
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 
 
 const MyPage = ({ navigation }) => {
@@ -91,21 +91,6 @@ const MyPage = ({ navigation }) => {
     const [isUserLoaded, setIsUserLoaded] = useState(false);
     const [user, setUser] = React.useState(null);
 
-    React.useEffect(() => {
-        getUserById(
-            authState.userId,
-            (d) => {
-                console.log(d);
-                setUser(d.data);
-            },
-            () => {},
-            (e) => {
-                console.log("getUserById error");
-            }
-        );
-    }, [authState]);
-
-    //
     // React.useEffect(() => {
     //     getUserById(
     //         authState.userId,
@@ -119,6 +104,32 @@ const MyPage = ({ navigation }) => {
     //         }
     //     );
     // }, [authState]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getUserById(
+                authState.userId,
+                (d) => {
+                    console.log(d);
+                    console.log("enter focus effect");
+                    setUser(d.data);
+                },
+                () => {},
+                (e) => {
+                    console.log("getUserById error");
+                }
+            );
+        }, [])
+    );
+
+
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        if (isFocused) {
+            console.log('isFocused');
+        }
+    }, [isFocused]);
+
 
     // const AbilityBar = (amount, total) => {
     //
