@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
     paddingTop: 50,
-    paddingBottom: 150,
+    // paddingBottom: 150,
     backgroundColor: "#fff",
   },
   topContainer: {
