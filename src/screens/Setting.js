@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
 import { launchImageLibrary } from 'react-native-image-picker';
-import {getUserById, updateUser} from "../modules/NetworkFunction";
+import {getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
 
@@ -54,20 +54,6 @@ const Setting = ({navigation}) => {
             });
     };
 
-    const noticeArr = [
-        {
-            title: "app update",
-            type: "new update",
-            date: "22-10-2022",
-            content: "내용입니다.",
-        },
-        {
-            title: "app update",
-            type: "new update",
-            date: "22-10-2022",
-            content: "내용입니다.",
-        },
-    ]
 
     const menuArr = ["Setting", "Change profile", "Notice", "Feedback", "Terms of Use", "Privacy policy"];
 
@@ -80,18 +66,22 @@ const Setting = ({navigation}) => {
 
 
 
-    // React.useEffect(() => {
-    //     getAllNotice(
-    //         authState.userId,
-    //         (d) => {
-    //             setNickname(d.data.name)
-    //         },
-    //         () => {},
-    //         (e) => {
-    //             console.log("getUserById error");
-    //         }
-    //     );
-    // }, []);
+    const [notice, setNotice] = useState();
+    const [isNoticeOpen, setIsNoticeOpen] = useState(0);
+
+    React.useEffect(() => {
+        getAllNotice(
+            "",
+            (d) => {
+                console.log(d.data);
+                setNotice(d.data);
+            },
+            () => {},
+            (e) => {
+                console.log("getAllNotice error");
+            }
+        );
+    }, []);
 
 
     React.useEffect(() => {
@@ -106,6 +96,7 @@ const Setting = ({navigation}) => {
             }
         );
     }, [authState]);
+
 
 
     return (
@@ -194,21 +185,26 @@ const Setting = ({navigation}) => {
                     menuNum === 2 ?
                         <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
                             <View style={{display:"flex", flexDirection:"column"}}>
-                                {noticeArr.map((item, idx)=>{
+                                {notice?.map((item, idx)=>{
                                     return (
-                                        <View key={idx} style={{display:"flex", flexDirection:"row", justifyContent:"space-between", borderBottom:"1px solid #F1EFF4", paddingBottom:20}}>
-                                            <View style={{display:"flex", flexDirection:"column",justifyContent:"space-between"}}>
-                                                <Text style={{fontSize:16, fontWeight:"500", color:"#444345", marginBottom:6}}>{item.title}</Text>
-                                                <Text style={{fontSize:12, fontWeight:"400", color:"#807F82"}}>{item.type}</Text>
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate("NoticeDetail", item)}
+                                        >
+                                            <View key={idx} style={{display:"flex", flexDirection:"row", justifyContent:"space-between", borderBottom:"1px solid #F1EFF4", paddingBottom:20}}>
+                                                <View style={{display:"flex", flexDirection:"column",justifyContent:"space-between"}}>
+                                                    <Text style={{fontSize:16, fontWeight:"500", color:"#444345", marginBottom:6}}>{item.title}</Text>
+                                                    <Text style={{fontSize:12, fontWeight:"400", color:"#807F82"}}>{item.type}New App Update</Text>
+                                                </View>
+                                                <View style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+                                                    <Text style={{fontSize:10, fontWeight:"400", color:"#B8B5BC", marginRight:20, marginTop:16}}>{item.date_updated.split("T")[0]}</Text>
+                                                    <Image
+                                                        source={require("../assets/img/icon-notice-detail.png")}
+                                                        style={{width:24, height:24}}
+                                                    />
+                                                </View>
                                             </View>
-                                            <View style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                                                <Text style={{fontSize:10, fontWeight:"400", color:"#B8B5BC", marginRight:20}}>{item.date}</Text>
-                                                <Image
-                                                    source={require("../assets/img/icon-notice-detail.png")}
-                                                    style={{width:24, height:24}}
-                                                />
-                                            </View>
-                                        </View>
+                                        </TouchableOpacity>
+
                                     );
                                 })}
                             </View>

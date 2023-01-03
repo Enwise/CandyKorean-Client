@@ -749,7 +749,7 @@ export const getAllNotice = async (
     setIsReady,
     handleError
 ) => {
-  const response = await getRequest("/apis/notice", reqParam, handleError);
+  const response = await getRequest("/notice", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);
