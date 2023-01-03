@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
 import { launchImageLibrary } from 'react-native-image-picker';
-import {getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
+import {createFeedback, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
 
@@ -58,6 +58,8 @@ const Setting = ({navigation}) => {
     const menuArr = ["Setting", "Change profile", "Notice", "Feedback", "Terms of Use", "Privacy policy"];
 
     const [feedbackNum, setFeedbackNum] = useState(0);
+    const [feedbackContent, setFeedbackContent] = useState("")
+    const [feedbackResult, setFeedbackResult] = useState();
 
 
     const [isUserLoaded, setIsUserLoaded] = useState(false);
@@ -96,6 +98,7 @@ const Setting = ({navigation}) => {
             }
         );
     }, [authState]);
+
 
 
 
@@ -214,12 +217,12 @@ const Setting = ({navigation}) => {
                         </View>
                         :
                         <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82", marginTop:20}}>please select your feedback</Text>
-                            <View style={{display:"flex", flexDirection:"row",marginTop:20}}>
+                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82"}}>please select your feedback</Text>
+                            <View style={{display:"flex", flexDirection:"row",marginTop:10}}>
                                 <TouchableOpacity
                                     onPress={()=>{setFeedbackNum(1)}}
                                 >
-                                    <View style={{backgroundColor:feedbackNum===1 ? "#A160E2":"#FDFDFD", border:"1px solid #F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
+                                    <View style={{backgroundColor:feedbackNum===1 ? "#A160E2":"#FDFDFD", borderWidth:1, borderColor:feedbackNum===1 ? "#A160E2" :"#F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center", marginRight:10}}>
                                         <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===1 ? "#FDFDFD" : "#B8B5BC"}}>content</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -227,7 +230,7 @@ const Setting = ({navigation}) => {
                                 <TouchableOpacity
                                     onPress={()=>{setFeedbackNum(2)}}
                                 >
-                                    <View style={{backgroundColor:feedbackNum===2 ? "#A160E2":"#FDFDFD", border:"1px solid #F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
+                                    <View style={{backgroundColor:feedbackNum===2 ? "#A160E2":"#FDFDFD", borderWidth:1, borderColor:feedbackNum===2 ? "#A160E2" :"#F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center", marginRight:10}}>
                                         <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===2 ? "#FDFDFD" : "#B8B5BC"}}>bug</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -235,26 +238,50 @@ const Setting = ({navigation}) => {
                                 <TouchableOpacity
                                     onPress={()=>{setFeedbackNum(3)}}
                                 >
-                                    <View style={{backgroundColor:feedbackNum===3 ? "#A160E2":"#FDFDFD", border:"1px solid #F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
+                                    <View style={{backgroundColor:feedbackNum===3? "#A160E2":"#FDFDFD", borderWidth:1, borderColor:feedbackNum===3 ? "#A160E2" :"#F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
                                         <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===3 ? "#FDFDFD" : "#B8B5BC"}}>other</Text>
                                     </View>
                                 </TouchableOpacity>
 
                             </View>
-                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82", marginTop:40}}>Please leave your feedback below</Text>
+                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82", marginTop:40, marginBottom:10}}>Please leave your feedback below</Text>
                             <TextInput
-                                style={{height:200, margin:12, borderWidth:1}}
-                                onChangeText={setNickname}
-                                value={nickname}
-                                placeholder= "기존 닉네임"
+                                style={{height:300, borderWidth:1, borderColor:"#d9d9d9", backgroundColor:"#FDFDFD", padding:12, textAlignVertical:"top"}}
+                                onChangeText={(event)=>{
+                                    console.log(event)
+                                    setFeedbackContent(event)
+                                }}
+                                value={feedbackContent}
                                 keyboardType="default"
+                                autoCorrect={false}
                             />
 
-
                             <TouchableOpacity
-                                onPress={() => navigation.navigate("My")}
+                                style={{marginTop:100}}
+                                onPress={() => {
+
+                                    createFeedback(
+                                        {
+                                            "text": feedbackContent,
+                                            "category": feedbackNum ===1 ? "content" : feedbackNum===2 ? "bug" : "other",
+                                            "user_id": authState.userId,
+                                        }
+                                        ,
+                                        (d) => {
+                                            console.log(d.message);
+                                            setFeedbackResult(d.message);
+                                        },
+                                        () => {},
+                                        (e) => {
+                                            console.log("feedback send error");
+                                        }
+                                    );
+
+
+                                    // navigation.navigate("My")
+                                }}
                             >
-                                <View style={{display:"flex", justifyContent:"center", alignItems:"center",width:"100%", height:50, borderRadius:50, backgroundColor:true ? "#B8B5BC" : "#A160E2"}}>
+                                <View style={{display:"flex", justifyContent:"center", alignItems:"center",width:"100%", height:50, borderRadius:50, backgroundColor:(feedbackNum !== 0 && feedbackContent !== "") ? "#A160E2" : "#B8B5BC"}}>
                                     <Text style={{fontSize:20, fontWeight:"600", color:"#FFFFFF" }}>submit</Text>
                                 </View>
 

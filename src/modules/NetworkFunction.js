@@ -755,3 +755,16 @@ export const getAllNotice = async (
     setIsReady(true);
   }
 };
+
+export const createFeedback = async (
+    reqParam,
+    setData,
+    setIsReady,
+    handleError
+) => {
+  const response = await postRequest("/feedback", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
