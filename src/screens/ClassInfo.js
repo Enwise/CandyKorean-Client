@@ -17,12 +17,19 @@ import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 import GradientBtn from "../components/GradientButtonView";
-import { getClasses, getContents, getWishlistByUser, createWishlist, deleteWishlist, getClassesCountByCourseId } from "../modules/NetworkFunction";
+import {
+  getClasses,
+  getContents,
+  getWishlistByUser,
+  createWishlist,
+  deleteWishlist,
+  getClassesCountByCourseId,
+} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [isMain, setIsMain] = useState(route.params?.isMain);
-  
+  const isHome = route.params?.isHome;
   const [isWish, setIsWish] = useState(false);
   const [isClassLoaded, setIsClassLoaded] = useState(false);
   const [isContentLoaded, setIsContentLoaded] = useState(false);
@@ -245,10 +252,12 @@ const ClassInfo = ({ props, navigation, route }) => {
             <TouchableOpacity
               onPress={() => {
                 // navigation.goBack();
-                navigation.reset({routes: [{name: "ClassMain"}]})
+                isHome
+                  ? navigation.reset({ routes: [{ name: "Home" }] })
+                  : navigation.reset({ routes: [{ name: "ClassMain" }] });
               }}
             >
-              <AntDesign name="left" size={20} color="black" /> 
+              <AntDesign name="left" size={20} color="black" />
             </TouchableOpacity>
           </View>
         </View>
