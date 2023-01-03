@@ -4,6 +4,8 @@ import BackButton from "../components/BackButton";
 import { launchImageLibrary } from 'react-native-image-picker';
 import {createFeedback, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
+import AlertDialog from "../components/AlertDialog";
+import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
 
 
 const SERVER_URL = 'http://localhost:3000';
@@ -60,6 +62,7 @@ const Setting = ({navigation}) => {
     const [feedbackNum, setFeedbackNum] = useState(0);
     const [feedbackContent, setFeedbackContent] = useState("")
     const [feedbackResult, setFeedbackResult] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
 
 
     const [isUserLoaded, setIsUserLoaded] = useState(false);
@@ -269,16 +272,16 @@ const Setting = ({navigation}) => {
                                         ,
                                         (d) => {
                                             console.log(d.message);
-                                            setFeedbackResult(d.message);
+                                            if(d.message === "created"){
+                                                setFeedbackResult(d.message);
+                                                setModalVisible(true);
+                                            }
                                         },
                                         () => {},
                                         (e) => {
                                             console.log("feedback send error");
                                         }
                                     );
-
-
-                                    // navigation.navigate("My")
                                 }}
                             >
                                 <View style={{display:"flex", justifyContent:"center", alignItems:"center",width:"100%", height:50, borderRadius:50, backgroundColor:(feedbackNum !== 0 && feedbackContent !== "") ? "#A160E2" : "#B8B5BC"}}>
@@ -286,7 +289,15 @@ const Setting = ({navigation}) => {
                                 </View>
 
                             </TouchableOpacity>
-
+                            <FeedbackAlertDialog
+                                navigation={navigation}
+                                visible={modalVisible}
+                                setModalVisible={setModalVisible}
+                                url={
+                                    "https://app.gather.town/app/rcStwsUdkfF8lpoI/Candy%20Korean_class%20room"
+                                }
+                                feedbackResult={feedbackResult}
+                            />
                         </View>
 
             }
