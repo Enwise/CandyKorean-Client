@@ -173,10 +173,20 @@ const Setting = ({navigation}) => {
                     <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
 
                         <View style={{width:"100%", display:"flex", alignItems:"center"}}>
-                            <Image
-                                source={require("../assets/img/sample_class_img2.png")}
-                                style={{width:200, height:200, borderRadius:100}}
-                            />
+                            <View style={{position:"relative", width:200, height:200}}>
+                                <Image
+                                    source={require("../assets/img/sample_class_img2.png")}
+                                    style={{width:200, height:200, borderRadius:100, position:"absolute"}}
+                                />
+                                <TouchableOpacity
+                                    style={{position:"absolute", right:20, bottom:0}}
+                                >
+                                    <Image
+                                        source={require("../assets/img/profile-img-change-icon.png")}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+
                             <TextInput
                                 style={styles.input}
                                 onChangeText={setNickname}
@@ -324,11 +334,12 @@ const styles = StyleSheet.create({
         paddingBottom:15,
     },
     input: {
-        height: 40,
-        margin: 12,
         borderBottomColor:"#B8B5BC",
         borderBottomWidth:1,
-        padding: 10,
+        marginTop: 10,
+        fontWeight:"600",
+        fontSize:20,
+        color:"#444345",
     },
 });
 export default Setting;
