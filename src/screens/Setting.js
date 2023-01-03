@@ -120,7 +120,7 @@ const Setting = ({navigation}) => {
                 {
                     menuNum === 1 ?
                         <TouchableOpacity
-                            style={{marginLeft:100}}
+                            style={{marginLeft:80}}
                             onPress={() => {
                                 updateUser(
                                     {
