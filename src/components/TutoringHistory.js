@@ -9,19 +9,28 @@ import {
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const TutoringHistory = ({ tutoring }) => {
+  const dateFormater = (date) => {
+    let d = new Date(date);
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    return `${month}/${day}`;
+  };
   return (
     <View style={styles.container}>
-      {tutoring.map((tutor, index) => {
+      {tutoring.map((data, index) => {
         return (
           <View style={styles.tutor} key={index}>
             <View style={styles.imgContainer}>
-              <Image source={tutor.img} style={styles.img} />
+              <Image
+                source={{ uri: data.tutor.profile_url }}
+                style={styles.img}
+              />
             </View>
             <View>
-              <Text style={styles.name}>{tutor.name}</Text>
+              <Text style={styles.name}>{data.tutor.name}</Text>
             </View>
             <View style={styles.dateContainer}>
-              <Text style={styles.dateText}>{tutor.date}</Text>
+              <Text style={styles.dateText}>{dateFormater(data.date)}</Text>
             </View>
           </View>
         );

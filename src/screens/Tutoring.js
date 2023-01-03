@@ -13,34 +13,33 @@ import AlertDialog from "../components/AlertDialog";
 import BackButton from "../components/BackButton";
 
 import TutoringHistory from "../components/TutoringHistory";
+import {
+  getClassesByCourseId,
+  getPremiumLearnedClasses,
+} from "../modules/NetworkFunction";
+import { useFocusEffect } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+
 const Tutoring = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
-  const { course, tutors } = route.params;
-  const ex_history = [
-    {
-      name: "Amy",
-      date: "09/02",
-      img: require("../assets/img/gather_town_ex.png"),
-    },
-    {
-      name: "Amy",
-      date: "09/07",
-      img: require("../assets/img/gather_town_ex.png"),
-    },
-    {
-      name: "Amy",
-      date: "09/12",
-      img: require("../assets/img/gather_town_ex.png"),
-    },
-    {
-      name: "Amy",
-      date: "09/19",
-      img: require("../assets/img/gather_town_ex.png"),
-    },
-  ];
-
+  const { course, tutors, userId } = route.params;
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  useFocusEffect(
+    React.useCallback(() => {
+      const setTutor = async () => {
+        course.learned_class.map((item) => {
+          let tutor = tutors.find((tutor) => tutor.tutor_id == item.tutor_id);
+          item.tutor = tutor;
+        });
+      };
+      setTutor();
+      setIsLoaded(true);
+    }, [])
+  );
+  const handleTutoring = () => {
+    // tutored 버튼 클릭하면 createLearnedClass
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -90,7 +89,7 @@ const Tutoring = ({ navigation, route }) => {
         <View style={styles.line2}></View>
         <View style={styles.content}>
           <Text style={styles.title}>Tutoring history</Text>
-          {/* <TutoringHistory tutoring={ex_history} /> */}
+          {isLoaded && <TutoringHistory tutoring={course.learned_class} />}
         </View>
         <AlertDialog
           visible={modalVisible}
@@ -98,6 +97,7 @@ const Tutoring = ({ navigation, route }) => {
           url={
             "https://app.gather.town/app/rcStwsUdkfF8lpoI/Candy%20Korean_class%20room"
           }
+          handleTutoring={handleTutoring}
         />
       </ScrollView>
     </View>
