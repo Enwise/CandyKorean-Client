@@ -741,3 +741,17 @@ export const deleteWishlist = async (
     setIsReady(true);
   }
 };
+
+
+export const getAllNotice = async (
+    reqParam,
+    setData,
+    setIsReady,
+    handleError
+) => {
+  const response = await getRequest("/apis/notice", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};

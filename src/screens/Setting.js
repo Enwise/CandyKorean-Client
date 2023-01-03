@@ -78,6 +78,22 @@ const Setting = ({navigation}) => {
     const [user, setUser] = useState([]);
     const { authState } = React.useContext(AuthContext);
 
+
+
+    // React.useEffect(() => {
+    //     getAllNotice(
+    //         authState.userId,
+    //         (d) => {
+    //             setNickname(d.data.name)
+    //         },
+    //         () => {},
+    //         (e) => {
+    //             console.log("getUserById error");
+    //         }
+    //     );
+    // }, []);
+
+
     React.useEffect(() => {
         getUserById(
             authState.userId,
@@ -90,7 +106,6 @@ const Setting = ({navigation}) => {
             }
         );
     }, [authState]);
-
 
 
     return (
