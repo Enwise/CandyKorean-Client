@@ -10,7 +10,7 @@ import {
 
 import Lesson from "../components/Lesson";
 import {
-  getAllPurchasedCoursesByUserId,
+  getPurchasedCoursesByUserId,
   getCourses,
   getAllQuizs,
   getSolvedQuizsByUser,
@@ -57,7 +57,7 @@ const ClassRoom = ({ route, navigation }) => {
     
 
     // setUserId(authState.userId);
-        getAllPurchasedCoursesByUserId(
+        getPurchasedCoursesByUserId(
           { userId: userId },
           (d) => {
             let updatedPurchasedCourseList = [];
