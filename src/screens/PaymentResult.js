@@ -218,7 +218,7 @@ const PaymentResult = ({ navigation, route }) => {
           </View>
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>Total payment amount</Text>
-            <Text style={styles.totalPrice}>$ {itemInfo.price - 1}.99</Text>
+            <Text style={styles.totalPrice}>$ {itemInfo.price}.99</Text>
           </View>
           <TouchableOpacity
             onPress={() => {

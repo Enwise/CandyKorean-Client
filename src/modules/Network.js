@@ -35,7 +35,7 @@ const putRequest = async (endpoint, data, handleError) => {
     const response = await axios({
       url: 'http://ec2-13-209-87-211.ap-northeast-2.compute.amazonaws.com/apis' + endpoint,
       method: "put",
-      data: {...data},
+      data: data,
     });
     return response;
   } catch (error) {

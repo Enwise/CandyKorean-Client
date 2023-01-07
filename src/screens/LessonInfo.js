@@ -98,12 +98,14 @@ const LessonInfo = ({ navigation, route }) => {
 
   useEffect(() => {    
 
-   
-    getSolvedQuizsByUser({user_id : userId}, (d) => {
-      setSolvedQuizList(d.data);
-      console.log("solvedQuizList loaded");
-    }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-  
+    if(!isSolvedQuizListLoaded){
+      
+      getSolvedQuizsByUser({user_id : userId}, (d) => {
+        setSolvedQuizList([...d.data]);
+        console.log("solvedQuizList loaded");
+      }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+    }
+    
       getCourses({}, (d) => {
         d.data.map((courseItem) => {
           if (courseItem.course_id == contentsList[0].class_entity.course_id){

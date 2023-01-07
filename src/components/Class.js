@@ -68,6 +68,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
     // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
 
     // console.log("!!!!!!classInfo!!!!!!", classInfo);
+    console.log('isWish', isWish)
 
     if(!isWishLoaded){
       getWishlistByUser(

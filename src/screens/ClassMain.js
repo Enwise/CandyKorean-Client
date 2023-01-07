@@ -11,7 +11,7 @@ import {
 import Course from "../components/Course";
 import WishListButton from "../components/WishListButton";
 
-import { getLevels, createLevel } from "../modules/NetworkFunction";
+import { getLevels, createLevel, getWishlistByUser } from "../modules/NetworkFunction";
 
 const ClassMain = ({ navigation }) => {
   const [courseNameList, setCourseNameList] = useState([

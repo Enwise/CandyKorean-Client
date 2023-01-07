@@ -14,6 +14,7 @@ import {
   getCourses,
   getAllQuizs,
   getSolvedQuizsByUser,
+  updateSolvedQuiz
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
@@ -28,8 +29,8 @@ const ClassRoom = ({ route, navigation }) => {
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
-  const [userId, setUserId] = useState(authState.userId);
-  // const [userId, setUserId] = useState(17);
+  // const [userId, setUserId] = useState(authState.userId);
+  const [userId, setUserId] = useState(16);
 
 
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
@@ -48,6 +49,11 @@ const ClassRoom = ({ route, navigation }) => {
   useState(false);
 
   useEffect(() => {
+
+    getSolvedQuizsByUser({user_id : userId}, (d) => {
+      setSolvedQuizList([...d.data]);
+      console.log("solvedQuizList loaded");
+    }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
     
 
     // setUserId(authState.userId);

@@ -16,11 +16,12 @@ import QuizFail from "../assets/icons/quiz/QuizFail";
 import AuthContext from "../contexts/AuthContext";
 
 import { useIsFocused } from '@react-navigation/native'; 
-import { createSolvedQuiz, updateSolvedQuiz } from '../modules/NetworkFunction';
+import { createSolvedQuiz, updateSolvedQuiz, getSolvedQuizsByUser } from '../modules/NetworkFunction';
 
 const QuizResult = ({ navigation, route }) => {
   const [resultList, setResultList] = useState(route.params.resultList);
   const [solvedQuizNumList, setSolvedQuizNumList] = useState(route.params.solvedQuizNumList);
+  const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
   const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
   const lessonInfo = route.params.lessonInfo;
   const [contentsList, setContentsList] = useState(route.params.contentsList);
@@ -41,6 +42,7 @@ const QuizResult = ({ navigation, route }) => {
     //   console.log("solvedQuizList loaded");
     // },
     // () => {}, (e) => {console.log(e)})
+    
 
     console.log('resultlist', resultList);
     console.log('-----------------------')
@@ -67,43 +69,22 @@ const QuizResult = ({ navigation, route }) => {
         isExist = true;
       }
       if(isExist){
-        updateSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
+        updateSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct.toString()}, (d) => {
           console.log("solvedQuiz updated");
         },
         () => {}, (e) => {console.log(e)})
       }else{
-        createSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
+        createSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct.toString()}, (d) => {
           console.log("solvedQuiz created");
         },
         () => {}, (e) => {console.log(e)})
       }
 
     })
+   
 
-  }, [isFocused]);
+  }, [isFocused,isSolvedQuizListLoaded]);
 
-  const updateSolvedQuizStatus = () => {
-    resultList.map((item) => {
-      console.log("item", item)
-      let isExist = false;
-      
-      if(solvedQuizNumList.includes( item.quiz_id)) {
-        isExist = true;
-      }
-      if(isExist){
-        updateSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
-          console.log("solvedQuiz updated");
-        },
-        () => {}, (e) => {console.log(e)})
-      }else{
-        createSolvedQuiz({user_id : userId, quiz_id : item.quiz_id, is_correct : item.is_correct}, (d) => {
-          console.log("solvedQuiz created");
-        },
-        () => {}, (e) => {console.log(e)})
-      }
-
-    })
-  }
 
   return (
     <View style={styles.container}>
@@ -253,7 +234,10 @@ const QuizResult = ({ navigation, route }) => {
       <View style={styles.nextBtnContainer}>
         <TouchableOpacity
           onPress={() => {
-            updateSolvedQuizStatus();
+            getSolvedQuizsByUser({user_id : userId}, (d) => {
+              setSolvedQuizList([...d.data]);
+              console.log("solvedQuizList loaded");
+            }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
             // 나중엔 어떤 lesson 에 해당하는 quiz 인지 알기 위해 lessonNo 를 같이 넘겨줘야 함
             navigation.navigate("LessonInfo", {lessonInfo: lessonInfo, contentsList: contentsList, solvedQuizList: solvedQuizList})
           }}

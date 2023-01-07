@@ -19,7 +19,7 @@ const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState(authState.userId);
-  // const [userId, setUserId] = useState(17);
+  // const [userId, setUserId] = useState(18);
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
@@ -214,7 +214,7 @@ const Payment = ({ navigation, route }) => {
 
           <View style={styles.paymentAmountContainer}>
             <Text style={styles.paymentAmountText}>Payment amount</Text>
-            <Text style={styles.paymentPriceText}>$ {itemInfo.price - 1}.99</Text>
+            <Text style={styles.paymentPriceText}>$ {itemInfo.price}</Text>
           </View>
           {/* <View style={styles.howToPayContainer}>
             <Text style={styles.howToPayText}>How to pay</Text>
