@@ -13,6 +13,7 @@ import ClassInfo from "../screens/ClassInfo";
 import ClassMain from "../screens/ClassMain";
 import ClassMore from "../screens/ClassMore";
 import NoticeDetail from "../screens/NoticeDetail";
+import TermsOfUse from "../screens/TermsOfUse";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,16 +58,17 @@ const MyPageStack = ({ navigation, route }) => {
   }, [navigation, route]);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="My" component={MyPage} />
-      <Stack.Screen name="Setting" component={Setting} />
-      <Stack.Screen name="MyPurchases" component={MyPurchases} />
-      <Stack.Screen name="MyLesson" component={MyLesson} />
-      <Stack.Screen name="MyWishList" component={MyWishList} />
-      <Stack.Screen name="Payment" component={Payment} />
-      <Stack.Screen name="PaymentResult" component={PaymentResult} />
-      <Stack.Screen name="ClassInfo" component={ClassInfo} />
-      <Stack.Screen name="ClassMore" component={ClassMore} />
-      <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
+        <Stack.Screen name="My" component={MyPage} />
+        <Stack.Screen name="Setting" component={Setting} />
+        <Stack.Screen name="MyPurchases" component={MyPurchases} />
+        <Stack.Screen name="MyLesson" component={MyLesson} />
+        <Stack.Screen name="MyWishList" component={MyWishList} />
+        <Stack.Screen name="Payment" component={Payment} />
+        <Stack.Screen name="PaymentResult" component={PaymentResult} />
+        <Stack.Screen name="ClassInfo" component={ClassInfo} />
+        <Stack.Screen name="ClassMore" component={ClassMore} />
+        <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
+        <Stack.Screen name="TermsOfUse" component={TermsOfUse} />
     </Stack.Navigator>
   );
 };

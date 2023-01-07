@@ -8,6 +8,7 @@ import AlertDialog from "../components/AlertDialog";
 import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
 import ImagePicker from 'react-native-image-picker';
 import showImagePicker from 'react-native-image-picker';
+import WebView from "react-native-webview";
 
 const Setting = ({navigation}) => {
 
@@ -154,10 +155,18 @@ const Setting = ({navigation}) => {
                     <TouchableOpacity onPress={()=>{setMenuNum(3);}}>
                         <Text style={styles.textCss}>feedback</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("TermsOfUse", "https://www.notion.so/Terms-of-Use-00a591c112064ed89b420f4f102dbf2e")}
+                    >
                         <Text style={styles.textCss}>terms of use</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+
+
+
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("TermsOfUse", "https://www.notion.so/Privacy-Policy-817a4465f7a74d64991143978f22c398")}
+                    >
                         <Text style={styles.textCss}>privacy policy</Text>
                     </TouchableOpacity>
                 </View>
