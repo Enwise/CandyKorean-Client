@@ -44,6 +44,23 @@ export const getClassesCountByCourseId = async (
     setIsReady(true);
   }
 };
+export const getClassesByCourseId = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const { id } = reqParam;
+  const response = await getRequest(
+    `/class/course/${id}`,
+    reqParam,
+    handleError
+  );
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
 
 export const createClass = async (
   reqParam,
@@ -251,7 +268,7 @@ export const getAllPurchasedCourses = async (
   }
 };
 
-export const getAllPurchasedCoursesByUserId = async (
+export const getPurchasedCoursesByUserId = async (
   reqParam,
   setData,
   setIsReady,
@@ -739,6 +756,33 @@ export const deleteWishlist = async (
   handleError
 ) => {
   const response = await deleteRequest("/wishlist", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+
+export const getAllNotice = async (
+    reqParam,
+    setData,
+    setIsReady,
+    handleError
+) => {
+  const response = await getRequest("/notice", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const createFeedback = async (
+    reqParam,
+    setData,
+    setIsReady,
+    handleError
+) => {
+  const response = await postRequest("/feedback", reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);

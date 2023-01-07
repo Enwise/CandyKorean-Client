@@ -6,7 +6,7 @@ import Tutoring from "../screens/Tutoring";
 const Stack = createNativeStackNavigator();
 const PremiumStack = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
-    const routeName = getFocusedRouteNameFromRoute(route);
+    const routeName = getFocusedRouteNameFromRoute(route) ?? "PremiumMain";
     if (routeName === "Tutoring") {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {

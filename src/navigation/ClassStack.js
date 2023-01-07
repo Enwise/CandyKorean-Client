@@ -11,14 +11,10 @@ import PaymentResult from "../screens/PaymentResult";
 const Stack = createNativeStackNavigator();
 
 const ClassStack = ({ navigation, route }) => {
-  const routeName = getFocusedRouteNameFromRoute(route);
-  console.log(routeName);
+  const routeName = getFocusedRouteNameFromRoute(route) ?? "ClassMain";
+  console.log("routeName", routeName);
   React.useLayoutEffect(() => {
-    if (
-      routeName == "MyWishList" ||
-      routeName == "Payment" ||
-      routeName == "PaymentResult"
-    ) {
+    if (routeName !== "ClassMain") {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
       navigation.setOptions({

@@ -16,61 +16,116 @@ import TutorList from "../components/TutorList";
 import GradientButton from "../components/GradientButton";
 import AuthContext from "../contexts/AuthContext";
 import {
-  getAllPurchasedCoursesByUserId,
+  getPurchasedCoursesByUserId,
+  getClassesByCourseId,
   getCourseById,
   getPremiumCourses,
+  getPremiumLearnedClasses,
   getTutors,
 } from "../modules/NetworkFunction";
+import { useFocusEffect } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const Premium = ({ navigation }) => {
   const { authState } = React.useContext(AuthContext);
   const [purchasedCourse, setPurchasedCourse] = React.useState([]);
   const [tutors, setTutors] = React.useState([]);
-  React.useEffect(() => {
-    const getPremiumCourse = async () => {
-      let purchased_course = [];
-      await getAllPurchasedCoursesByUserId(
-        { userId: authState.userId },
-        (d) => {
-          purchased_course = d.data;
-        },
-        () => {},
-        (e) => {
-          console.log(e);
-        }
-      );
-      let courses = [];
-      purchased_course.map(async (item) => {
-        // is_premium: true 인 course만 가져오기
-        await getCourseById(
-          { course_id: item.course_id },
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const getTutor = async () => {
+        await getTutors(
+          {},
           (d) => {
-            if(d.data.is_premium) courses.push(d.data);
+            const tutor = d.data.filter((item) => {
+              return item.enabled;
+            });
+            setTutors(tutor);
           },
           () => {},
           (e) => {
             console.log(e);
           }
         );
-      });
-      setPurchasedCourse(courses);
-      await getTutors(
-        {},
-        (d) => {
-          const tutor = d.data.filter((item) => {
-            return item.enabled;
-          });
-          setTutors(tutor);
-        },
-        () => {},
-        (e) => {
-          console.log(e);
-        }
-      );
-    };
-    getPremiumCourse();
-     
-  }, []);
+      };
+      const getPremiumCourse = async () => {
+        let purchased_course = [];
+        await getPurchasedCoursesByUserId(
+          { userId: authState.userId },
+          (d) => {
+            purchased_course = d.data;
+          },
+          () => {},
+          (e) => {
+            console.log(e);
+          }
+        );
+
+        const premium = await Promise.all(
+          purchased_course.map(async (item) => {
+            // is_premium: true 인 course만 가져오기
+            let data;
+            await getCourseById(
+              { course_id: item.course_id },
+              (d) => {
+                if (d.data.is_premium) {
+                  data = d.data;
+                }
+              },
+              () => {},
+              (e) => {
+                console.log(e);
+              }
+            );
+            return data;
+          })
+        );
+
+        const courses = await Promise.all(
+          premium.map(async (course) => {
+            let learned = [];
+            await getClassesByCourseId(
+              { id: course.course_id },
+              (d) => {
+                course.classes_count = d.data.length;
+                course.class_id = d.data.map((item) => item.class_id);
+              },
+              () => {},
+              (e) => {
+                console.log(e);
+              }
+            );
+            await getPremiumLearnedClasses(
+              {},
+              (d) => {
+                d.data.map((item) => {
+                  if (
+                    course.class_id.includes(item.class_id) &&
+                    item.user_id == authState.userId
+                  ) {
+                    learned.push({
+                      // 데이터 생성 날짜를 튜터링 날짜로 설정
+                      date: item.date_created,
+                      tutor_id: course.tutor_id,
+                    });
+                  }
+                });
+                course.learned_class = learned;
+                course.learned_count = learned.length;
+              },
+              () => {},
+              (e) => {
+                console.log(e);
+              }
+            );
+            return course;
+          })
+        );
+        setPurchasedCourse(courses);
+      };
+      getTutor();
+      getPremiumCourse();
+    }, [])
+  );
 
   const PremiumCourse = purchasedCourse.map((course, index) => {
     return (
@@ -78,7 +133,11 @@ const Premium = ({ navigation }) => {
         key={index}
         activeOpacity={0.9}
         onPress={() => {
-          navigation.navigate("Tutoring", { course: course, tutors: tutors });
+          navigation.navigate("Tutoring", {
+            course: course,
+            tutors: tutors,
+            userId: authState.userId,
+          });
         }}
         style={{ marginBottom: 42 }}
       >
@@ -106,10 +165,12 @@ const Premium = ({ navigation }) => {
         <View style={styles.progress}>
           <View style={styles.progressHeader}>
             <Text style={styles.progressText}>Number of times tutored</Text>
-            <Text style={styles.progressText}>7/10</Text>
+            <Text style={styles.progressText}>
+              {course.learned_count}/{course.classes_count}
+            </Text>
           </View>
           <Progress.Bar
-            progress={0.7}
+            progress={course.learned_count / course.classes_count}
             height={7}
             color={"#A160E2"}
             unfilledColor={"#F1EFF4"}
@@ -149,7 +210,9 @@ const Premium = ({ navigation }) => {
           </View>
         </>
       ) : (
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom:80 }} >
+        <ScrollView
+          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 80 }}
+        >
           <View style={styles.header}>
             <Text style={styles.headerText}>Premium Course</Text>
             <Text style={styles.text}>
