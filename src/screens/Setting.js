@@ -6,55 +6,48 @@ import {createFeedback, getAllNotice, getUserById, updateUser} from "../modules/
 import AuthContext from "../contexts/AuthContext";
 import AlertDialog from "../components/AlertDialog";
 import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
-
-
-const SERVER_URL = 'http://localhost:3000';
-
-const createFormData = (photo, body = {}) => {
-    const data = new FormData();
-
-    data.append('photo', {
-        name: photo.fileName,
-        type: photo.type,
-        uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-    });
-
-    Object.keys(body).forEach((key) => {
-        data.append(key, body[key]);
-    });
-
-    return data;
-};
+import ImagePicker from 'react-native-image-picker';
+import showImagePicker from 'react-native-image-picker';
 
 const Setting = ({navigation}) => {
 
     const [menuNum, setMenuNum] = useState(0);
     const [nickname, setNickname] = useState();
 
-    const [photo, setPhoto] = React.useState(null);
+    const [ img, setImageSource ] = useState("");
 
-    const handleChoosePhoto = () => {
-        launchImageLibrary({ noData: true }, (response) => {
-            // console.log(response);
-            if (response) {
-                setPhoto(response);
+
+    function pickImg() {
+        const options = {
+            title: 'Select Avatar', //이미지 선택할 때 제목입니다 ( 타이틀 )
+            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }], // 선택 버튼을 커스텀 할 수 있습니다.
+            storageOptions: {
+                skipBackup: true,	// ios인 경우 icloud 저장 여부 입니다!
+                path: 'images',
+            },
+        };
+
+        /**
+         * The first arg is the options object for customization (it can also be null or omitted for default options),
+         * The second arg is the callback which sends object: response (more info in the API Reference)
+         */
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+                setImageSource(response.uri); // 저는 여기서 uri 값을 저장 시킵니다 !
             }
         });
-    };
+    }
 
-    const handleUploadPhoto = () => {
-        fetch(`${SERVER_URL}/api/upload`, {
-            method: 'POST',
-            body: createFormData(photo, { userId: '123' }),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                console.log('response', response);
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
-    };
 
 
     const menuArr = ["Setting", "Change profile", "Notice", "Feedback", "Terms of Use", "Privacy policy"];
@@ -186,7 +179,16 @@ const Setting = ({navigation}) => {
                                     />
                                 </TouchableOpacity>
                             </View>
+                            {/*{img ?   // 이미지가 있으면 라이브러리에서 받아온 이미지로 출력, 없으면 디폴트 이미지 출력!*/}
+                            {/*    <TouchableOpacity style={styles.imgWrapper} onPress={()=>pickImg()}>*/}
+                            {/*        <Image source={{uri: img}} style={styles.imgStyle}/>*/}
+                            {/*    </TouchableOpacity>*/}
+                            {/*    :*/}
+                            {/*    <TouchableOpacity style={styles.imgWrapper} onPress={()=>pickImg()}>*/}
+                            {/*        <Image source={require("../assets/img/icon-notice-detail.png")} style={styles.imgStyle}/>*/}
 
+                            {/*    </TouchableOpacity>*/}
+                            {/*}*/}
                             <TextInput
                                 style={styles.input}
                                 onChangeText={setNickname}
@@ -194,6 +196,10 @@ const Setting = ({navigation}) => {
                                 placeholder= ""
                                 keyboardType="default"
                             />
+
+
+
+
                         </View>
 
                     </View>
