@@ -215,14 +215,13 @@ const Setting = ({navigation}) => {
                                             <View key={idx} style={{display:"flex", flexDirection:"row", justifyContent:"space-between", borderBottom:"1px solid #F1EFF4", paddingBottom:20}}>
                                                 <View style={{display:"flex", flexDirection:"column",justifyContent:"space-between"}}>
                                                     <Text style={{fontSize:16, fontWeight:"500", color:"#444345", marginBottom:6}}>{item.title}</Text>
-                                                    <Text style={{fontSize:12, fontWeight:"400", color:"#807F82"}}>{item.type}New App Update</Text>
                                                 </View>
                                                 <View style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                                                    <Text style={{fontSize:10, fontWeight:"400", color:"#B8B5BC", marginRight:20, marginTop:16}}>{item.date_updated.split("T")[0]}</Text>
-                                                    <Image
-                                                        source={require("../assets/img/icon-notice-detail.png")}
-                                                        style={{width:24, height:24}}
-                                                    />
+                                                    <Text style={{fontSize:10, fontWeight:"400", color:"#B8B5BC"}}>{item.date_updated.split("T")[0]}</Text>
+                                                    {/*<Image*/}
+                                                    {/*    source={require("../assets/img/icon-notice-detail.png")}*/}
+                                                    {/*    style={{width:24, height:24}}*/}
+                                                    {/*/>*/}
                                                 </View>
                                             </View>
                                         </TouchableOpacity>
