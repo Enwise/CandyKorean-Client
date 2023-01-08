@@ -90,7 +90,7 @@ json: {"question": "Q. What grammar should you use when you express past tense?"
     {
       id: 5,
       style: "dialog",
-json: {"question": {"A": {"eng": "What do you think of this food?","kor": "이 음식 어때?","is_question": false,"is_selected": false},"B": {"eng": "Wow! This is really delicious!","kor": "와! 이거 진짜 맛있다!","is_question": true,"is_selected": false} }, "answer": {"1": {"text": "와! 이거 진짜 멋있다","correct": false,"is_selected": false},"2": {"text": "와! 이거 진짜 맛있다","correct": true,"is_selected": false},"3": {"text": "와! 이거 진짜 재밌다","correct": false,"is_selected": false}}}
+json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "커피 한 잔 주세요.","is_question": false,"is_selected": false},"B": {"eng": "Here you are.","kor": "여기 있어요.","is_question": false,"is_selected": false}, "A1": {"eng": "Thank you.","kor": "고마워요.","is_question": true,"is_selected": false} }, "answer": {"1": {"text": "고마워요.","correct": true,"is_selected": false},"2": {"text": "미안해요.","correct": false,"is_selected": false},"3": {"text": "죄송해요.","correct": false,"is_selected": false}}}
 ,
     },
   ]);
@@ -111,7 +111,8 @@ json: {"question": {"A": {"eng": "What do you think of this food?","kor": "이 �
     if(!isQuizListLoaded){
         let updatedQuizList = [];
         quizList.map((quizItem) => {
-          console.log(quizItem);
+          
+            console.log(quizItem);
             if(typeof quizItem.json === "string" || quizItem.json instanceof String){
               let parsedQuizItem = JSON.parse(quizItem.json);
               console.log(parsedQuizItem)
@@ -132,6 +133,7 @@ json: {"question": {"A": {"eng": "What do you think of this food?","kor": "이 �
 
 
             updatedQuizList.push(quizItem);
+          
         })
         setQuizList([...updatedQuizList]);
         console.log(quizList);
@@ -369,44 +371,65 @@ json: {"question": {"A": {"eng": "What do you think of this food?","kor": "이 �
           </View>
         ) : (
           <View style={styles.quizDialogContainer}>
-            <View style={styles.quizDialog_A_Container}>
+
+            {
+              Object.entries(quizList[currentQuizIdx].json.question).map((item, idx) => {
+
+                const [key, value] = item;
+                console.log('key', key)
+                console.log('value', value)
+
+
+                if (key == "A" || key == "A0" || key == "A1") {
+                  return (
+                    <View style={styles.quizDialog_A_Container}>
               <Text>A : </Text>
               <View style={styles.quizDialog_A_textContainer}>
                 <Text style={styles.quizDialog_A_kor_text}>
-                  {quizList[currentQuizIdx].json.question["A"].is_question
+                  {value.is_question
                     ? null
-                    : quizList[currentQuizIdx].json.question["A"]["kor"]}
+                    : value["kor"]}
                 </Text>
                 <Text
                   style={
                     dialog_text_styles(
-                      quizList[currentQuizIdx].json.question["A"].is_question
+                      value.is_question
                     ).quizDialog_A_eng_text
                   }
                 >
-                  {quizList[currentQuizIdx].json.question["A"]["eng"]}
+                  {value["eng"]}
                 </Text>
               </View>
             </View>
-            <View style={styles.quizDialog_B_Container}>
+                  )
+                } else {
+                  return (
+                    <View style={styles.quizDialog_B_Container}>
               <Text>B : </Text>
               <View style={styles.quizDialog_B_textContainer}>
                 <Text style={styles.quizDialog_B_kor_text}>
-                  {quizList[currentQuizIdx].json.question["B"].is_question
+                  {value.is_question
                     ? null
-                    : quizList[currentQuizIdx].json.question["B"]["kor"]}
+                    : value["kor"]}
                 </Text>
                 <Text
                   style={
                     dialog_text_styles(
-                      quizList[currentQuizIdx].json.question["B"].is_question
+                      value.is_question
                     ).quizDialog_B_eng_text
                   }
                 >
-                  {quizList[currentQuizIdx].json.question["B"]["eng"]}
+                  {value["eng"]}
                 </Text>
               </View>
             </View>
+                  )
+                }
+
+              })
+            }
+
+            
           </View>
         )}
         <View

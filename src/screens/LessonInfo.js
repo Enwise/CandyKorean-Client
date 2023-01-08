@@ -115,9 +115,11 @@ const LessonInfo = ({ navigation, route }) => {
       
               let id = content.content_id;
               let solvedQuizNum = 0;
-              let quiz = quizList.filter((quiz) => {
-                return quiz.content.content_id == id;
+              let quiz = quizList.filter((q) => {
+                  return q.content.content_id == id && q.quiz_id !== 44;
               });
+        
+              
               if (quiz) {
                 content.totalQuizNum = quiz.length;
                 content.quiz = quiz;
