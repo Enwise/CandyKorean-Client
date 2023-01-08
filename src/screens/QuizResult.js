@@ -239,7 +239,7 @@ const QuizResult = ({ navigation, route }) => {
               console.log("solvedQuizList loaded");
             }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
             // 나중엔 어떤 lesson 에 해당하는 quiz 인지 알기 위해 lessonNo 를 같이 넘겨줘야 함
-            navigation.navigate("LessonInfo", {lessonInfo: lessonInfo, contentsList: contentsList, solvedQuizList: solvedQuizList})
+            navigation.navigate("LessonInfo", {lessonInfo: lessonInfo, contentsList: contentsList, solvedQuizList: [...solvedQuizList]})
           }}
         >
           <QuizNextButton></QuizNextButton>

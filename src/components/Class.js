@@ -18,10 +18,10 @@ import AuthContext from "../contexts/AuthContext";
 
 const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
   const [isWish, setIsWish] = useState(false);
-  const [userId, setUserId] = useState("");
   const [isWishLoaded, setIsWishLoaded] = useState(false);
-
+  
   const { authState } = React.useContext(AuthContext);
+  const [userId, setUserId] = useState(authState.userId);
 
   const [isClassCountLoaded, setIsClassCountLoaded] = useState(false);
   const [unitsNum, setUnitsNum] = useState(0);
@@ -44,7 +44,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
       );
     } else {
       createWishlist(
-        {user_id: userId, course_id: classInfo.course_id, checked: true },
+        {user_id: userId, course_id: classInfo.course_id },
         (d) => {
           console.log('create wishlist success')
           setIsWish(true);
@@ -62,9 +62,6 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
   
 
   useEffect(() => {
-    console.log("class useEffect")
-    console.log(authState.userId);
-    setUserId(authState.userId);
     // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
 
     // console.log("!!!!!!classInfo!!!!!!", classInfo);
@@ -101,7 +98,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
       )
     }
 
-  }, [isWish, isWishLoaded,isClassCountLoaded, unitsNum]);
+  }, []);
 
   console.log(isShowAll);
 

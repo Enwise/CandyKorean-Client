@@ -26,6 +26,7 @@ import {
   getClassesCountByCourseId,
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
+import { useIsFocused } from '@react-navigation/native'; 
 
 const ClassInfo = ({ props, navigation, route }) => {
   const [isMain, setIsMain] = useState(route.params?.isMain);
@@ -50,6 +51,8 @@ const ClassInfo = ({ props, navigation, route }) => {
   
   const [isClassCountLoaded, setIsClassCountLoaded] = useState(false);
   const [unitsNum, setUnitsNum] = useState(0);
+
+  const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
 
   const setOrientation = (status) => {
     if (status === 1 && !isPortrait) {
@@ -134,30 +137,31 @@ const ClassInfo = ({ props, navigation, route }) => {
     // 3 : Kyungeun
     // class_id : OT: 25, 1강 ~ 10강 : 26 ~ 35
     
-    console.log('isClassLoading')
-    let updatedClassList = [];
-    getClasses(
-      {},
-      (d) => {
-        console.log("getAllClasses");
-        // console.log(d.data);
-
-        
-          d.data.map((item) => {
-            if (
-              item.course_id == route.params.classInfo.course_id
-            ) {
-              updatedClassList.push(item.class_id);
-            }
-          });
-        
-        setClassList(updatedClassList);
-      },
-      setIsClassLoaded,
-      (e) => {
-        console.log(e);
-      }
-    );
+    // console.log('isClassLoading')
+    // let updatedClassList = [];
+    // if(!isClassLoaded){
+    //   getClasses(
+    //     {},
+    //     (d) => {
+    //       console.log("getAllClasses");
+  
+          
+    //         d.data.map((item) => {
+    //           if (
+    //             item.course_id == route.params.classInfo.course_id
+    //           ) {
+    //             setClassList([...item.class_id]);
+    //           }
+    //         });
+          
+          
+    //     },
+    //     setIsClassLoaded,
+    //     (e) => {
+    //       console.log(e);
+    //     }
+    //   );
+    // }
   
 
   
@@ -187,7 +191,7 @@ const ClassInfo = ({ props, navigation, route }) => {
                 setIsPortrait(!contentItem.is_portrait);
                 }
               } 
-            
+              return;
           });
         
       },
@@ -205,6 +209,7 @@ const ClassInfo = ({ props, navigation, route }) => {
           console.log(d.data);
           d.data.map((item) => {
             if (item.course_id == route.params.classInfo.course_id && item.user_id == userId) {
+              console.log("wishlist true!!")
               setIsWish(true);
             } 
           });
@@ -232,7 +237,7 @@ const ClassInfo = ({ props, navigation, route }) => {
       BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
     }
     
-  }, [route.params.classInfo, isWish, isWishLoaded, userId, unitsNum, isClassCountLoaded]);
+  }, [route.params.classInfo, isWish, isWishLoaded, userId, unitsNum, isClassCountLoaded, isFocused]);
 
   return (
     <>
