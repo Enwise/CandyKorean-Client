@@ -105,7 +105,6 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
   return (
     <View style={dstyles(isShowAll).classContainer}>
       <View style={dstyles(isShowAll).topContainer}>
-        <View style={styles.imageContainer}>
           <TouchableOpacity
             onPress={() => {
               isMain &&
@@ -116,6 +115,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
             }}
             disabled={!isMain}
           >
+            <View style={styles.imageContainer}>
             <Image
               style={isShowAll ? styles.classProfileImg : styles.classImg}
               // source={
@@ -133,8 +133,8 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
                   classInfo.tutor.profile_url
               }}
             ></Image>
-          </TouchableOpacity>
         </View>
+      </TouchableOpacity>
         <View style={dstyles(isShowAll).textContainer}>
           {isShowAll ? (
             <View style={styles.classNameAndHeart}>

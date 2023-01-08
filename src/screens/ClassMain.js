@@ -134,6 +134,7 @@ const ClassMain = ({ navigation }) => {
         {isLevelListLoaded && levelList.map((item) => {
           return (
             <Course
+              key={item.level_id}
               navigation={navigation}
               levelItem={item}
               isShowAll={false}
