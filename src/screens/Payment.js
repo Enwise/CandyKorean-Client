@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
 
-import { createPurchasedCourse, getTutorById, getAllPurchasedCoursesByUserId } from "../modules/NetworkFunction";
+import { createPurchasedCourse, getTutorById, getPurchasedCoursesByUserId } from "../modules/NetworkFunction";
 
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
@@ -71,7 +71,7 @@ const Payment = ({ navigation, route }) => {
     if(!isPurchasedCourseListLoaded) {
       let updatedPurchasedCourseList = [];
 
-      getAllPurchasedCoursesByUserId(
+      getPurchasedCoursesByUserId(
         { userId : userId},
 
         (d) => {

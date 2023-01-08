@@ -18,7 +18,7 @@ import UnitIcon from "../assets/icons/UnitIcon";
 import {
   getCourseById,
   getCourses,
-  getAllPurchasedCoursesByUserId,
+  getPurchasedCoursesByUserId,
   getTutorById,
   getLevelById,
 } from "../modules/NetworkFunction";
@@ -67,7 +67,7 @@ const PaymentResult = ({ navigation, route }) => {
       console.log("level_id", level_id);
       console.log("--------------------");
       
-      getAllPurchasedCoursesByUserId(
+      getPurchasedCoursesByUserId(
         { userId: route.params.user_id },
         (d) => {
           d.data.map((course_item) => {

@@ -62,7 +62,7 @@ const ClassMain = ({ navigation }) => {
   // join : Many tutor to One Level (O)
 
   /* Courses */
-  // name : 코스 이름
+  // name : 코스 이름 
   // category : 카테고리 이름
   // price : 코스 가격
   // join : One Course to Many Classes (O)
@@ -134,6 +134,7 @@ const ClassMain = ({ navigation }) => {
         {isLevelListLoaded && levelList.map((item) => {
           return (
             <Course
+              key={item.level_id}
               navigation={navigation}
               levelItem={item}
               isShowAll={false}

@@ -7,6 +7,8 @@ import AuthStack from "./src/navigation/AuthStack";
 import MainTab from "./src/navigation/MainTab";
 import { useFonts } from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ScreenOrientation from "expo-screen-orientation";
+
 import {
   createUser,
   getUserById,
@@ -75,6 +77,10 @@ export default function App() {
     };
 
     bootstrapAsync();
+
+    // 화면 세로 고정
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+
   }, []);
 
   const authContext = React.useMemo(
