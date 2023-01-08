@@ -415,7 +415,7 @@ const MyPage = ({ navigation }) => {
                 </View>
             </View>
 
-            <View style={{ width: "90%", marginTop: 20 }}>
+            <View style={{ width: "90%", marginTop: 20 }}> 
                 <Calendar
                     style={styles.calendar}
                     // markedDates={markedDates}
@@ -526,17 +526,32 @@ const MyPage = ({ navigation }) => {
                         justifyContent: "space-between",
                     }}
                 >
-                {/* {
-                    analysisList.map((item, index) => {
+                    <View style={styles.analysisLeftContainer}>
+                    {
+                    Object.entries(analysisObject).map((item, index) => {
+                        const [key, value] = item;
                         return (
-                            <View style={styles.analysisBar}>
-                                <View style={styles.analysisBarTitle}>
-                                    <Text style={styles.analysisBarTitleText}>{item.title}</Text>
+                            <View style={styles.analysisRowContainer}>
+                                <Text style={styles.analysisText}>
+                                    {key}
+                                </Text>
+                                <View style={styles.analysisBarContainer}>
+                                    {value === 0 ? (<Text style={{ color: '#A160E2' }}>    - </Text>) : 
+                                    <View style={{
+                                        width: value,
+                                        height: 5,
+                                        backgroundColor: "#A160E2",
+                                        borderRadius: 50,
+                                    }} ></View>}
+                                    
                                 </View>
                             </View>
+                        
                         )
                     })
-                } */}
+                
+                    }
+                    </View>
 
                     {/* <View style={{
                         display: "flex",
@@ -661,15 +676,7 @@ const MyPage = ({ navigation }) => {
 
                     </View> */}
 
-                    <View style={{
-                        marginLeft:22,
-                        backgroundColor:"#A160E2",
-                        borderRadius:13,
-                        width:80,
-                        display:"flex",
-                        flexDirection:"column",
-                        alignItems:"center",
-                    }}>
+                    <View style={styles.analysisRightContainer}>
 
                         <Text
                             style={{
@@ -763,6 +770,42 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#e0e0e0",
     },
+    analysisLeftContainer: {
+        width: "70%",
+    },
+    analysisRightContainer : {
+        
+            marginLeft:22,
+            backgroundColor:"#A160E2",
+            borderRadius:13,
+            width:"25%",
+            display:"flex",
+            flexDirection:"column",
+            alignItems:"center",
+        
+    },
+    analysisRowContainer : {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 5,
+        alignItems:'center',
+        height: 25,
+    },
+    analysisText : {
+        fontSize: 10,
+        fontFamily: "Poppins-Medium",
+        color: "#807F82",
+        width: "40%",
+        marginRight: 10,
+    },
+    analysisBarContainer: {
+        width: "60%",
+        height: "100%",
+        borderRadius: 50,
+        backgroundColor: "#F1EFF4",
+        
+    }
 
 });
 
