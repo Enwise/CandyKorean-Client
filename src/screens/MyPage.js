@@ -271,6 +271,15 @@ const MyPage = ({ navigation }) => {
          "Comprehension" : 0, 
      })
 
+     const getTotalScore = () => {
+        let totalScore = 0;
+        
+        Object.keys(analysisObject).map((key) => {
+            totalScore += analysisObject[key]
+        })
+        return totalScore;
+     }
+
    useEffect(() => {
     let updatedAnalysisObject = {...analysisObject}
     solvedQuizList.map((item) => {
@@ -544,7 +553,7 @@ const MyPage = ({ navigation }) => {
                                     {value === 0 ? (<Text style={{ color: '#A160E2' }}>    - </Text>) : 
                                     <View style={{
                                         width: `${value + 10}%`,
-                                        height: "100%",
+                                        height: "95%",
                                         backgroundColor: "#A160E2",
                                         borderRadius: 50,
                                         flex: 1,
@@ -565,128 +574,6 @@ const MyPage = ({ navigation }) => {
                     }
                     </View>
 
-                    {/* <View style={{
-                        display: "flex",
-                        flexDirection: "column",
-                    }}>
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems:"center",
-                            marginBottom:10
-                        }}>
-                            <Image source={require("../assets/img/mypage-ability-text1.png")}  style={{width:56}}/>
-                            <View style={{marginLeft:15}}>
-                                <View
-                                    style={{
-                                        width:171,
-                                        height:21,
-                                        backgroundColor:"#F1EFF4",
-                                        borderRadius:50,
-                                    }}
-                                >
-                                    <View style={{
-                                        width: 40,
-                                        height:21,
-                                        backgroundColor:"#A160E2",
-                                        borderRadius:50,
-                                        display:"flex",
-                                        alignItems:"center",
-                                        justifyContent:"center"
-                                    }}>
-                                        <Text style={{
-                                            marginLeft:"auto",
-                                            marginRight:9,
-                                            fontSize: 10,
-                                            fontWeight: "400",
-                                            color: "#FDFDFD",
-                                        }}>
-                                            40
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems:"center",
-                            marginBottom:10
-                        }}>
-                            <Image source={require("../assets/img/mypage-ability-text2.png")}  style={{width:56}}/>
-                            <View style={{marginLeft:15}}>
-                                <View
-                                    style={{
-                                        width:171,
-                                        height:21,
-                                        backgroundColor:"#F1EFF4",
-                                        borderRadius:50,
-                                    }}
-                                >
-                                    <View style={{
-                                        width: 80,
-                                        height:21,
-                                        backgroundColor:"#A160E2",
-                                        borderRadius:50,
-                                        display:"flex",
-                                        alignItems:"center",
-                                        justifyContent:"center"
-                                    }}>
-                                        <Text style={{
-                                            marginLeft:"auto",
-                                            marginRight:9,
-                                            fontSize: 10,
-                                            fontWeight: "400",
-                                            color: "#FDFDFD",
-                                        }}>
-                                            80
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems:"center"
-                        }}>
-                            <Image source={require("../assets/img/mypage-ability-text3.png")}  style={{width:56}}/>
-                            <View style={{marginLeft:15}}>
-                                <View
-                                    style={{
-                                        width:171,
-                                        height:21,
-                                        backgroundColor:"#F1EFF4",
-                                        borderRadius:50,
-                                    }}
-                                >
-                                    <View style={{
-                                        width: 100,
-                                        height:21,
-                                        backgroundColor:"#A160E2",
-                                        borderRadius:50,
-                                        display:"flex",
-                                        alignItems:"center",
-                                        justifyContent:"center"
-                                    }}>
-                                        <Text style={{
-                                            marginLeft:"auto",
-                                            marginRight:9,
-                                            fontSize: 10,
-                                            fontWeight: "400",
-                                            color: "#FDFDFD",
-                                        }}>
-                                            100
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-
-
-                    </View> */}
 
                     <View style={styles.analysisRightContainer}>
 
@@ -698,7 +585,7 @@ const MyPage = ({ navigation }) => {
                                 marginTop:10
                             }}
                         >
-                            Total score
+                            Total{"\n"}score
                         </Text>
                         <View
                             style={{
@@ -718,7 +605,7 @@ const MyPage = ({ navigation }) => {
                                     color: "#A160E2",
                                 }}
                             >
-                                220
+                                {getTotalScore()}
                             </Text>
 
                         </View>
@@ -794,6 +681,8 @@ const styles = StyleSheet.create({
             display:"flex",
             flexDirection:"column",
             alignItems:"center",
+            justifyContent:'space-around',
+            paddingBottom:15,
         
     },
     analysisRowContainer : {
@@ -802,17 +691,16 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginBottom: 5,
         alignItems:'center',
-        height: 25,
+        height: 15,
     },
     analysisText : {
         fontSize: 10,
         fontFamily: "Poppins-Medium",
         color: "#807F82",
         width: "40%",
-        marginRight: 10,
     },
     analysisBarContainer: {
-        width: "60%",
+        width: "65%",
         height: "100%",
         borderRadius: 50,
         backgroundColor: "#F1EFF4",
