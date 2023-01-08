@@ -10,7 +10,7 @@ import {
 
 import Lesson from "../components/Lesson";
 import {
-  getAllPurchasedCoursesByUserId,
+  getPurchasedCoursesByUserId,
   getCourses,
   getAllQuizs,
   getSolvedQuizsByUser,
@@ -18,7 +18,7 @@ import {
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
-import { useIsFocused } from '@react-navigation/native'; 
+import { useIsFocused, useFocusEffect } from '@react-navigation/native'; 
 
 const ClassRoom = ({ route, navigation }) => {
   // 객체 형태로 저장
@@ -46,59 +46,101 @@ const ClassRoom = ({ route, navigation }) => {
   const [solvedQuizList, setSolvedQuizList] = useState([]); 
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
 
-  useState(false);
+  useFocusEffect(
+    React.useCallback(() => {
+      getPurchasedCoursesByUserId(
+        { userId: userId },
+        (d) => {
+          let updatedPurchasedCourseList = [];
+          d.data.map((item) => {
+            getCourses(
+              { },
+              (d) => {
+                d.data.map((courseItem) => {
+                  if (courseItem.course_id == item.course_id) {
+                    updatedPurchasedCourseList.push(courseItem);
+                    setPurchasedCourseList([...updatedPurchasedCourseList]);
+                  }
+                })
+                
+              },
+              () => {},
+              (e) => {
+                console.log(e);
+              }
+            );
+          });
+        },
+        setIsPurchasedCourseListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+    
+    getAllQuizs(() => {},
+    (d) => {
+      setQuizList(d.data);
+      console.log("quizList loaded");
+    }, setIsQuizListLoaded, (e) => {console.log(e)}
+    )
 
-  useEffect(() => {
+    // getSolvedQuizsByUser({user_id : userId}, (d) => {
+    //   setSolvedQuizList(d.data);
+    //   console.log("solvedQuizList loaded");
+    // },
+    // setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+    }, [])
+  )
+  
+  
+  // useEffect(() => {
 
-    getSolvedQuizsByUser({user_id : userId}, (d) => {
-      setSolvedQuizList([...d.data]);
-      console.log("solvedQuizList loaded");
-    }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+    
     
 
-    // setUserId(authState.userId);
-        getAllPurchasedCoursesByUserId(
-          { userId: userId },
-          (d) => {
-            let updatedPurchasedCourseList = [];
-            d.data.map((item) => {
-              getCourses(
-                { },
-                (d) => {
-                  d.data.map((courseItem) => {
-                    if (courseItem.course_id == item.course_id) {
-                      updatedPurchasedCourseList.push(courseItem);
-                      setPurchasedCourseList([...updatedPurchasedCourseList]);
-                    }
-                  })
+  //   // setUserId(authState.userId);
+  //       getPurchasedCoursesByUserId(
+  //         { userId: userId },
+  //         (d) => {
+  //           let updatedPurchasedCourseList = [];
+  //           d.data.map((item) => {
+  //             getCourses(
+  //               { },
+  //               (d) => {
+  //                 d.data.map((courseItem) => {
+  //                   if (courseItem.course_id == item.course_id) {
+  //                     updatedPurchasedCourseList.push(courseItem);
+  //                     setPurchasedCourseList([...updatedPurchasedCourseList]);
+  //                   }
+  //                 })
                   
-                },
-                () => {},
-                (e) => {
-                  console.log(e);
-                }
-              );
-            });
-          },
-          setIsPurchasedCourseListLoaded,
-          (e) => {
-            console.log(e);
-          }
-        );
+  //               },
+  //               () => {},
+  //               (e) => {
+  //                 console.log(e);
+  //               }
+  //             );
+  //           });
+  //         },
+  //         setIsPurchasedCourseListLoaded,
+  //         (e) => {
+  //           console.log(e);
+  //         }
+  //       );
       
-      getAllQuizs(() => {},
-      (d) => {
-        setQuizList(d.data);
-        console.log("quizList loaded");
-      }, setIsQuizListLoaded, (e) => {console.log(e)}
-      )
+  //     getAllQuizs(() => {},
+  //     (d) => {
+  //       setQuizList(d.data);
+  //       console.log("quizList loaded");
+  //     }, setIsQuizListLoaded, (e) => {console.log(e)}
+  //     )
 
-      getSolvedQuizsByUser({user_id : userId}, (d) => {
-        setSolvedQuizList(d.data);
-        console.log("solvedQuizList loaded");
-      },
-      setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-  }, [isFocused, isSolvedQuizListLoaded]);
+  //     getSolvedQuizsByUser({user_id : userId}, (d) => {
+  //       setSolvedQuizList(d.data);
+  //       console.log("solvedQuizList loaded");
+  //     },
+  //     setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+  // }, [isFocused, isSolvedQuizListLoaded]);
 
   return (
     <View style={styles.container}>
@@ -107,7 +149,7 @@ const ClassRoom = ({ route, navigation }) => {
 
       </View>
       <View style={{flex: 1, alignItems:'center', justifyContent:'center'}}>
-      {purchasedCourseList.length === 0 ? (
+    {purchasedCourseList.length === 0 ? (
         <Text style={{fontFamily: 'Poppins-Regular'}}>There are no purchased courses.</Text>
       ) : (  <SafeAreaView nestedScrollEnabled={true}>
         <FlatList
@@ -115,7 +157,7 @@ const ClassRoom = ({ route, navigation }) => {
           key={"_"}
           style={styles.classListContainer}
           horizontal={false}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item.course_id)}
           data={purchasedCourseList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}

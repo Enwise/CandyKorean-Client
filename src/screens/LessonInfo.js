@@ -24,7 +24,7 @@ import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
 
 import { getCourses, getSolvedQuizsByUser } from '../modules/NetworkFunction';
-import { useIsFocused } from '@react-navigation/native'; 
+import { useIsFocused, useFocusEffect } from '@react-navigation/native'; 
 
 
 const LessonInfo = ({ navigation, route }) => {
@@ -32,20 +32,18 @@ const LessonInfo = ({ navigation, route }) => {
 
   const [contentsList, setContentsList] = useState(route.params.contentsList);
   
-  const [lessonInfo, setLessonInfo] = useState(route.params.lessonInfo);
+  const [lessonInfo, setLessonInfo] = useState(route.params?.lessonInfo);
   // const [contentsList, setContentsList] = useState(route.params.contentsList);
-  const [quizList, setQuizList] = useState(route.params.quizList);
-  const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
+  const [quizList, setQuizList] = useState(route.params?.quizList);
+  // const [quizList, setQuizList] = useState([]);
+  const [solvedQuizList, setSolvedQuizList] = useState(route.params?.solvedQuizList);
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
 
   const [solvedQuizNumList, setSolvedQuizNumList] = useState([]);
 
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
-  const [clickedUnit, setClickedUnit] = useState(0);
 
-  const [isCourseLoaded, setIsCourseLoaded] = useState(false);
-  const [tutor_profile_url, setTutorProfileUrl] = useState('');
 
   const [clickedContentId, setClickedContentId] = useState(
     contentsList[0].content_id
@@ -94,79 +92,120 @@ const LessonInfo = ({ navigation, route }) => {
   // 1~10강 == 28 ~ 37
   // part1 == 28, part2 == 29, part3 == 30, part4 == 31, part5 == 32, part6 == 33, part7 == 34, part8 == 35, part9 == 36, part10 == 37
 
-  
 
-  useEffect(() => {    
 
-    if(!isSolvedQuizListLoaded){
-      
-      getSolvedQuizsByUser({user_id : userId}, (d) => {
-        setSolvedQuizList([...d.data]);
-        console.log("solvedQuizList loaded");
-      }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-    }
-    
-      getCourses({}, (d) => {
-        d.data.map((courseItem) => {
-          if (courseItem.course_id == contentsList[0].class_entity.course_id){
-            setTutorProfileUrl(courseItem.tutor.profile_url);
-            console.log(tutor_profile_url)
-            return;
-          }
-        })
-        
-        
-      }, setIsCourseLoaded, (e) => {console.log(e)})
-    
-    solvedQuizList.map((solvedItem) => {
-      setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
-    })
-    console.log("solvedQuizNumList : ",  solvedQuizNumList)
-    
-      contentsList.map((content) => {
+  useFocusEffect(
+    React.useCallback(() => {
 
-        let id = content.content_id;
-        let solvedQuizNum = 0;
-        let quiz = quizList.filter((quiz) => {
-          return quiz.content.content_id == id;
-        });
-        if (quiz) {
-          content.totalQuizNum = quiz.length;
-          content.quiz = quiz;
-          quiz.map((q) => {
-            if(solvedQuizNumList.includes(q.quiz_id)){
-            let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
-              return solvedQuizItem.quiz_id == q.quiz_id;
-            })
+      console.log("LessonInfo is focused");
 
-            console.log('foundSolvedQuizItem', foundSolvedQuizItem)
-            console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
-
-            if(foundSolvedQuizItem.is_correct){
-              solvedQuizNum += 1;
-            }
-
-          }
+      if(!isSolvedQuizListLoaded){
+        getSolvedQuizsByUser({user_id : userId}, (d) => {
+          setSolvedQuizList([...d.data]);
+          console.log("solvedQuizList loaded");
+        }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+       
+      }
+          solvedQuizList.map((solvedItem) => {
+            setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
           })
+          console.log("solvedQuizNumList : ",  solvedQuizNumList)
           
-          content.solvedQuizNum = solvedQuizNum;
-        } else {
-          content.totalQuizNum = 0;
+            contentsList.map((content) => {
+      
+              let id = content.content_id;
+              let solvedQuizNum = 0;
+              let quiz = quizList.filter((q) => {
+                  return q.content.content_id == id && q.quiz_id !== 44;
+              });
+        
+              
+              if (quiz) {
+                content.totalQuizNum = quiz.length;
+                content.quiz = quiz;
+                quiz.map((q) => {
+                  if(solvedQuizNumList.includes(q.quiz_id)){
+                  let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
+                    return solvedQuizItem.quiz_id == q.quiz_id;
+                  })
+      
+                  console.log('foundSolvedQuizItem', foundSolvedQuizItem)
+                  console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
+      
+                  if(foundSolvedQuizItem.is_correct){
+                    solvedQuizNum += 1;
+                  }
+      
+                }
+                })
+                
+                content.solvedQuizNum = solvedQuizNum;
+              } else {
+                content.totalQuizNum = 0;
+              }
+        })
+        if(isSolvedQuizListLoaded){
+          setIsSolvedQuizListLoaded(false);
         }
 
+    }, [solvedQuizList, isFocused])
+  )
 
-      })
+  // useEffect(() => {    
 
-      
-      setIsQuizReady(true)
+    
+  //   if(!isSolvedQuizListLoaded){
+  //     getSolvedQuizsByUser({user_id : userId}, (d) => {
+  //       setSolvedQuizList([...d.data]);
+  //       console.log("solvedQuizList loaded");
+  //     }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+  //   }
+     
 
-      
-
-  }, [isSolvedQuizListLoaded, isFocused]);
+  //       solvedQuizList.map((solvedItem) => {
+  //         setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
+  //       })
+  //       console.log("solvedQuizNumList : ",  solvedQuizNumList)
+        
+  //         contentsList.map((content) => {
+    
+  //           let id = content.content_id;
+  //           let solvedQuizNum = 0;
+  //           let quiz = quizList.filter((quiz) => {
+  //             return quiz.content.content_id == id;
+  //           });
+  //           if (quiz) {
+  //             content.totalQuizNum = quiz.length;
+  //             content.quiz = quiz;
+  //             quiz.map((q) => {
+  //               if(solvedQuizNumList.includes(q.quiz_id)){
+  //               let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
+  //                 return solvedQuizItem.quiz_id == q.quiz_id;
+  //               })
+    
+  //               console.log('foundSolvedQuizItem', foundSolvedQuizItem)
+  //               console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
+    
+  //               if(foundSolvedQuizItem.is_correct){
+  //                 solvedQuizNum += 1;
+  //               }
+    
+  //             }
+  //             })
+              
+  //             content.solvedQuizNum = solvedQuizNum;
+  //           } else {
+  //             content.totalQuizNum = 0;
+  //           }
+  //     })
+     
+  
+  // }, [solvedQuizList, isSolvedQuizListLoaded, isFocused]);
 
 
 
   return (
+    
     <View style={styles.container}>
       <View style={styles.backBtn}>
         <TouchableOpacity
@@ -182,7 +221,7 @@ const LessonInfo = ({ navigation, route }) => {
           <Image
             style={styles.imageContainer}
             source={{
-              uri:tutor_profile_url
+              uri:lessonInfo.tutor.profile_url
               
             }}
           ></Image>
@@ -254,7 +293,7 @@ const LessonInfo = ({ navigation, route }) => {
           numColumns={1}
           key={"_"}
           style={styles.curriculumListContainer}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item.content_id)}
           data={contentsList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
