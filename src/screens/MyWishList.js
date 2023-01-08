@@ -26,7 +26,7 @@ import AuthContext from "../contexts/AuthContext";
 const MyWishList = ({ navigation, route }) => {
 
   const { authState } = React.useContext(AuthContext);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(authState.userId);
 
   const [dialogVisible, setDialogVisible] = useState(false);
 
@@ -40,131 +40,46 @@ const MyWishList = ({ navigation, route }) => {
   // 장바구니에 담긴 상품들 불러오기
   useEffect(() => {
     
-    setUserId(authState.userId);
+    // setUserId(authState.userId);
     console.log('user_id', userId)
 
+    let updatedCourseList = [];
     
     if(!isWishListLoaded){
       getWishlistByUser(
         { user_id : userId },
         (d) => {
-          let updatedCourseList = [];
           d.data.map((wishItem) => {
 
             console.log("wishItem", wishItem)
             console.log("-----------------");
             
-            if(wishItem.checked){
               getCourseById(
                 {course_id : wishItem.course_id},
                 (d) => {
-                console.log("wow")
+                console.log(d.data)
                 let newData = d.data;
                 newData['isSelected'] = false;
-                updatedCourseList.push(newData);
-                setCourseList([...updatedCourseList]);
+                setCourseList(
+                  (prev) => [...prev, newData]
+                );
+                
               },
               () => {},
               (e) => {console.log(e)} 
               )
-            }
             
             
           })
           
-        console.log('courseList', courseList)
+          
       },
       setIsWishListLoaded,
       (e) => {
         console.log(e);
       })}
 
-  }, [ isWishListLoaded, courseList]);
-  //   {
-  //     id: 1,
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-  //     className: "Trip Korean",
-  //     price: 0,
-  //     category: "K-culture",
-  //     checked: false,
-  //     level: "Lollipop",
-  //     units: 10,
-  //     isSelected: false,
-  //   },
-  //   {
-  //     id: 2,
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
-  //     className: "Real Voca in K-Drama",
-  //     price: 15,
-  //     category: "K-culture",
-  //     checked: false,
-  //     level: "CottonCandy",
-  //     units: 10,
-  //     isSelected: false,
-  //   },
-  //   {
-  //     id: 3,
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
-  //     className: "Real Voca in K-Drama",
-  //     price: 15,
-  //     category: "K-culture",
-  //     checked: false,
-  //     level: "Lollipop",
-  //     units: 10,
-  //     isSelected: false,
-  //   },
-  //   {
-  //     id: 4,
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
-  //     className: "Real Voca in K-Drama",
-  //     price: 15,
-  //     category: "K-culture",
-  //     checked: false,
-  //     level: "Lollipop",
-  //     units: 10,
-  //     isSelected: false,
-  //   },
-
-  //   {
-  //     id: 5,
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
-  //     className: "Real Voca in K-Drama",
-  //     price: 15,
-  //     category: "K-culture",
-  //     checked: false,
-  //     level: "Lollipop",
-  //     units: 10,
-  //     isSelected: false,
-  //   },
-  //   {
-  //     id: 6,
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
-  //     className: "Real Voca in K-Drama",
-  //     price: 15,
-  //     category: "K-culture",
-  //     checked: false,
-  //     level: "Lollipop",
-  //     units: 10,
-  //     isSelected: false,
-  //   },
-  //   {
-  //     id: 7,
-  //     imgUrl: require("../assets/icons/class_img/shin_yoo_jin_square.jpg"),
-
-  //     className: "Real Voca in K-Drama",
-  //     price: 15,
-  //     category: "K-culture",
-  //     checked: false,
-  //     level: "Lollipop",
-  //     units: 10,
-  //     isSelected: false,
-  //   },
-  // ]);
+  }, [ ]);
 
   const deleteItem = (id) => {
     console.log(id);
