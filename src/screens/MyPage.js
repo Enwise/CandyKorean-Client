@@ -9,7 +9,7 @@ import { VERTICAL } from "react-native/Libraries/Components/ScrollView/ScrollVie
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import AuthContext from "../contexts/AuthContext";
-import {getCourses, getLevels, getUserById} from "../modules/NetworkFunction";
+import {getCourses, getLevels, getUserById, getSolvedQuizsByUser} from "../modules/NetworkFunction";
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 
 
@@ -91,6 +91,15 @@ const MyPage = ({ navigation }) => {
     const [isUserLoaded, setIsUserLoaded] = useState(false);
     const [user, setUser] = React.useState(null);
 
+    
+    
+    // getSolvedQuizs
+    
+    const [ solvedQuizList, setSolvedQuizList ] = useState([])
+    const [ isSolvedQuizListLoaded, setIsSolvedQuizListLoaded ] = useState(false);
+    const [ isAnalysisObjectLoaded, setIsAnalysisObjectLoaded ] = useState(false);
+    const [ userId, setUserId ] = useState(authState.userId);
+
     // React.useEffect(() => {
     //     getUserById(
     //         authState.userId,
@@ -124,11 +133,14 @@ const MyPage = ({ navigation }) => {
 
 
     const isFocused = useIsFocused();
-    useEffect(() => {
-        if (isFocused) {
-            console.log('isFocused');
-        }
-    }, [isFocused]);
+    // useEffect(() => {
+    //     if (isFocused) {
+    //         console.log('isFocused');
+    //     }
+
+        
+
+    // }, [isFocused]);
 
 
     // const AbilityBar = (amount, total) => {
@@ -162,6 +174,7 @@ const MyPage = ({ navigation }) => {
 
     const [isCourseListLoaded, setIsCourseListLoaded] = useState(false);
 
+    
     useEffect(() => {
         console.log('Course useEffect')
         if (!isCourseListLoaded) {
@@ -221,7 +234,82 @@ const MyPage = ({ navigation }) => {
                 }
             );
         }
-    }, [isCourseListLoaded]);
+
+    }, [])
+
+    useEffect(() => {
+        if(!isSolvedQuizListLoaded){
+            getSolvedQuizsByUser(
+                {
+                    user_id: authState.userId,
+                },
+                (d) => {
+                    console.log(d);
+                    let updatedSolvedQuizList = d.data.filter(item =>
+                        item.is_correct === true
+                    )
+                    setSolvedQuizList((prev) => [...prev, ...updatedSolvedQuizList]);
+                    
+                    console.log("solvedQuizList", solvedQuizList);
+                    
+                    
+                },
+                setIsSolvedQuizListLoaded,
+                (e) => {
+                    console.log(e);
+                }
+                )
+       
+            
+        }
+    
+    }, [])
+    const [analysisObject, setAnalysisObject] = useState({
+        "Writing" : 0,
+         "Vocabulary" : 0,
+         "Grammar" : 0,
+         "Comprehension" : 0, 
+     })
+
+     const getTotalScore = () => {
+        let totalScore = 0;
+        
+        Object.keys(analysisObject).map((key) => {
+            totalScore += analysisObject[key]
+        })
+        return totalScore;
+     }
+
+   useEffect(() => {
+    let updatedAnalysisObject = {...analysisObject}
+    solvedQuizList.map((item) => {
+        if (item.quiz.style === "arrange" || item.quiz.style === "sentence") {
+            // Writing 
+            // setAnalysisObject((prev) => ({...prev, "Writing" : prev["Writing"] + 1}))
+            updatedAnalysisObject['Writing'] += 1
+                
+            } else if (item.quiz.style === "word") {
+                // Vocabulary
+                // setAnalysisObject((prev) => ({...prev, "Vocabulary" : prev["Vocabulary"] + 1}))
+                updatedAnalysisObject['Vocabulary'] += 1
+
+                // analysisObject['Vocabulary'] += 1
+            } else if (item.quiz.style === "grammar") {
+                // Grammar
+                // setAnalysisObject((prev) => ({...prev, "Grammar" : prev["Grammar"] + 1}))
+                updatedAnalysisObject['Grammar'] += 1
+
+                // analysisObject['Grammar'] += 1
+            } else if (item.quiz.style === "dialog") {
+                // Comprehension
+                // setAnalysisObject((prev) => ({...prev, "Comprehension" : prev["Comprehension"] + 1}))
+                updatedAnalysisObject['Comprehension'] += 1
+            }
+            
+            setAnalysisObject(updatedAnalysisObject)
+        })    
+        console.log("analysisObject", analysisObject);
+    }, [isSolvedQuizListLoaded])
 
     return (
         <View style={styles.container}>
@@ -232,7 +320,7 @@ const MyPage = ({ navigation }) => {
                     justifyContent: "space-between",
                     width: "90%",
                     alignItems: "center",
-                    marginBottom: 40,
+                    marginBottom: 20,
                 }}
             >
                 <View>
@@ -340,7 +428,7 @@ const MyPage = ({ navigation }) => {
                 </View>
             </View>
 
-            <View style={{ width: "90%", marginTop: 20 }}>
+            <View style={{ width: "90%", marginTop: 20 }}> 
                 <Calendar
                     style={styles.calendar}
                     // markedDates={markedDates}
@@ -424,7 +512,6 @@ const MyPage = ({ navigation }) => {
             <View
                 style={{
                     width: "90%",
-                    marginTop: 20,
                     display: "flex",
                     flexDirection: "column",
                     // borderTop:"1px solid #F1EFF4"
@@ -444,146 +531,51 @@ const MyPage = ({ navigation }) => {
 
                 <View
                     style={{
-                        width: "100%",
+                        width: Dimensions.get("window").width - 40,
+                        height: Dimensions.get("window").height * 0.15,
                         marginTop: 15,
                         display: "flex",
                         flexDirection: "row",
-                        justifyContent:"space-between"
+                        justifyContent: "space-between",
                     }}
                 >
-
-                    <View style={{
-                        display: "flex",
-                        flexDirection: "column",
-                    }}>
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems:"center",
-                            marginBottom:10
-                        }}>
-                            <Image source={require("../assets/img/mypage-ability-text1.png")}  style={{width:56}}/>
-                            <View style={{marginLeft:15}}>
-                                <View
-                                    style={{
-                                        width:171,
-                                        height:21,
-                                        backgroundColor:"#F1EFF4",
-                                        borderRadius:50,
-                                    }}
-                                >
+                    <View style={styles.analysisLeftContainer}>
+                    {
+                        
+                    Object.entries(analysisObject).map((item, index) => {
+                        const [key, value] = item;
+                        return (
+                            <View style={styles.analysisRowContainer}>
+                                <Text style={styles.analysisText}>
+                                    {key}
+                                </Text>
+                                <View style={styles.analysisBarContainer}>
+                                    {value === 0 ? (<Text style={{ color: '#A160E2' }}>    - </Text>) : 
                                     <View style={{
-                                        width: 40,
-                                        height:21,
-                                        backgroundColor:"#A160E2",
-                                        borderRadius:50,
-                                        display:"flex",
-                                        alignItems:"center",
-                                        justifyContent:"center"
-                                    }}>
-                                        <Text style={{
-                                            marginLeft:"auto",
-                                            marginRight:9,
-                                            fontSize: 10,
-                                            fontWeight: "400",
-                                            color: "#FDFDFD",
-                                        }}>
-                                            40
-                                        </Text>
-                                    </View>
+                                        width: `${value + 10}%`,
+                                        height: "95%",
+                                        backgroundColor: "#A160E2",
+                                        borderRadius: 50,
+                                        flex: 1,
+                                        flexDirection: 'row',
+                                        justifyContent: "flex-end",
+                                        paddingRight: 10,
+                                        alignItems: "center",
+                                    }} >
+                                        <Text style={{ fontSize: 10, fontFamily: 'Poppins-Regular', color: '#fff' }}>{value}</Text>
+                                        </View>}
+                                    
                                 </View>
                             </View>
-                        </View>
-
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems:"center",
-                            marginBottom:10
-                        }}>
-                            <Image source={require("../assets/img/mypage-ability-text2.png")}  style={{width:56}}/>
-                            <View style={{marginLeft:15}}>
-                                <View
-                                    style={{
-                                        width:171,
-                                        height:21,
-                                        backgroundColor:"#F1EFF4",
-                                        borderRadius:50,
-                                    }}
-                                >
-                                    <View style={{
-                                        width: 80,
-                                        height:21,
-                                        backgroundColor:"#A160E2",
-                                        borderRadius:50,
-                                        display:"flex",
-                                        alignItems:"center",
-                                        justifyContent:"center"
-                                    }}>
-                                        <Text style={{
-                                            marginLeft:"auto",
-                                            marginRight:9,
-                                            fontSize: 10,
-                                            fontWeight: "400",
-                                            color: "#FDFDFD",
-                                        }}>
-                                            80
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems:"center"
-                        }}>
-                            <Image source={require("../assets/img/mypage-ability-text3.png")}  style={{width:56}}/>
-                            <View style={{marginLeft:15}}>
-                                <View
-                                    style={{
-                                        width:171,
-                                        height:21,
-                                        backgroundColor:"#F1EFF4",
-                                        borderRadius:50,
-                                    }}
-                                >
-                                    <View style={{
-                                        width: 100,
-                                        height:21,
-                                        backgroundColor:"#A160E2",
-                                        borderRadius:50,
-                                        display:"flex",
-                                        alignItems:"center",
-                                        justifyContent:"center"
-                                    }}>
-                                        <Text style={{
-                                            marginLeft:"auto",
-                                            marginRight:9,
-                                            fontSize: 10,
-                                            fontWeight: "400",
-                                            color: "#FDFDFD",
-                                        }}>
-                                            100
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-
-
+                        
+                        )
+                    })
+                
+                    }
                     </View>
 
-                    <View style={{
-                        marginLeft:22,
-                        backgroundColor:"#A160E2",
-                        borderRadius:13,
-                        width:80,
-                        display:"flex",
-                        flexDirection:"column",
-                        alignItems:"center",
-                    }}>
+
+                    <View style={styles.analysisRightContainer}>
 
                         <Text
                             style={{
@@ -593,7 +585,7 @@ const MyPage = ({ navigation }) => {
                                 marginTop:10
                             }}
                         >
-                            Total score
+                            Total{"\n"}score
                         </Text>
                         <View
                             style={{
@@ -613,7 +605,7 @@ const MyPage = ({ navigation }) => {
                                     color: "#A160E2",
                                 }}
                             >
-                                220
+                                {getTotalScore()}
                             </Text>
 
                         </View>
@@ -677,6 +669,44 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#e0e0e0",
     },
+    analysisLeftContainer: {
+        width: "70%",
+    },
+    analysisRightContainer : {
+        
+            marginLeft:22,
+            backgroundColor:"#A160E2",
+            borderRadius:13,
+            width:"25%",
+            display:"flex",
+            flexDirection:"column",
+            alignItems:"center",
+            justifyContent:'space-around',
+            paddingBottom:15,
+        
+    },
+    analysisRowContainer : {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 5,
+        alignItems:'center',
+        height: 15,
+    },
+    analysisText : {
+        fontSize: 10,
+        fontFamily: "Poppins-Medium",
+        color: "#807F82",
+        width: "40%",
+    },
+    analysisBarContainer: {
+        width: "65%",
+        height: "100%",
+        borderRadius: 50,
+        backgroundColor: "#F1EFF4",
+        
+    }
+
 });
 
 export default MyPage;

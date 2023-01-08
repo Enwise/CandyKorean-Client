@@ -296,8 +296,7 @@ const PaymentResult = ({ navigation, route }) => {
       ) : (
         <View style={styles.paymentFailedTextContainer}>
           <Text style={styles.paymentFailedText}>
-            Failed to payment.{"\n"}You may have already bought this course.
-            {"\n"}If not, try again.
+            Failed to payment.{"\n"}Please try again.
           </Text>
         </View>
       )}

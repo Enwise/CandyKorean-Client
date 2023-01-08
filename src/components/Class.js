@@ -317,9 +317,9 @@ const styles = StyleSheet.create({
   },
   classProfileImg: {
     borderRadius: 20,
-    width: "100%",
-    height: 130,
-    marginRight: 15,
+    width: Dimensions.get("window").width * 0.3,
+    height: Dimensions.get("window").width * 0.35,
+    marginRight: 5,
   },
 
   imageContainer: {

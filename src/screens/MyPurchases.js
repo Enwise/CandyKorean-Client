@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
-import {getAllPurchasedCoursesByUserId, getUserById} from "../modules/NetworkFunction";
+import {getPurchasedCoursesByUserId, getUserById} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 const MyPurchases = ({navigation}) => {
 
@@ -29,7 +29,7 @@ const MyPurchases = ({navigation}) => {
 
 
     React.useEffect(() => {
-        getAllPurchasedCoursesByUserId(
+        getPurchasedCoursesByUserId(
             authState.userId,
             (d) => {
                 console.log(d);

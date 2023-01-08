@@ -64,32 +64,32 @@ const LessonQuiz = ({ route, navigation }) => {
   const [dummyQuizList, setDummyQuizList] = useState([
     {
       id: 1,
-      style: "arrange",
+      style: "arrange", // Writing
 json: { "question": "You should keep your legs with no movements, and you should move your arms quickly in here.", "answer": { "1": { "text": "다리는", "order": 1, "is_selected": false }, "2": { "text": "가만히", "order": 2, "is_selected": false}, "3": { "text": "있고", "order": 3, "is_selected": false}, "4": { "text": "팔은", "order": 4, "is_selected": false} , "5": { "text": "빠르게", "order": 5, "is_selected": false}, "6": { "text": "움직이세요", "order": 6, "is_selected": false}}}
 ,
     },
     {
       id: 2,
-      style: "sentence",
+      style: "sentence", // Writing
 json: { "question": "Sweep your arms.", "answer": {"1": {"text": "팔을 쓸어 올리세요.", "correct": true, "is_selected": false}, "2": { "text": "한 걸음 앞으로 나가세요.", "correct": false, "is_selected": false}, "3": {"text": "허리를 빼면서 뒤로 걸어 가세요.", "correct": false, "is_selected": false }}}
 ,
     },
     // ’
     {
       id: 3,
-      style: "word",
+      style: "word", // Vocabulary
 json: {"question": "Q. 'be delicious' in Korean?","answer": {"1": {"text": "멋지다","correct": false,"is_selected": false},"2": {"text": "재밌다","correct": false,"is_selected": false},"3": {"text": "맛있다","correct":true,"is_selected": false}}}
 ,
     },
     {
       id: 4,
-      style: "grammar",
+      style: "grammar", // Grammar
 json: {"question": "Q. What grammar should you use when you express past tense?","answer": {"1": {"text": "-(으)면","correct": false,"is_selected": false},"2": {"text": "-았/었/했어요","correct": true,"is_selected": false}}}
 ,
     },
     {
       id: 5,
-      style: "dialog",
+      style: "dialog", // Comprehension
 json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "커피 한 잔 주세요.","is_question": false,"is_selected": false},"B": {"eng": "Here you are.","kor": "여기 있어요.","is_question": false,"is_selected": false}, "A1": {"eng": "Thank you.","kor": "고마워요.","is_question": true,"is_selected": false} }, "answer": {"1": {"text": "고마워요.","correct": true,"is_selected": false},"2": {"text": "미안해요.","correct": false,"is_selected": false},"3": {"text": "죄송해요.","correct": false,"is_selected": false}}}
 ,
     },
