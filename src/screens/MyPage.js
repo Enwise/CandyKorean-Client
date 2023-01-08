@@ -94,15 +94,10 @@ const MyPage = ({ navigation }) => {
     
     
     // getSolvedQuizs
-    const [ analysisObject, setAnalysisObject ] = useState({
-       "Writing" : 0,
-        "Vocabulary" : 0,
-        "Grammar" : 0,
-        "Comprehension" : 0, 
-    });
+    
     const [ solvedQuizList, setSolvedQuizList ] = useState([])
     const [ isSolvedQuizListLoaded, setIsSolvedQuizListLoaded ] = useState(false);
-    const [ isAnalysisLoaded, setIsAnalysisLoaded ] = useState(false);
+    const [ isAnalysisObjectLoaded, setIsAnalysisObjectLoaded ] = useState(false);
     const [ userId, setUserId ] = useState(authState.userId);
 
     // React.useEffect(() => {
@@ -179,6 +174,7 @@ const MyPage = ({ navigation }) => {
 
     const [isCourseListLoaded, setIsCourseListLoaded] = useState(false);
 
+    
     useEffect(() => {
         console.log('Course useEffect')
         if (!isCourseListLoaded) {
@@ -239,6 +235,9 @@ const MyPage = ({ navigation }) => {
             );
         }
 
+    }, [])
+
+    useEffect(() => {
         if(!isSolvedQuizListLoaded){
             getSolvedQuizsByUser(
                 {
@@ -250,53 +249,58 @@ const MyPage = ({ navigation }) => {
                         item.is_correct === true
                     )
                     setSolvedQuizList((prev) => [...prev, ...updatedSolvedQuizList]);
-
+                    
                     console.log("solvedQuizList", solvedQuizList);
-
+                    
+                    
                 },
                 setIsSolvedQuizListLoaded,
                 (e) => {
                     console.log(e);
                 }
-            );
+                )
+       
             
         }
-        if(!isAnalysisLoaded){
-            solvedQuizList.map((item) => {
-                if (item.quiz.style === "arrange" || item.quiz.style === "sentence") {
-                    // Writing 
-                    setAnalysisObject((prev) => {
-                        return {...prev, Writing: prev.Writing + 1}
-                    })
-                    
-                } else if (item.quiz.style === "word") {
-                    // Vocabulary
-                    setAnalysisObject((prev) => {
-                        return {...prev, Vocabulary: prev.Vocabulary + 1}
-                    })
-                    
-                } else if (item.quiz.style === "grammar") {
-                    // Grammar
-                    setAnalysisObject((prev) => {
-                        return {...prev, Grammar: prev.Grammar + 1}
-                    })
-                    
-                } else if (item.quiz.style === "dialog") {
-                    // Comprehension
-                    setAnalysisObject((prev) => {
-                        return {...prev, Comprehension: prev.Comprehension + 1}
-                    })
-                }
+    
+    }, [])
+    const [analysisObject, setAnalysisObject] = useState({
+        "Writing" : 0,
+         "Vocabulary" : 0,
+         "Grammar" : 0,
+         "Comprehension" : 0, 
+     })
+
+   useEffect(() => {
+    let updatedAnalysisObject = {...analysisObject}
+    solvedQuizList.map((item) => {
+        if (item.quiz.style === "arrange" || item.quiz.style === "sentence") {
+            // Writing 
+            // setAnalysisObject((prev) => ({...prev, "Writing" : prev["Writing"] + 1}))
+            updatedAnalysisObject['Writing'] += 1
                 
-            })
-            setIsAnalysisLoaded(true)
-        }
+            } else if (item.quiz.style === "word") {
+                // Vocabulary
+                // setAnalysisObject((prev) => ({...prev, "Vocabulary" : prev["Vocabulary"] + 1}))
+                updatedAnalysisObject['Vocabulary'] += 1
 
-        
+                // analysisObject['Vocabulary'] += 1
+            } else if (item.quiz.style === "grammar") {
+                // Grammar
+                // setAnalysisObject((prev) => ({...prev, "Grammar" : prev["Grammar"] + 1}))
+                updatedAnalysisObject['Grammar'] += 1
+
+                // analysisObject['Grammar'] += 1
+            } else if (item.quiz.style === "dialog") {
+                // Comprehension
+                // setAnalysisObject((prev) => ({...prev, "Comprehension" : prev["Comprehension"] + 1}))
+                updatedAnalysisObject['Comprehension'] += 1
+            }
+            
+            setAnalysisObject(updatedAnalysisObject)
+        })    
         console.log("analysisObject", analysisObject);
-        
-
-    }, []);
+    }, [isSolvedQuizListLoaded])
 
     return (
         <View style={styles.container}>
@@ -528,6 +532,7 @@ const MyPage = ({ navigation }) => {
                 >
                     <View style={styles.analysisLeftContainer}>
                     {
+                        
                     Object.entries(analysisObject).map((item, index) => {
                         const [key, value] = item;
                         return (
@@ -538,11 +543,18 @@ const MyPage = ({ navigation }) => {
                                 <View style={styles.analysisBarContainer}>
                                     {value === 0 ? (<Text style={{ color: '#A160E2' }}>    - </Text>) : 
                                     <View style={{
-                                        width: value,
-                                        height: 5,
+                                        width: `${value + 10}%`,
+                                        height: "100%",
                                         backgroundColor: "#A160E2",
                                         borderRadius: 50,
-                                    }} ></View>}
+                                        flex: 1,
+                                        flexDirection: 'row',
+                                        justifyContent: "flex-end",
+                                        paddingRight: 10,
+                                        alignItems: "center",
+                                    }} >
+                                        <Text style={{ fontSize: 10, fontFamily: 'Poppins-Regular', color: '#fff' }}>{value}</Text>
+                                        </View>}
                                     
                                 </View>
                             </View>
