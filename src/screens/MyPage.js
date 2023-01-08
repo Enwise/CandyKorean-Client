@@ -9,7 +9,7 @@ import { VERTICAL } from "react-native/Libraries/Components/ScrollView/ScrollVie
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import AuthContext from "../contexts/AuthContext";
-import {getCourses, getLevels, getUserById} from "../modules/NetworkFunction";
+import {getCourses, getLevels, getUserById, getSolvedQuizsByUser} from "../modules/NetworkFunction";
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 
 
@@ -91,6 +91,20 @@ const MyPage = ({ navigation }) => {
     const [isUserLoaded, setIsUserLoaded] = useState(false);
     const [user, setUser] = React.useState(null);
 
+    
+    
+    // getSolvedQuizs
+    const [ analysisObject, setAnalysisObject ] = useState({
+       "Writing" : 0,
+        "Vocabulary" : 0,
+        "Grammar" : 0,
+        "Comprehension" : 0, 
+    });
+    const [ solvedQuizList, setSolvedQuizList ] = useState([])
+    const [ isSolvedQuizListLoaded, setIsSolvedQuizListLoaded ] = useState(false);
+    const [ isAnalysisLoaded, setIsAnalysisLoaded ] = useState(false);
+    const [ userId, setUserId ] = useState(authState.userId);
+
     // React.useEffect(() => {
     //     getUserById(
     //         authState.userId,
@@ -124,11 +138,14 @@ const MyPage = ({ navigation }) => {
 
 
     const isFocused = useIsFocused();
-    useEffect(() => {
-        if (isFocused) {
-            console.log('isFocused');
-        }
-    }, [isFocused]);
+    // useEffect(() => {
+    //     if (isFocused) {
+    //         console.log('isFocused');
+    //     }
+
+        
+
+    // }, [isFocused]);
 
 
     // const AbilityBar = (amount, total) => {
@@ -221,7 +238,65 @@ const MyPage = ({ navigation }) => {
                 }
             );
         }
-    }, [isCourseListLoaded]);
+
+        if(!isSolvedQuizListLoaded){
+            getSolvedQuizsByUser(
+                {
+                    user_id: authState.userId,
+                },
+                (d) => {
+                    console.log(d);
+                    let updatedSolvedQuizList = d.data.filter(item =>
+                        item.is_correct === true
+                    )
+                    setSolvedQuizList((prev) => [...prev, ...updatedSolvedQuizList]);
+
+                    console.log("solvedQuizList", solvedQuizList);
+
+                },
+                setIsSolvedQuizListLoaded,
+                (e) => {
+                    console.log(e);
+                }
+            );
+            
+        }
+        if(!isAnalysisLoaded){
+            solvedQuizList.map((item) => {
+                if (item.quiz.style === "arrange" || item.quiz.style === "sentence") {
+                    // Writing 
+                    setAnalysisObject((prev) => {
+                        return {...prev, Writing: prev.Writing + 1}
+                    })
+                    
+                } else if (item.quiz.style === "word") {
+                    // Vocabulary
+                    setAnalysisObject((prev) => {
+                        return {...prev, Vocabulary: prev.Vocabulary + 1}
+                    })
+                    
+                } else if (item.quiz.style === "grammar") {
+                    // Grammar
+                    setAnalysisObject((prev) => {
+                        return {...prev, Grammar: prev.Grammar + 1}
+                    })
+                    
+                } else if (item.quiz.style === "dialog") {
+                    // Comprehension
+                    setAnalysisObject((prev) => {
+                        return {...prev, Comprehension: prev.Comprehension + 1}
+                    })
+                }
+                
+            })
+            setIsAnalysisLoaded(true)
+        }
+
+        
+        console.log("analysisObject", analysisObject);
+        
+
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -232,7 +307,7 @@ const MyPage = ({ navigation }) => {
                     justifyContent: "space-between",
                     width: "90%",
                     alignItems: "center",
-                    marginBottom: 40,
+                    marginBottom: 20,
                 }}
             >
                 <View>
@@ -424,7 +499,6 @@ const MyPage = ({ navigation }) => {
             <View
                 style={{
                     width: "90%",
-                    marginTop: 20,
                     display: "flex",
                     flexDirection: "column",
                     // borderTop:"1px solid #F1EFF4"
@@ -444,15 +518,27 @@ const MyPage = ({ navigation }) => {
 
                 <View
                     style={{
-                        width: "100%",
+                        width: Dimensions.get("window").width - 40,
+                        height: Dimensions.get("window").height * 0.15,
                         marginTop: 15,
                         display: "flex",
                         flexDirection: "row",
-                        justifyContent:"space-between"
+                        justifyContent: "space-between",
                     }}
                 >
+                {/* {
+                    analysisList.map((item, index) => {
+                        return (
+                            <View style={styles.analysisBar}>
+                                <View style={styles.analysisBarTitle}>
+                                    <Text style={styles.analysisBarTitleText}>{item.title}</Text>
+                                </View>
+                            </View>
+                        )
+                    })
+                } */}
 
-                    <View style={{
+                    {/* <View style={{
                         display: "flex",
                         flexDirection: "column",
                     }}>
@@ -573,7 +659,7 @@ const MyPage = ({ navigation }) => {
                         </View>
 
 
-                    </View>
+                    </View> */}
 
                     <View style={{
                         marginLeft:22,
@@ -677,6 +763,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#e0e0e0",
     },
+
 });
 
 export default MyPage;
