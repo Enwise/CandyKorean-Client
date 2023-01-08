@@ -78,7 +78,7 @@ json: { "question": "Sweep your arms.", "answer": {"1": {"text": "팔을 쓸어 
     {
       id: 3,
       style: "word",
-json: {"question": "Q. 'Choreography' in Korean?","answer": {"1": {"text": "안무","correct": true,"is_selected": false},"2": {"text": "무릎","correct": false,"is_selected": false}}}
+json: {"question": "Q. 'be delicious' in Korean?","answer": {"1": {"text": "멋지다","correct": false,"is_selected": false},"2": {"text": "재밌다","correct": false,"is_selected": false},"3": {"text": "맛있다","correct":true,"is_selected": false}}}
 ,
     },
     {
@@ -90,10 +90,12 @@ json: {"question": "Q. What grammar should you use when you express past tense?"
     {
       id: 5,
       style: "dialog",
-json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나 걸려요?","is_question": true,"is_selected": false},"B": {"eng": "It takes around 30 minutes.","kor": "30분쯤 걸려요.","is_question": false,"is_selected": false} }, "answer": {"1": {"text": "그곳까지 어떻게 가요?","correct": false,"is_selected": false},"2": {"text": "그곳까지 얼마나 걸려요?","correct": true,"is_selected": false},"3": {"text": "그곳까지 누구하고 같이 가요?","correct": false,"is_selected": false}}}
+json: {"question": {"A": {"eng": "What do you think of this food?","kor": "이 음식 어때?","is_question": false,"is_selected": false},"B": {"eng": "Wow! This is really delicious!","kor": "와! 이거 진짜 맛있다!","is_question": true,"is_selected": false} }, "answer": {"1": {"text": "와! 이거 진짜 멋있다","correct": false,"is_selected": false},"2": {"text": "와! 이거 진짜 맛있다","correct": true,"is_selected": false},"3": {"text": "와! 이거 진짜 재밌다","correct": false,"is_selected": false}}}
 ,
     },
   ]);
+  // ------------- 지우기 말기!!!!!!!!!!!! ------------------------
+
 
   const [resultList, setResultList] = useState([]);
   const [selectedList, setSelectedList] = useState([]);
@@ -356,14 +358,14 @@ json: {"question": {"A": {"eng": "How far is it?","kor": "그곳까지 얼마나
               <Text style={questionTextstyles(quizList[currentQuizIdx].style).questionText}>
                 {quizList[currentQuizIdx].json.question}
               </Text>
-            {quizList[currentQuizIdx].style === "arrange" ? (
+            {/* {quizList[currentQuizIdx].style === "arrange" ? (
               <View style={styles.quizQuestionWordsNum}>
                 <Text style={styles.quizQuestionWordsNumText}>
                   {Object.keys(quizList[currentQuizIdx].json.answer).length}{" "}
                   words
                 </Text>
               </View>
-            ) : null}
+            ) : null} */}
           </View>
         ) : (
           <View style={styles.quizDialogContainer}>

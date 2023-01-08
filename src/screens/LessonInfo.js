@@ -36,17 +36,14 @@ const LessonInfo = ({ navigation, route }) => {
   // const [contentsList, setContentsList] = useState(route.params.contentsList);
   const [quizList, setQuizList] = useState(route.params?.quizList);
   // const [quizList, setQuizList] = useState([]);
-  const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
+  const [solvedQuizList, setSolvedQuizList] = useState(route.params?.solvedQuizList);
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
 
   const [solvedQuizNumList, setSolvedQuizNumList] = useState([]);
 
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
-  const [clickedUnit, setClickedUnit] = useState(0);
 
-  const [isCourseLoaded, setIsCourseLoaded] = useState(false);
-  const [tutor_profile_url, setTutorProfileUrl] = useState('');
 
   const [clickedContentId, setClickedContentId] = useState(
     contentsList[0].content_id
@@ -97,56 +94,111 @@ const LessonInfo = ({ navigation, route }) => {
 
 
 
-  useEffect(() => {    
+  useFocusEffect(
+    React.useCallback(() => {
+
+      console.log("LessonInfo is focused");
+
+      if(!isSolvedQuizListLoaded){
+        getSolvedQuizsByUser({user_id : userId}, (d) => {
+          setSolvedQuizList([...d.data]);
+          console.log("solvedQuizList loaded");
+        }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+       
+      }
+          solvedQuizList.map((solvedItem) => {
+            setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
+          })
+          console.log("solvedQuizNumList : ",  solvedQuizNumList)
+          
+            contentsList.map((content) => {
+      
+              let id = content.content_id;
+              let solvedQuizNum = 0;
+              let quiz = quizList.filter((quiz) => {
+                return quiz.content.content_id == id;
+              });
+              if (quiz) {
+                content.totalQuizNum = quiz.length;
+                content.quiz = quiz;
+                quiz.map((q) => {
+                  if(solvedQuizNumList.includes(q.quiz_id)){
+                  let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
+                    return solvedQuizItem.quiz_id == q.quiz_id;
+                  })
+      
+                  console.log('foundSolvedQuizItem', foundSolvedQuizItem)
+                  console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
+      
+                  if(foundSolvedQuizItem.is_correct){
+                    solvedQuizNum += 1;
+                  }
+      
+                }
+                })
+                
+                content.solvedQuizNum = solvedQuizNum;
+              } else {
+                content.totalQuizNum = 0;
+              }
+        })
+        if(isSolvedQuizListLoaded){
+          setIsSolvedQuizListLoaded(false);
+        }
+
+    }, [solvedQuizList, isFocused])
+  )
+
+  // useEffect(() => {    
 
     
-    if(!isSolvedQuizListLoaded){
-      getSolvedQuizsByUser({user_id : userId}, (d) => {
-        setSolvedQuizList([...d.data]);
-        console.log("solvedQuizList loaded");
-      }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-    }
+  //   if(!isSolvedQuizListLoaded){
+  //     getSolvedQuizsByUser({user_id : userId}, (d) => {
+  //       setSolvedQuizList([...d.data]);
+  //       console.log("solvedQuizList loaded");
+  //     }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+  //   }
      
 
-        solvedQuizList.map((solvedItem) => {
-          setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
-        })
-        console.log("solvedQuizNumList : ",  solvedQuizNumList)
+  //       solvedQuizList.map((solvedItem) => {
+  //         setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
+  //       })
+  //       console.log("solvedQuizNumList : ",  solvedQuizNumList)
         
-          contentsList.map((content) => {
+  //         contentsList.map((content) => {
     
-            let id = content.content_id;
-            let solvedQuizNum = 0;
-            let quiz = quizList.filter((quiz) => {
-              return quiz.content.content_id == id;
-            });
-            if (quiz) {
-              content.totalQuizNum = quiz.length;
-              content.quiz = quiz;
-              quiz.map((q) => {
-                if(solvedQuizNumList.includes(q.quiz_id)){
-                let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
-                  return solvedQuizItem.quiz_id == q.quiz_id;
-                })
+  //           let id = content.content_id;
+  //           let solvedQuizNum = 0;
+  //           let quiz = quizList.filter((quiz) => {
+  //             return quiz.content.content_id == id;
+  //           });
+  //           if (quiz) {
+  //             content.totalQuizNum = quiz.length;
+  //             content.quiz = quiz;
+  //             quiz.map((q) => {
+  //               if(solvedQuizNumList.includes(q.quiz_id)){
+  //               let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
+  //                 return solvedQuizItem.quiz_id == q.quiz_id;
+  //               })
     
-                console.log('foundSolvedQuizItem', foundSolvedQuizItem)
-                console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
+  //               console.log('foundSolvedQuizItem', foundSolvedQuizItem)
+  //               console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
     
-                if(foundSolvedQuizItem.is_correct){
-                  solvedQuizNum += 1;
-                }
+  //               if(foundSolvedQuizItem.is_correct){
+  //                 solvedQuizNum += 1;
+  //               }
     
-              }
-              })
+  //             }
+  //             })
               
-              content.solvedQuizNum = solvedQuizNum;
-            } else {
-              content.totalQuizNum = 0;
-            }
-      })
+  //             content.solvedQuizNum = solvedQuizNum;
+  //           } else {
+  //             content.totalQuizNum = 0;
+  //           }
+  //     })
      
   
-  }, [solvedQuizList, isSolvedQuizListLoaded]);
+  // }, [solvedQuizList, isSolvedQuizListLoaded, isFocused]);
 
 
 
