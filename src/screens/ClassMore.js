@@ -76,7 +76,6 @@ const ClassMore = ({ navigation, route }) => {
           <AntDesign name="left" size={20} color="black" />
         </TouchableOpacity>
       </View>
-      {/* <CartButton text="1" navigation={navigation} isMain={false}></CartButton> */}
     </View>
   );
 };
@@ -88,7 +87,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
     paddingTop: 50,
-    // paddingBottom: 150,
     backgroundColor: "#fff",
   },
   topContainer: {
@@ -101,6 +99,7 @@ const styles = StyleSheet.create({
   },
   classListContainer: {
     backgroundColor: "#fff",
+    marginBottom: 60,
   },
   topItem1: {
     justifyContent: "center",
