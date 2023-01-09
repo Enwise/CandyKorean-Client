@@ -176,8 +176,12 @@ const Setting = ({navigation}) => {
 
                         <View style={{width:"100%", display:"flex", alignItems:"center"}}>
                             <View style={{position:"relative", width:200, height:200}}>
+                                {/*<Image*/}
+                                {/*    source={require("../assets/img/sample_class_img2.png")}*/}
+                                {/*    style={{width:200, height:200, borderRadius:100, position:"absolute"}}*/}
+                                {/*/>*/}
                                 <Image
-                                    source={require("../assets/img/sample_class_img2.png")}
+                                    source={require("../assets/img/mypage-default-image.png")}
                                     style={{width:200, height:200, borderRadius:100, position:"absolute"}}
                                 />
                                 <TouchableOpacity
