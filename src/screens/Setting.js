@@ -186,6 +186,9 @@ const Setting = ({navigation}) => {
                                 />
                                 <TouchableOpacity
                                     style={{position:"absolute", right:20, bottom:0}}
+                                    onPress={()=>{
+                                        console.log("press button clk");
+                                    }}
                                 >
                                     <Image
                                         source={require("../assets/img/profile-img-change-icon.png")}

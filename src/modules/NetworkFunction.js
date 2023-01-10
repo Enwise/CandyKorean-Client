@@ -788,3 +788,16 @@ export const createFeedback = async (
     setIsReady(true);
   }
 };
+
+export const fileUpload = async (
+    reqParam,
+    setData,
+    setIsReady,
+    handleError
+) => {
+  const response = await postRequest("/upload", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
