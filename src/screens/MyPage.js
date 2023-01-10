@@ -359,11 +359,12 @@ const MyPage = ({ navigation }) => {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+            justifyContent:"space-between"
         }}
       >
         <Image
-          source={require("../assets/img/sample_class_img2.png")}
-          style={{ width: 110, height: 110, borderRadius: 55 }}
+            source={require("../assets/img/mypage-default-image.png")}
+            style={{ width: 110, height: 110, borderRadius: 55 }}
         />
         <View
           style={{
