@@ -52,36 +52,17 @@ const Premium = ({ navigation }) => {
         await getPurchasedCoursesByUserId(
           { userId: authState.userId },
           (d) => {
-            purchased_course = d.data;
+            purchased_course = d.data.filter((item) => {
+              return item.is_premium;
+            });
           },
           () => {},
           (e) => {
             console.log(e);
           }
         );
-
-        const premium = await Promise.all(
-          purchased_course.map(async (item) => {
-            // is_premium: true 인 course만 가져오기
-            let data;
-            await getCourseById(
-              { course_id: item.course_id },
-              (d) => {
-                if (d.data.is_premium) {
-                  data = d.data;
-                }
-              },
-              () => {},
-              (e) => {
-                console.log(e);
-              }
-            );
-            return data;
-          })
-        );
-
         const courses = await Promise.all(
-          premium.map(async (course) => {
+          purchased_course.map(async (course) => {
             let learned = [];
             await getClassesByCourseId(
               { id: course.course_id },
