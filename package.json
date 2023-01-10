@@ -42,7 +42,7 @@
     "react-native-date-picker": "^4.2.5",
     "react-native-dotenv": "^3.4.2",
     "react-native-gesture-handler": "~2.8.0",
-    "react-native-image-picker": "^4.10.0",
+    "react-native-image-picker": "^4.10.3",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-paper": "^4.12.5",

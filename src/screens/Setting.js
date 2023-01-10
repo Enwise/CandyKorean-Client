@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
-import { launchImageLibrary } from 'react-native-image-picker';
 import {createFeedback, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 import AlertDialog from "../components/AlertDialog";
@@ -9,6 +8,8 @@ import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
 import ImagePicker from 'react-native-image-picker';
 import showImagePicker from 'react-native-image-picker';
 import WebView from "react-native-webview";
+import {launchImageLibrary} from 'react-native-image-picker'
+
 
 const Setting = ({navigation}) => {
 
@@ -16,6 +17,7 @@ const Setting = ({navigation}) => {
     const [nickname, setNickname] = useState();
 
     const [ img, setImageSource ] = useState("");
+
 
 
     function pickImg() {
@@ -188,6 +190,19 @@ const Setting = ({navigation}) => {
                                     style={{position:"absolute", right:20, bottom:0}}
                                     onPress={()=>{
                                         console.log("press button clk");
+                                        launchImageLibrary({
+                                                mediaType: 'photo',
+                                                includeBase64: false,
+                                                maxHeight: 200,
+                                                maxWidth: 200,
+                                            },
+                                            (response) => {
+                                                console.log(response);
+                                                this.setState({
+                                                    resourcePath: response
+                                                });
+                                            },
+                                        )
                                     }}
                                 >
                                     <Image
