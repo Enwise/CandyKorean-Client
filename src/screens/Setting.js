@@ -17,9 +17,6 @@ const Setting = ({navigation}) => {
     const [nickname, setNickname] = useState();
 
     const [ img, setImageSource ] = useState("");
-
-
-
     function pickImg() {
         const options = {
             title: 'Select Avatar', //이미지 선택할 때 제목입니다 ( 타이틀 )
@@ -190,19 +187,7 @@ const Setting = ({navigation}) => {
                                     style={{position:"absolute", right:20, bottom:0}}
                                     onPress={()=>{
                                         console.log("press button clk");
-                                        launchImageLibrary({
-                                                mediaType: 'photo',
-                                                includeBase64: false,
-                                                maxHeight: 200,
-                                                maxWidth: 200,
-                                            },
-                                            (response) => {
-                                                console.log(response);
-                                                this.setState({
-                                                    resourcePath: response
-                                                });
-                                            },
-                                        )
+                                        pickImg();
                                     }}
                                 >
                                     <Image
