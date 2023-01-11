@@ -17,10 +17,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import AuthContext from "../contexts/AuthContext";
 import {
-  getCourses,
-  getLevels,
-  getUserById,
-  getSolvedQuizsByUser,
+    getCourses,
+    getLevels,
+    getUserById,
+    getSolvedQuizsByUser, getAllAttendanceByUserId,
 } from "../modules/NetworkFunction";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
@@ -139,6 +139,24 @@ const MyPage = ({ navigation }) => {
       );
     }, [])
   );
+
+
+  const [calendarData, setcalendarData] = useState();
+  useEffect(()=>{
+      getAllAttendanceByUserId(
+          authState.userId,
+          (d) => {
+              console.log(d);
+              setcalendarData(d.data);
+          },
+          () => {},
+          (e) => {
+              console.log("getAllAttendanceByUserId error");
+          }
+      );
+  },[])
+
+
 
   const isFocused = useIsFocused();
   // useEffect(() => {

@@ -616,6 +616,20 @@ export const getUserById = async (
   }
 };
 
+export const getAllAttendanceByUserId = async (
+    reqParam,
+    setData,
+    setIsReady,
+    handleError
+) => {
+  const userId = reqParam;
+  const response = await getRequest(`/attendance/${userId}`, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
 export const createUser = async (
   reqParam,
   setData,
