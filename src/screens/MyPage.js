@@ -140,14 +140,29 @@ const MyPage = ({ navigation }) => {
     }, [])
   );
 
+    const [calendarData, setcalendarData] = useState();
 
-  const [calendarData, setcalendarData] = useState();
   useEffect(()=>{
       getAllAttendanceByUserId(
           authState.userId,
           (d) => {
-              console.log(d);
-              setcalendarData(d.data);
+              console.log(d.data);
+              let tmpArr = [];
+              d.data.map((item,idx)=>{
+                  tmpArr.push(item.data_created.split("T")[0]);
+                  // tmpArr.push(`${item.data_created.split("T")[0]}`: { color: "#70d7c7", textColor: "white" });
+              })
+
+              let obj = tmpArr.reduce(
+                  (c, v) =>
+                      Object.assign(c, {
+                          [v]: { color: "#70d7c7", textColor: "white" },
+                      }),
+                  {},
+              );
+              setcalendarData(obj);
+              // console.log(tmpArr);
+              // setcalendarData(tmpArr);
           },
           () => {},
           (e) => {
@@ -508,31 +523,33 @@ const MyPage = ({ navigation }) => {
           }}
           markingType={"custom"}
           markedDates={
-              {
-                  "2022-12-15": { marked: true, dotColor: "#50cebb" },
-                  "2022-11-16": { marked: true, dotColor: "#50cebb" },
-                  "2022-11-17": {
-                      startingDay: true,
-                      color: "#FFFFFF",
-                      textColor: "white",
-                  },
-                  "2022-11-18": { color: "#70d7c7", textColor: "white" },
-                  "2022-11-19": {
-                      color: "#70d7c7",
-                      textColor: "white",
-                      marked: true,
-                      dotColor: "white",
-                  },
-                  "2022-11-20": { color: "#70d7c7", textColor: "white" },
-                  "2022-11-21": {
-                      endingDay: true,
-                      color: "#50cebb",
-                      textColor: "white",
-                  },
-                  "2022-12-20": { color: "#70d7c7", textColor: "white" },
-                  "2022-12-21": { color: "#70d7c7", textColor: "white" },
-                  "2022-12-22": { color: "#000000", textColor: "white" },
-              }
+              // {
+              //     "2022-12-15": { marked: true, dotColor: "#50cebb" },
+              //     "2022-11-16": { marked: true, dotColor: "#50cebb" },
+              //     "2022-11-17": {
+              //         startingDay: true,
+              //         color: "#FFFFFF",
+              //         textColor: "white",
+              //     },
+              //     "2022-11-18": { color: "#70d7c7", textColor: "white" },
+              //     "2022-11-19": {
+              //         color: "#70d7c7",
+              //         textColor: "white",
+              //         marked: true,
+              //         dotColor: "white",
+              //     },
+              //     "2022-11-20": { color: "#70d7c7", textColor: "white" },
+              //     "2022-11-21": {
+              //         endingDay: true,
+              //         color: "#50cebb",
+              //         textColor: "white",
+              //     },
+              //     "2022-12-20": { color: "#70d7c7", textColor: "white" },
+              //     "2022-12-21": { color: "#70d7c7", textColor: "white" },
+              //     "2022-12-22": { color: "#000000", textColor: "white" },
+              //     calendarData
+              // }
+              calendarData
           }
         />
       </View>
