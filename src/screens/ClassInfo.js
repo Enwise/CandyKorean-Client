@@ -47,6 +47,8 @@ const ClassInfo = ({ props, navigation, route }) => {
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState("");
 
+  const [screenWidth, setScreenWidth] = useState(Dimensions.get('screen').width)
+
   const [isWishLoaded, setIsWishLoaded] = useState(false);
   
   const [isClassCountLoaded, setIsClassCountLoaded] = useState(false);
@@ -137,32 +139,7 @@ const ClassInfo = ({ props, navigation, route }) => {
     // 3 : Kyungeun
     // class_id : OT: 25, 1강 ~ 10강 : 26 ~ 35
     
-    // console.log('isClassLoading')
-    // let updatedClassList = [];
-    // if(!isClassLoaded){
-    //   getClasses(
-    //     {},
-    //     (d) => {
-    //       console.log("getAllClasses");
-  
-          
-    //         d.data.map((item) => {
-    //           if (
-    //             item.course_id == route.params.classInfo.course_id
-    //           ) {
-    //             setClassList([...item.class_id]);
-    //           }
-    //         });
-          
-          
-    //     },
-    //     setIsClassLoaded,
-    //     (e) => {
-    //       console.log(e);
-    //     }
-    //   );
-    // }
-  
+
 
   
     console.log('isContentLoading')
@@ -185,11 +162,9 @@ const ClassInfo = ({ props, navigation, route }) => {
                 setIntroVideoUrl(contentItem.video_url);
                 // console.log(contentItem.video_url);
                 // console.log(contentItem.is_portrait);
-                if (contentItem.name == "Orientation" || contentItem.name == "OT_SeongyeopT") {
+                
                 setIsPortrait(contentItem.is_portrait);
-                } else if (contentItem.name == "OT_KyungeunT") {
-                setIsPortrait(!contentItem.is_portrait);
-                }
+                
               } 
               return;
           });
@@ -237,7 +212,7 @@ const ClassInfo = ({ props, navigation, route }) => {
       BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
     }
     
-  }, [route.params.classInfo, isWish, isWishLoaded, userId, unitsNum, isClassCountLoaded, isFocused]);
+  }, [route.params.classInfo, isWish, isWishLoaded, userId, unitsNum, isClassCountLoaded, isFocused, isPortrait, introVideoUrl]);
 
   return (
     <>
@@ -321,7 +296,13 @@ const ClassInfo = ({ props, navigation, route }) => {
           </View>
         </View>
 
-        <View style={styles.videoContainer}>
+        <View style={{
+          flex: 3,
+          width: isPortrait ? 300 : screenWidth,
+          height: isPortrait ? 500 : screenWidth * 0.5625,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 30,}}>
           <Video
             usePoster={true}
             // source={{ uri: classInfo.introVideoUrl }}
@@ -330,7 +311,9 @@ const ClassInfo = ({ props, navigation, route }) => {
             }}
             rate={1.0}
             useNativeControls={true}
-            style={{ height: 500, width: 300, backgroundColor: "#000" }}
+            style={{ width: "100%", 
+                    height: "100%", 
+                    backgroundColor: "#000" }}
             // posterSource={{
             //   uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671471320710/shin_yoo_jin_rect.jpg",
             // }}
@@ -338,7 +321,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             //   height: 500,
             //   width: 300,
             // }}
-            resizeMode={isPortrait ? "stretch" : "contain"}
+            resizeMode={"contain"}
             isLooping
             shouldPlay
             onFullscreenUpdate={(status) => {
@@ -490,15 +473,6 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontSize: 12,
     color: "#444345",
-  },
-
-  videoContainer: {
-    flex: 3,
-    height: 500,
-    width: 120,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 30,
   },
 
   classAndteacherContainer: {
