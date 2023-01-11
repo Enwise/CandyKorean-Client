@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
-import {createFeedback, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
+import {createFeedback, fileUpload, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 import AlertDialog from "../components/AlertDialog";
 import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
@@ -29,7 +29,16 @@ const Setting = ({navigation}) => {
 
         if (!result.canceled) {
             setImage(result.assets[0].uri);
-
+            fileUpload(
+                {file : result.assets[0].uri},
+                (d) => {
+                    console.log(d);
+                },
+                () => {},
+                (e) => {
+                    console.log("fileUpload error");
+                }
+            );
         }
     };
 
