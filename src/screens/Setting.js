@@ -1,52 +1,46 @@
 import React, {useEffect, useState} from "react";
 import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
-import {createFeedback, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
+import {createFeedback, fileUpload, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 import AlertDialog from "../components/AlertDialog";
 import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
-import ImagePicker from 'react-native-image-picker';
-import showImagePicker from 'react-native-image-picker';
 import WebView from "react-native-webview";
-import {launchImageLibrary} from 'react-native-image-picker'
-
+import * as ImagePicker from 'expo-image-picker';
 
 const Setting = ({navigation}) => {
 
     const [menuNum, setMenuNum] = useState(0);
     const [nickname, setNickname] = useState();
 
-    const [ img, setImageSource ] = useState("");
-    function pickImg() {
-        const options = {
-            title: 'Select Avatar', //이미지 선택할 때 제목입니다 ( 타이틀 )
-            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }], // 선택 버튼을 커스텀 할 수 있습니다.
-            storageOptions: {
-                skipBackup: true,	// ios인 경우 icloud 저장 여부 입니다!
-                path: 'images',
-            },
-        };
 
-        /**
-         * The first arg is the options object for customization (it can also be null or omitted for default options),
-         * The second arg is the callback which sends object: response (more info in the API Reference)
-         */
-        ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+    const [image, setImage] = useState(null);
 
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            } else {
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-                setImageSource(response.uri); // 저는 여기서 uri 값을 저장 시킵니다 !
-            }
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.photo,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
         });
-    }
+
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+            fileUpload(
+                {file : result.assets[0].uri},
+                (d) => {
+                    console.log(d);
+                },
+                () => {},
+                (e) => {
+                    console.log("fileUpload error");
+                }
+            );
+        }
+    };
 
 
 
@@ -179,15 +173,25 @@ const Setting = ({navigation}) => {
                                 {/*    source={require("../assets/img/sample_class_img2.png")}*/}
                                 {/*    style={{width:200, height:200, borderRadius:100, position:"absolute"}}*/}
                                 {/*/>*/}
-                                <Image
-                                    source={require("../assets/img/mypage-default-image.png")}
-                                    style={{width:200, height:200, borderRadius:100, position:"absolute"}}
-                                />
+                                {image === null ?
+                                    <Image
+                                        source={require("../assets/img/mypage-default-image.png")}
+                                        style={{width:200, height:200, borderRadius:100, position:"absolute"}}
+                                    />
+                                    :
+                                    <Image
+                                        source={{
+                                            uri: `${image}`
+                                        }}
+                                        style={{width:200, height:200, borderRadius:100, position:"absolute"}}
+                                    />
+                                }
+
                                 <TouchableOpacity
                                     style={{position:"absolute", right:20, bottom:0}}
                                     onPress={()=>{
                                         console.log("press button clk");
-                                        pickImg();
+                                        pickImage();
                                     }}
                                 >
                                     <Image
