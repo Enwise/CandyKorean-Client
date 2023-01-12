@@ -88,6 +88,7 @@ const MainTab = ({ navigation, route }) => {
           tabBarIcon: ({ focused }) => {
             return focused ? <HomeActive /> : <HomeInactive />;
           },
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -97,6 +98,7 @@ const MainTab = ({ navigation, route }) => {
           tabBarIcon: ({ focused }) => {
             return focused ? <ClassActive /> : <ClassInactive />;
           },
+          unmountOnBlur: true,
         }}
       />
 
@@ -107,6 +109,7 @@ const MainTab = ({ navigation, route }) => {
           tabBarIcon: ({ focused }) => {
             return focused ? <ClassRoomActive /> : <ClassRoomInactive />;
           },
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -116,6 +119,7 @@ const MainTab = ({ navigation, route }) => {
           tabBarIcon: ({ focused }) => {
             return focused ? <PremiumActive /> : <PremiumInactive />;
           },
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -125,6 +129,7 @@ const MainTab = ({ navigation, route }) => {
           tabBarIcon: ({ focused }) => {
             return focused ? <MyPageActive /> : <MyPageInactive />;
           },
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>

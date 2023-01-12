@@ -108,9 +108,16 @@ const MyPage = ({ navigation }) => {
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
   const [isAnalysisObjectLoaded, setIsAnalysisObjectLoaded] = useState(false);
   const [userId, setUserId] = useState(authState.userId);
-
+  const [analysisObject, setAnalysisObject] = useState({
+    Writing: 0,
+    Vocabulary: 0,
+    Grammar: 0,
+    Comprehension: 0,
+  });
+  const isFocused = useIsFocused();
+  
   // React.useEffect(() => {
-  //     getUserById(
+    //     getUserById(
   //         authState.userId,
   //         (d) => {
   //             console.log(d);
@@ -125,10 +132,93 @@ const MyPage = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
+    setAnalysisObject({
+      Writing: 0,
+      Vocabulary: 0,
+      Grammar: 0,
+      Comprehension: 0,
+    })
+  }, []))
+
+ 
+  useFocusEffect(
+    React.useCallback(
+    () => {
+      console.log("enter get solved quiz foucs effect")
+      
+      
+      getSolvedQuizsByUser(
+        {
+          user_id: authState.userId,
+        },
+        (d) => {
+          
+          // console.log(d);
+          let updatedSolvedQuizList = d.data.filter(
+            (item) => item.is_correct === true
+          );
+          setSolvedQuizList((prev) => [...prev, ...updatedSolvedQuizList]);
+
+          // console.log("solvedQuizList", solvedQuizList);
+        },
+        setIsSolvedQuizListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
+  }, []));
+
+
+  useFocusEffect(
+    React.useCallback(
+    () => {
+    console.log('enter updated analysisObject useEffect');
+    console.log('solvedQuizList', solvedQuizList[0], solvedQuizList[1]);
+    setAnalysisObject({
+      Writing: 0,
+      Vocabulary: 0,
+      Grammar: 0,
+      Comprehension: 0,
+    })
+    let updatedAnalysisObject = {
+      Writing: 0,
+      Vocabulary: 0,
+      Grammar: 0,
+      Comprehension: 0,
+    };
+    solvedQuizList.map((item) => {
+      if (item.quiz.style === "arrange" || item.quiz.style === "sentence") {
+        // Writing
+        // setAnalysisObject((prev) => ({...prev, "Writing" : prev["Writing"] + 1}))
+        updatedAnalysisObject["Writing"] += 1;
+      } else if (item.quiz.style === "word") {
+        // Vocabulary
+        // setAnalysisObject((prev) => ({...prev, "Vocabulary" : prev["Vocabulary"] + 1}))
+        updatedAnalysisObject["Vocabulary"] += 1;
+
+        // analysisObject['Vocabulary'] += 1
+        // Grammar
+        // setAnalysisObject((prev) => ({...prev, "Grammar" : prev["Grammar"] + 1}))
+        updatedAnalysisObject["Grammar"] += 1;
+
+        // analysisObject['Grammar'] += 1
+      } else if (item.quiz.style === "dialog") {
+        // Comprehension
+        // setAnalysisObject((prev) => ({...prev, "Comprehension" : prev["Comprehension"] + 1}))
+        updatedAnalysisObject["Comprehension"] += 1;
+      }
+
+    });
+    setAnalysisObject(updatedAnalysisObject);
+    console.log("analysisObject", analysisObject);
+  }, [isSolvedQuizListLoaded]));
+
+  useFocusEffect(
+    React.useCallback(() => {
       getUserById(
         authState.userId,
         (d) => {
-          console.log(d);
+          // console.log(d);
           console.log("enter focus effect");
           setUser(d.data);
         },
@@ -146,7 +236,7 @@ const MyPage = ({ navigation }) => {
       getAllAttendanceByUserId(
           authState.userId,
           (d) => {
-              console.log(d.data);
+              // console.log(d.data);
               let tmpArr = [];
               d.data.map((item,idx)=>{
                   tmpArr.push(item.data_created.split("T")[0]);
@@ -173,7 +263,6 @@ const MyPage = ({ navigation }) => {
 
 
 
-  const isFocused = useIsFocused();
   // useEffect(() => {
   //     if (isFocused) {
   //         console.log('isFocused');
@@ -218,7 +307,7 @@ const MyPage = ({ navigation }) => {
       getCourses(
         {},
         (d) => {
-          console.log("getCourse data: ", d.data);
+          // console.log("getCourse data: ", d.data);
           let updatedLollipopCourseList = [...lollipopCourseList];
           let updatedCottonCandyCourseList = [...cottonCandyCourseList];
           let updatedMintCandyCourseList = [...mintCandyCourseList];
@@ -272,35 +361,8 @@ const MyPage = ({ navigation }) => {
     }
   }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-    if (!isSolvedQuizListLoaded) {
-      getSolvedQuizsByUser(
-        {
-          user_id: authState.userId,
-        },
-        (d) => {
-          console.log(d);
-          let updatedSolvedQuizList = d.data.filter(
-            (item) => item.is_correct === true
-          );
-          setSolvedQuizList((prev) => [...prev, ...updatedSolvedQuizList]);
+ 
 
-          console.log("solvedQuizList", solvedQuizList);
-        },
-        setIsSolvedQuizListLoaded,
-        (e) => {
-          console.log(e);
-        }
-      );
-    }
-  }, []));
-  const [analysisObject, setAnalysisObject] = useState({
-    Writing: 0,
-    Vocabulary: 0,
-    Grammar: 0,
-    Comprehension: 0,
-  });
 
   const getTotalScore = () => {
     let totalScore = 0;
@@ -311,36 +373,7 @@ const MyPage = ({ navigation }) => {
     return totalScore;
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-    let updatedAnalysisObject = { ...analysisObject };
-    solvedQuizList.map((item) => {
-      if (item.quiz.style === "arrange" || item.quiz.style === "sentence") {
-        // Writing
-        // setAnalysisObject((prev) => ({...prev, "Writing" : prev["Writing"] + 1}))
-        updatedAnalysisObject["Writing"] += 1;
-      } else if (item.quiz.style === "word") {
-        // Vocabulary
-        // setAnalysisObject((prev) => ({...prev, "Vocabulary" : prev["Vocabulary"] + 1}))
-        updatedAnalysisObject["Vocabulary"] += 1;
-
-        // analysisObject['Vocabulary'] += 1
-      } else if (item.quiz.style === "grammar") {
-        // Grammar
-        // setAnalysisObject((prev) => ({...prev, "Grammar" : prev["Grammar"] + 1}))
-        updatedAnalysisObject["Grammar"] += 1;
-
-        // analysisObject['Grammar'] += 1
-      } else if (item.quiz.style === "dialog") {
-        // Comprehension
-        // setAnalysisObject((prev) => ({...prev, "Comprehension" : prev["Comprehension"] + 1}))
-        updatedAnalysisObject["Comprehension"] += 1;
-      }
-
-      setAnalysisObject(updatedAnalysisObject);
-    });
-    console.log("analysisObject", analysisObject);
-  }, [isSolvedQuizListLoaded]));
+  
 
   return (
     <View style={styles.container}>
@@ -586,7 +619,9 @@ const MyPage = ({ navigation }) => {
           }}
         >
           <View style={styles.analysisLeftContainer}>
-            {Object.entries(analysisObject).map((item, index) => {
+            {
+
+            Object.entries(analysisObject).map((item, index) => {
               const [key, value] = item;
               return (
                 <View style={styles.analysisRowContainer}>
