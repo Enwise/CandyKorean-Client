@@ -568,7 +568,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: "absolute",
-    top: 50,
+    top: 30,
     left: 30,
   },
   studyNowBtn: {

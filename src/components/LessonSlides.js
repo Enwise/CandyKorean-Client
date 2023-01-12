@@ -43,7 +43,7 @@ const LessonSlides = ({ slideList, screenWidth, screenHeight }) => {
 
   return (
     <View style={{
-			height: screenHeight * (0.35),
+			height: screenHeight * (0.3),
 		}}>
       <Carousel
         data={data}

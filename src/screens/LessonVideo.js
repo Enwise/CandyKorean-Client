@@ -1,10 +1,12 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 import { getSlidesByContentId } from '../modules/NetworkFunction';
 import LessonSlides from '../components/LessonSlides'
+import { AntDesign } from "@expo/vector-icons";
+
 
 const LessonVideo = ({ route, navigation }) => {
 
@@ -57,6 +59,20 @@ const LessonVideo = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={{
+        width: screenWidth,
+        height: 70,
+        justifyContent:'center',
+        paddingLeft: 30,
+      }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <AntDesign name="left" size={20} color="black" />
+        </TouchableOpacity>
+      </View>
       <StatusBar translucent={false} hidden={true} />
       <Video
         source={{
@@ -66,7 +82,7 @@ const LessonVideo = ({ route, navigation }) => {
         useNativeControls={true}
         resizeMode={"contain"}
         style={{
-          height: videoStatus === 1 ? screenHeight : isPortrait ? "100%" : "60%",
+          height: videoStatus === 1 ? screenWidth : (isPortrait ? "100%" : screenWidth),
           zIndex: videoStatus === 1 ? 3 : 1,
           backgroundColor: "#000",
         }}
@@ -93,8 +109,10 @@ const LessonVideo = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection:'column',
+    backgroundColor:"#fff",
   },
-
+  
   
 });
 
