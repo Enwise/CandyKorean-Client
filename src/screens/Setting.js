@@ -98,6 +98,7 @@ const Setting = ({navigation}) => {
             <View style={{display:"flex", flexDirection:"row",alignItems:"center", width:"90%"}}>
                 {menuNum === 0 ?
                     <BackButton onPress={() => navigation.navigate("MyPage")}/>
+                    // <BackButton onPress={() => setMenuNum(0)}/>
                     :
                     <BackButton onPress={() => setMenuNum(0)}/>
                 }
@@ -124,7 +125,8 @@ const Setting = ({navigation}) => {
                                         console.log(e);
                                     }
                                 );
-                                navigation.navigate("MyPage");
+                                // navigation.navigate("MyPage");
+                                setMenuNum(0);
                             }}
                         >
                             <Image

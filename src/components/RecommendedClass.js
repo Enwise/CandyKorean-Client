@@ -11,13 +11,8 @@ import { StackActions, NavigationActions } from "@react-navigation/native";
 
 // 추천 강의 컴포넌트
 const RecommendedClass = ({ navigation, course }) => {
-  // 강의 썸네일, 강사 프로필 사진, 강사 이름, 시청자 수, 업로드 날짜 필요
-  const { thumbnail, tutor, view_count, date_updated } = course;
-  const today = new Date();
-  const date = new Date(date_updated);
-  const diff = Math.ceil(
-    (today.getTime() - date.getTime()) / (1000 * 3600 * 24)
-  );
+  // 강의 썸네일, 강사 프로필 사진, 강사 이름, 시청자 수
+  const { thumbnail, tutor, view_count } = course;
 
   return (
     <TouchableOpacity
@@ -44,7 +39,6 @@ const RecommendedClass = ({ navigation, course }) => {
         </View>
         <Text style={styles.tutorName}>{tutor.name}</Text>
         <Text style={styles.text}>viewers {view_count}</Text>
-        <Text style={styles.text}>{diff}days ago</Text>
       </View>
     </TouchableOpacity>
   );

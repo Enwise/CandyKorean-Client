@@ -15,7 +15,7 @@ import * as Linking from "expo-linking";
 import { LinearGradient } from "expo-linear-gradient";
 import RecommendedClassList from "../components/RecommendedClassList";
 import ProgressLecture from "../components/ProgressLecture";
-
+import { useFocusEffect } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import AuthContext from "../contexts/AuthContext";
 import { getUserById, updateUser } from "../modules/NetworkFunction";
@@ -102,30 +102,32 @@ const Home = ({ navigation }) => {
     );
   };
 
-  React.useEffect(() => {
-    let lastLoginDate, continuous_attendance_day;
-    const getUser = async () => {
-      await getUserById(
-        authState.userId,
-        (d) => {
-          setUser(d.data);
-          lastLoginDate = d.data.date_last_login;
-          continuous_attendance_day = d.data.continuous_attendance;
-        },
-        () => {},
-        (e) => {
-          console.log("getUserById error");
-        }
-      );
+  useFocusEffect(
+    React.useCallback(() => {
+      let lastLoginDate, continuous_attendance_day;
+      const getUser = async () => {
+        await getUserById(
+          authState.userId,
+          (d) => {
+            setUser(d.data);
+            lastLoginDate = d.data.date_last_login;
+            continuous_attendance_day = d.data.continuous_attendance;
+          },
+          () => {},
+          (e) => {
+            console.log("getUserById error");
+          }
+        );
 
-      updateAttendance(
-        authState.userId,
-        lastLoginDate,
-        continuous_attendance_day
-      );
-    };
-    getUser();
-  }, [authState]);
+        updateAttendance(
+          authState.userId,
+          lastLoginDate,
+          continuous_attendance_day
+        );
+      };
+      getUser();
+    }, [authState])
+  );
 
   return (
     <ScrollView
