@@ -121,7 +121,11 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
       <View style={styles.topContainer}>
         <View style={styles.topItem1}>
           <Text style={styles.title}>{levelItem.name}</Text>
-          <Text style={styles.secondTitle}>{levelItem.info}</Text>
+          <Text style={{
+                fontSize: 15,
+                fontFamily: "Poppins-SemiBold",
+                color: levelItem.name === 'Lollipop Level' ? '#000' : 'lightgray'
+          }}>{levelItem.info}</Text>
         </View>
         <View style={styles.topItem2}>
           <TouchableOpacity
@@ -135,7 +139,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
           </TouchableOpacity>
         </View>
       </View>
-      {levelItem.name == "Lollipop Level" ? (
+      {levelItem.name === "Lollipop Level" ? (
         <SafeAreaView nestedScrollEnabled={true} style={{ width: "100%" }}>
           <FlatList
             numColumns={1}
@@ -161,8 +165,10 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
       ) : (
         // Coming Soon
         <Image
-          style={styles.commingSoonContainer}
-          source={require("../assets/img/EmptyLevel.png")}
+          style={styles.comingSoonContainer}
+          source={{
+            uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1673498494106.coming_soon.png"
+          }}
         ></Image>
       )}
     </View>
@@ -222,7 +228,8 @@ const styles = StyleSheet.create({
     color: "#807F82",
   },
   comingSoonContainer: {
-    width: 300,
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height * 0.35,
   },
 });
 

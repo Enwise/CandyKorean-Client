@@ -321,7 +321,7 @@ const ClassInfo = ({ props, navigation, route }) => {
             //   height: 500,
             //   width: 300,
             // }}
-            resizeMode={"contain"}
+            resizeMode={isPortrait ? "stretch" : "contain"}
             isLooping
             shouldPlay
             onFullscreenUpdate={(status) => {

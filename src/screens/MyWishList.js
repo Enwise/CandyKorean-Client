@@ -48,7 +48,7 @@ const MyWishList = ({ navigation, route }) => {
     if(!isWishListLoaded){
       getWishlistByUser(
         { user_id : userId },
-        (d) => {
+        (d) => { 
           d.data.map((wishItem) => {
 
             console.log("wishItem", wishItem)

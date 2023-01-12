@@ -151,57 +151,6 @@ const LessonInfo = ({ navigation, route }) => {
     }, [solvedQuizList, isFocused])
   )
 
-  // useEffect(() => {    
-
-    
-  //   if(!isSolvedQuizListLoaded){
-  //     getSolvedQuizsByUser({user_id : userId}, (d) => {
-  //       setSolvedQuizList([...d.data]);
-  //       console.log("solvedQuizList loaded");
-  //     }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-  //   }
-     
-
-  //       solvedQuizList.map((solvedItem) => {
-  //         setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
-  //       })
-  //       console.log("solvedQuizNumList : ",  solvedQuizNumList)
-        
-  //         contentsList.map((content) => {
-    
-  //           let id = content.content_id;
-  //           let solvedQuizNum = 0;
-  //           let quiz = quizList.filter((quiz) => {
-  //             return quiz.content.content_id == id;
-  //           });
-  //           if (quiz) {
-  //             content.totalQuizNum = quiz.length;
-  //             content.quiz = quiz;
-  //             quiz.map((q) => {
-  //               if(solvedQuizNumList.includes(q.quiz_id)){
-  //               let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
-  //                 return solvedQuizItem.quiz_id == q.quiz_id;
-  //               })
-    
-  //               console.log('foundSolvedQuizItem', foundSolvedQuizItem)
-  //               console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
-    
-  //               if(foundSolvedQuizItem.is_correct){
-  //                 solvedQuizNum += 1;
-  //               }
-    
-  //             }
-  //             })
-              
-  //             content.solvedQuizNum = solvedQuizNum;
-  //           } else {
-  //             content.totalQuizNum = 0;
-  //           }
-  //     })
-     
-  
-  // }, [solvedQuizList, isSolvedQuizListLoaded, isFocused]);
-
 
 
   return (

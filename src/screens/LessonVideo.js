@@ -39,7 +39,11 @@ const LessonVideo = ({ route, navigation }) => {
         rate={1.0}
         useNativeControls={true}
         resizeMode={"contain"}
-        style={dstyles(videoStatus).video}
+        style={{
+          height: videoStatus === 1 ? Dimensions.get("screen").height : isPortrait ? "100%" : "60%",
+          zIndex: videoStatus === 1 ? 3 : 1,
+          backgroundColor: "#000",
+        }}
         isLooping
         onFullscreenUpdate={(status) => {
           // console.log(status);
@@ -51,9 +55,10 @@ const LessonVideo = ({ route, navigation }) => {
         ref={videoPlayer}
         shouldPlay
       />
+      {isPortrait ? null : 
       <View style={styles.lectureNoteContainer}>
         <Text style={styles.lectureNote}>Lecture Note</Text>
-      </View>
+      </View>}
     </View>
   );
 };
@@ -69,14 +74,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-const dstyles = (videoStatus) =>
-  StyleSheet.create({
-    video: {
-      height: videoStatus === 1 ? Dimensions.get("window").height : "60%",
-      zIndex: videoStatus === 1 ? 3 : 1,
-      backgroundColor: "#000",
-    },
-  });
 
 export default LessonVideo;

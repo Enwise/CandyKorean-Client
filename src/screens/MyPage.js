@@ -272,7 +272,8 @@ const MyPage = ({ navigation }) => {
     }
   }, []);
 
-  useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
     if (!isSolvedQuizListLoaded) {
       getSolvedQuizsByUser(
         {
@@ -293,7 +294,7 @@ const MyPage = ({ navigation }) => {
         }
       );
     }
-  }, []);
+  }, []));
   const [analysisObject, setAnalysisObject] = useState({
     Writing: 0,
     Vocabulary: 0,
@@ -310,7 +311,8 @@ const MyPage = ({ navigation }) => {
     return totalScore;
   };
 
-  useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
     let updatedAnalysisObject = { ...analysisObject };
     solvedQuizList.map((item) => {
       if (item.quiz.style === "arrange" || item.quiz.style === "sentence") {
@@ -338,7 +340,7 @@ const MyPage = ({ navigation }) => {
       setAnalysisObject(updatedAnalysisObject);
     });
     console.log("analysisObject", analysisObject);
-  }, [isSolvedQuizListLoaded]);
+  }, [isSolvedQuizListLoaded]));
 
   return (
     <View style={styles.container}>
