@@ -48,7 +48,8 @@ const ClassRoom = ({ route, navigation }) => {
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
 
 
-    useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
       getPurchasedCoursesByUserId(
         { userId: userId },
         (d) => {
@@ -69,10 +70,10 @@ const ClassRoom = ({ route, navigation }) => {
               (e) => {
                 console.log(e);
               }
-            );
-            
-          });
-        },
+              );
+              
+            });
+          },
         setIsPurchasedCourseListLoaded,
         (e) => {
           console.log(e);
@@ -93,12 +94,14 @@ const ClassRoom = ({ route, navigation }) => {
     //   console.log("solvedQuizList loaded");
     // },
     // setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-    }, [isPurchasedCourseListLoaded])
+    }, []))
 
 
   const sortData = () => {
+    console.log('sortData enter');
+    console.log('purchasedCourseList', purchasedCourseList);
     let sortedArray = [...purchasedCourseList];
-    purchasedCourseList.sort((a, b) => a.course_id - b.course_id)
+    sortedArray.sort((a, b) => a.course_id - b.course_id)
     return sortedArray
   }
 
@@ -113,11 +116,11 @@ const ClassRoom = ({ route, navigation }) => {
         <Text style={{fontFamily: 'Poppins-Regular'}}>There are no purchased courses.</Text>
       ) : (  <SafeAreaView nestedScrollEnabled={true}>
         <FlatList
+          data={sortData()}
           numColumns={1}
           style={styles.classListContainer}
           horizontal={false}
           keyExtractor={(item) => String(item.course_id)}
-          data={sortData()}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
