@@ -19,7 +19,6 @@ import Dialog, {
   DialogButton,
 } from "react-native-popup-dialog";
 import { Ionicons } from "@expo/vector-icons";
-import SampleClassImg1 from "../assets/icons/lesson/SampleClassImg1";
 import { getWishlistByUser, getCourseById, deleteWishlist } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
