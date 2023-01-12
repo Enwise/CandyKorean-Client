@@ -476,18 +476,22 @@ export const getSlides = async (reqParam, setData, setIsReady, handleError) => {
     setIsReady(true);
   }
 };
-export const getSlideById = async (
+
+export const getSlidesByContentId = async (
   reqParam,
   setData,
   setIsReady,
   handleError
 ) => {
-  const response = await getRequest("/slide", reqParam, handleError);
+  const { content_id } = reqParam;
+  const response = await getRequest(`/slide/content/${content_id}`, reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
     setIsReady(true);
   }
 };
+
+
 
 export const createSlide = async (
   reqParam,

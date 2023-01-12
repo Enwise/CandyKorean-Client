@@ -74,6 +74,7 @@ const LessonInfo = ({ navigation, route }) => {
     );
 
     navigation.navigate("LessonVideo", {
+      content_id,
       video_url: clickedContent.video_url,
       isPortrait: clickedContent.is_portrait,
     });

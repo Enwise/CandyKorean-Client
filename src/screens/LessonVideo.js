@@ -3,20 +3,46 @@ import React, { useState, useEffect, useRef } from "react";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
+import { getSlidesByContentId } from '../modules/NetworkFunction';
+import LessonSlides from '../components/LessonSlides'
 
 const LessonVideo = ({ route, navigation }) => {
+
   const isPortrait = route.params.isPortrait;
+  const [contentId, setContentId] = useState(route.params.content_id);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const videoPlayer = useRef();
   const [videoStatus, setVideoStatus] = useState(3);
+  const [slideList, setSlideList] = useState([]);
+  const [isSlideLoaded, setIsSlideLoaded] = useState(false);
 
   useEffect(() => {
-    // StatusBar.setBackgroundColor("transparent");
-    // StatusBar.setTranslucent(true);
-    // StatusBar.setBarStyle("dark-content");
+    
+    if(!isSlideLoaded){
+      getSlidesByContentId(
+        { content_id : contentId },
+        (d) => {
+          console.log(d.data)
+          d.data.map((item) => {
+            setSlideList((prev) => {
+              return [...prev, item.img_url]
+            })
+          })
+          console.log('slidelist data')
+        },
+        setIsSlideLoaded,
+        (e) => {
+          console.log(e)
+        }
+        )
+      }
+      console.log(slideList)
+    
 
+    
     console.log("useEffect");
-  }, [isFullScreen]);
+  }, [isFullScreen, isSlideLoaded]);
+
 
   const setOrientation = (status) => {
     if (status === 1 && !isPortrait) {
@@ -30,9 +56,6 @@ const LessonVideo = ({ route, navigation }) => {
     <View style={styles.container}>
       <StatusBar translucent={false} hidden={true} />
       <Video
-        // source={{
-        //   uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        // }}
         source={{
           uri: route.params.video_url,
         }}
@@ -56,9 +79,8 @@ const LessonVideo = ({ route, navigation }) => {
         shouldPlay
       />
       {isPortrait ? null : 
-      <View style={styles.lectureNoteContainer}>
-        <Text style={styles.lectureNote}>Lecture Note</Text>
-      </View>}
+        <LessonSlides slideList={slideList}/>
+      }
     </View>
   );
 };
@@ -68,11 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  lectureNoteContainer: {
-    height: "40%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  
 });
 
 export default LessonVideo;
