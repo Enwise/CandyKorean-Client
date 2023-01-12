@@ -82,7 +82,7 @@ const LessonVideo = ({ route, navigation }) => {
         useNativeControls={true}
         resizeMode={"contain"}
         style={{
-          height: videoStatus === 1 ? screenWidth : (isPortrait ? "100%" : screenWidth),
+          height: videoStatus === 1 ? screenWidth : (isPortrait ? screenWidth * (16 / 9) : screenWidth),
           zIndex: videoStatus === 1 ? 3 : 1,
           backgroundColor: "#000",
         }}

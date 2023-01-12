@@ -14,11 +14,6 @@ import WishListButton from "../components/WishListButton";
 import { getLevels, createLevel, getWishlistByUser } from "../modules/NetworkFunction";
 
 const ClassMain = ({ navigation }) => {
-  const [courseNameList, setCourseNameList] = useState([
-    "Lollipop Level",
-    "Cotton Candy Level",
-    "Mint Candy Level",
-  ]);
 
   // getLevels result
   // {
