@@ -104,6 +104,14 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
 
   return (
     <View style={dstyles(isShowAll).classContainer}>
+      <TouchableOpacity 
+        onPress={() => {
+          navigation.navigate("ClassInfo", {
+            classInfo: classInfo,
+            isMain: false,
+            
+          });
+        }}>
       <View style={dstyles(isShowAll).topContainer}>
           <TouchableOpacity
             onPress={() => {
@@ -183,7 +191,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
           />
         ) : null}
       </View>
-
+      </TouchableOpacity>
       {isShowAll ? (
         <View style={styles.bottomShadowContainer}>
           <TouchableOpacity
@@ -191,22 +199,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
               navigation.navigate("ClassInfo", {
                 classInfo: classInfo,
                 isMain: false,
-                // introVideoUrl:
-                //   classInfo.name == "Conversational Korean Course"
-                //     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671715828798.0%EC%B0%A8%EC%8B%9C%28%EC%86%8C%EA%B0%9C%29.mp4"
-                //     : classInfo.name == "Survival Korean Course"
-                //     ? "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671775511025.OT.mp4"
-                //     : "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671777501479.OT.mp4",
-                // unitsNum:
-                //   (classInfo.name == "Conversational Korean Course" ||
-                //     classInfo.name == "Survival Korean Course" ||
-                //     classInfo.name == "After Like Course") &&
-                //   10,
-                // isPortrait:
-                //   classInfo.name == "Conversational Korean Course" ||
-                //   classInfo.name == "Survival Korean Course"
-                //     ? true
-                //     : false,
+                
               });
               console.log("ClassInfo");
             }}
@@ -334,12 +327,25 @@ const dstyles = (isShowAll) =>
       ? {
           flexDirection: "column",
           borderRadius: 9,
-          width: Dimensions.get("window").width * 0.95,
+          width: Dimensions.get("window").width * 0.93,
           height: Dimensions.get("window").height * 0.2,
           marginBottom: 80,
           marginTop: 10,
-
+          backgroundColor:'#fff',
           alignItems: "center",
+          ...Platform.select({
+            ios: {
+              shadowColor: "rgba(0,0,0,0.2)",
+              shadowOpacity: 1,
+              shadowOffset: { height: 1, width: 1 },
+              shadowRadius: 2,
+            },
+      
+            android: {
+              shadowColor: "rgba(0,0,0,0.5)",
+              elevation: 3,
+            },
+          }),
         }
       : {
           flex: 1,
@@ -356,26 +362,12 @@ const dstyles = (isShowAll) =>
     topContainer: {
       position: "relative",
       flexDirection: isShowAll ? "row" : "column",
-      width: isShowAll ? Dimensions.get("window").width * 0.93 : "100%",
+      width: "100%",
       height: isShowAll ? "100%" : 300,
       backgroundColor: "#fff",
       borderRadius: 9,
       padding: 11,
-      ...Platform.select({
-        ios: isShowAll && {
-          shadowColor: "rgba(0,0,0,0.2)",
-          shadowOpacity: 1,
-          shadowOffset: { height: 1, width: 1 },
-          shadowRadius: 2,
-        },
-
-        android: isShowAll && {
-          elevation: 3,
-          shadowColor: "rgba(0,0,0,0.5)",
-
-          marginHorizontal: 0,
-        },
-      }),
+      
     },
 
     textContainer: {
