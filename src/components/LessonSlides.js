@@ -3,7 +3,7 @@ import { View, Image, Dimensions } from "react-native";
 import Carousel, { Pagination, ParallaxImage } from "react-native-snap-carousel";
 
 const windowWidth = Dimensions.get("window").width;
-const LessonSlides = ({ slideList }) => {
+const LessonSlides = ({ slideList, screenWidth, screenHeight }) => {
 
   const data = [...slideList];
   const [activeIndex, setActiveIndex] = React.useState(0);
@@ -14,7 +14,7 @@ const LessonSlides = ({ slideList }) => {
 			width: Dimensions.get("screen").width,
 			height: '100%',
 		}}>
-			<Image source={{uri : item}} style={{width : Dimensions.get("screen").width, height: '100%'}}/>
+			<Image source={{uri : item}} style={{width : screenWidth, height: '100%'}}/>
 		</View>;
   };
 
@@ -43,7 +43,7 @@ const LessonSlides = ({ slideList }) => {
 
   return (
     <View style={{
-			height: Dimensions.get("screen").height * (0.35),
+			height: screenHeight * (0.35),
 		}}>
       <Carousel
         data={data}
