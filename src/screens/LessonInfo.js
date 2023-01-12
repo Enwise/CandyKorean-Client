@@ -74,6 +74,7 @@ const LessonInfo = ({ navigation, route }) => {
     );
 
     navigation.navigate("LessonVideo", {
+      content_id,
       video_url: clickedContent.video_url,
       isPortrait: clickedContent.is_portrait,
     });
@@ -567,7 +568,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: "absolute",
-    top: 50,
+    top: 30,
     left: 30,
   },
   studyNowBtn: {

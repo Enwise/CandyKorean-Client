@@ -14,7 +14,8 @@ import {
   getCourses,
   getAllQuizs,
   getSolvedQuizsByUser,
-  updateSolvedQuiz
+  updateSolvedQuiz,
+  getCourseById
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 
@@ -46,8 +47,8 @@ const ClassRoom = ({ route, navigation }) => {
   const [solvedQuizList, setSolvedQuizList] = useState([]); 
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
 
-  useFocusEffect(
-    React.useCallback(() => {
+
+    useEffect(() => {
       getPurchasedCoursesByUserId(
         { userId: userId },
         (d) => {
@@ -69,12 +70,15 @@ const ClassRoom = ({ route, navigation }) => {
                 console.log(e);
               }
             );
+            
           });
         },
         setIsPurchasedCourseListLoaded,
         (e) => {
           console.log(e);
         }
+
+
       );
     
     getAllQuizs(() => {},
@@ -89,58 +93,14 @@ const ClassRoom = ({ route, navigation }) => {
     //   console.log("solvedQuizList loaded");
     // },
     // setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-    }, [])
-  )
-  
-  
-  // useEffect(() => {
+    }, [isPurchasedCourseListLoaded])
 
-    
-    
 
-  //   // setUserId(authState.userId);
-  //       getPurchasedCoursesByUserId(
-  //         { userId: userId },
-  //         (d) => {
-  //           let updatedPurchasedCourseList = [];
-  //           d.data.map((item) => {
-  //             getCourses(
-  //               { },
-  //               (d) => {
-  //                 d.data.map((courseItem) => {
-  //                   if (courseItem.course_id == item.course_id) {
-  //                     updatedPurchasedCourseList.push(courseItem);
-  //                     setPurchasedCourseList([...updatedPurchasedCourseList]);
-  //                   }
-  //                 })
-                  
-  //               },
-  //               () => {},
-  //               (e) => {
-  //                 console.log(e);
-  //               }
-  //             );
-  //           });
-  //         },
-  //         setIsPurchasedCourseListLoaded,
-  //         (e) => {
-  //           console.log(e);
-  //         }
-  //       );
-      
-  //     getAllQuizs(() => {},
-  //     (d) => {
-  //       setQuizList(d.data);
-  //       console.log("quizList loaded");
-  //     }, setIsQuizListLoaded, (e) => {console.log(e)}
-  //     )
-
-  //     getSolvedQuizsByUser({user_id : userId}, (d) => {
-  //       setSolvedQuizList(d.data);
-  //       console.log("solvedQuizList loaded");
-  //     },
-  //     setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-  // }, [isFocused, isSolvedQuizListLoaded]);
+  const sortData = () => {
+    let sortedArray = [...purchasedCourseList];
+    purchasedCourseList.sort((a, b) => a.course_id - b.course_id)
+    return sortedArray
+  }
 
   return (
     <View style={styles.container}>
@@ -154,11 +114,10 @@ const ClassRoom = ({ route, navigation }) => {
       ) : (  <SafeAreaView nestedScrollEnabled={true}>
         <FlatList
           numColumns={1}
-          key={"_"}
           style={styles.classListContainer}
           horizontal={false}
           keyExtractor={(item) => String(item.course_id)}
-          data={purchasedCourseList}
+          data={sortData()}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
