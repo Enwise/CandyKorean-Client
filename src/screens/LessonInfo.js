@@ -69,10 +69,20 @@ const LessonInfo = ({ navigation, route }) => {
 
 
   const goToCurrentVideo = () => {
-    navigation.navigate("LessonVideo", {
-      video_url: contentsList[0].video_url,
-      is_portrait: contentsList[0].is_portrait,
-    });
+
+    if (currentClassByCourseId.length == 0) {
+      navigation.navigate("LessonVideo", {
+        video_url: contentsList[0].video_url,
+        is_portrait: contentsList[0].is_portrait,
+      });
+    }  else {
+      navigation.navigate("LessonVideo", {
+        video_url: currentClassByCourseId[0].video_url,
+        is_portrait: currentClassByCourseId[0].is_portrait,
+      });
+    }
+
+    
   };
 
   const goToVideo = (content_id) => {
@@ -207,18 +217,23 @@ const LessonInfo = ({ navigation, route }) => {
       Promise.all(data).then((d) => {
         setLearnedClass(d);
         // 현재 course의 듣고 있는 class 찾기 -> courseId 기준으로!
-        let learnedClassByCourseId = d.filter((item) => {
+        const learnedClassByCourseId = d.filter((item) => {
           return item.class.course_id === courseId;
         });
+
+        // 날짜로 정렬!
+        const orderedClassByCourseId = learnedClassByCourseId.sort((a, b) => {
+          return new Date(b.date_updated) - new Date(a.date_updated);
+        });
       
-          setCurrentClassByCourseId(learnedClassByCourseId);
+        setCurrentClassByCourseId(orderedClassByCourseId);
         
         });
       };
       getProgressLecture();
       console.log("currentClassByCourseId", currentClassByCourseId);
 
-  }, []));
+  }, [isFocused]));
 
   useFocusEffect(
     React.useCallback(() => {
