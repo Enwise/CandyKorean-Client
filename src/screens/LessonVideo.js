@@ -5,12 +5,12 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 import { getSlidesByContentId } from '../modules/NetworkFunction';
 import LessonSlides from '../components/LessonSlides'
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons"; 
 
 
 const LessonVideo = ({ route, navigation }) => {
 
-  const isPortrait = route.params.isPortrait;
+  const is_portrait = route.params.is_portrait;
   const [screenWidth, setScreenWidth] = useState(Dimensions.get("screen").width);
   const [screenHeight, setScreenHeight] = useState(Dimensions.get("screen").height);
 
@@ -50,7 +50,7 @@ const LessonVideo = ({ route, navigation }) => {
 
 
   const setOrientation = (status) => {
-    if (status === 1 && !isPortrait) {
+    if (status === 1 && !is_portrait) {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
     } else {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
@@ -82,7 +82,7 @@ const LessonVideo = ({ route, navigation }) => {
         useNativeControls={true}
         resizeMode={"contain"}
         style={{
-          height: videoStatus === 1 ? screenWidth : (isPortrait ? screenWidth * (16 / 9) : screenWidth),
+          height: videoStatus === 1 ? screenWidth : (is_portrait ? screenWidth * (16 / 9) : screenWidth),
           zIndex: videoStatus === 1 ? 3 : 1,
           backgroundColor: "#000",
         }}
@@ -99,7 +99,7 @@ const LessonVideo = ({ route, navigation }) => {
         ref={videoPlayer}
         shouldPlay
       />
-      {isPortrait ? null : 
+      {is_portrait ? null : 
         <LessonSlides slideList={slideList} screenWidth={screenWidth} screenHeight={screenHeight}/>
       }
     </View>

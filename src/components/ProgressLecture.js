@@ -124,6 +124,7 @@ const ProgressLecture = ({ userId, navigation }) => {
       </View>
     );
   };
+  
 
   const renderProgressLecture = () => {
     return learnedClass.map((item, index) => {

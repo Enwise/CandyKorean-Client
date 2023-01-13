@@ -718,7 +718,20 @@ export const createLearnedClass = async (
 ) => {
   const response = await postRequest("/learned_class", reqParam, handleError);
   if (response !== null) {
-    setData();
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const updateLearnedClass = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await putRequest("/learned_class", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
     setIsReady(true);
   }
 };
