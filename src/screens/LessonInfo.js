@@ -51,17 +51,18 @@ const LessonInfo = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
 
-
+  
   const [clickedContentId, setClickedContentId] = useState(
     contentsList[0].content_id
-  );
+    );
+    const [clickedTodayContentId, setClickedTodayContentId] = useState(0);
   const [currentClassByCourseId, setCurrentClassByCourseId] = useState([]);
 
   const [isQuizReady, setIsQuizReady] = useState(false);
 
   const { authState } = React.useContext(AuthContext);
-  // const [userId, setUserId] = useState(authState.userId);
-  const [userId, setUserId] = useState(72);
+  const [userId, setUserId] = useState(authState.userId);
+  // const [userId, setUserId] = useState(72);
 
   const [startQuizList, setStartQuizList] = useState([]); // 퀴즈 시작하기 버튼 누르면 해당 컨텐츠의 퀴즈 리스트가 들어감
 
@@ -134,6 +135,14 @@ const LessonInfo = ({ navigation, route }) => {
       is_portrait: clickedContent.is_portrait,
     });
   };
+
+  const getTodayQuizList = (content_id) => {
+    const todayQuizList = quizList.filter(
+      (quiz) => quiz.content_id == content_id
+    );
+    setStartQuizList(todayQuizList);
+  }
+
  // contentsList
   // yoojin
   // 1~10차시 == 2 ~ 11 : content_id
@@ -158,7 +167,7 @@ const LessonInfo = ({ navigation, route }) => {
         {},
         (d) => {
           filterData = d.data.filter((item) => {
-            return item.user_id === userId && !item.is_completed;
+            return item.user_id === Number(authState.userId) && !item.is_completed;
           });
         },
         setIsLoaded,
@@ -206,6 +215,7 @@ const LessonInfo = ({ navigation, route }) => {
           }
         );
         if (contents[0] !== undefined) {
+          item.content_id = contents[0].content_id;
           item.className = contents[0].name;
           item.is_portrait = contents[0].is_portrait;
           item.video_url = contents[0].video_url;
@@ -251,7 +261,7 @@ const LessonInfo = ({ navigation, route }) => {
           solvedQuizList.map((solvedItem) => {
             setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
           })
-          console.log("solvedQuizNumList : ",  solvedQuizNumList)
+          // console.log("solvedQuizNumList : ",  solvedQuizNumList)
           
             contentsList.map((content) => {
       
@@ -271,8 +281,8 @@ const LessonInfo = ({ navigation, route }) => {
                     return solvedQuizItem.quiz_id == q.quiz_id;
                   })
       
-                  console.log('foundSolvedQuizItem', foundSolvedQuizItem)
-                  console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
+                  // console.log('foundSolvedQuizItem', foundSolvedQuizItem)
+                  // console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
       
                   if(foundSolvedQuizItem.is_correct){
                     solvedQuizNum += 1;
@@ -358,8 +368,15 @@ const LessonInfo = ({ navigation, route }) => {
 
             <TouchableOpacity
               onPress={() => {
+                if (currentClassByCourseId.length == 0) {
+                  setClickedTodayContentId(contentsList[0].content_id);
+                }  else {
+                  // console.log("currentClassByCourseId", currentClassByCourseId);
+                  console.log('currentClassByCourseId[0].content_id', currentClassByCourseId[0].content_id);
+                  setClickedTodayContentId(currentClassByCourseId[0].content_id);
+                }
+                getTodayQuizList(clickedTodayContentId);
                 setVisible(true);
-                setClickedContentId(contentsList[0].content_id);
               }}
             >
               <View style={styles.quizBtn}>
@@ -425,10 +442,10 @@ const LessonInfo = ({ navigation, route }) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      setVisible(true);
                       setClickedContentId(item.content_id);
                       setStartQuizList(item.quiz)
                       console.log("---------------------------------")
+                      setVisible(true);
                     }}
                   >
                     <View style={styles.unitQuizContainer}>
@@ -525,7 +542,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(true);
                 setVisible(false);
-                goToVideo(clickedContentId, true);
+                goToVideo(clickedTodayContentId, true);
 
                 console.log("review: ", review);
               }}
@@ -580,7 +597,14 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(false);
                 setVisible(false);
-                
+                // if (currentClassByCourseId.length == 0) {
+                //   setClickedContentId(contentsList[0].content_id);
+                // }  else {
+                //   console.log("currentClassByCourseId", currentClassByCourseId);
+                //   console.log('currentClassByCourseId[0].content_id', currentClassByCourseId[0].content_id);
+                //   setClickedContentId(currentClassByCourseId[0].content_id);
+                // }
+
                 navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo, quizList: startQuizList, solvedQuizList: solvedQuizList, solvedQuizNumList: solvedQuizNumList });
               }}
             />
