@@ -25,6 +25,9 @@ const ProgressLecture = ({ userId, navigation }) => {
   // 현재 몇강인지 -> 추가요청
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [learnedClass, setLearnedClass] = React.useState([]);
+  const [uniqueCourse, setUniqueCourse] = React.useState([]);
+
+
   React.useEffect(() => {
     const getProgressLecture = async () => {
       let filterData = [];
@@ -43,6 +46,8 @@ const ProgressLecture = ({ userId, navigation }) => {
 
       const data = filterData.map(async (item) => {
         let courseName, tutorId, tutorName, contents;
+        
+
         await getCourseById(
           { course_id: item.class.course_id },
           (d) => {
@@ -80,6 +85,7 @@ const ProgressLecture = ({ userId, navigation }) => {
           }
         );
         if (contents[0] !== undefined) {
+          
           item.className = contents[0].name;
           item.is_portrait = contents[0].is_portrait;
           item.video_url = contents[0].video_url;
@@ -89,7 +95,15 @@ const ProgressLecture = ({ userId, navigation }) => {
         return item;
       });
       Promise.all(data).then((d) => {
-        setLearnedClass(d);
+        d.sort((a, b) => {
+          return new Date(b.date_updated) - new Date(a.date_updated);
+        });
+        
+        const uniqueCourse = d.filter((item, index) => {
+          return d.findIndex((data) => data.class.course_id === item.class.course_id) === index;
+        });
+      
+        setLearnedClass(uniqueCourse);
       });
     };
     getProgressLecture();
@@ -124,6 +138,7 @@ const ProgressLecture = ({ userId, navigation }) => {
       </View>
     );
   };
+  
 
   const renderProgressLecture = () => {
     return learnedClass.map((item, index) => {

@@ -23,7 +23,12 @@ import Dialog, {
 import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
 
-import { getCourses, getSolvedQuizsByUser } from '../modules/NetworkFunction';
+import { getCourses, getSolvedQuizsByUser, getContents,
+  getCourseById,
+  getLearnedClasses,
+  getTutorById,
+  createLearnedClass,
+  updateLearnedClass} from '../modules/NetworkFunction';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native'; 
 
 
@@ -33,6 +38,8 @@ const LessonInfo = ({ navigation, route }) => {
   const [contentsList, setContentsList] = useState(route.params.contentsList);
   
   const [lessonInfo, setLessonInfo] = useState(route.params?.lessonInfo);
+  const [courseId, setCourseId] = useState(route.params?.lessonInfo.course_id);
+
   // const [contentsList, setContentsList] = useState(route.params.contentsList);
   const [quizList, setQuizList] = useState(route.params?.quizList);
   // const [quizList, setQuizList] = useState([]);
@@ -44,15 +51,18 @@ const LessonInfo = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
   const [review, setReview] = useState(true);
 
-
+  
   const [clickedContentId, setClickedContentId] = useState(
     contentsList[0].content_id
-  );
+    );
+    const [clickedTodayContentId, setClickedTodayContentId] = useState(0);
+  const [currentClassByCourseId, setCurrentClassByCourseId] = useState([]);
 
   const [isQuizReady, setIsQuizReady] = useState(false);
 
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState(authState.userId);
+  // const [userId, setUserId] = useState(72);
 
   const [startQuizList, setStartQuizList] = useState([]); // 퀴즈 시작하기 버튼 누르면 해당 컨텐츠의 퀴즈 리스트가 들어감
 
@@ -60,10 +70,20 @@ const LessonInfo = ({ navigation, route }) => {
 
 
   const goToCurrentVideo = () => {
-    navigation.navigate("LessonVideo", {
-      video_url: contentsList[0].video_url,
-      isPortrait: contentsList[0].is_portrait,
-    });
+
+    if (currentClassByCourseId.length == 0) {
+      navigation.navigate("LessonVideo", {
+        video_url: contentsList[0].video_url,
+        is_portrait: contentsList[0].is_portrait,
+      });
+    }  else {
+      navigation.navigate("LessonVideo", {
+        video_url: currentClassByCourseId[0].video_url,
+        is_portrait: currentClassByCourseId[0].is_portrait,
+      });
+    }
+
+    
   };
 
   const goToVideo = (content_id) => {
@@ -73,12 +93,56 @@ const LessonInfo = ({ navigation, route }) => {
       (content) => content.content_id == content_id
     );
 
+    // 만약, currentClass가 0 이면, createLearnedClass
+    // 그렇지 않으면, updateLearnedClass
+    const isPlayed = currentClassByCourseId.find(
+      (currentClass) => currentClass.class.class_id == clickedContent.class_entity.class_id
+    );
+
+    if (isPlayed) { // updateLearnedClass
+      
+      console.log('updateLearnedClass');
+
+      updateLearnedClass(
+        {
+          user_id: userId,
+          class_id: clickedContent.class_entity.class_id,
+        },
+        (response) => {
+          console.log(response);
+        },
+        () => {},
+        (e) => { console.log(e); }
+      );
+    } else { // 없는 경우! -> createLearnedClass
+      console.log('createLearnedClass');
+      createLearnedClass(
+        {
+          user_id: userId,
+          class_id: clickedContent.class_entity.class_id,
+        },
+        (response) => {
+          console.log(response);
+        },
+        () => {},
+        (e) => { console.log(e); }
+      );
+    }
+
     navigation.navigate("LessonVideo", {
       content_id,
       video_url: clickedContent.video_url,
-      isPortrait: clickedContent.is_portrait,
+      is_portrait: clickedContent.is_portrait,
     });
   };
+
+  const getTodayQuizList = (content_id) => {
+    const todayQuizList = quizList.filter(
+      (quiz) => quiz.content_id == content_id
+    );
+    setStartQuizList(todayQuizList);
+  }
+
  // contentsList
   // yoojin
   // 1~10차시 == 2 ~ 11 : content_id
@@ -93,12 +157,99 @@ const LessonInfo = ({ navigation, route }) => {
   // 1~10강 == 28 ~ 37
   // part1 == 28, part2 == 29, part3 == 30, part4 == 31, part5 == 32, part6 == 33, part7 == 34, part8 == 35, part9 == 36, part10 == 37
 
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [learnedClass, setLearnedClass] = React.useState([]);
+  useFocusEffect(
+  React.useCallback(() => {
+    const getProgressLecture = async () => {
+      let filterData = [];
+      await getLearnedClasses(
+        {},
+        (d) => {
+          filterData = d.data.filter((item) => {
+            return item.user_id === Number(authState.userId) && !item.is_completed;
+          });
+        },
+        setIsLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
 
+      const data = filterData.map(async (item) => {
+        let courseName, tutorId, tutorName, contents;
+        await getCourseById(
+          { course_id: item.class.course_id },
+          (d) => {
+            courseName = d.data.name;
+            tutorId = d.data.tutor_id;
+          },
+          () => {},
+          (e) => {
+            console.log(e);
+          }
+        );
+        await getTutorById(
+          { tutor_id: tutorId },
+          (d) => {
+            tutorName = d.data.name;
+          },
+          () => {},
+          (e) => {
+            console.log(e);
+          }
+        );
+        await getContents(
+          {},
+          (d) => {
+            contents = d.data.filter((content) => {
+              return (
+                content.class_entity.class_id === item.class_id &&
+                content.enabled
+              );
+            });
+          },
+          () => {},
+          (e) => {
+            console.log(e);
+          }
+        );
+        if (contents[0] !== undefined) {
+          item.content_id = contents[0].content_id;
+          item.className = contents[0].name;
+          item.is_portrait = contents[0].is_portrait;
+          item.video_url = contents[0].video_url;
+        }
+        item.courseName = courseName;
+        item.tutorName = tutorName;
+        return item;
+      });
+      Promise.all(data).then((d) => {
+        setLearnedClass(d);
+        // 현재 course의 듣고 있는 class 찾기 -> courseId 기준으로!
+        const learnedClassByCourseId = d.filter((item) => {
+          return item.class.course_id === courseId;
+        });
+
+        // 날짜로 정렬!
+        const orderedClassByCourseId = learnedClassByCourseId.sort((a, b) => {
+          return new Date(b.date_updated) - new Date(a.date_updated);
+        });
+      
+        setCurrentClassByCourseId(orderedClassByCourseId);
+        
+        });
+      };
+      getProgressLecture();
+      console.log("currentClassByCourseId", currentClassByCourseId);
+
+  }, [isFocused]));
 
   useFocusEffect(
     React.useCallback(() => {
 
       console.log("LessonInfo is focused");
+      console.log('lessonInfo', lessonInfo);
 
       if(!isSolvedQuizListLoaded){
         getSolvedQuizsByUser({user_id : userId}, (d) => {
@@ -110,7 +261,7 @@ const LessonInfo = ({ navigation, route }) => {
           solvedQuizList.map((solvedItem) => {
             setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
           })
-          console.log("solvedQuizNumList : ",  solvedQuizNumList)
+          // console.log("solvedQuizNumList : ",  solvedQuizNumList)
           
             contentsList.map((content) => {
       
@@ -130,8 +281,8 @@ const LessonInfo = ({ navigation, route }) => {
                     return solvedQuizItem.quiz_id == q.quiz_id;
                   })
       
-                  console.log('foundSolvedQuizItem', foundSolvedQuizItem)
-                  console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
+                  // console.log('foundSolvedQuizItem', foundSolvedQuizItem)
+                  // console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
       
                   if(foundSolvedQuizItem.is_correct){
                     solvedQuizNum += 1;
@@ -217,8 +368,15 @@ const LessonInfo = ({ navigation, route }) => {
 
             <TouchableOpacity
               onPress={() => {
+                if (currentClassByCourseId.length == 0) {
+                  setClickedTodayContentId(contentsList[0].content_id);
+                }  else {
+                  // console.log("currentClassByCourseId", currentClassByCourseId);
+                  console.log('currentClassByCourseId[0].content_id', currentClassByCourseId[0].content_id);
+                  setClickedTodayContentId(currentClassByCourseId[0].content_id);
+                }
+                getTodayQuizList(clickedTodayContentId);
                 setVisible(true);
-                setClickedContentId(contentsList[0].content_id);
               }}
             >
               <View style={styles.quizBtn}>
@@ -284,10 +442,10 @@ const LessonInfo = ({ navigation, route }) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      setVisible(true);
                       setClickedContentId(item.content_id);
                       setStartQuizList(item.quiz)
                       console.log("---------------------------------")
+                      setVisible(true);
                     }}
                   >
                     <View style={styles.unitQuizContainer}>
@@ -384,7 +542,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(true);
                 setVisible(false);
-                goToVideo(clickedContentId, true);
+                goToVideo(clickedTodayContentId, true);
 
                 console.log("review: ", review);
               }}
@@ -439,7 +597,14 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(false);
                 setVisible(false);
-                
+                // if (currentClassByCourseId.length == 0) {
+                //   setClickedContentId(contentsList[0].content_id);
+                // }  else {
+                //   console.log("currentClassByCourseId", currentClassByCourseId);
+                //   console.log('currentClassByCourseId[0].content_id', currentClassByCourseId[0].content_id);
+                //   setClickedContentId(currentClassByCourseId[0].content_id);
+                // }
+
                 navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo, quizList: startQuizList, solvedQuizList: solvedQuizList, solvedQuizNumList: solvedQuizNumList });
               }}
             />
