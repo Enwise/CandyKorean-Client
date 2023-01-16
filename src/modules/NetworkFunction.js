@@ -620,20 +620,6 @@ export const getUserById = async (
   }
 };
 
-export const getAllAttendanceByUserId = async (
-    reqParam,
-    setData,
-    setIsReady,
-    handleError
-) => {
-  const userId = reqParam;
-  const response = await getRequest(`/attendance/${userId}`, handleError);
-  if (response !== null) {
-    setData(response.data);
-    setIsReady(true);
-  }
-};
-
 export const createUser = async (
   reqParam,
   setData,
@@ -821,12 +807,41 @@ export const createFeedback = async (
 };
 
 export const fileUpload = async (
-    reqParam,
-    setData,
-    setIsReady,
-    handleError
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
 ) => {
   const response = await postRequest("/upload", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+/* Attendance */
+
+export const getAllAttendanceByUserId = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const userId = reqParam;
+  const response = await getRequest(`/attendance/${userId}`, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const createAttendance = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await postRequest(`/attendance`, reqParam, handleError);
   if (response !== null) {
     setData(response.data);
     setIsReady(true);

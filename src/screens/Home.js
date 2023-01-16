@@ -18,7 +18,12 @@ import ProgressLecture from "../components/ProgressLecture";
 import { useFocusEffect } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import AuthContext from "../contexts/AuthContext";
-import { getUserById, updateUser } from "../modules/NetworkFunction";
+import {
+  createAttendance,
+  getAllAttendanceByUserId,
+  getUserById,
+  updateUser,
+} from "../modules/NetworkFunction";
 import RightIcon from "../assets/icons/RightIcon";
 import HomeCarousel from "../components/HomeCarousel";
 import LollipopBanner from "../assets/img/LollipopBanner";
@@ -29,23 +34,42 @@ const windowHeight = Dimensions.get("window").height;
 const Home = ({ navigation }) => {
   const { authState } = React.useContext(AuthContext);
   const [user, setUser] = React.useState(null);
-  const updateAttendance = async (
-    userId,
-    lastLoginDate,
-    continuous_attendance_day
-  ) => {
+  const updateAttendance = async (userId, continuous_attendance_day) => {
     // user table의 마지막 로그인 날짜와 오늘 날짜 비교해서 연속 출석 일수 update
     let today = new Date();
-    let lastLogin = new Date(lastLoginDate);
-    let diff = today.getDate() - lastLogin.getDate();
     let update_data = { userId: userId, date_last_login: today };
+    await getAllAttendanceByUserId(
+      userId,
+      (d) => {
+        if (d.data.length !== 0) {
+          let lastLogin = new Date(d.data[d.data.length - 1].data_created);
+          let diff = today.getDate() - lastLogin.getDate();
+          if (diff === 1) {
+            // 1일 차이나면 연속 출석일수 +1
+            update_data.continuous_attendance = continuous_attendance_day + 1;
+          } else if (diff > 1) {
+            // 2일 이상 차이나면 연속 출석일수 1로 초기화
+            update_data.continuous_attendance = 1;
+          } else {
+            // 오늘 이미 출석한 경우
+            return;
+          }
+        }
+        createAttendance(
+          { user_id: userId },
+          () => {},
+          () => {},
+          (e) => {
+            console.log("createAttendance error", e);
+          }
+        );
+      },
+      () => {},
+      (e) => {
+        console.log("getAllAttendanceByUserId error", e);
+      }
+    );
 
-    if (diff === 1) {
-      update_data.continuous_attendance = continuous_attendance_day + 1;
-    }
-    if (diff > 1) {
-      update_data.continuous_attendance = 1;
-    }
     await updateUser(
       update_data,
       (d) => {
@@ -104,13 +128,12 @@ const Home = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      let lastLoginDate, continuous_attendance_day;
+      let continuous_attendance_day;
       const getUser = async () => {
         await getUserById(
           authState.userId,
           (d) => {
             setUser(d.data);
-            lastLoginDate = d.data.date_last_login;
             continuous_attendance_day = d.data.continuous_attendance;
           },
           () => {},
@@ -119,11 +142,7 @@ const Home = ({ navigation }) => {
           }
         );
 
-        updateAttendance(
-          authState.userId,
-          lastLoginDate,
-          continuous_attendance_day
-        );
+        updateAttendance(authState.userId, continuous_attendance_day);
       };
       getUser();
     }, [authState])
