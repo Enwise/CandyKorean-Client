@@ -29,8 +29,11 @@ const Setting = ({navigation}) => {
 
         if (!result.canceled) {
             setImage(result.assets[0].uri);
+            console.log(result.assets[0].uri);
             fileUpload(
-                {file : result.assets[0].uri},
+                {
+                    "file" : result.assets[0].uri
+                },
                 (d) => {
                     console.log(d);
                 },
