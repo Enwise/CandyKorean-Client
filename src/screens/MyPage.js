@@ -241,6 +241,9 @@ const MyPage = ({ navigation }) => {
               d.data.map((item,idx)=>{
                   tmpArr.push(item.data_created.split("T")[0]);
                   // tmpArr.push(`${item.data_created.split("T")[0]}`: { color: "#70d7c7", textColor: "white" });
+
+
+                  
               })
 
               let obj = tmpArr.reduce(
