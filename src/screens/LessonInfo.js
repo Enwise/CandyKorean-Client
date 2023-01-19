@@ -75,11 +75,14 @@ const LessonInfo = ({ navigation, route }) => {
       navigation.navigate("LessonVideo", {
         video_url: contentsList[0].video_url,
         is_portrait: contentsList[0].is_portrait,
+        isHome: false,
       });
     }  else {
       navigation.navigate("LessonVideo", {
         video_url: currentClassByCourseId[0].video_url,
         is_portrait: currentClassByCourseId[0].is_portrait,
+        isHome: false,
+
       });
     }
 
@@ -133,6 +136,8 @@ const LessonInfo = ({ navigation, route }) => {
       content_id,
       video_url: clickedContent.video_url,
       is_portrait: clickedContent.is_portrait,
+      isHome: false,
+
     });
   };
 

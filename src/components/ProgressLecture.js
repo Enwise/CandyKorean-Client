@@ -153,6 +153,7 @@ const ProgressLecture = ({ userId, navigation }) => {
               params: {
                 video_url: item.video_url,
                 is_portrait: item.is_portrait,
+                isHome: true,
               },
             });
           }}

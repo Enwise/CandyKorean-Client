@@ -49,6 +49,8 @@ const ClassRoomStack = ({ navigation, route }) => {
         },
       });
     }
+
+
   }, [navigation, route]);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
