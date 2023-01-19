@@ -73,12 +73,14 @@ const LessonInfo = ({ navigation, route }) => {
 
     if (currentClassByCourseId.length == 0) {
       navigation.navigate("LessonVideo", {
+        content_id : contentsList[0].content_id,
         video_url: contentsList[0].video_url,
         is_portrait: contentsList[0].is_portrait,
         isHome: false,
       });
     }  else {
       navigation.navigate("LessonVideo", {
+        content_id : currentClassByCourseId[0].content_id,
         video_url: currentClassByCourseId[0].video_url,
         is_portrait: currentClassByCourseId[0].is_portrait,
         isHome: false,
