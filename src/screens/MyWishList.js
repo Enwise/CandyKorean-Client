@@ -374,12 +374,12 @@ const dstyles = (isSelected) =>
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "white",
+    backgroundColor: "#FDFDFD",
     width: "100%",
   },
   topContainer: {
     flexDirection: "column",
-    backgroundColor: "white",
+    backgroundColor: "#FDFDFD",
   },
   title: {
     fontSize: 20,
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 50,
     zIndex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#FDFDFD",
     marginBottom: 20,
   },
 
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     zIndex: 1,
 
-    backgroundColor: "white",
+    backgroundColor: "#FDFDFD",
   },
   selectAllBtn: {
     marginRight: 5,
@@ -421,13 +421,13 @@ const styles = StyleSheet.create({
   flatListContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height - 180,
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
     alignItems: "center",
   },
   wishListContainer: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
     flexGrow: 1,
   },
 
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.9,
     height: Dimensions.get("window").width * 0.35,
     borderRadius: 9,
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
 
     ...Platform.select({
       ios: {
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
     height: "100%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
     borderRadius: 9,
   },
   classImgContainer: {

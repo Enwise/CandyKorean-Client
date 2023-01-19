@@ -477,10 +477,11 @@ const LessonInfo = ({ navigation, route }) => {
       </View>
 
       <Dialog
+        
         dialogStyle={{
-          borderRadius: 25,
+          borderRadius: 20,
           width: Dimensions.get("window").width * 0.9,
-          height: Dimensions.get("window").height * 0.27,
+          height: 200,
         }}
         visible={visible}
         onTouchOutside={() => {
@@ -499,8 +500,9 @@ const LessonInfo = ({ navigation, route }) => {
           <DialogFooter
             bordered={false}
             style={{
-              height: "50%",
               width: "100%",
+              height: "35%",
+
             }}
           >
             <DialogButton
@@ -508,7 +510,8 @@ const LessonInfo = ({ navigation, route }) => {
                 width: "50%",
                 height: "100%",
                 backgroundColor: "#E6E3EA",
-                borderBottomLeftRadius: 25,
+                borderBottomLeftRadius: 20,
+                justifyContent: "center",
                 flexDirection: "row",
                 alignItems: "center",
               }}
@@ -564,7 +567,7 @@ const LessonInfo = ({ navigation, route }) => {
             <DialogButton
               style={{
                 backgroundColor: "#A160E2",
-                borderBottomRightRadius: 25,
+                borderBottomRightRadius: 20,
                 width: "50%",
                 height: "100%",
                 justifyContent: "center",
@@ -628,10 +631,12 @@ const LessonInfo = ({ navigation, route }) => {
         <DialogContent
           style={{
             position: "relative",
+            height:'65%',
           }}
         >
           <Text
             style={{
+              width:'100%',
               fontSize: 16,
               fontFamily: "Poppins-Medium",
               color: "#000",
