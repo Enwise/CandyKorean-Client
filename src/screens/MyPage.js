@@ -451,7 +451,7 @@ const MyPage = ({ navigation }) => {
           <View style={{ height: 7 }} />
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("MyPurchases");
+              navigation.navigate("CompletedPurchases");
             }}
             style={{
               backgroundColor: "#807F82",
