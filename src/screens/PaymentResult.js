@@ -165,12 +165,13 @@ const PaymentResult = ({ navigation, route }) => {
   ]);
 
   const goToClassMore = () => {
-    navigation.navigate("Class", {
-      screen: "ClassMore",
-      params: {
+    navigation.navigate(
+      "ClassMore",
+      {
         courseList: courseList,
-      },
-    });
+      }
+    );
+    
   };
 
   return (
@@ -184,8 +185,14 @@ const PaymentResult = ({ navigation, route }) => {
             <TouchableOpacity
               onPress={() => {
                 route.params.returnToClass
-                  ? navigation.navigate("ClassMain")
-                  : navigation.navigate("My");
+                  ? navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Class' }],
+                  })
+                  : navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'My' }],
+                  });
               }}
             >
               <Ionicons name="ios-close-outline" size={24} color="black" />
@@ -218,11 +225,14 @@ const PaymentResult = ({ navigation, route }) => {
           </View>
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>Total payment amount</Text>
-            <Text style={styles.totalPrice}>$ {itemInfo.price}.99</Text>
+            <Text style={styles.totalPrice}>$ {itemInfo.price}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("ClassRoom");
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'ClassRoom' }],
+              });
             }}
           >
             <View style={styles.studyNowBtn}>
