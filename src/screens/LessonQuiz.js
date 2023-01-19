@@ -104,6 +104,7 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
   // const [quizList, setQuizList] = useState([]);
 
   useEffect(() => {
+    console.log('lessonquiz enter');
     console.log("quizList", quizList);
     console.log("---------------------------");
 

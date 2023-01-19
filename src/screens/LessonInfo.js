@@ -64,7 +64,7 @@ const LessonInfo = ({ navigation, route }) => {
   const [userId, setUserId] = useState(authState.userId);
   // const [userId, setUserId] = useState(72);
 
-  const [startQuizList, setStartQuizList] = useState([]); // 퀴즈 시작하기 버튼 누르면 해당 컨텐츠의 퀴즈 리스트가 들어감
+  const [startQuizList, setStartQuizList] = useState(); // 퀴즈 시작하기 버튼 누르면 해당 컨텐츠의 퀴즈 리스트가 들어감
 
   const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
 
@@ -136,11 +136,13 @@ const LessonInfo = ({ navigation, route }) => {
     });
   };
 
-  const getTodayQuizList = (content_id) => {
+  const getTodayQuizList = (id) => {
+    console.log('quizList', quizList);
     const todayQuizList = quizList.filter(
-      (quiz) => quiz.content_id == content_id
+      (quiz) => quiz.content_id === id
     );
-    setStartQuizList(todayQuizList);
+    console.log('getTodayQuizList', todayQuizList);
+    return todayQuizList;
   }
 
  // contentsList
@@ -368,14 +370,19 @@ const LessonInfo = ({ navigation, route }) => {
 
             <TouchableOpacity
               onPress={() => {
+                let content_id;
                 if (currentClassByCourseId.length == 0) {
+                  console.log('no listened contents');
+                  content_id = contentsList[0].content_id
                   setClickedTodayContentId(contentsList[0].content_id);
                 }  else {
-                  // console.log("currentClassByCourseId", currentClassByCourseId);
+                  console.log('currently listening');
                   console.log('currentClassByCourseId[0].content_id', currentClassByCourseId[0].content_id);
+                  content_id = currentClassByCourseId[0].content_id
                   setClickedTodayContentId(currentClassByCourseId[0].content_id);
                 }
-                getTodayQuizList(clickedTodayContentId);
+                const todayQuizList = getTodayQuizList(content_id);
+                setStartQuizList([...todayQuizList])
                 setVisible(true);
               }}
             >
@@ -604,7 +611,7 @@ const LessonInfo = ({ navigation, route }) => {
                 //   console.log('currentClassByCourseId[0].content_id', currentClassByCourseId[0].content_id);
                 //   setClickedContentId(currentClassByCourseId[0].content_id);
                 // }
-
+                console.log('param QuizList', startQuizList);
                 navigation.navigate("LessonQuiz", { content_id: clickedContentId, contentsList: contentsList, lessonInfo: lessonInfo, quizList: startQuizList, solvedQuizList: solvedQuizList, solvedQuizNumList: solvedQuizNumList });
               }}
             />
@@ -733,7 +740,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: "absolute",
-    top: 30,
+    top: 50,
     left: 30,
   },
   studyNowBtn: {
