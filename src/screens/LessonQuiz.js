@@ -357,19 +357,21 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
 
       <View style={styles.secondContainer}>
         {quizList[currentQuizIdx].style !== "dialog" ? (
+          <>
           <View style={questionTextstyles(quizList[currentQuizIdx].style).quizQuestionContainer}>
               <Text style={questionTextstyles(quizList[currentQuizIdx].style).questionText}>
                 {quizList[currentQuizIdx].json.question}
               </Text>
-            {/* {quizList[currentQuizIdx].style === "arrange" ? (
+            </View>
+          
+          {quizList[currentQuizIdx].style === "arrange" ? (
               <View style={styles.quizQuestionWordsNum}>
                 <Text style={styles.quizQuestionWordsNumText}>
                   {Object.keys(quizList[currentQuizIdx].json.answer).length}{" "}
                   words
                 </Text>
-              </View>
-            ) : null} */}
-          </View>
+              </View>) : null}
+              </>
         ) : (
           <View style={styles.quizDialogContainer}>
 
@@ -864,7 +866,17 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
   },
   
-
+  quizQuestionWordsNum: {
+    width:'90%',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop:5,
+  },
+  quizQuestionWordsNumText: {
+    fontFamily: "Poppins-Regular",
+    color: '#807F82',
+    fontSize:12,
+  },
   
   koreanWordContainer: {
     marginRight: 5,
