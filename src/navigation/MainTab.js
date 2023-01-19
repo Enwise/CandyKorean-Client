@@ -26,6 +26,7 @@ import ClassRoomActive from "../assets/icons/ClassRoomActive";
 import PremiumActive from "../assets/icons/PremiumActive";
 import MyPageActive from "../assets/icons/MyPageActive";
 
+
 const Tab = createBottomTabNavigator();
 const MainTab = ({ navigation, route }) => {
   // const routeName = getFocusedRouteNameFromRoute(route);

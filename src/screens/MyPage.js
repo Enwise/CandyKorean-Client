@@ -747,7 +747,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: "15%",
     paddingBottom: "15%",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FDFDFD",
   },
   calendar: {
     padding: 10,

@@ -477,7 +477,7 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "커�
                   .quizSelectionContainer
               }
             >
-              {Object.entries(quizList[currentQuizIdx].json.answer).map(
+              {Object.entries(quizList[currentQuizIdx].json.answer).map( 
                 (item, idx) => {
                   return (
                     <TouchableOpacity
@@ -806,7 +806,7 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "커�
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
     position: "relative",
   },
   firstContainer: {
@@ -814,7 +814,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flexDirection: "column",
-    backgroundColor: "white",
+    backgroundColor: "#FDFDFD",
   },
   title: {
     fontSize: 20,
@@ -926,7 +926,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   quizSelectionTextShadowContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
     width: Dimensions.get("window").height * 0.38,
     height: Dimensions.get("window").height * 0.05,
     borderRadius: 9,
@@ -948,7 +948,7 @@ const styles = StyleSheet.create({
   quizSelectionTextContainer: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
 
     justifyContent: "center",
     borderRadius: 9,
@@ -956,7 +956,7 @@ const styles = StyleSheet.create({
   quizSelectionText: {
     fontFamily: "Poppins-Medium",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFDFD",
     borderRadius: 9,
     justifyContent: "center",
 
@@ -1033,7 +1033,8 @@ StyleSheet.create({
       },
 
       android: {
-        elevation: 10,
+        shadowColor: "lightgray",
+        elevation: 5,
         marginHorizontal: 0,
       },
     }),
@@ -1080,7 +1081,7 @@ const quiz_word_styles = (isNext, correct, isSelected) =>
 
         android: {
           shadowColor: "lightgray",
-          elevation: 30,
+          elevation: 5,
         },
       }),
     },
@@ -1202,7 +1203,8 @@ const tstyles = (isNext, isCorrect) =>
         },
 
         android: {
-          elevation: 10,
+          shadowColor: "lightgray",
+          elevation: 5,
           marginHorizontal: 0,
         },
       }),
@@ -1246,7 +1248,7 @@ const wordStyle = (selected) =>
         },
 
         android: {
-          elevation: 10,
+          elevation: 5,
           marginHorizontal: 0,
         },
       }),
@@ -1287,7 +1289,7 @@ const selection_styles = (quiz_style) =>
             // select word 유형 quiz
             flexDirection: "column",
             borderRadius: 10,
-            backgroundColor: "#fff",
+            backgroundColor: "#FDFDFD",
             width: Dimensions.get("window").width,
             height: Dimensions.get("window").height * 0.3,
             alignItems: "center",

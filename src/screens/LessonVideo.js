@@ -11,6 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 const LessonVideo = ({ route, navigation }) => {
 
   const is_portrait = route.params.is_portrait;
+  const [isHome, setIsHome] = useState(route.params.isHome);
   const [screenWidth, setScreenWidth] = useState(Dimensions.get("screen").width);
   const [screenHeight, setScreenHeight] = useState(Dimensions.get("screen").height);
 
@@ -67,7 +68,14 @@ const LessonVideo = ({ route, navigation }) => {
       }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
+            if(isHome) {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Home' }],
+              });
+            } else {
+              navigation.goBack();
+            }
           }}
         >
           <AntDesign name="left" size={20} color="black" />
