@@ -8,6 +8,7 @@ import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
 import WebView from "react-native-webview";
 import * as ImagePicker from 'expo-image-picker';
 import BackButtonIcon from "../assets/icons/BackButtonIcon";
+import axios from "axios";
 
 const Setting = ({navigation}) => {
 
@@ -31,32 +32,47 @@ const Setting = ({navigation}) => {
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             console.log(result.assets[0].uri);
+            console.log(result.assets[0]);
 
 
             const formData = new FormData();
-            formData.append("image", {
-                // name: "photo",
-                // type: "image/jpeg",
-                // uri: result.assets[0].uri
+            formData.append('file', {
                 uri: result.assets[0].uri,
-                type: 'image/jpeg/jpg',
-                name: "photo",
+                name: 'image.png',
+                fileName:"image",
+                type: 'image/png'
             });
-            console.log(formData._parts[0][1]);
+            console.log('formData', formData);
 
-            fileUpload(
-                {
-                    // "file" : result.assets[0].uri3
-                    "file" : formData
-                },
-                (d) => {
-                    console.log(d);
-                },
-                () => {},
-                (e) => {
-                    console.log("fileUpload error");
-                }
-            );
+            axios({
+                method:'post',
+                url:'http://ec2-13-209-87-211.ap-northeast-2.compute.amazonaws.com/apis/upload',
+                data: formData
+            })
+                .then((response) => {
+                    console.log('image upload successfully', response);
+                    console.log('image upload successfully', response.data.data.link);
+                    updateUser(
+                        {
+                            userId:authState.userId,
+                            img_url: response.data.data.link,
+                        },
+                        (d) => {
+                            console.log(d.data);
+                        },
+
+                        setIsUserLoaded,
+                        (e) => {
+                            console.log(e);
+                        }
+                    );
+                }).then((error)=>{
+                    console.log('error raised', error)
+            })
+
+
+
+
         }
     };
 
@@ -71,8 +87,8 @@ const Setting = ({navigation}) => {
 
 
     const [isUserLoaded, setIsUserLoaded] = useState(false);
-    const [user, setUser] = useState([]);
     const { authState } = React.useContext(AuthContext);
+    const [userImage, setUserImage] = useState("");
 
 
 
@@ -98,6 +114,7 @@ const Setting = ({navigation}) => {
         getUserById(
             authState.userId,
             (d) => {
+                setUserImage(d.data.img_url);
                 setNickname(d.data.name)
             },
             () => {},
@@ -139,7 +156,6 @@ const Setting = ({navigation}) => {
                                     },
                                     (d) => {
                                         console.log(d.data);
-                                        setUser(d.data);
                                     },
 
                                     setIsUserLoaded,
@@ -197,18 +213,26 @@ const Setting = ({navigation}) => {
                                 {/*    source={require("../assets/img/sample_class_img2.png")}*/}
                                 {/*    style={{width:200, height:200, borderRadius:100, position:"absolute"}}*/}
                                 {/*/>*/}
-                                {image === null ?
+                                {userImage === "" ?
                                     <Image
                                         source={require("../assets/img/mypage-default-image.png")}
                                         style={{width:200, height:200, borderRadius:100, position:"absolute"}}
                                     />
                                     :
-                                    <Image
-                                        source={{
-                                            uri: `${image}`
-                                        }}
-                                        style={{width:200, height:200, borderRadius:100, position:"absolute"}}
-                                    />
+                                    image === null ?
+                                        <Image
+                                            source={{
+                                                uri: `${userImage}`
+                                            }}
+                                            style={{width:200, height:200, borderRadius:100, position:"absolute"}}
+                                        />
+                                        :
+                                        <Image
+                                            source={{
+                                                uri: `${image}`
+                                            }}
+                                            style={{width:200, height:200, borderRadius:100, position:"absolute"}}
+                                        />
                                 }
 
                                 <TouchableOpacity

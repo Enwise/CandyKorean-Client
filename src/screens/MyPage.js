@@ -130,6 +130,7 @@ const MyPage = ({ navigation }) => {
   //     );
   // }, [authState]);
 
+
   useFocusEffect(
     React.useCallback(() => {
     setAnalysisObject({
@@ -220,6 +221,7 @@ const MyPage = ({ navigation }) => {
         (d) => {
           // console.log(d);
           console.log("enter focus effect");
+          console.log(d.data);
           setUser(d.data);
         },
         () => {},
@@ -439,10 +441,19 @@ const MyPage = ({ navigation }) => {
                       justifyContent:"space-between"
                   }}
               >
-                  <Image
-                      source={require("../assets/img/mypage-default-image.png")}
-                      style={{ width: 110, height: 110, borderRadius: 55 }}
-                  />
+                  {user?.img_url === "" ?
+                      <Image
+                          source={require("../assets/img/setting-icon.png")}
+                          style={{ width: 110, height: 110, borderRadius: 55 }}
+                      />
+                      :
+                      <Image
+                          source={{
+                              uri: `${user?.img_url}`
+                          }}
+                          style={{ width: 110, height: 110, borderRadius: 55 }}
+                      />
+                  }
                   <View
                       style={{
                           marginLeft: 20,
