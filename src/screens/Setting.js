@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
 import {createFeedback, fileUpload, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
@@ -7,6 +7,7 @@ import AlertDialog from "../components/AlertDialog";
 import FeedbackAlertDialog from "../components/FeedbackAlertDialog";
 import WebView from "react-native-webview";
 import * as ImagePicker from 'expo-image-picker';
+import BackButtonIcon from "../assets/icons/BackButtonIcon";
 
 const Setting = ({navigation}) => {
 
@@ -109,23 +110,27 @@ const Setting = ({navigation}) => {
 
 
 
+
     return (
         <View style={styles.container}>
 
-            <View style={{display:"flex", flexDirection:"row",alignItems:"center", width:"90%"}}>
+            <View style={{display:"flex", flexDirection:"row",alignItems:"center", width:"90%", justifyContent:"center", position:"relative"}}>
                 {menuNum === 0 ?
-                    <BackButton onPress={() => navigation.navigate("MyPage")}/>
-                    // <BackButton onPress={() => setMenuNum(0)}/>
+                    <TouchableOpacity onPress={() => navigation.navigate("MyPage")} style={{position:"absolute", left:0}}>
+                        <BackButtonIcon />
+                    </TouchableOpacity>
                     :
-                    <BackButton onPress={() => setMenuNum(0)}/>
+                    <TouchableOpacity onPress={() => setMenuNum(0)} style={{position:"absolute", left:0}}>
+                        <BackButtonIcon />
+                    </TouchableOpacity>
                 }
-                <View style={{marginLeft:100}}>
+                <View >
                     <Text style={{fontSize:20, fontWeight:"600"}}>{menuArr[menuNum]}</Text>
                 </View>
                 {
                     menuNum === 1 ?
                         <TouchableOpacity
-                            style={{marginLeft:80}}
+                            style={{position:"absolute", right:0}}
                             onPress={() => {
                                 updateUser(
                                     {
