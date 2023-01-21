@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Image,
+    Platform, ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { Dimensions } from "react-native";
 import BackButton from "../components/BackButton";
@@ -243,7 +243,7 @@ const MyPage = ({ navigation }) => {
                   // tmpArr.push(`${item.data_created.split("T")[0]}`: { color: "#70d7c7", textColor: "white" });
 
 
-                  
+
               })
 
               let obj = tmpArr.reduce(
@@ -379,364 +379,372 @@ const MyPage = ({ navigation }) => {
   
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "90%",
-          alignItems: "center",
-          marginBottom: 20,
-        }}
-      >
-        <View>
-          <Text style={{ fontSize: 20, fontWeight: "400" }}>
-            반가워요. {user?.name}!
-          </Text>
-        </View>
-        <View style={{ display: "flex", flexDirection: "row-reverse" }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Setting");
-            }}
-          >
-            <Image
-              source={require("../assets/img/setting-icon.png")}
-              style={{ width: 24, height: 24 }}
-            />
-          </TouchableOpacity>
-          <View style={{ width: 8 }} />
-          <TouchableOpacity onPress={signOut}>
-            {/*, border:"1px solid #B8B5BC",*/}
-            <View
-              style={{
-                width: 50,
-                height: 20,
-                borderRadius: 5,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ fontSize: 10, color: "#B8B5BC" }}>Log out</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View
-        style={{
-          width: "90%",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-            justifyContent:"space-between"
-        }}
-      >
-        <Image
-            source={require("../assets/img/mypage-default-image.png")}
-            style={{ width: 110, height: 110, borderRadius: 55 }}
-        />
-        <View
-          style={{
-            marginLeft: 20,
-            display: "flex",
-            flexDirection: "column",
-            width: "60%",
+      <ScrollView
+          contentContainerStyle={{
+              backgroundColor: "white",
           }}
-        >
-          <Text style={{ fontSize: 16, fontWeight: "600", color: "#444345" }}>
-            {user?.name}
-          </Text>
-          <View style={{ height: 7 }} />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("CompletedPurchases");
-            }}
-            style={{
-              backgroundColor: "#807F82",
-              borderRadius: 9,
-              width: "100%",
-              height: 36,
-              justifyContent: "center",
-              paddingLeft: 20,
-            }}
-          >
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#FFFFFF" }}>
-              My purchases
-            </Text>
-          </TouchableOpacity>
-          <View style={{ height: 2 }} />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("MyWishList", { isAdd: false });
-            }}
-            style={{
-              backgroundColor: "#807F82",
-              borderRadius: 9,
-              width: "100%",
-              height: 36,
-              paddingLeft: 20,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <AntDesign name="heart" size={15} color="#fff" />
-            <Text
-              style={{
-                marginLeft: 10,
-                fontSize: 14,
-                fontWeight: "500",
-                color: "#FFFFFF",
-              }}
-            >
-              Wish List
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={{ width: "90%", marginTop: 20 }}>
-        <Calendar
-          style={styles.calendar}
-          theme={{
-            arrowColor: "#B8B5BC",
-            monthTextColor: "#807F82",
-            textMonthFontFamily: "Poppins-Medium",
-            "stylesheet.calendar.header": {
-              dayTextAtIndex0: {
-                color: "#E2608F",
-              },
-              dayHeader: {
-                color: "#807F82",
-                fontFamily: "Poppins-Medium",
-                fontSize: 12,
-                width: 32,
-                textAlign: "center",
-                marginBottom: 5,
-              },
-            },
-            "stylesheet.calendar.main": {
-              week: {
-                marginVertical: 4,
-                flexDirection: "row",
-                justifyContent: "space-around",
-              },
-            },
-          }}
-          dayComponent={({ date, state, marking }) => {
-            return (
-              <LinearGradient
-                colors={
-                  marking ? ["#84E9FF", "#C284FF"] : ["#FFFFFF", "#ffffff"]
-                }
-                locations={[0, 1]}
-                start={[0.025, 0.5]}
-                end={[0.975, 0.5]}
-                style={{
-                  width: 23,
-                  height: 23,
-                  borderRadius: 23 / 2,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
+          showsVerticalScrollIndicator={false}
+      >
+          <View style={styles.container}>
+              <View
                   style={{
-                    fontFamily: "Poppins-Regular",
-                    fontSize: 12,
-                    textAlign: "center",
-                    color:
-                      state === "disabled"
-                        ? "#E6E3EA"
-                        : marking
-                        ? "white"
-                        : "#B8B5BC",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      width: "90%",
+                      alignItems: "center",
+                      marginBottom: 20,
                   }}
-                >
-                  {date.day}
-                </Text>
-              </LinearGradient>
-            );
-          }}
-          markingType={"custom"}
-          markedDates={
-              // {
-              //     "2022-12-15": { marked: true, dotColor: "#50cebb" },
-              //     "2022-11-16": { marked: true, dotColor: "#50cebb" },
-              //     "2022-11-17": {
-              //         startingDay: true,
-              //         color: "#FFFFFF",
-              //         textColor: "white",
-              //     },
-              //     "2022-11-18": { color: "#70d7c7", textColor: "white" },
-              //     "2022-11-19": {
-              //         color: "#70d7c7",
-              //         textColor: "white",
-              //         marked: true,
-              //         dotColor: "white",
-              //     },
-              //     "2022-11-20": { color: "#70d7c7", textColor: "white" },
-              //     "2022-11-21": {
-              //         endingDay: true,
-              //         color: "#50cebb",
-              //         textColor: "white",
-              //     },
-              //     "2022-12-20": { color: "#70d7c7", textColor: "white" },
-              //     "2022-12-21": { color: "#70d7c7", textColor: "white" },
-              //     "2022-12-22": { color: "#000000", textColor: "white" },
-              //     calendarData
-              // }
-              calendarData
-          }
-        />
-      </View>
-
-      <View
-        style={{
-          width: "90%",
-          display: "flex",
-          flexDirection: "column",
-          // borderTop:"1px solid #F1EFF4"
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "600",
-            color: "#444345",
-            marginTop: 15,
-          }}
-        >
-          Analysis
-        </Text>
-
-        <View
-          style={{
-            width: Dimensions.get("window").width - 40,
-            height: Dimensions.get("window").height * 0.15,
-            marginTop: 15,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <View style={styles.analysisLeftContainer}>
-            {
-
-            Object.entries(analysisObject).map((item, index) => {
-              const [key, value] = item;
-              return (
-                <View style={styles.analysisRowContainer}>
-                  <Text style={styles.analysisText}>{key}</Text>
-                  <View style={styles.analysisBarContainer}>
-                    {value === 0 ? (
-                      <Text style={{ color: "#A160E2" }}> - </Text>
-                    ) : (
-                      <View
-                        style={{
-                          width: `${value + 10}%`,
-                          height: "95%",
-                          backgroundColor: "#A160E2",
-                          borderRadius: 50,
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "flex-end",
-                          paddingRight: 10,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 10,
-                            fontFamily: "Poppins-Regular",
-                            color: "#fff",
-                          }}
-                        >
-                          {value}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                </View>
-              );
-            })}
-          </View>
-
-          <View style={styles.analysisRightContainer}>
-            <Text
-              style={{
-                fontSize: 10,
-                fontWeight: "500",
-                color: "#FFFFFF",
-                marginTop: 10,
-              }}
-            >
-              Total{"\n"}score
-            </Text>
-            <View
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-                backgroundColor: "#FDFDFD",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "600",
-                  color: "#A160E2",
-                }}
               >
-                {getTotalScore()}
-              </Text>
-            </View>
-          </View>
-        </View>
+                  <View>
+                      <Text style={{ fontSize: 20, fontWeight: "400" }}>
+                          반가워요. {user?.name}!
+                      </Text>
+                  </View>
+                  <View style={{ display: "flex", flexDirection: "row-reverse" }}>
+                      <TouchableOpacity
+                          onPress={() => {
+                              navigation.navigate("Setting");
+                          }}
+                      >
+                          <Image
+                              source={require("../assets/img/setting-icon.png")}
+                              style={{ width: 24, height: 24 }}
+                          />
+                      </TouchableOpacity>
+                      <View style={{ width: 8 }} />
+                      <TouchableOpacity onPress={signOut}>
+                          {/*, border:"1px solid #B8B5BC",*/}
+                          <View
+                              style={{
+                                  width: 50,
+                                  height: 20,
+                                  borderRadius: 5,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                              }}
+                          >
+                              <Text style={{ fontSize: 10, color: "#B8B5BC" }}>Log out</Text>
+                          </View>
+                      </TouchableOpacity>
+                  </View>
+              </View>
+              <View
+                  style={{
+                      width: "90%",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent:"space-between"
+                  }}
+              >
+                  <Image
+                      source={require("../assets/img/mypage-default-image.png")}
+                      style={{ width: 110, height: 110, borderRadius: 55 }}
+                  />
+                  <View
+                      style={{
+                          marginLeft: 20,
+                          display: "flex",
+                          flexDirection: "column",
+                          width: "60%",
+                      }}
+                  >
+                      <Text style={{ fontSize: 16, fontWeight: "600", color: "#444345" }}>
+                          {user?.name}
+                      </Text>
+                      <View style={{ height: 7 }} />
+                      <TouchableOpacity
+                          onPress={() => {
+                              navigation.navigate("CompletedPurchases");
+                          }}
+                          style={{
+                              backgroundColor: "#807F82",
+                              borderRadius: 9,
+                              width: "100%",
+                              height: 36,
+                              justifyContent: "center",
+                              paddingLeft: 20,
+                          }}
+                      >
+                          <Text style={{ fontSize: 14, fontWeight: "500", color: "#FFFFFF" }}>
+                              My purchases
+                          </Text>
+                      </TouchableOpacity>
+                      <View style={{ height: 2 }} />
+                      <TouchableOpacity
+                          onPress={() => {
+                              navigation.navigate("MyWishList", { isAdd: false });
+                          }}
+                          style={{
+                              backgroundColor: "#807F82",
+                              borderRadius: 9,
+                              width: "100%",
+                              height: 36,
+                              paddingLeft: 20,
+                              flexDirection: "row",
+                              alignItems: "center",
+                          }}
+                      >
+                          <AntDesign name="heart" size={15} color="#fff" />
+                          <Text
+                              style={{
+                                  marginLeft: 10,
+                                  fontSize: 14,
+                                  fontWeight: "500",
+                                  color: "#FFFFFF",
+                              }}
+                          >
+                              Wish List
+                          </Text>
+                      </TouchableOpacity>
+                  </View>
+              </View>
 
-        <TouchableOpacity
-          onPress={() => {
-            // navigation.navigate("ClassMain");
-            navigation.navigate("ClassMore", {
-              title: "Lollipop Level",
-              courseList: lollipopCourseList,
-            });
-          }}
-        >
-          <View
-            style={{
-              marginTop: 15,
-              borderWidth: 1,
-              borderColor: "#B8B5BC",
-              borderRadius: 50,
-              height: 24,
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingLeft: 17,
-              paddingRight: 10,
-              flexDirection: "row",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 10,
-                fontWeight: "500",
-                color: "#B8B5BC",
-              }}
-            >
-              How to improve your Korean Level
-            </Text>
-            <Image source={require("../assets/img/mypage-right-icon.png")} />
+              <View style={{ width: "90%", marginTop: 20 }}>
+                  <Calendar
+                      style={styles.calendar}
+                      theme={{
+                          arrowColor: "#B8B5BC",
+                          monthTextColor: "#807F82",
+                          textMonthFontFamily: "Poppins-Medium",
+                          "stylesheet.calendar.header": {
+                              dayTextAtIndex0: {
+                                  color: "#E2608F",
+                              },
+                              dayHeader: {
+                                  color: "#807F82",
+                                  fontFamily: "Poppins-Medium",
+                                  fontSize: 12,
+                                  width: 32,
+                                  textAlign: "center",
+                                  marginBottom: 5,
+                              },
+                          },
+                          "stylesheet.calendar.main": {
+                              week: {
+                                  marginVertical: 4,
+                                  flexDirection: "row",
+                                  justifyContent: "space-around",
+                              },
+                          },
+                      }}
+                      dayComponent={({ date, state, marking }) => {
+                          return (
+                              <LinearGradient
+                                  colors={
+                                      marking ? ["#84E9FF", "#C284FF"] : ["#FFFFFF", "#ffffff"]
+                                  }
+                                  locations={[0, 1]}
+                                  start={[0.025, 0.5]}
+                                  end={[0.975, 0.5]}
+                                  style={{
+                                      width: 23,
+                                      height: 23,
+                                      borderRadius: 23 / 2,
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                  }}
+                              >
+                                  <Text
+                                      style={{
+                                          fontFamily: "Poppins-Regular",
+                                          fontSize: 12,
+                                          textAlign: "center",
+                                          color:
+                                              state === "disabled"
+                                                  ? "#E6E3EA"
+                                                  : marking
+                                                      ? "white"
+                                                      : "#B8B5BC",
+                                      }}
+                                  >
+                                      {date.day}
+                                  </Text>
+                              </LinearGradient>
+                          );
+                      }}
+                      markingType={"custom"}
+                      markedDates={
+                          // {
+                          //     "2022-12-15": { marked: true, dotColor: "#50cebb" },
+                          //     "2022-11-16": { marked: true, dotColor: "#50cebb" },
+                          //     "2022-11-17": {
+                          //         startingDay: true,
+                          //         color: "#FFFFFF",
+                          //         textColor: "white",
+                          //     },
+                          //     "2022-11-18": { color: "#70d7c7", textColor: "white" },
+                          //     "2022-11-19": {
+                          //         color: "#70d7c7",
+                          //         textColor: "white",
+                          //         marked: true,
+                          //         dotColor: "white",
+                          //     },
+                          //     "2022-11-20": { color: "#70d7c7", textColor: "white" },
+                          //     "2022-11-21": {
+                          //         endingDay: true,
+                          //         color: "#50cebb",
+                          //         textColor: "white",
+                          //     },
+                          //     "2022-12-20": { color: "#70d7c7", textColor: "white" },
+                          //     "2022-12-21": { color: "#70d7c7", textColor: "white" },
+                          //     "2022-12-22": { color: "#000000", textColor: "white" },
+                          //     calendarData
+                          // }
+                          calendarData
+                      }
+                  />
+              </View>
+
+              <View
+                  style={{
+                      width: "90%",
+                      display: "flex",
+                      flexDirection: "column",
+                      // borderTop:"1px solid #F1EFF4"
+                  }}
+              >
+                  <Text
+                      style={{
+                          fontSize: 16,
+                          fontWeight: "600",
+                          color: "#444345",
+                          marginTop: 15,
+                      }}
+                  >
+                      Analysis
+                  </Text>
+
+                  <View
+                      style={{
+                          width: Dimensions.get("window").width - 40,
+                          height: Dimensions.get("window").height * 0.15,
+                          marginTop: 15,
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                      }}
+                  >
+                      <View style={styles.analysisLeftContainer}>
+                          {
+
+                              Object.entries(analysisObject).map((item, index) => {
+                                  const [key, value] = item;
+                                  return (
+                                      <View style={styles.analysisRowContainer}>
+                                          <Text style={styles.analysisText}>{key}</Text>
+                                          <View style={styles.analysisBarContainer}>
+                                              {value === 0 ? (
+                                                  <Text style={{ color: "#A160E2" }}> - </Text>
+                                              ) : (
+                                                  <View
+                                                      style={{
+                                                          width: `${value + 10}%`,
+                                                          height: "95%",
+                                                          backgroundColor: "#A160E2",
+                                                          borderRadius: 50,
+                                                          flex: 1,
+                                                          flexDirection: "row",
+                                                          justifyContent: "flex-end",
+                                                          paddingRight: 10,
+                                                          alignItems: "center",
+                                                      }}
+                                                  >
+                                                      <Text
+                                                          style={{
+                                                              fontSize: 10,
+                                                              fontFamily: "Poppins-Regular",
+                                                              color: "#fff",
+                                                          }}
+                                                      >
+                                                          {value}
+                                                      </Text>
+                                                  </View>
+                                              )}
+                                          </View>
+                                      </View>
+                                  );
+                              })}
+                      </View>
+
+                      <View style={styles.analysisRightContainer}>
+                          <Text
+                              style={{
+                                  fontSize: 10,
+                                  fontWeight: "500",
+                                  color: "#FFFFFF",
+                                  marginTop: 10,
+                              }}
+                          >
+                              Total{"\n"}score
+                          </Text>
+                          <View
+                              style={{
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: 20,
+                                  backgroundColor: "#FDFDFD",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                              }}
+                          >
+                              <Text
+                                  style={{
+                                      fontSize: 18,
+                                      fontWeight: "600",
+                                      color: "#A160E2",
+                                  }}
+                              >
+                                  {getTotalScore()}
+                              </Text>
+                          </View>
+                      </View>
+                  </View>
+
+                  <TouchableOpacity
+                      onPress={() => {
+                          // navigation.navigate("ClassMain");
+                          navigation.navigate("ClassMore", {
+                              title: "Lollipop Level",
+                              courseList: lollipopCourseList,
+                          });
+                      }}
+                  >
+                      <View
+                          style={{
+                              marginTop: 15,
+                              borderWidth: 1,
+                              borderColor: "#B8B5BC",
+                              borderRadius: 50,
+                              height: 24,
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              paddingLeft: 17,
+                              paddingRight: 10,
+                              flexDirection: "row",
+                          }}
+                      >
+                          <Text
+                              style={{
+                                  fontSize: 10,
+                                  fontWeight: "500",
+                                  color: "#B8B5BC",
+                              }}
+                          >
+                              How to improve your Korean Level
+                          </Text>
+                          <Image source={require("../assets/img/mypage-right-icon.png")} />
+                      </View>
+                  </TouchableOpacity>
+              </View>
           </View>
-        </TouchableOpacity>
-      </View>
-    </View>
+      </ScrollView>
+
   );
 };
 

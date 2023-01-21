@@ -30,9 +30,23 @@ const Setting = ({navigation}) => {
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             console.log(result.assets[0].uri);
+
+
+            const formData = new FormData();
+            formData.append("image", {
+                // name: "photo",
+                // type: "image/jpeg",
+                // uri: result.assets[0].uri
+                uri: result.assets[0].uri,
+                type: 'image/jpeg/jpg',
+                name: "photo",
+            });
+            console.log(formData._parts[0][1]);
+
             fileUpload(
                 {
-                    "file" : result.assets[0].uri
+                    // "file" : result.assets[0].uri3
+                    "file" : formData
                 },
                 (d) => {
                     console.log(d);
