@@ -399,11 +399,11 @@ const MyPage = ({ navigation }) => {
                   }}
               >
                   <View>
-                      <Text style={{ fontSize: 20, fontWeight: "400" }}>
+                      <Text style={{ fontSize: 20, fontWeight: "400", fontFamily: "Poppins-SemiBold" }}>
                           반가워요. {user?.name}!
                       </Text>
                   </View>
-                  <View style={{ display: "flex", flexDirection: "row-reverse" }}>
+                  <View style={{ display: "flex", flexDirection: "row-reverse", alignItems: "center" }}>
                       <TouchableOpacity
                           onPress={() => {
                               navigation.navigate("Setting");
@@ -425,9 +425,11 @@ const MyPage = ({ navigation }) => {
                                   display: "flex",
                                   alignItems: "center",
                                   justifyContent: "center",
+                                  borderColor:"#B8B5BC",
+                                  borderWidth: 1
                               }}
                           >
-                              <Text style={{ fontSize: 10, color: "#B8B5BC" }}>Log out</Text>
+                              <Text style={{ fontSize: 10, color: "#B8B5BC", fontFamily:"Poppins-Regular" }}>Log out</Text>
                           </View>
                       </TouchableOpacity>
                   </View>
@@ -479,7 +481,7 @@ const MyPage = ({ navigation }) => {
                               paddingLeft: 20,
                           }}
                       >
-                          <Text style={{ fontSize: 14, fontWeight: "500", color: "#FFFFFF" }}>
+                          <Text style={{ fontSize: 14, fontWeight: "500", color: "#FFFFFF", fontFamily:"Poppins-Medium" }}>
                               My purchases
                           </Text>
                       </TouchableOpacity>
@@ -505,6 +507,7 @@ const MyPage = ({ navigation }) => {
                                   fontSize: 14,
                                   fontWeight: "500",
                                   color: "#FFFFFF",
+                                  fontFamily:"Poppins-Medium"
                               }}
                           >
                               Wish List
@@ -623,6 +626,7 @@ const MyPage = ({ navigation }) => {
                           fontWeight: "600",
                           color: "#444345",
                           marginTop: 15,
+                          fontFamily:"Poppins-SemiBold"
                       }}
                   >
                       Analysis
@@ -648,7 +652,7 @@ const MyPage = ({ navigation }) => {
                                           <Text style={styles.analysisText}>{key}</Text>
                                           <View style={styles.analysisBarContainer}>
                                               {value === 0 ? (
-                                                  <Text style={{ color: "#A160E2" }}> - </Text>
+                                                  <Text style={{ color: "#A160E2", marginLeft:11}}>-</Text>
                                               ) : (
                                                   <View
                                                       style={{
@@ -683,10 +687,11 @@ const MyPage = ({ navigation }) => {
                       <View style={styles.analysisRightContainer}>
                           <Text
                               style={{
-                                  fontSize: 10,
+                                  fontSize: 11,
                                   fontWeight: "500",
                                   color: "#FFFFFF",
                                   marginTop: 10,
+                                  fontFamily:"Poppins-Medium"
                               }}
                           >
                               Total{"\n"}score
@@ -707,6 +712,7 @@ const MyPage = ({ navigation }) => {
                                       fontSize: 18,
                                       fontWeight: "600",
                                       color: "#A160E2",
+                                      fontFamily:"Poppins-SemiBold"
                                   }}
                               >
                                   {getTotalScore()}
@@ -745,6 +751,7 @@ const MyPage = ({ navigation }) => {
                                   fontSize: 10,
                                   fontWeight: "500",
                                   color: "#B8B5BC",
+                                  fontFamily:"Poppins-Medium"
                               }}
                           >
                               How to improve your Korean Level
@@ -820,6 +827,7 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 50,
     backgroundColor: "#F1EFF4",
+    justifyContent: "center",
   },
 });
 

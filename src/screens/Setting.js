@@ -142,7 +142,7 @@ const Setting = ({navigation}) => {
                     </TouchableOpacity>
                 }
                 <View >
-                    <Text style={{fontSize:20, fontWeight:"600"}}>{menuArr[menuNum]}</Text>
+                    <Text style={{fontSize:20, fontWeight:"600", fontFamily: "Poppins-SemiBold"}}>{menuArr[menuNum]}</Text>
                 </View>
                 {
                     menuNum === 1 ?
@@ -180,19 +180,19 @@ const Setting = ({navigation}) => {
             {menuNum === 0 ?
                 <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
                     <TouchableOpacity onPress={()=>{setMenuNum(1);}}>
-                        <Text style={styles.textCss}>change profile</Text>
+                        <Text style={styles.textCss}>Change profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{setMenuNum(2);}}>
-                        <Text style={styles.textCss}>notice</Text>
+                        <Text style={styles.textCss}>Notice</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{setMenuNum(3);}}>
-                        <Text style={styles.textCss}>feedback</Text>
+                        <Text style={styles.textCss}>Feedback</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={() => navigation.navigate("TermsOfUse", "https://www.notion.so/Terms-of-Use-00a591c112064ed89b420f4f102dbf2e")}
                     >
-                        <Text style={styles.textCss}>terms of use</Text>
+                        <Text style={styles.textCss}>Terms of use</Text>
                     </TouchableOpacity>
 
 
@@ -200,7 +200,7 @@ const Setting = ({navigation}) => {
                     <TouchableOpacity
                         onPress={() => navigation.navigate("TermsOfUse", "https://www.notion.so/Privacy-Policy-817a4465f7a74d64991143978f22c398")}
                     >
-                        <Text style={styles.textCss}>privacy policy</Text>
+                        <Text style={styles.textCss}>Privacy policy</Text>
                     </TouchableOpacity>
                 </View>
                 :
@@ -282,10 +282,10 @@ const Setting = ({navigation}) => {
                                         >
                                             <View key={idx} style={{display:"flex", flexDirection:"row", justifyContent:"space-between", borderBottom:"1px solid #F1EFF4", paddingBottom:20}}>
                                                 <View style={{display:"flex", flexDirection:"column",justifyContent:"space-between"}}>
-                                                    <Text style={{fontSize:16, fontWeight:"500", color:"#444345", marginBottom:6}}>{item.title}</Text>
+                                                    <Text style={{fontSize:16, fontWeight:"500", color:"#444345", marginBottom:6, fontFamily: "Poppins-Medium"}}>{item.title}</Text>
                                                 </View>
                                                 <View style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                                                    <Text style={{fontSize:10, fontWeight:"400", color:"#B8B5BC"}}>{item.date_updated.split("T")[0]}</Text>
+                                                    <Text style={{fontSize:10, fontWeight:"400", color:"#B8B5BC", fontFamily: "Poppins-Regular"}}>{item.date_updated.split("T")[0]}</Text>
                                                     {/*<Image*/}
                                                     {/*    source={require("../assets/img/icon-notice-detail.png")}*/}
                                                     {/*    style={{width:24, height:24}}*/}
@@ -303,13 +303,13 @@ const Setting = ({navigation}) => {
                         </View>
                         :
                         <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82"}}>please select your feedback</Text>
+                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82", fontFamily: "Poppins-Regular"}}>Please select your feedback</Text>
                             <View style={{display:"flex", flexDirection:"row",marginTop:10}}>
                                 <TouchableOpacity
                                     onPress={()=>{setFeedbackNum(1)}}
                                 >
                                     <View style={{backgroundColor:feedbackNum===1 ? "#A160E2":"#FDFDFD", borderWidth:1, borderColor:feedbackNum===1 ? "#A160E2" :"#F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center", marginRight:10}}>
-                                        <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===1 ? "#FDFDFD" : "#B8B5BC"}}>content</Text>
+                                        <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===1 ? "#FDFDFD" : "#B8B5BC", fontFamily: "Poppins-Regular"}}>Content</Text>
                                     </View>
                                 </TouchableOpacity>
 
@@ -317,7 +317,7 @@ const Setting = ({navigation}) => {
                                     onPress={()=>{setFeedbackNum(2)}}
                                 >
                                     <View style={{backgroundColor:feedbackNum===2 ? "#A160E2":"#FDFDFD", borderWidth:1, borderColor:feedbackNum===2 ? "#A160E2" :"#F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center", marginRight:10}}>
-                                        <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===2 ? "#FDFDFD" : "#B8B5BC"}}>bug</Text>
+                                        <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===2 ? "#FDFDFD" : "#B8B5BC", fontFamily: "Poppins-Regular"}}>Bug</Text>
                                     </View>
                                 </TouchableOpacity>
 
@@ -325,14 +325,14 @@ const Setting = ({navigation}) => {
                                     onPress={()=>{setFeedbackNum(3)}}
                                 >
                                     <View style={{backgroundColor:feedbackNum===3? "#A160E2":"#FDFDFD", borderWidth:1, borderColor:feedbackNum===3 ? "#A160E2" :"#F1EFF4", borderRadius:40,width:60, height:20, display:"flex", justifyContent:"center", alignItems:"center"}}>
-                                        <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===3 ? "#FDFDFD" : "#B8B5BC"}}>other</Text>
+                                        <Text style={{fontSize:10, fontWeight:"400", color:feedbackNum===3 ? "#FDFDFD" : "#B8B5BC", fontFamily: "Poppins-Regular"}}>Other</Text>
                                     </View>
                                 </TouchableOpacity>
 
                             </View>
-                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82", marginTop:40, marginBottom:10}}>Please leave your feedback below</Text>
+                            <Text style={{fontSize:12, fontWeight:"400", color:"#807F82", marginTop:40, marginBottom:10, fontFamily: "Poppins-Regular"}}>Please leave your feedback below</Text>
                             <TextInput
-                                style={{height:300, borderWidth:1, borderColor:"#d9d9d9", backgroundColor:"#FDFDFD", padding:12, textAlignVertical:"top"}}
+                                style={{height:300, borderWidth:1, borderColor:"#d9d9d9", backgroundColor:"#FDFDFD", padding:12, textAlignVertical:"top",fontFamily: "Poppins-Regular" }}
                                 onChangeText={(event)=>{
                                     console.log(event)
                                     setFeedbackContent(event)
@@ -368,7 +368,7 @@ const Setting = ({navigation}) => {
                                 }}
                             >
                                 <View style={{display:"flex", justifyContent:"center", alignItems:"center",width:"100%", height:50, borderRadius:50, backgroundColor:(feedbackNum !== 0 && feedbackContent !== "") ? "#A160E2" : "#B8B5BC"}}>
-                                    <Text style={{fontSize:20, fontWeight:"600", color:"#FFFFFF" }}>submit</Text>
+                                    <Text style={{fontSize:20, fontWeight:"600", color:"#FFFFFF", fontFamily: "Poppins-SemiBold", letterSpacing:1.5}}>SUBMIT</Text>
                                 </View>
 
                             </TouchableOpacity>
@@ -405,6 +405,7 @@ const styles = StyleSheet.create({
         color:"#444345",
         marginTop:15,
         paddingBottom:15,
+        fontFamily:"Poppins-Medium"
     },
     input: {
         borderBottomColor:"#B8B5BC",
@@ -413,6 +414,7 @@ const styles = StyleSheet.create({
         fontWeight:"600",
         fontSize:20,
         color:"#444345",
+        fontFamily: "Poppins-SemiBold"
     },
 });
 export default Setting;
