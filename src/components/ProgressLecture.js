@@ -44,67 +44,71 @@ const ProgressLecture = ({ userId, navigation }) => {
         }
       );
 
-      const data = filterData.map(async (item) => {
-        let courseName, tutorId, tutorName, contents;
-        
+      let data = await Promise.all(
+        filterData.map(async (item) => {
+          let courseName, tutorId, tutorName, contents;
 
-        await getCourseById(
-          { course_id: item.class.course_id },
-          (d) => {
-            courseName = d.data.name;
-            tutorId = d.data.tutor_id;
-          },
-          () => {},
-          (e) => {
-            console.log(e);
+          await getCourseById(
+            { course_id: item.class.course_id },
+            (d) => {
+              courseName = d.data.name;
+              tutorId = d.data.tutor_id;
+            },
+            () => {},
+            (e) => {
+              console.log(e);
+            }
+          );
+          await getTutorById(
+            { tutor_id: tutorId },
+            (d) => {
+              tutorName = d.data.name;
+            },
+            () => {},
+            (e) => {
+              console.log(e);
+            }
+          );
+          await getContents(
+            {},
+            (d) => {
+              contents = d.data.filter((content) => {
+                return (
+                  content.class_entity.class_id === item.class_id &&
+                  content.enabled
+                );
+              });
+            },
+            () => {},
+            (e) => {
+              console.log(e);
+            }
+          );
+          if (contents.length === 0) return; // 강의가 없는 경우 return;
+          if (contents[0] !== undefined) {
+            item.className = contents[0].name;
+            item.is_portrait = contents[0].is_portrait;
+            item.video_url = contents[0].video_url;
           }
-        );
-        await getTutorById(
-          { tutor_id: tutorId },
-          (d) => {
-            tutorName = d.data.name;
-          },
-          () => {},
-          (e) => {
-            console.log(e);
-          }
-        );
-        await getContents(
-          {},
-          (d) => {
-            contents = d.data.filter((content) => {
-              return (
-                content.class_entity.class_id === item.class_id &&
-                content.enabled
-              );
-            });
-          },
-          () => {},
-          (e) => {
-            console.log(e);
-          }
-        );
-        if (contents[0] !== undefined) {
-          
-          item.className = contents[0].name;
-          item.is_portrait = contents[0].is_portrait;
-          item.video_url = contents[0].video_url;
-        }
-        item.courseName = courseName;
-        item.tutorName = tutorName;
-        return item;
+          item.courseName = courseName;
+          item.tutorName = tutorName;
+          return item;
+        })
+      );
+      data = data.filter((item) => item !== undefined && item !== null);
+      data.sort((a, b) => {
+        return new Date(b.date_updated) - new Date(a.date_updated);
       });
-      Promise.all(data).then((d) => {
-        d.sort((a, b) => {
-          return new Date(b.date_updated) - new Date(a.date_updated);
-        });
-        
-        const uniqueCourse = d.filter((item, index) => {
-          return d.findIndex((data) => data.class.course_id === item.class.course_id) === index;
-        });
-      
-        setLearnedClass(uniqueCourse);
+
+      const uniqueCourse = data.filter((item, index) => {
+        return (
+          data.findIndex(
+            (data) => data.class.course_id === item.class.course_id
+          ) === index
+        );
       });
+
+      setLearnedClass(uniqueCourse);
     };
     getProgressLecture();
   }, []);
