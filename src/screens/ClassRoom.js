@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     paddingTop: 50,
-    backgroundColor: "#fff",
+    backgroundColor: "#fdfdfd",
     position: "relative",
     alignItems: "center",
     

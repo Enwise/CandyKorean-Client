@@ -26,6 +26,7 @@ const LessonQuiz = ({ route, navigation }) => {
   const [quizList, setQuizList] = useState(route.params.quizList);
   const [solvedQuizNumList, setSolvedQuizNumList] = useState(route.params.solvedQuizNumList);
   const [solvedQuizList, setSolvedQuizList] = useState(route.params.solvedQuizList);
+  const [keyForArrange, setKeyForArrange] = useState([]);
 
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState(authState.userId);
@@ -103,6 +104,12 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
   const [isQuizListLoaded, setIsQuizListLoaded] = useState(false);
   // const [quizList, setQuizList] = useState([]);
 
+  const shuffleArray = (array) => {
+    array.sort(() => Math.random() - 0.5);
+    console.log('shuffleArray', array);
+    return [...array];
+  }
+
   useEffect(() => {
     console.log('lessonquiz enter');
     console.log("quizList", quizList);
@@ -123,14 +130,19 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
             
               let answer = quizItem.json.answer;
               let updatedAnswer = {};
+
               Object.keys(answer).map((key) => {
                 updatedAnswer[key] = {
                   ...answer[key],
                   is_selected: false,
                 }
-              })
-              quizItem.json.answer = updatedAnswer;
 
+              })
+              console.log('updatedAnswer', updatedAnswer);
+              quizItem.json.answer = updatedAnswer;
+              if(quizItem.style === "arrange"){
+                quizItem.json.shuffledKeys = shuffleArray(Object.keys(answer));
+              }
 
 
             updatedQuizList.push(quizItem);
@@ -141,7 +153,7 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
         setIsQuizListLoaded(true);
       }
 
-  }, [currentQuizIdx, isChecked, quizList, selectedList, isQuizListLoaded, isFocused]);
+  }, [currentQuizIdx, isChecked, isQuizListLoaded, selectedList, quizList, isFocused, keyForArrange]);
 
 
   const updateSelected = (key) => {
@@ -479,8 +491,9 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
                   .quizSelectionContainer
               }
             >
-              {Object.entries(quizList[currentQuizIdx].json.answer).map( 
-                (item, idx) => {
+              {
+              quizList[currentQuizIdx].json.shuffledKeys.map( 
+                (key) => {
                   return (
                     <TouchableOpacity
                       onPress={() => {
@@ -488,11 +501,11 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
                           Object.keys(quizList[currentQuizIdx].json.answer)
                             .length > getSelectedCount()
                         ) {
-                          updateSelected(item[0]);
+                          updateSelected(key);
                         }
                       }}
                       disabled={
-                        quizList[currentQuizIdx].json.answer[item[0]]
+                        quizList[currentQuizIdx].json.answer[key]
                           .is_selected ?? false
                       }
                     >
@@ -500,12 +513,12 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
                         <Text
                           style={
                             wordStyle(
-                              quizList[currentQuizIdx].json.answer[item[0]]
+                              quizList[currentQuizIdx].json.answer[key]
                                 .is_selected
                             ).englishWordText
                           }
                         >
-                          {quizList[currentQuizIdx].json.answer[item[0]].text}
+                          {quizList[currentQuizIdx].json.answer[key].text}
                         </Text>
                       </View>
                     </TouchableOpacity>
