@@ -774,6 +774,7 @@ const styles = StyleSheet.create({
     paddingTop: "15%",
     paddingBottom: "15%",
     backgroundColor: "#FDFDFD",
+    marginBottom: 50,
   },
   calendar: {
     padding: 10,
