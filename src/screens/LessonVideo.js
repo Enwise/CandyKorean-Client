@@ -22,6 +22,8 @@ const LessonVideo = ({ route, navigation }) => {
   const [slideList, setSlideList] = useState([]);
   const [isSlideLoaded, setIsSlideLoaded] = useState(false);
 
+  const [currentTime, setCurrentTime] = useState(0);
+
   useEffect(() => {
     
     if(!isSlideLoaded){
@@ -31,7 +33,7 @@ const LessonVideo = ({ route, navigation }) => {
           console.log(d.data)
           d.data.map((item) => {
             setSlideList((prev) => {
-              return [...prev, item.img_url]
+              return [...prev, item]
             })
           })
           console.log('slidelist data')
@@ -105,10 +107,19 @@ const LessonVideo = ({ route, navigation }) => {
         }}
         slider={{ visible: true }}
         ref={videoPlayer}
-        shouldPlay
+        onPlaybackStatusUpdate={(status) => {
+
+          console.log('status', status);
+          setCurrentTime(status.positionMillis);
+      
+          if (status.didJustFinish) {
+            videoPlayer.current.replayAsync();
+          }
+        }}
+        
       />
       {is_portrait ? null : 
-        <LessonSlides slideList={slideList} screenWidth={screenWidth} screenHeight={screenHeight}/>
+        <LessonSlides currentTime={currentTime} slideList={slideList} screenWidth={screenWidth} screenHeight={screenHeight}/>
       }
     </View>
   );

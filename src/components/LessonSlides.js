@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, Dimensions } from "react-native";
 import Carousel, { Pagination, ParallaxImage } from "react-native-snap-carousel";
 
 const windowWidth = Dimensions.get("window").width;
-const LessonSlides = ({ slideList, screenWidth, screenHeight }) => {
+const LessonSlides = ({ currentTime, slideList, screenWidth, screenHeight }) => {
 
   const data = [...slideList];
-  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 	
   const renderItem = ({item}) => {
     return <View 
@@ -14,14 +14,20 @@ const LessonSlides = ({ slideList, screenWidth, screenHeight }) => {
 			width: Dimensions.get("screen").width,
 			height: '100%',
 		}}>
-			<Image source={{uri : item}} style={{width : screenWidth, height: '100%'}}/>
+			<Image source={{uri : item.img_url}} style={{width : screenWidth, height: '100%'}}/>
 		</View>;
   };
 
-	useEffect(() => {
-		console.log("lesson slide data")
-		// console.log(slideList);
-	})
+  const getSlideIndex = () => {
+    let index = 0;
+    slideList.map((item, i) => {
+      if (item.display_time <= currentTime) {
+        index = i;
+      }
+    });
+    return index;
+
+  }
 
 	const pagination = () => {
     return (
@@ -52,6 +58,7 @@ const LessonSlides = ({ slideList, screenWidth, screenHeight }) => {
         onSnapToItem={(index) => setActiveIndex(index)}
         itemWidth={windowWidth}
         sliderWidth={windowWidth}
+        firstItem={getSlideIndex()}
       />
       {pagination()}
     </View>
