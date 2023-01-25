@@ -190,7 +190,11 @@ const Setting = ({navigation}) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("TermsOfUse", "https://www.notion.so/Terms-of-Use-00a591c112064ed89b420f4f102dbf2e")}
+                        onPress={() => navigation.navigate("TermsOfUse", 
+                            {
+                                uri: "https://dazzling-whale-1af.notion.site/Terms-of-Use-00a591c112064ed89b420f4f102dbf2e",
+                                title: "Terms of use"
+                            })}
                     >
                         <Text style={styles.textCss}>Terms of use</Text>
                     </TouchableOpacity>
@@ -198,7 +202,11 @@ const Setting = ({navigation}) => {
 
 
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("TermsOfUse", "https://www.notion.so/Privacy-Policy-817a4465f7a74d64991143978f22c398")}
+                        onPress={() => navigation.navigate("TermsOfUse",
+                            {
+                                uri:"https://dazzling-whale-1af.notion.site/Privacy-Policy-817a4465f7a74d64991143978f22c398",
+                                title:"Privacy policy"
+                            })}
                     >
                         <Text style={styles.textCss}>Privacy policy</Text>
                     </TouchableOpacity>
