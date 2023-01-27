@@ -3,7 +3,6 @@
     "name": "candykorean",
     "slug": "candykorean",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -37,6 +36,12 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "PORTRAIT_UP"
         }
       ]
     ],

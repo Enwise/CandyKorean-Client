@@ -79,8 +79,8 @@ export default function App() {
     bootstrapAsync();
 
     // 화면 세로 고정
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    
   }, []);
 
   const authContext = React.useMemo(

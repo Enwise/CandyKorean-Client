@@ -1,6 +1,6 @@
 import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import { Video } from "expo-av";
+import { Video, VideoFullscreenUpdate } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "react-native";
 import { getSlidesByContentId } from '../modules/NetworkFunction';
@@ -25,55 +25,57 @@ const LessonVideo = ({ route, navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
 
   useEffect(() => {
-    
-    if(!isSlideLoaded){
+    if (!isSlideLoaded) {
       getSlidesByContentId(
-        { content_id : contentId },
+        { content_id: contentId },
         (d) => {
-          console.log(d.data)
+          // console.log(d.data)
           d.data.map((item) => {
             setSlideList((prev) => {
-              return [...prev, item]
-            })
-          })
-          console.log('slidelist data')
+              return [...prev, item];
+            });
+          });
+          // console.log('slidelist data')
         },
-        setIsSlideLoaded,
-        (e) => {
-          console.log(e)
-        }
-        )
-      }
-      console.log(slideList)
-    
+          setIsSlideLoaded,
+          (e) => {
+            console.log(e);
+          }
+      );
+    }
+    // console.log(slideList)
 
-    
-    console.log("useEffect");
+    // console.log("useEffect");
   }, [isFullScreen, isSlideLoaded]);
 
+  const onFullscreenUpdate = async ({ fullscreenUpdate }) => {
+    setVideoStatus(fullscreenUpdate);
 
-  const setOrientation = (status) => {
-    if (status === 1 && !is_portrait) {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-    } else {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+    if (fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_PRESENT) {
+      await ScreenOrientation.unlockAsync();
+    } else if (fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
     }
   };
 
   return (
     <View style={styles.container}>
-      <View style={{
-        width: screenWidth,
-        height: 70,
-        justifyContent:'center',
-        paddingLeft: 30,
-      }}>
+      <View
+        style={{
+          width: screenWidth,
+          height: 70,
+          justifyContent: "center",
+          paddingLeft: 30,
+        }}
+      >
         <TouchableOpacity
           onPress={() => {
-            if(isHome) {
+            if (isHome) {
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'Home' }],
+                routes: [{ name: "Home" }],
               });
             } else {
               navigation.goBack();
@@ -92,35 +94,36 @@ const LessonVideo = ({ route, navigation }) => {
         useNativeControls={true}
         resizeMode={"contain"}
         style={{
-          height: videoStatus === 1 ? screenWidth : (is_portrait ? screenWidth * (16 / 9) : screenWidth),
+          height:
+            videoStatus === 1
+              ? screenWidth
+              : is_portrait
+              ? screenWidth * (16 / 9)
+              : screenWidth,
           zIndex: videoStatus === 1 ? 3 : 1,
           backgroundColor: "#000",
         }}
         isLooping
-        onFullscreenUpdate={
-          
-          (status) => {
-          // console.log(status);
-          const videoStatus = status.fullscreenUpdate; // 1이면 전체화면 표시완료, 3이면 닫기 완료
-          setVideoStatus(videoStatus);
-          setOrientation(videoStatus);
-        }}
+        onFullscreenUpdate={onFullscreenUpdate}
         slider={{ visible: true }}
         ref={videoPlayer}
         onPlaybackStatusUpdate={(status) => {
-
-          console.log('status', status);
+          // console.log('status', status);
           setCurrentTime(status.positionMillis);
-      
+
           if (status.didJustFinish) {
             videoPlayer.current.replayAsync();
           }
         }}
-        
       />
-      {is_portrait ? null : 
-        <LessonSlides currentTime={currentTime} slideList={slideList} screenWidth={screenWidth} screenHeight={screenHeight}/>
-      }
+      {is_portrait ? null : (
+        <LessonSlides
+          currentTime={currentTime}
+          slideList={slideList}
+          screenWidth={screenWidth}
+          screenHeight={screenHeight}
+        />
+      )}
     </View>
   );
 };
