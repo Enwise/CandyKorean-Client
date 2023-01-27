@@ -89,6 +89,7 @@ const ProgressLecture = ({ userId, navigation }) => {
             item.className = contents[0].name;
             item.is_portrait = contents[0].is_portrait;
             item.video_url = contents[0].video_url;
+            item.content_id = contents[0].content_id;
           }
           item.courseName = courseName;
           item.tutorName = tutorName;
@@ -155,6 +156,7 @@ const ProgressLecture = ({ userId, navigation }) => {
             navigation.navigate("ClassRoom", {
               screen: "LessonVideo",
               params: {
+                content_id: item.content_id,
                 video_url: item.video_url,
                 is_portrait: item.is_portrait,
                 isHome: true,
