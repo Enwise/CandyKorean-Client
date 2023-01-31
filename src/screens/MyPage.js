@@ -241,7 +241,11 @@ const MyPage = ({ navigation }) => {
               // console.log(d.data);
               let tmpArr = [];
               d.data.map((item,idx)=>{
-                  tmpArr.push(item.data_created.split("T")[0]);
+                  const year = new Date(item.data_created).getFullYear();
+                  const month = new Date(item.data_created).getMonth() + 1;
+                  const date = new Date(item.data_created).getDate();
+                  tmpArr.push(`${year}-${month > 9 ? month : '0' + month}-${date > 9 ? date : '0' + date}`);
+                  // tmpArr.push(item.data_created.split("T")[0]);
                   // tmpArr.push(`${item.data_created.split("T")[0]}`: { color: "#70d7c7", textColor: "white" });
 
 
