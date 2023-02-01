@@ -454,7 +454,7 @@ const MyPage = ({ navigation }) => {
               >
                   {user?.img_url === "" ?
                       <Image
-                          source={require("../assets/img/setting-icon.png")}
+                          source={require("../assets/img/mypage-default-image.png")}
                           style={{ width: 110, height: 110, borderRadius: 55 }}
                       />
                       :
