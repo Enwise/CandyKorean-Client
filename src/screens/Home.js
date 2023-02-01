@@ -43,11 +43,12 @@ const Home = ({ navigation }) => {
       (d) => {
         if (d.data.length !== 0) {
           let lastLogin = new Date(d.data[d.data.length - 1].data_created);
-          let diff = today.getDate() - lastLogin.getDate();
-          if (diff === 1) {
+          let diffTime = today.getTime() - lastLogin.getTime();
+          let diffDate = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+          if (diffDate === 1) {
             // 1일 차이나면 연속 출석일수 +1
             update_data.continuous_attendance = continuous_attendance_day + 1;
-          } else if (diff > 1) {
+          } else if (diffDate > 1) {
             // 2일 이상 차이나면 연속 출석일수 1로 초기화
             update_data.continuous_attendance = 1;
           } else {
