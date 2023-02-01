@@ -413,10 +413,15 @@ const MyPage = ({ navigation }) => {
                               navigation.navigate("Setting");
                           }}
                       >
-                          <Image
-                              source={require("../assets/img/setting-icon.png")}
-                              style={{ width: 24, height: 24 }}
-                          />
+                          <View
+                              style={{ width: 24, height: 48, display:"flex", justifyContent:"center", alignItems:"center" }}
+                          >
+                              <Image
+                                  source={require("../assets/img/setting-icon.png")}
+                                  style={{ width: 24, height: 24 }}
+                              />
+                          </View>
+
                       </TouchableOpacity>
                       <View style={{ width: 8 }} />
                       <TouchableOpacity onPress={signOut}>

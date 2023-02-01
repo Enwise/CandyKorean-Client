@@ -9,6 +9,7 @@ import WebView from "react-native-webview";
 import * as ImagePicker from 'expo-image-picker';
 import BackButtonIcon from "../assets/icons/BackButtonIcon";
 import axios from "axios";
+import Svg, {Path} from "react-native-svg";
 
 const Setting = ({navigation}) => {
 
@@ -133,12 +134,38 @@ const Setting = ({navigation}) => {
 
             <View style={{display:"flex", flexDirection:"row",alignItems:"center", width:"90%", justifyContent:"center", position:"relative"}}>
                 {menuNum === 0 ?
-                    <TouchableOpacity onPress={() => navigation.navigate("MyPage")} style={{position:"absolute", left:0}}>
-                        <BackButtonIcon />
+                    <TouchableOpacity onPress={() => navigation.navigate("MyPage")} style={{position:"absolute", left:0, top:5}}>
+                        <Svg
+                            width={48}
+                            height={48}
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <Path
+                                d="m15 6-6 6 6 6"
+                                stroke="#000"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </Svg>
                     </TouchableOpacity>
                     :
-                    <TouchableOpacity onPress={() => setMenuNum(0)} style={{position:"absolute", left:0}}>
-                        <BackButtonIcon />
+                    <TouchableOpacity onPress={() => setMenuNum(0)} style={{position:"absolute", left:0 , top:5}}>
+                        <Svg
+                            width={48}
+                            height={48}
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <Path
+                                d="m15 6-6 6 6 6"
+                                stroke="#000"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </Svg>
                     </TouchableOpacity>
                 }
                 <View >
@@ -147,7 +174,7 @@ const Setting = ({navigation}) => {
                 {
                     menuNum === 1 ?
                         <TouchableOpacity
-                            style={{position:"absolute", right:0}}
+                            style={{position:"absolute", right:0, top:5}}
                             onPress={() => {
                                 updateUser(
                                     {
@@ -167,9 +194,13 @@ const Setting = ({navigation}) => {
                                 setMenuNum(0);
                             }}
                         >
-                            <Image
-                                source={require("../assets/img/mypage-ok-icon.png")}
-                            />
+                            <View style={{width:48, height:48}}>
+                                <Image
+                                    style={{marginLeft:"auto"}}
+                                    source={require("../assets/img/mypage-ok-icon.png")}
+                                />
+                            </View>
+
                         </TouchableOpacity>
                         :
                         ""
