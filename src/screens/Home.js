@@ -34,43 +34,37 @@ const windowHeight = Dimensions.get("window").height;
 const Home = ({ navigation }) => {
   const { authState } = React.useContext(AuthContext);
   const [user, setUser] = React.useState(null);
-  const updateAttendance = async (userId, continuous_attendance_day) => {
+  const updateAttendance = async (
+    userId,
+    continuous_attendance_day,
+    date_last_login
+  ) => {
     // user table의 마지막 로그인 날짜와 오늘 날짜 비교해서 연속 출석 일수 update
-    let today = new Date();
-    let update_data = { userId: userId, date_last_login: today };
-    await getAllAttendanceByUserId(
-      userId,
-      (d) => {
-        if (d.data.length !== 0) {
-          let lastLogin = new Date(d.data[d.data.length - 1].data_created);
-          let diffTime = today.getTime() - lastLogin.getTime();
-          let diffDate = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-          if (diffDate === 1) {
-            // 1일 차이나면 연속 출석일수 +1
-            update_data.continuous_attendance = continuous_attendance_day + 1;
-          } else if (diffDate > 1) {
-            // 2일 이상 차이나면 연속 출석일수 1로 초기화
-            update_data.continuous_attendance = 1;
-          } else {
-            // 오늘 이미 출석한 경우
-            return;
-          }
-        }
-        createAttendance(
-          { user_id: userId },
-          () => {},
-          () => {},
-          (e) => {
-            console.log("createAttendance error", e);
-          }
-        );
-      },
-      () => {},
-      (e) => {
-        console.log("getAllAttendanceByUserId error", e);
-      }
-    );
+    let update_data = { userId: userId, date_last_login: new Date() };
 
+    let today = new Date();
+    let lastLogin = new Date(date_last_login);
+    today.setHours(0, 0, 0, 0);
+    lastLogin.setHours(0, 0, 0, 0);
+    let diffTime = today.getTime() - lastLogin.getTime();
+    let diffDate = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDate >= 1) {
+      if (diffDate === 1) {
+        // 1일 차이나면 연속 출석일수 +1
+        update_data.continuous_attendance = continuous_attendance_day + 1;
+      } else {
+        // 2일 이상 차이나면 연속 출석일수 1로 초기화
+        update_data.continuous_attendance = 1;
+      }
+      await createAttendance(
+        { user_id: userId },
+        () => {},
+        () => {},
+        (e) => {
+          console.log("createAttendance error", e);
+        }
+      );
+    }
     await updateUser(
       update_data,
       (d) => {
@@ -129,13 +123,14 @@ const Home = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      let continuous_attendance_day;
+      let continuous_attendance_day, date_last_login;
       const getUser = async () => {
         await getUserById(
           authState.userId,
           (d) => {
             setUser(d.data);
             continuous_attendance_day = d.data.continuous_attendance;
+            date_last_login = d.data.date_last_login;
           },
           () => {},
           (e) => {
@@ -143,7 +138,11 @@ const Home = ({ navigation }) => {
           }
         );
 
-        updateAttendance(authState.userId, continuous_attendance_day);
+        updateAttendance(
+          authState.userId,
+          continuous_attendance_day,
+          date_last_login
+        );
       };
       getUser();
     }, [authState])
