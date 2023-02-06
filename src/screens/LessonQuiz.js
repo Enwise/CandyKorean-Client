@@ -916,7 +916,7 @@ const styles = StyleSheet.create({
   },
 
   englishWordContainer: {
-    width: 60,
+    width: 70,
     height: 25,
     backgroundColor: "#F1EFF4",
     borderColor: "#E6E3EA",
@@ -927,24 +927,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 10,
   },
-  selectedWordContainer: {
-    width: 60,
-    height: 30,
-
-    backgroundColor: "#F1EFF4",
-    borderColor: "#E6E3EA",
-    borderWidth: 1,
-    marginRight: 5,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
-  selectedWordText: {
-    fontFamily: "Poppins-Medium",
-    fontSize: 12,
-    color: "#807F82",
-  },
+  
   buttonText: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
@@ -1034,7 +1017,56 @@ const styles = StyleSheet.create({
   quizDialog_B_kor_text: {
     fontSize: 16,
   },
+  selectedWordContainer: {
+    width: 70,
+    height: 30,
+
+    backgroundColor: "#F1EFF4",
+    borderColor: "#E6E3EA",
+    borderWidth: 1,
+    marginRight: 5,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  selectedWordText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 12,
+    color: "#807F82",
+  },
+  englishWordContainer: {
+    width: 70,
+    height: 25,
+    backgroundColor: "#F1EFF4",
+    borderColor: "#E6E3EA",
+    borderWidth: 1,
+    marginRight: 5,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10, 
+  }, 
 });
+
+const selectItemStyles = (length) => {
+  StyleSheet.create({
+    
+    englishWordContainer: {
+      width: 70,
+      height: 25,
+      backgroundColor: "#F1EFF4",
+      borderColor: "#E6E3EA",
+      borderWidth: 1,
+      marginRight: 5,
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 10, 
+    },  
+  })
+}
+
 
 const questionTextstyles = (quizStyle) => 
 StyleSheet.create({

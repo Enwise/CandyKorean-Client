@@ -9,17 +9,25 @@ import {
   Dimensions,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { requestPurchase, useIAP } from 'react-native-iap';
 
 import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
+// import PlayServcies from 'react-native-play-services'
 
+const itemSKUs = Platform.select({
+  android: ['lollipop_yoojin', 'lollipop_seongyeop', 'lollipop_kyungeun', 'lollipop_test'],
+})
 import { createPurchasedCourse, getTutorById, getPurchasedCoursesByUserId } from "../modules/NetworkFunction";
+import { isBuffer } from 'lodash';
 
 const Payment = ({ navigation, route }) => {
+  
+  
   // const [payList, setPayList] = useState(route.params.payList);
   const { authState } = React.useContext(AuthContext);
-  // const [userId, setUserId] = useState(authState.userId);
-  const [userId, setUserId] = useState(19);
+  const [userId, setUserId] = useState(authState.userId);
+  // const [userId, setUserId] = useState(20);
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
@@ -40,8 +48,75 @@ const Payment = ({ navigation, route }) => {
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] = useState(false);
 
   
+  // 결제 useEffect
+  const {
+    connected,
+    products,
+    requestPurchase,
+    getProducts,
+    getAvailablePurchases,
+    finishTransaction,
+    currentPurchase,
+    currentPurchaseError,
+  } = useIAP();
 
   useEffect(() => {
+
+    if (connected) {
+      getProducts(itemSKUs);
+      console.log('Getting products..');
+    }
+    console.log('products', products);
+
+  }, [connected, getProducts])
+
+  useEffect(() => {
+    const checkCurrentPurchase = async purchase => {
+      
+      if(purchase){
+        const receipt = purchase.transactionReceipt;
+        console.log('receipt', receipt);
+        if (receipt) {
+          // Give full app access
+          try {
+            const ackResult = await finishTransaction(purchase);
+            console.log('ackResult', ackResult);
+
+          } catch (ackErr) {
+            console.warn('ackErr', ackErr);
+          }
+        } 
+      }
+
+    }
+    checkCurrentPurchase(currentPurchase);
+  }, [currentPurchase, finishTransaction])
+  
+
+  useEffect(() => {
+    if (products.length) {
+      console.log('products', products);
+    }
+  }, [products])
+
+  const purchasedFullApp = async () => {
+    try {
+      requestPurchase('lollipop_test');
+      console.log('purchase', purchase);
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  }
+
+  
+  useEffect(() => {
+
+    console.log("products----------------------");
+    if(connected){
+      const products = getProducts(iapSkus)
+      console.log(products);
+    }
+    
     
     console.log("iteminfo ID----------------------");
     console.log(itemInfo.course_id);
@@ -91,63 +166,61 @@ const Payment = ({ navigation, route }) => {
   // navigation.goBack();
   const handlePayment = () => {
     // 결제 프로세스 여기에 필요!
+    
 
     // 만약 성공이면??
     // setIsSuccess(true);
     // 결제 성공시에는 결제 내역을 DB에 저장해야됨!
     console.log("handlePayment")
     
-    if(purchasedCourseList.includes(itemInfo.course_id)) {
-      console.log('purchase fail')
-      setIsSuccess(false)
-    } else {
-      console.log('purchase success')
-      setIsSuccess(true);
-    }
+    purchasedFullApp();
 
-    if(isSuccess) {
-      if (!isCoursePurchased) {
-        createPurchasedCourse(
-          { user_id: userId, course_id: itemInfo.course_id },
-          (d) => {
-            // console.log(d);
-            console.log("-========================-");
-            console.log("purchased success");
-            console.log("-========================-");
+    // if(purchasedCourseList.includes(itemInfo.course_id)) {
+    //   console.log('purchase fail')
+    //   setIsSuccess(false)
+    // } else {
+    //   console.log('purchase success')
+    //   setIsSuccess(true);
+    // }
+
+    // if(isSuccess) {
+    //   if (!isCoursePurchased) {
+    //     createPurchasedCourse(
+    //       { user_id: userId, course_id: itemInfo.course_id },
+    //       (d) => {
+    //         // console.log(d);
+    //         console.log("-========================-");
+    //         console.log("purchased success");
+    //         console.log("-========================-");
   
-            navigation.navigate("PaymentResult", {
-              user_id: userId,
-              itemInfo: itemInfo,
-              isSuccess: true,
-              returnToClass,
-              imgUrl: imgUrl,
-            });
-          },
-          setIsCoursePurchased,
-          (e) => {
-            setIsSuccess(false);
-            console.log(e.message);
-            console.log("-========================-");
-            console.log("purchased fail");
-            console.log("-========================-");
+    //         navigation.navigate("PaymentResult", {
+    //           user_id: userId,
+    //           itemInfo: itemInfo,
+    //           isSuccess: true,
+    //           returnToClass,
+    //           imgUrl: imgUrl,
+    //         });
+    //       },
+    //       setIsCoursePurchased,
+    //       (e) => {
+    //         setIsSuccess(false);
+    //         console.log(e.message);
+    //         console.log("-========================-");
+    //         console.log("purchased fail");
+    //         console.log("-========================-");
            
-          }
-        );
-      }
-    } else {
-      navigation.navigate("PaymentResult", {
-        user_id: userId,
-        itemInfo: itemInfo,
-        isSuccess: false,
-        returnToClass,
-        imgUrl: imgUrl,
-      });
-    }
-    
-    
-    
-
-    
+    //       }
+    //     );
+    //   }
+    // } else {
+    //   navigation.navigate("PaymentResult", {
+    //     user_id: userId,
+    //     itemInfo: itemInfo,
+    //     isSuccess: false,
+    //     returnToClass,
+    //     imgUrl: imgUrl,
+    //   });
+    // }
 
     
   };
