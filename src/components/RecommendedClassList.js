@@ -11,7 +11,7 @@ const RecommendedClassList = ({ navigation }) => {
       {},
       (d) => {
         const course = d.data.filter((item) => {
-          return item.tutor.enabled;
+          return item.tutor.enabled && item.is_for_sale;
         });
         setCourses(course);
 
