@@ -847,3 +847,31 @@ export const createAttendance = async (
     setIsReady(true);
   }
 };
+
+/* Assistant */
+export const getAllAssistants = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const response = await getRequest("/assistant", reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
+export const getAssistantById = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const { id } = reqParam;
+  const response = await getRequest(`/assistant/${id}`, reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
