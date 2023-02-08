@@ -477,7 +477,6 @@ const LessonInfo = ({ navigation, route }) => {
       </View>
 
       <Dialog
-        
         dialogStyle={{
           borderRadius: 20,
           width: Dimensions.get("window").width * 0.9,
@@ -501,37 +500,34 @@ const LessonInfo = ({ navigation, route }) => {
             bordered={false}
             style={{
               width: "100%",
-              height: "35%",
-
+              height: "30%",
+              position: "absolute",
+              bottom:0
+              // top:"50%"
             }}
           >
             <DialogButton
               style={{
                 width: "50%",
-                height: "100%",
-                backgroundColor: "#E6E3EA",
+                backgroundColor: "#B8B5BC",
                 borderBottomLeftRadius: 20,
                 justifyContent: "center",
-                flexDirection: "row",
                 alignItems: "center",
+                flexDirection: "row",
               }}
               textStyle={{
-                color: "#fff",
-                fontFamily: "Poppins-SemiBold",
-                fontSize: 24,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
                 height: "100%",
+
               }}
               text={
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <View style={{ marginRight: 5 }}>
+                  <View style={{ marginRight: 12 }}>
                     <Text
                       style={{
                         color: "#fff",
@@ -563,20 +559,19 @@ const LessonInfo = ({ navigation, route }) => {
 
                 console.log("review: ", review);
               }}
-            ></DialogButton>
+            />
             <DialogButton
               style={{
                 backgroundColor: "#A160E2",
                 borderBottomRightRadius: 20,
                 width: "50%",
-                height: "100%",
                 justifyContent: "center",
                 alignItems: "center",
+                alignSelf: "center",
+                flexDirection: "row",
+                display: "flex",
               }}
               textStyle={{
-                color: "#E6E3EA",
-                fontFamily: "Poppins-SemiBold",
-                fontSize: 24,
                 height: "100%",
               }}
               text={
@@ -584,9 +579,10 @@ const LessonInfo = ({ navigation, route }) => {
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <View style={{ marginRight: 5 }}>
+                  <View style={{ marginRight: 12 }}>
                     <Text
                       style={{
                         color: "#fff",
@@ -630,8 +626,8 @@ const LessonInfo = ({ navigation, route }) => {
       >
         <DialogContent
           style={{
-            position: "relative",
-            height:'65%',
+            // position: "relative",
+            // height:'60%',
           }}
         >
           <Text
@@ -644,7 +640,7 @@ const LessonInfo = ({ navigation, route }) => {
               textAlign: "center",
             }}
           >
-            Before starting the quiz,{"\n"}Are you sure to start without
+            Before starting the quiz,{"\n"}Are you sure to start {"\n"} without
             reviewing the last lesson?
           </Text>
         </DialogContent>
@@ -887,7 +883,7 @@ const styles = StyleSheet.create({
   },
   unitQuizNumText: {
     fontFamily: "Poppins-Medium",
-    fontSize: 10,
+    fontSize: 12,
     color: "#A160E2",
   },
   unitNumText: {
