@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Course from "../components/Course";
 import WishListButton from "../components/WishListButton";
-
+import Constants from "expo-constants";
 import { getLevels, createLevel, getWishlistByUser } from "../modules/NetworkFunction";
 
 const ClassMain = ({ navigation }) => {
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FDFDFD",
     position: "relative",
     paddingBottom: 50,
+    paddingTop: Constants.statusBarHeight,
   },
 });
 

@@ -117,17 +117,16 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
   };
 
   return (
-    <View style={styles.courseContainer}>
+    <View
+      style={[
+        styles.courseContainer,
+        levelItem.name === "Lollipop Level" ? { marginTop: 0 } : {},
+      ]}
+    >
       <View style={styles.topContainer}>
         <View style={styles.topItem1}>
           <Text style={styles.title}>{levelItem.name}</Text>
-          <Text style={{
-                fontSize: 15,
-                fontFamily: "Poppins-SemiBold",
-                color: levelItem.name === 'Lollipop Level' ? '#000' : 'lightgray'
-          }}>{levelItem.info}</Text>
-        </View>
-        <View style={styles.topItem2}>
+
           <TouchableOpacity
             style={styles.moreButton}
             onPress={() => {
@@ -137,6 +136,18 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
             <Text style={styles.moreText}>MORE</Text>
             <AntDesign name="right" size={12} color="gray" />
           </TouchableOpacity>
+        </View>
+        <View style={styles.topItem2}>
+          <Text
+            style={{
+              marginTop: 15,
+              fontSize: 15,
+              fontFamily: "Poppins-SemiBold",
+              color: levelItem.name === "Lollipop Level" ? "#000" : "lightgray",
+            }}
+          >
+            {levelItem.info}
+          </Text>
         </View>
       </View>
       {levelItem.name === "Lollipop Level" ? (
@@ -186,19 +197,18 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     width: "90%",
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
     marginLeft: 20,
   },
 
   topItem1: {
-    width: "80%",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
   topItem2: {
-    width: "20%",
+    // width: "20%",
     flexDirection: "row",
-    justifyContent: "flex-end",
   },
   title: {
     fontSize: 25,
