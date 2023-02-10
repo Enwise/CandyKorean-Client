@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Dimensions, Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import BackButton from "../components/BackButton";
 import {createFeedback, fileUpload, getAllNotice, getUserById, updateUser} from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
@@ -36,15 +36,17 @@ const Setting = ({navigation}) => {
             console.log(result.assets[0]);
 
 
+
             const formData = new FormData();
             formData.append('file', {
+                // uri:Platform.Os=== 'android' ?  result.assets[0].uri : result.assets[0].uri.replace('file://', 'file:'),
                 uri: result.assets[0].uri,
                 name: 'image.png',
                 fileName:"image",
-                type: 'image/png'
+                type: 'image/jpeg'
             });
-            console.log('formData', formData);
 
+            console.log('formData', formData);
             axios({
                 method:'post',
                 url:'http://ec2-13-209-87-211.ap-northeast-2.compute.amazonaws.com/apis/upload',
@@ -67,12 +69,9 @@ const Setting = ({navigation}) => {
                             console.log(e);
                         }
                     );
-                }).then((error)=>{
+                }).catch((error)=>{
                     console.log('error raised', error)
             })
-
-
-
 
         }
     };
