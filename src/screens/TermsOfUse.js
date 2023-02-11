@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   header: {
-    marginTop: Constants.statusBarHeight,
+
+    marginTop: 50,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
