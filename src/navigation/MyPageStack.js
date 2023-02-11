@@ -15,6 +15,7 @@ import ClassMore from "../screens/ClassMore";
 import NoticeDetail from "../screens/NoticeDetail";
 import TermsOfUse from "../screens/TermsOfUse";
 import CompletedPurchases from '../screens/CompletedPurchases';
+import ChangeProfile from '../screens/ChangeProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,8 @@ const MyPageStack = ({ navigation, route }) => {
       routeName == "PaymentResult" || 
       routeName == "ClassMore" || 
       routeName == "CompletedPurchases" ||
-      routeName == "Setting"
+      routeName == "Setting" || 
+      routeName == "ChangeProfile"
     ) {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
@@ -74,6 +76,7 @@ const MyPageStack = ({ navigation, route }) => {
       <Stack.Screen name="ClassMore" component={ClassMore} />
       <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
       <Stack.Screen name="TermsOfUse" component={TermsOfUse} />
+      <Stack.Screen name="ChangeProfile" component={ChangeProfile} />
     </Stack.Navigator>
   );
 };

@@ -191,7 +191,7 @@ const Setting = ({navigation}) => {
                         </Svg>
                     </TouchableOpacity>
                 }
-                <View >
+                <View>
                     <Text style={{fontSize:20, fontWeight:"600", fontFamily: "Poppins-SemiBold"}}>{menuArr[menuNum]}</Text>
                 </View>
                 {
@@ -233,7 +233,10 @@ const Setting = ({navigation}) => {
 
             {menuNum === 0 ?
                 <View style={{display:"flex", flexDirection:"column", width:"90%"}}>
-                    <TouchableOpacity onPress={()=>{setMenuNum(1);}}>
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate("ChangeProfile")
+                        
+                    }}>
                         <Text style={styles.textCss}>Change profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{setMenuNum(2);}}>

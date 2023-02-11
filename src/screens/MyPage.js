@@ -217,7 +217,7 @@ const MyPage = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       getUserById(
-        authState.userId,
+        {userId: authState.userId},
         (d) => {
           // console.log(d);
           console.log("enter focus effect");
@@ -451,11 +451,16 @@ const MyPage = ({ navigation }) => {
                       alignItems: "center",
                       justifyContent:"space-between"
                   }}
+                  
               >
                   {user?.img_url === "" ?
                       <Image
                           source={require("../assets/img/mypage-default-image.png")}
                           style={{ width: 110, height: 110, borderRadius: 55 }}
+                          onPress={() => {
+                            navigation.navigate("ChangeProfile")
+                            console.log('hi');
+                          }}
                       />
                       :
                       <Image
@@ -463,6 +468,10 @@ const MyPage = ({ navigation }) => {
                               uri: `${user?.img_url}`
                           }}
                           style={{ width: 110, height: 110, borderRadius: 55 }}
+                          onPress={() => {
+                            navigation.navigate("ChangeProfile")
+                            console.log('hi');
+                          }}
                       />
                   }
                   <View

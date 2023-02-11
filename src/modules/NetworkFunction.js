@@ -612,7 +612,7 @@ export const getUserById = async (
   setIsReady,
   handleError
 ) => {
-  const userId = reqParam;
+  const userId = reqParam.userId;
   const response = await getRequest(`/user/${userId}`, handleError);
   if (response !== null) {
     setData(response.data);
