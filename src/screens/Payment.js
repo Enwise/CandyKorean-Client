@@ -15,11 +15,25 @@ import AuthContext from "../contexts/AuthContext";
 
 import { createPurchasedCourse, getTutorById, getPurchasedCoursesByUserId } from "../modules/NetworkFunction";
 
+// import {
+//   connectAsync,
+//   setPurchaseListener,
+//   getProductsAsync,
+//   getPurchaseHistoryAsync,
+//   purchaseItemAsync,
+//   getBillingResponseCodeAsync,
+//   finishTransactionAsync,
+//   disconnectAsync,
+//   IAPResponseCode,
+//   IAPErrorCode,
+// } from 'expo-in-app-purchases';
+
 const Payment = ({ navigation, route }) => {
   // const [payList, setPayList] = useState(route.params.payList);
   const { authState } = React.useContext(AuthContext);
-  // const [userId, setUserId] = useState(authState.userId);
-  const [userId, setUserId] = useState(19);
+  const [userId, setUserId] = useState(authState.userId);
+  // const [userId, setUserId] = useState(19);
+
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
@@ -39,9 +53,30 @@ const Payment = ({ navigation, route }) => {
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] = useState(false);
 
-  
+
+
+  const items = Platform.select({
+    ios: [
+      'dev.products.gas',
+      'dev.products.premium',
+      'dev.products.gold_monthly',
+      'dev.products.gold_yearly',
+    ],
+    android: ['lollipop_test'],
+  });
+
+  const [productId, setProductId] = useState('lollipop_test');
+  const [bottomText, setBottomText] = useState("결제하기");
+
+  // 구글 스토어 연결
+  useEffect(async () => {
+    const history = await connectAsync(); 
+
+  }, [])
 
   useEffect(() => {
+
+
     
     console.log("iteminfo ID----------------------");
     console.log(itemInfo.course_id);
@@ -86,67 +121,104 @@ const Payment = ({ navigation, route }) => {
 
   }
   console.log('purchasedCourseList', purchasedCourseList)
+  
 }, [ itemInfo, isSuccess, isCoursePurchased, imgUrl, userId, isPurchasedCourseListLoaded, purchasedCourseList]);
 
+
   // navigation.goBack();
-  const handlePayment = () => {
+  const handlePayment = async (courseName) => {
     // 결제 프로세스 여기에 필요!
 
-    // 만약 성공이면??
-    // setIsSuccess(true);
-    // 결제 성공시에는 결제 내역을 DB에 저장해야됨!
-    console.log("handlePayment")
+    setBottomText(courseName);
     
-    if(purchasedCourseList.includes(itemInfo.course_id)) {
-      console.log('purchase fail')
-      setIsSuccess(false)
+    let itemArray = [];
+    if(courseName === "Conversational Korean Course") {
+      itemArray.push("lollipop_test_5");
+    } else if(courseName === "Survival Korean Course") {
+      itemArray.push("lollipop_test_5");
+    } else if(courseName === "After Like Course") {
+      itemArray.push("lollipop_test_5");
     } else {
-      console.log('purchase success')
-      setIsSuccess(true);
+      itemArray.push("lollipop_test_5");
     }
 
-    if(isSuccess) {
-      if (!isCoursePurchased) {
-        createPurchasedCourse(
-          { user_id: userId, course_id: itemInfo.course_id },
-          (d) => {
-            // console.log(d);
-            console.log("-========================-");
-            console.log("purchased success");
-            console.log("-========================-");
-  
-            navigation.navigate("PaymentResult", {
-              user_id: userId,
-              itemInfo: itemInfo,
-              isSuccess: true,
-              returnToClass,
-              imgUrl: imgUrl,
-            });
-          },
-          setIsCoursePurchased,
-          (e) => {
-            setIsSuccess(false);
-            console.log(e.message);
-            console.log("-========================-");
-            console.log("purchased fail");
-            console.log("-========================-");
-           
+
+
+    // try {
+    
+     // 구매 정보 가져오기
+     const { responseCode, results } = await getProductsAsync(itemArray);
+
+     if (responseCode === IAPResponseCode.OK) {
+         setProductId(results[0].productId)
+         setBottomText(results[0].productId);
+         
+     } else {
+      setBottomText('something wrong!');
+     }
+
+     purchaseItemAsync(results[0].productId)
+
+     return await new Promise((resolve, reject) => {
+      setPurchaseListener(async (result) => {
+        if(result.responseCode === IAPResponseCode.OK){
+          setBottomText("success")
+          if(!result.results[0].acknowledged) {
+            setBottomText('successful purchase')
+            await finishTransactionAsync(result.results[0], false);
+
+            // DB에 저장
+            createPurchasedCourse(
+              { user_id: userId, course_id: itemInfo.course_id },
+              (d) => {
+      
+                navigation.navigate("PaymentResult", {
+                  user_id: userId,
+                  itemInfo: itemInfo,
+                  isSuccess: true,
+                  returnToClass,
+                  imgUrl: imgUrl,
+                });
+              },
+              setIsCoursePurchased,
+              (e) => {
+                setIsSuccess(false);
+                console.log(e.message);
+              }
+            );
           }
-        );
-      }
-    } else {
-      navigation.navigate("PaymentResult", {
-        user_id: userId,
-        itemInfo: itemInfo,
-        isSuccess: false,
-        returnToClass,
-        imgUrl: imgUrl,
-      });
-    }
-    
-    
-    
+        } else if (result.responseCode === IAPResponseCode.USER_CANCELED || result.responseCode === IAPResponseCode.DEFERRED) {
+          setBottomText('User canceled the transaction');
 
+        }  else {
+          
+          setBottomText(`Something went wrong with the purchase. Received errorCode ${result.errorCode}`);
+            navigation.navigate("PaymentResult", {
+            user_id: userId,
+            itemInfo: itemInfo,
+            isSuccess: false,
+            returnToClass,
+            imgUrl: imgUrl,
+            isBought: result.errorCode === 8 ? true : false,
+          });
+        }
+      })
+
+    })
+
+    // } catch(e) {
+    //   disconnectAsync();
+    //   setBottomText('error!!!!!');
+
+    // }
+  
+    // navigation.navigate("PaymentResult", {
+    //   user_id: userId,
+    //   itemInfo: itemInfo,
+    //   isSuccess: true,
+    //   returnToClass,
+    //   imgUrl: imgUrl,
+    // });
     
 
     
@@ -215,6 +287,7 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.paymentAmountContainer}>
             <Text style={styles.paymentAmountText}>Payment amount</Text>
             <Text style={styles.paymentPriceText}>$ {itemInfo.price}</Text>
+            
           </View>
           {/* <View style={styles.howToPayContainer}>
             <Text style={styles.howToPayText}>How to pay</Text>
@@ -222,7 +295,7 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.paymentContainer}>
             <TouchableOpacity
               onPress={() => {
-                handlePayment();
+                handlePayment(itemInfo.name)
               }}
             >
               <View style={styles.creditcardBtn}>
@@ -242,6 +315,9 @@ const Payment = ({ navigation, route }) => {
                 <Text style={styles.paypalText}>Paypal</Text>
               </View>
             </TouchableOpacity> */}
+            <Text>
+              result : {bottomText}
+            </Text>
           </View>
         </View>
       

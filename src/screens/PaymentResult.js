@@ -27,6 +27,7 @@ const PaymentResult = ({ navigation, route }) => {
 
   const [isSuccess, setIsSuccess] = useState(route.params.isSuccess);
   const [itemInfo, setItemInfo] = useState(route.params.itemInfo);
+  const [isBought, setIsBought] = useState(route.params.isBought);
   const [courseList, setCourseList] = useState([]);
 
   const [level_id, setLevel_id] = useState(0);
@@ -44,51 +45,47 @@ const PaymentResult = ({ navigation, route }) => {
 
   // level 정보 이용해서, 그 level 에 해당하는 class정보들 가져와야함!
   // 맨 밑 Recommend에 보여주기 위해서
-  useEffect(() => {
+  useEffect(async () => {
     console.log(itemInfo);
 
-    if (!isCourseLoaded) {
-      getCourseById(
-        { course_id: itemInfo.course_id },
-        (d) => {
-          console.log(d.data);
-          setLevel_id(d.data.level_id);
-        },
-        setIsCourseLoaded,
-        (e) => {
-          console.log(e);
-        }
-      );
-    }
+    // if (!isCourseLoaded) {
+    //   getCourseById(
+    //     { course_id: itemInfo.course_id },
+    //     (d) => {
+    //       console.log(d.data);
+    //       setLevel_id(d.data.level_id);
+    //     },
+    //     setIsCourseLoaded,
+    //     (e) => {
+    //       console.log(e);
+    //     }
+    //   );
+    // }
 
-    if (isCourseLoaded && !isPurchasedListLoaded) {
-      let updatedPurchasedList = []
-      console.log("--------------------");
-      console.log("level_id", level_id);
-      console.log("--------------------");
+    // if (isCourseLoaded && !isPurchasedListLoaded) {
+    //   let updatedPurchasedList = []
+    //   console.log("--------------------");
+    //   console.log("level_id", level_id);
+    //   console.log("--------------------");
       
-      getPurchasedCoursesByUserId(
-        { userId: route.params.user_id },
-        (d) => {
-          d.data.map((course_item) => {
-            updatedPurchasedList.push(course_item.course_id)
-            setPurchasedList([...updatedPurchasedList])
-          });
-        },
-        setIsPurchasedListLoaded,
-        (e) => {
-          console.log(e);
-        }
-      );
-      console.log(purchasedList)
-    }
+    //   getPurchasedCoursesByUserId(
+    //     { userId: route.params.user_id },
+    //     (d) => {
+    //       d.data.map((course_item) => {
+    //         updatedPurchasedList.push(course_item.course_id)
+    //         setPurchasedList([...updatedPurchasedList])
+    //       });
+    //     },
+    //     setIsPurchasedListLoaded,
+    //     (e) => {
+    //       console.log(e);
+    //     }
+    //   );
+    //   console.log(purchasedList)
+    // }
 
-    if (isCourseLoaded && isPurchasedListLoaded && !isRecommendListLoaded) {
-      console.log("--------------------");
-      console.log("purchasedList", purchasedList);
-      console.log("--------------------");
 
-      getCourses(
+      await getCourses(
         () => {},
         (d) => {
           console.log("--------------------");
@@ -98,71 +95,50 @@ const PaymentResult = ({ navigation, route }) => {
           let updatedRecommendList = [];
 
           d.data.map((course_item) => {
-            if (
-              course_item.level_id == level_id &&
-              !purchasedList.includes(course_item.course_id)
-            ) {
-              console.log("--------------------");
-              console.log("recommend list making...");
-              console.log(course_item);
-              console.log("--------------------");
-              updatedRecommendList.push(course_item);
-              setRecommendList([...recommendList]);
-              console.log('----')
-              console.log(recommendList)
-              console.log('----')
-            }
-            if (course_item.level.level_id == level_id) {
+            // if (
+            //   course_item.level_id == level_id &&
+            //   !purchasedList.includes(course_item.course_id)
+            // ) {
+            //   console.log("--------------------");
+            //   console.log("recommend list making...");
+            //   console.log(course_item);
+            //   console.log("--------------------");
+            //   updatedRecommendList.push(course_item);
+            //   setRecommendList([...recommendList]);
+            //   console.log('----')
+            //   console.log(recommendList)
+            //   console.log('----')
+            // }
+            if (course_item.level.level_id === itemInfo.level_id) {
               if (
                 course_item.name === "Conversational Korean Course" ||
                 course_item.name === "Survival Korean Course" ||
                 course_item.name === "After Like Course"
               ) {
-                // if (!isTutorLoaded) {
-                //   getTutorById(
-                //     {
-                //       tutor_id: course_item.tutor_id,
-                //     },
-                //     (d) => {
-                //       console.log(d);
-                //       course_item["tutor"] = { ...d.data };
-                      
-                //     },
-                //     setIsTutorLoaded,
-                //     (e) => {
-                //       console.log(e);
-                //     }
-                //   );
-                // }
+              
                 setCourseList((courseList) => [
                   ...courseList,
                   course_item,
                 ]);
+                
+                if(course_item.course_id !== itemInfo.course_id) {
+                  updatedRecommendList.push(course_item);
+                  setRecommendList([...updatedRecommendList]);
+                }
               }
             }
-            setIsTutorLoaded(false);
           });
         },
-        setIsRecommendListLoaded,
+        () => {},
         (e) => {
           console.log(e);
         }
       );
-    }
 
     
 
     console.log("recommendList", recommendList);
-  }, [
-    isSuccess,
-    isCourseLoaded,
-    isPurchasedListLoaded,
-    isRecommendListLoaded,
-    level_id,
-    isLevelLoaded,
-    recommendList,
-    title,
-  ]);
+  }, []);
 
   const goToClassMore = () => {
     navigation.navigate(
@@ -256,7 +232,7 @@ const PaymentResult = ({ navigation, route }) => {
 
             <FlatList
               key={"_"}
-              data={courseList}
+              data={recommendList}
               style={{
                 ...styles.recommendListContainer,
               }}
@@ -306,7 +282,7 @@ const PaymentResult = ({ navigation, route }) => {
       ) : (
         <View style={styles.paymentFailedTextContainer}>
           <Text style={styles.paymentFailedText}>
-            Failed to payment.{"\n"}Please try again.
+          {isBought ? 'You\'ve already purchased\n this course' : 'Failed to payment.\nPlease try again.'}
           </Text>
         </View>
       )}

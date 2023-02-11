@@ -33,8 +33,8 @@ const CompletedPurchases = ({ route, navigation }) => {
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
-  // const [userId, setUserId] = useState(authState.userId);
-  const [userId, setUserId] = useState(16);
+  const [userId, setUserId] = useState(authState.userId);
+  // const [userId, setUserId] = useState(16);
 
 
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
