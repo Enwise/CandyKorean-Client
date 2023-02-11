@@ -109,7 +109,7 @@ const ChangeProfile = ({ navigation, route }) => {
 								console.log(e);
 						}
 				);
-					navigation.pop()}
+					navigation.navigate("MyPage")}
 				}/></View>
 				
       </View>

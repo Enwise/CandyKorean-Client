@@ -116,20 +116,6 @@ const MyPage = ({ navigation }) => {
   });
   const isFocused = useIsFocused();
   
-  // React.useEffect(() => {
-    //     getUserById(
-  //         authState.userId,
-  //         (d) => {
-  //             console.log(d);
-  //             setUser(d.data);
-  //         },
-  //         () => {},
-  //         (e) => {
-  //             console.log("getUserById error");
-  //         }
-  //     );
-  // }, [authState]);
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -271,39 +257,6 @@ const MyPage = ({ navigation }) => {
   },[])
 
 
-
-  // useEffect(() => {
-  //     if (isFocused) {
-  //         console.log('isFocused');
-  //     }
-
-  // }, [isFocused]);
-
-  // const AbilityBar = (amount, total) => {
-  //
-  //
-  //     const rate = amount / total * 171;
-  //
-  //     return (
-  //         <View
-  //             style={{
-  //                 width:171,
-  //                 backgroundColor:"#F1EFF4",
-  //                 borderRadius:50,
-  //             }}
-  //         >
-  //             <View style={{
-  //                 width: {rate},
-  //                 backgroundColor:"#A160E2",
-  //                 borderRadius:50,
-  //             }}>
-  //                 <Text>
-  //                     fsd
-  //                 </Text>
-  //             </View>
-  //         </View>
-  //     );
-  // }
   const [lollipopCourseList, setLollipopCourseList] = useState([]);
   const [cottonCandyCourseList, setCottonCandyCourseList] = useState([]);
   const [mintCandyCourseList, setMintCandyCourseList] = useState([]);
@@ -453,27 +406,27 @@ const MyPage = ({ navigation }) => {
                   }}
                   
               >
-                  {user?.img_url === "" ?
-                      <Image
+                  
+                  <TouchableOpacity 
+                    onPress={() => {
+                        navigation.navigate("ChangeProfile");
+                  }}>
+                  {user?.img_url === "" || user?.img_url === undefined ? <Image
                           source={require("../assets/img/mypage-default-image.png")}
                           style={{ width: 110, height: 110, borderRadius: 55 }}
-                          onPress={() => {
-                            navigation.navigate("ChangeProfile")
-                            console.log('hi');
-                          }}
-                      />
-                      :
-                      <Image
-                          source={{
-                              uri: `${user?.img_url}`
-                          }}
-                          style={{ width: 110, height: 110, borderRadius: 55 }}
-                          onPress={() => {
-                            navigation.navigate("ChangeProfile")
-                            console.log('hi');
-                          }}
-                      />
-                  }
+                          
+                      />  :<Image
+                      source={{
+                          uri: `${user?.img_url}`
+                      }}
+                      style={{ width: 110, height: 110, borderRadius: 55 }}
+                      
+                  />  }
+                  </TouchableOpacity>
+                      
+                      
+                      
+                  
                   <View
                       style={{
                           marginLeft: 20,
