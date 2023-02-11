@@ -510,12 +510,13 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
                           .is_selected ?? false
                       }
                     >
-                      <View style={styles.englishWordContainer}>
+                      <View style={wordStyle(quizList[currentQuizIdx].json.answer[key]
+                                .is_selected, quizList[currentQuizIdx].json.answer[key].text).englishWordContainer}>
                         <Text
                           style={
                             wordStyle(
                               quizList[currentQuizIdx].json.answer[key]
-                                .is_selected
+                                .is_selected, quizList[currentQuizIdx].json.answer[key].text
                             ).englishWordText
                           }
                         >
@@ -1033,21 +1034,10 @@ const styles = StyleSheet.create({
   },
   selectedWordText: {
     fontFamily: "Poppins-Medium",
-    fontSize: 12,
+    fontSize: 10,
     color: "#807F82",
   },
-  englishWordContainer: {
-    width: 70,
-    height: 25,
-    backgroundColor: "#F1EFF4",
-    borderColor: "#E6E3EA",
-    borderWidth: 1,
-    marginRight: 5,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10, 
-  }, 
+  
 });
 
 const selectItemStyles = (length) => {
@@ -1076,7 +1066,7 @@ StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff",
     width: "90%",
-    height: quizStyle === 'grammar' ? '20%' : '10%',
+    height: '20%',
     alignItems: "center",
     paddingLeft: 10,
     justifyContent: "space-between",
@@ -1099,7 +1089,7 @@ StyleSheet.create({
   },
   questionText: {
     fontFamily: "Poppins-Regular",
-    fontSize: quizStyle === 'grammer' ? 14 : 16,
+    fontSize: 14,
   },
 })
 
@@ -1278,13 +1268,25 @@ const dstyles = (currentQuizIdx, length) =>
     },
   });
 
-const wordStyle = (selected) =>
+const wordStyle = (selected, word) =>
   StyleSheet.create({
     englishWordText: {
       fontFamily: "Poppins-Medium",
-      fontSize: 12,
+      fontSize: 10,
       color: selected ? "#B8B5BC" : "#807F82",
     },
+    englishWordContainer: {
+      width: 70,
+      height: 30,
+      backgroundColor: "#F1EFF4",
+      borderColor: "#E6E3EA",
+      borderWidth: 1,
+      marginRight: 5,
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 10, 
+    }, 
     selectionContainer: {
       width: "98%",
       height: 150,
