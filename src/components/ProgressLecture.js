@@ -207,7 +207,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   container: {
-    height: 257,
     width: 231,
     ...Platform.select({
       ios: {
@@ -226,6 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     marginRight: 15,
+    paddingBottom: 16,
   },
   thumbnail: {
     height: 165,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   lectureTitle: {
     fontFamily: "Poppins-Medium",
     fontSize: 14,
-    marginTop: 5,
+    marginTop: 7,
   },
   lectureDescription: {
     fontSize: 10,
