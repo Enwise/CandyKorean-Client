@@ -154,7 +154,7 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
                   handleWishlist();
                 }}
               >
-                <View style={{ position: "absolute", right: 0 }}>
+                <View style={{ position: "absolute", right: 7 }}>
                   {isWish ? (
                     <AntDesign name="heart" size={22} color="#A160E2" />
                   ) : (
@@ -176,9 +176,10 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
             viewStyle={{
               borderRadius: 10,
               justifyContent: "center",
-              padding: 5,
+              paddingVertical: 5,
+              paddingHorizontal: 7,
               position: "absolute",
-              right: -5,
+              right: 4,
               bottom: 5,
             }}
             textStyle={{
@@ -266,17 +267,17 @@ const styles = StyleSheet.create({
     right: 6,
   },
   bottomShadowContainer: {
-    width: Dimensions.get("window").width * 0.95,
+    width: Dimensions.get("window").width * 0.93,
     height: Dimensions.get("window").height * 0.04,
     marginTop: 10,
     borderRadius: 20,
     backgroundColor: "#fff",
     ...Platform.select({
       ios: {
-        shadowColor: "rgba(0,0,0,0.2)",
+        shadowColor: "rgba(0,0,0,0.07)",
         shadowOpacity: 1,
-        shadowOffset: { height: 1, width: 1 },
-        shadowRadius: 2,
+        shadowOffset: { height: 2, width: 0 },
+        shadowRadius: 10,
       },
 
       android: {
@@ -292,8 +293,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingLeft: 12,
+    paddingRight: 22,
     backgroundColor: "#fff",
   },
   bottomText: {
@@ -306,7 +307,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 150,
     height: 250,
-    marginRight: 10,
   },
   classProfileImg: {
     borderRadius: 20,
@@ -327,31 +327,18 @@ const dstyles = (isShowAll) =>
       ? {
           flexDirection: "column",
           borderRadius: 9,
-          width: Dimensions.get("window").width * 0.93,
+          width: Dimensions.get("window").width * 0.96,
           height: Dimensions.get("window").height * 0.2,
           marginBottom: 80,
           marginTop: 10,
-          backgroundColor:'#fff',
+          backgroundColor: "#fff",
           alignItems: "center",
-          ...Platform.select({
-            ios: {
-              shadowColor: "rgba(0,0,0,0.2)",
-              shadowOpacity: 1,
-              shadowOffset: { height: 1, width: 1 },
-              shadowRadius: 2,
-            },
-      
-            android: {
-              shadowColor: "rgba(0,0,0,0.5)",
-              elevation: 3,
-            },
-          }),
         }
       : {
           flex: 1,
           flexDirection: "column",
           alignItems: "center",
-          width: Dimensions.get("window").width * 0.48,
+          marginRight: 15,
         },
     img: {
       width: isShowAll ? 130 : 140,
@@ -366,8 +353,24 @@ const dstyles = (isShowAll) =>
       height: isShowAll ? "100%" : 300,
       backgroundColor: "#fff",
       borderRadius: 9,
-      padding: 11,
-      
+      padding: isShowAll ? 11 : 0,
+      ...Platform.select(
+        isShowAll
+          ? {
+              ios: {
+                shadowColor: "rgba(0,0,0,0.07)",
+                shadowOpacity: 1,
+                shadowOffset: { height: 2, width: 0 },
+                shadowRadius: 10,
+              },
+
+              android: {
+                shadowColor: "rgba(0,0,0,0.5)",
+                elevation: 3,
+              },
+            }
+          : {}
+      ),
     },
 
     textContainer: {

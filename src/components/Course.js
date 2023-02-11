@@ -144,6 +144,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
               fontSize: 15,
               fontFamily: "Poppins-SemiBold",
               color: levelItem.name === "Lollipop Level" ? "#000" : "lightgray",
+              marginBottom: 10,
             }}
           >
             {levelItem.info}
@@ -161,6 +162,9 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
             data={lollipopCourseList}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingHorizontal: 20
+            }}
             renderItem={({ item }) => (
               <Class
                 key={item.course_id}
@@ -222,7 +226,6 @@ const styles = StyleSheet.create({
   classListContainer: {
     width: Dimensions.get("window").width,
     flexDirection: "row",
-    paddingLeft: 5,
     height: Dimensions.get("window").height * 0.45,
   },
 
