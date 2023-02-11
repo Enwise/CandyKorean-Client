@@ -456,6 +456,7 @@ const LessonInfo = ({ navigation, route }) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
+                      console.log("item.content_id", item.content_id);
                       setClickedContentId(item.content_id);
                       setStartQuizList(item.quiz)
                       console.log("---------------------------------")
@@ -555,7 +556,7 @@ const LessonInfo = ({ navigation, route }) => {
               onPress={() => {
                 setReview(true);
                 setVisible(false);
-                goToVideo(clickedTodayContentId, true);
+                goToVideo(clickedContentId, true);
 
                 console.log("review: ", review);
               }}

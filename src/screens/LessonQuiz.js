@@ -338,7 +338,8 @@ json: {"question": {"A0": {"eng": "Please give me a cup of coffee.","kor": "ì»¤í
   
 
   return (
-    isQuizListLoaded && (<View style={styles.container}>
+    isQuizListLoaded && (
+    <View style={styles.container}>
       <View style={styles.firstContainer}>
         <View style={styles.topContainer}>
           <View style={styles.titleContainer}>

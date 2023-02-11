@@ -129,17 +129,19 @@ const Payment = ({ navigation, route }) => {
   const handlePayment = async (courseName) => {
     // 결제 프로세스 여기에 필요!
 
+    // 인앱결제 test용 courseName
+    courseName = "iap_test"
     setBottomText(courseName);
     
     let itemArray = [];
     if(courseName === "Conversational Korean Course") {
-      itemArray.push("lollipop_test_5");
+      itemArray.push("lollipop_yoojin");
     } else if(courseName === "Survival Korean Course") {
-      itemArray.push("lollipop_test_5");
+      itemArray.push("lollipop_seongyeop");
     } else if(courseName === "After Like Course") {
-      itemArray.push("lollipop_test_5");
+      itemArray.push("lollipop_kyungeun");
     } else {
-      itemArray.push("lollipop_test_5");
+      itemArray.push("iap_test");
     }
 
 
