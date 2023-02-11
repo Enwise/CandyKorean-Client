@@ -8,6 +8,7 @@ import MainTab from "./src/navigation/MainTab";
 import { useFonts } from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ScreenOrientation from "expo-screen-orientation";
+// import * as InAppPurchases from "expo-in-app-purchases";
 
 import {
   createUser,
@@ -18,7 +19,8 @@ import {
 import AuthContext from "./src/contexts/AuthContext";
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+
+const App = () => {
   const [userData, setUserData] = React.useState(null);
   const [isLogin, setIsLogin] = React.useState(false);
   const [state, dispatch] = React.useReducer(
@@ -80,7 +82,10 @@ export default function App() {
 
     // 화면 세로 고정
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-    
+
+    // 인앱결제
+    // InAppPurchases.connectAsync()
+
   }, []);
 
   const authContext = React.useMemo(
@@ -174,3 +179,5 @@ export default function App() {
     </AuthContext.Provider>
   );
 }
+
+export default App;
