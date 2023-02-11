@@ -70,7 +70,7 @@ const ClassMore = ({ navigation, route }) => {
       <View style={styles.backBtn}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("ClassMain");
+            navigation.goBack();
           }}
         >
           <AntDesign name="left" size={20} color="black" />

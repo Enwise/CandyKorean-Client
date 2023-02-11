@@ -25,7 +25,8 @@ const MyPageStack = ({ navigation, route }) => {
     if (
       routeName == "MyWishList" ||
       routeName == "Payment" ||
-      routeName == "PaymentResult"
+      routeName == "PaymentResult" || 
+      routeName == "ClassMore"
     ) {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
