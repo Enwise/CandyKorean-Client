@@ -28,50 +28,74 @@ const Setting = ({navigation}) => {
             quality: 1,
         });
 
-        console.log(result.cancelled);
+        // console.log(result.cancelled);
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            
+
             console.log(result.assets[0].uri);
             console.log(result.assets[0]);
 
 
+            // 폼데이터 생성
+            let formData = new FormData();
 
-            const formData = new FormData();
-            formData.append('file', {
-                // uri:Platform.Os=== 'android' ?  result.assets[0].uri : result.assets[0].uri.replace('file://', 'file:'),
+            let image = {
                 uri: result.assets[0].uri,
-                name: 'image.png',
-                fileName:"image",
-                type: 'image/jpeg'
-            });
+                type: 'multipart/form-data',
+                name:`${result.assets[0].uri}`,
+            }
+
+            formData.append('file', image);
 
             console.log('formData', formData);
-            axios({
-                method:'post',
-                url:'http://ec2-13-209-87-211.ap-northeast-2.compute.amazonaws.com/apis/upload',
-                data: formData
-            })
-                .then((response) => {
-                    console.log('image upload successfully', response);
-                    console.log('image upload successfully', response.data.data.link);
-                    updateUser(
-                        {
-                            userId:authState.userId,
-                            img_url: response.data.data.link,
-                        },
-                        (d) => {
-                            console.log(d.data);
-                        },
 
-                        setIsUserLoaded,
-                        (e) => {
-                            console.log(e);
-                        }
-                    );
-                }).catch((error)=>{
-                    console.log('error raised', error)
-            })
+            axios.post('http://ec2-13-209-87-211.ap-northeast-2.compute.amazonaws.com/apis/upload', formData, {
+                headers: {'content-type' : 'multipart/form-data'}
+            }).then((response) => {
+                let img_url = response.data.data.link;
+                setImage(img_url);
+                updateUser(
+                    {
+                        userId:authState.userId,
+                        img_url,
+                    },
+                    (d) => {
+                        console.log(d.data);
+                    },
+                    () => {},
+                    (e) => {
+                        console.log(e);
+                    }
+                );
+            }
+            )
+
+            // axios({
+            //     method:'post',
+            //     url:'http://ec2-13-209-87-211.ap-northeast-2.compute.amazonaws.com/apis/upload',
+            //     data: formData
+            // })
+            //     .then((response) => {
+            //         console.log('image upload successfully', response);
+            //         console.log('image upload successfully', response.data.data.link);
+            //         updateUser(
+            //             {
+            //                 userId:authState.userId,
+            //                 img_url: response.data.data.link,
+            //             },
+            //             (d) => {
+            //                 console.log(d.data);
+            //             },
+
+            //             setIsUserLoaded,
+            //             (e) => {
+            //                 console.log(e);
+            //             }
+            //         );
+            //     }).catch((error)=>{
+            //         console.log('error raised', error)
+            // })
 
         }
     };
