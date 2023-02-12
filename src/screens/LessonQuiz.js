@@ -1339,7 +1339,6 @@ const selection_styles = (quiz_style) =>
     quizSelectionContainer:
       quiz_style === "arrange"
         ? {
-            marginTop: 30,
             flexDirection: "row",
             flexWrap: "wrap",
             padding: 20,
