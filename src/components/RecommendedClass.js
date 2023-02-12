@@ -17,7 +17,7 @@ const RecommendedClass = ({ navigation, course }) => {
   return (
     <TouchableOpacity
       style={styles.container}
-      activeOpacity="0.8"
+      activeOpacity={0.8}
       onPress={() => {
         console.log("클래스 정보로 이동", course);
         navigation.navigate("Class", {
