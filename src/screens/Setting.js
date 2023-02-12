@@ -137,7 +137,7 @@ const Setting = ({navigation}) => {
 
     React.useEffect(() => {
         getUserById(
-            authState.userId,
+            { userId: authState.userId },
             (d) => {
                 setUserImage(d.data.img_url);
                 setNickname(d.data.name)

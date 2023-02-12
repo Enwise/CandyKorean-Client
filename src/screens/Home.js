@@ -126,7 +126,7 @@ const Home = ({ navigation }) => {
       let continuous_attendance_day, date_last_login;
       const getUser = async () => {
         await getUserById(
-          authState.userId,
+          { userId: authState.userId },
           (d) => {
             setUser(d.data);
             continuous_attendance_day = d.data.continuous_attendance;
