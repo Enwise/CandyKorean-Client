@@ -35,7 +35,10 @@ const AlertDialog = ({ visible, setModalVisible, url }) => {
             >
               <Text style={styles.button_text_n}>Next time</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button_y} onPress={() => link()}>
+            <TouchableOpacity style={styles.button_y} onPress={() => {
+              link()
+              setModalVisible(false)
+            }}>
               <Text style={styles.button_text_y}>Yes</Text>
             </TouchableOpacity>
           </View>
