@@ -53,7 +53,7 @@ const LessonInfo = ({ navigation, route }) => {
 
   
   const [clickedContentId, setClickedContentId] = useState(
-    contentsList[0].content_id
+    contentsList[0]?.content_id
     );
     const [clickedTodayContentId, setClickedTodayContentId] = useState(0);
   const [currentClassByCourseId, setCurrentClassByCourseId] = useState([]);
