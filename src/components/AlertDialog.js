@@ -3,9 +3,10 @@ import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CloseIcon from "../assets/icons/CloseIcon";
 import * as Linking from "expo-linking";
 
-const AlertDialog = ({ visible, setModalVisible, url }) => {
+const AlertDialog = ({ visible, setModalVisible, url, handleTutoring }) => {
   const link = () => {
     Linking.openURL(url);
+    handleTutoring();
   };
 
   return (
