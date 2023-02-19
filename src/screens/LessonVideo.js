@@ -1,4 +1,4 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, BackHandler } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { Video, VideoFullscreenUpdate } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -37,16 +37,36 @@ const LessonVideo = ({ route, navigation }) => {
           });
           // console.log('slidelist data')
         },
-          setIsSlideLoaded,
-          (e) => {
-            console.log(e);
-          }
+        setIsSlideLoaded,
+        (e) => {
+          console.log(e);
+        }
       );
     }
     // console.log(slideList)
 
     // console.log("useEffect");
   }, [isFullScreen, isSlideLoaded]);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (isHome) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        });
+      }else{
+        navigation.goBack();
+      }
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const onFullscreenUpdate = async ({ fullscreenUpdate }) => {
     setVideoStatus(fullscreenUpdate);
