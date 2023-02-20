@@ -424,6 +424,8 @@ const Setting = ({navigation}) => {
                                             if(d.message === "created"){
                                                 setFeedbackResult(d.message);
                                                 setModalVisible(true);
+                                                setFeedbackContent();
+                                                setFeedbackNum(0);
                                             }
                                         },
                                         () => {},
