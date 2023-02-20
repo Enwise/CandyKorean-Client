@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dimensions,
   Image,
@@ -14,6 +14,8 @@ import BackButton from "../components/BackButton";
 
 import TutoringHistory from "../components/TutoringHistory";
 import {
+  createLearnedClass,
+  getAssistantByCourseId,
   getClassesByCourseId,
   getPremiumLearnedClasses,
 } from "../modules/NetworkFunction";
@@ -23,23 +25,51 @@ const windowHeight = Dimensions.get("window").height;
 
 const Tutoring = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
-  const { course, tutors, userId } = route.params;
-  const [isLoaded, setIsLoaded] = React.useState(false);
+  const { tutors, userId } = route.params;
+  let course = route.params.course;
+  const [assistant, setAssistant] = React.useState(null);
+  const [selectedTutor, setSelectedTutor] = React.useState(null);
+  const [learnedClass, setLearnedClass] = React.useState(course.learned_class);
   useFocusEffect(
     React.useCallback(() => {
       const setTutor = async () => {
-        course.learned_class.map((item) => {
-          let tutor = tutors.find((tutor) => tutor.tutor_id == item.tutor_id);
-          item.tutor = tutor;
-        });
+        await getAssistantByCourseId(
+          { id: course.course_id },
+          (d) => {
+            setAssistant(d.data[0]); // 임시data
+          },
+          () => {},
+          (e) => {
+            console.log(e);
+          }
+        );
       };
       setTutor();
-      setIsLoaded(true);
     }, [])
   );
+
   const handleTutoring = () => {
     // tutored 버튼 클릭하면 createLearnedClass
+    // DB에 튜터링 클래스 10개 미리 생성해놓고, 튜터링 받을 때마다 그 클래스의 id를 가져와서 createLearnedClass로 생성
+    // 새로 튜터링 받을 클래스의 id => 마지막으로 튜터링 받은 클래스의 id + 1
+
+    const newClassId = learnedClass[learnedClass.length - 1].class_id + 1;
+    // console.log(newClassId);
+    if (course.class_id.includes(newClassId)) {
+      createLearnedClass(
+        { user_id: userId, class_id: newClassId },
+        (d) => {
+          setLearnedClass([...learnedClass, d.data]);
+        },
+        () => {},
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
+    console.log("tutored");
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -73,15 +103,17 @@ const Tutoring = ({ navigation, route }) => {
         <View style={styles.line}></View>
         <View style={styles.content}>
           <Text style={styles.title}>Tutors</Text>
+          {/* 전체 튜터 출력 후 강좌에 맞는 튜터가 아닌 경우 버튼 disabled */}
           {tutors.map((tutor, index) => {
             return (
               <Tutor
                 key={index}
                 onPress={() => {
                   setModalVisible(true);
+                  setSelectedTutor(tutor);
                 }}
                 tutor={tutor}
-                disabled={tutor.tutor_id !== course.tutor_id}
+                disabled={tutor.course_id !== course.course_id}
               />
             );
           })}
@@ -89,14 +121,14 @@ const Tutoring = ({ navigation, route }) => {
         <View style={styles.line2}></View>
         <View style={styles.content}>
           <Text style={styles.title}>Tutoring history</Text>
-          {isLoaded && <TutoringHistory tutoring={course.learned_class} />}
+          {learnedClass && assistant && (
+            <TutoringHistory tutoring={learnedClass} assistant={assistant} />
+          )}
         </View>
         <AlertDialog
           visible={modalVisible}
           setModalVisible={setModalVisible}
-          url={
-            "https://app.gather.town/app/rcStwsUdkfF8lpoI/Candy%20Korean_class%20room"
-          }
+          url={selectedTutor?.metaverse_url}
           handleTutoring={handleTutoring}
         />
       </ScrollView>

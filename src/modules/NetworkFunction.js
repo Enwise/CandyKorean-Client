@@ -696,6 +696,20 @@ export const getPremiumLearnedClasses = async (
   }
 };
 
+export const getLearnedClassesByUserId = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const { userId } = reqParam;
+  const response = await getRequest(`/learned_class/${userId}`, reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};
+
 export const createLearnedClass = async (
   reqParam,
   setData,
@@ -876,3 +890,16 @@ export const getAssistantById = async (
   }
 };
 
+export const getAssistantByCourseId = async (
+  reqParam,
+  setData,
+  setIsReady,
+  handleError
+) => {
+  const { id } = reqParam;
+  const response = await getRequest(`/assistant/course/${id}`, reqParam, handleError);
+  if (response !== null) {
+    setData(response.data);
+    setIsReady(true);
+  }
+};

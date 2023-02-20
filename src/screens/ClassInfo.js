@@ -65,7 +65,13 @@ const ClassInfo = ({ props, navigation, route }) => {
   };
 
   const handlePressBack = () => {
-
+    if(isHome){
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      });
+      return true
+    }
     videoPlayer.current.pauseAsync();
 
     if (navigation?.canGoBack()){

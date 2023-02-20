@@ -63,7 +63,8 @@
     "react-native-web": "~0.18.7",
     "react-native-webview": "11.23.1",
     "react-player": "^2.11.0",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "expo-dev-client": "~2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3"

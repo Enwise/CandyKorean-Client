@@ -55,7 +55,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
           let updatedCottonCandyCourseList = [...cottonCandyCourseList];
           let updatedMintCandyCourseList = [...mintCandyCourseList];
 
-          d.data.map((item) => {
+          d.data.map((item, idx) => {
             // console.log(item);
             if (item.level.name === "Lollipop Level") {
               // if (
@@ -83,6 +83,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
               //   }
               // }
               updatedLollipopCourseList.push(item);
+              console.log(item)
 
             } else if (item.level.name === "Cotton Candy Level") {
               updatedCottonCandyCourseList.push(item);

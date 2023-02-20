@@ -151,7 +151,7 @@ const ProgressLecture = ({ userId, navigation }) => {
         <TouchableOpacity
           key={index}
           style={styles.container}
-          activeOpacity="0.8"
+          activeOpacity={0.8}
           onPress={() => {
             navigation.navigate("ClassRoom", {
               screen: "LessonVideo",

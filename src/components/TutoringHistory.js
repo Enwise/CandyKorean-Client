@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
-const TutoringHistory = ({ tutoring }) => {
+const TutoringHistory = ({ tutoring , assistant }) => {
   const dateFormater = (date) => {
     let d = new Date(date);
     let day = d.getDate();
@@ -22,15 +22,15 @@ const TutoringHistory = ({ tutoring }) => {
           <View style={styles.tutor} key={index}>
             <View style={styles.imgContainer}>
               <Image
-                source={{ uri: data.tutor.profile_url }}
+                source={{ uri: assistant.profile_url }}
                 style={styles.img}
               />
             </View>
             <View>
-              <Text style={styles.name}>{data.tutor.name}</Text>
+              <Text style={styles.name}>{assistant.name}</Text>
             </View>
             <View style={styles.dateContainer}>
-              <Text style={styles.dateText}>{dateFormater(data.date)}</Text>
+              <Text style={styles.dateText}>{dateFormater(data.date_updated)}</Text>
             </View>
           </View>
         );
