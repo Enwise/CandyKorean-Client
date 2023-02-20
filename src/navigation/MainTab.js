@@ -117,7 +117,7 @@ const MainTab = ({ navigation, route }) => {
         name="Premium"
         component={PremiumStack}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({ focused }) => { 
             return focused ? <PremiumActive /> : <PremiumInactive />;
           },
           unmountOnBlur: true,

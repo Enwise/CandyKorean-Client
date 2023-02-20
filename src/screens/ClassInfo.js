@@ -223,18 +223,18 @@ const ClassInfo = ({ props, navigation, route }) => {
   return (
     <>
       <StatusBar translucent={false} hidden={true} />
+      
       <ScrollView
         contentContainerStyle={{
           ...styles.container,
           flexGrow: 1,
           paddingBottom: 70,
         }}
-        showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0]}
+        // showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}
       >
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{classInfo.name}</Text>
-          <View style={styles.backBtn}>
+        <View style={styles.backBtn}>
             <TouchableOpacity
               onPress={() => {
                 // navigation.goBack();
@@ -246,7 +246,7 @@ const ClassInfo = ({ props, navigation, route }) => {
               <AntDesign name="left" size={20} color="black" />
             </TouchableOpacity>
           </View>
-        </View>
+      </View>
         <View style={styles.topShadowContainer}>
           <View style={styles.topContainer}>
             <Image
@@ -387,16 +387,17 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignItems: "center",
-
+    
     marginBottom: 20,
-    backgroundColor: "white",
+    backgroundColor: "#fdfdfd",
   },
   titleContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 50,
+    marginTop: 40,
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#fdfdfd",
+    marginBottom:40,
   },
   title: {
     fontSize: 20,
