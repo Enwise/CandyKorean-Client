@@ -70,7 +70,7 @@ const Payment = ({ navigation, route }) => {
 
   // 구글 스토어 연결
   useEffect(async () => {
-    const history = await connectAsync(); 
+    // const history = await connectAsync(); 
 
   }, [])
 
@@ -103,110 +103,136 @@ const Payment = ({ navigation, route }) => {
       (e) => {console.log(e)}
     )
 
-    if(!isPurchasedCourseListLoaded) {
-      let updatedPurchasedCourseList = [];
-
-      getPurchasedCoursesByUserId(
-        { userId : userId},
-
-        (d) => {
-          d.data.map((item) => {
-            console.log('item', item.course_id)
-            updatedPurchasedCourseList.push(item.course_id);
-            setPurchasedCourseList([...updatedPurchasedCourseList]);
-          })
-        },
-        setIsPurchasedCourseListLoaded,
-        (e) => { console.log(e) }) 
-
-  }
-  console.log('purchasedCourseList', purchasedCourseList)
+   
   
-}, [ itemInfo, isSuccess, isCoursePurchased, imgUrl, userId, isPurchasedCourseListLoaded, purchasedCourseList]);
+}, [ itemInfo, isSuccess, isCoursePurchased, imgUrl, userId, isPurchasedCourseListLoaded]);
+
+useEffect(() => {
+  let updatedPurchasedCourseList = []; 
+    if(!isPurchasedCourseListLoaded) {
+    getPurchasedCoursesByUserId(
+      { userId : userId},
+      (d) => {
+        d.data.map((item) => {
+          console.log('item', item.course_id)
+          updatedPurchasedCourseList.push(item.course_id);
+          setPurchasedCourseList([...updatedPurchasedCourseList]);
+        })
+      },
+      setIsPurchasedCourseListLoaded,
+      (e) => { console.log(e) }
+      ) 
+    }
+     }, [])
 
 
   // navigation.goBack();
   const handlePayment = async (courseName) => {
     // 결제 프로세스 여기에 필요!
 
-    // 인앱결제 test용 courseName
-    courseName = "iap_test"
+    // 인앱결제 test용 courseName -> 나중에 지우기
+    // courseName = "iap_test"
     setBottomText(courseName);
     
-    let itemArray = [];
-    if(courseName === "Conversational Korean Course") {
-      itemArray.push("lollipop_yoojin");
-    } else if(courseName === "Survival Korean Course") {
-      itemArray.push("lollipop_seongyeop");
-    } else if(courseName === "After Like Course") {
-      itemArray.push("lollipop_kyungeun");
-    } else {
-      itemArray.push("iap_test");
-    }
+    // let itemArray = [];
+    // if(courseName === "Conversational Korean Course") {
+    //   // itemArray.push("lollipop_yoojin");
+    //   itemArray.push("iap_test_3");
+    // } else if(courseName === "Survival Korean Course") {
+    //   itemArray.push("lollipop_seongyeop");
+    // } else if(courseName === "After Like Course") {
+    //   itemArray.push("lollipop_kyungeun");
+    // } 
 
 
 
-    // try {
+    // // try {
     
-     // 구매 정보 가져오기
-     const { responseCode, results } = await getProductsAsync(itemArray);
+    //  // 구매 정보 가져오기
+    //  const { responseCode, results } = await getProductsAsync(itemArray);
 
-     if (responseCode === IAPResponseCode.OK) {
-         setProductId(results[0].productId)
-         setBottomText(results[0].productId);
+    //  if (responseCode === IAPResponseCode.OK) {
+    //      setProductId(results[0].productId)
+    //      setBottomText(results[0].productId);
          
-     } else {
-      setBottomText('something wrong!');
-     }
+    //  } else {
+    //   setBottomText('something wrong!');
+    //  }
 
-     purchaseItemAsync(results[0].productId)
+    //  // 구매 내역에 없는 상품일때만 결제 진행
+    //  if(purchasedCourseList.indexOf(itemInfo.course_id) === -1) {
+    //   purchaseItemAsync(results[0].productId)
+    //  } else {
+    //   // 아닐떈, 바로 이미 구입한 상품이라고 알려주기
+    //   navigation.navigate("PaymentResult", {
+    //     user_id: userId,
+    //     itemInfo: itemInfo,
+    //     isSuccess: false,
+    //     returnToClass,
+    //     imgUrl: imgUrl,
+    //     isBought: true,
+    //   });
+    //  }
 
-     return await new Promise((resolve, reject) => {
-      setPurchaseListener(async (result) => {
-        if(result.responseCode === IAPResponseCode.OK){
-          setBottomText("success")
-          if(!result.results[0].acknowledged) {
-            setBottomText('successful purchase')
-            await finishTransactionAsync(result.results[0], false);
+    //  return await new Promise((resolve, reject) => {
+    //   setPurchaseListener(async (result) => {
+    //     if(result.responseCode === IAPResponseCode.OK){
+    //       setBottomText("success")
+    //       if(!result.results[0].acknowledged) {
+    //         setBottomText('successful purchase')
+    //         await finishTransactionAsync(result.results[0], false);
 
-            // DB에 저장
-            createPurchasedCourse(
-              { user_id: userId, course_id: itemInfo.course_id },
-              (d) => {
+    //         // 계속 구매 가능한지 test 
+    //         // await finishTransactionAsync(result.results[0], true);
+
+    //         // DB에 저장 - purchasedCourse 에 없는 경우에만!
+    //         if(purchasedCourseList.indexOf(itemInfo.course_id) === -1) {
+    //         createPurchasedCourse(
+    //           { user_id: userId, course_id: itemInfo.course_id },
+    //           (d) => {
       
-                navigation.navigate("PaymentResult", {
-                  user_id: userId,
-                  itemInfo: itemInfo,
-                  isSuccess: true,
-                  returnToClass,
-                  imgUrl: imgUrl,
-                });
-              },
-              setIsCoursePurchased,
-              (e) => {
-                setIsSuccess(false);
-                console.log(e.message);
-              }
-            );
-          }
-        } else if (result.responseCode === IAPResponseCode.USER_CANCELED || result.responseCode === IAPResponseCode.DEFERRED) {
-          setBottomText('User canceled the transaction');
+    //             navigation.navigate("PaymentResult", {
+    //               user_id: userId,
+    //               itemInfo: itemInfo,
+    //               isSuccess: true,
+    //               returnToClass,
+    //               imgUrl: imgUrl,
+    //             });
+    //           },
+    //           setIsCoursePurchased,
+    //           (e) => {
+    //             setIsSuccess(false);
+    //             console.log(e.message);
+    //           }
+    //         );
+    //         } else {
+    //           navigation.navigate("PaymentResult", {
+    //             user_id: userId,
+    //             itemInfo: itemInfo,
+    //             isSuccess: true,
+    //             returnToClass,
+    //             imgUrl: imgUrl,
+    //           });
+    //         }
+    //     }
+    //     } else if (result.responseCode === IAPResponseCode.USER_CANCELED || result.responseCode === IAPResponseCode.DEFERRED) {
+    //       setBottomText('User canceled the transaction');
 
-        }  else {
+    //     }  else {
           
-          setBottomText(`Something went wrong with the purchase. Received errorCode ${result.errorCode}`);
-            navigation.navigate("PaymentResult", {
-            user_id: userId,
-            itemInfo: itemInfo,
-            isSuccess: false,
-            returnToClass,
-            imgUrl: imgUrl,
-            isBought: result.errorCode === 8 ? true : false,
-          });
-        }
-      })
+    //       setBottomText(`Something went wrong with the purchase. Received errorCode ${result.errorCode}`);
+    //         navigation.navigate("PaymentResult", {
+    //         user_id: userId,
+    //         itemInfo: itemInfo,
+    //         isSuccess: false,
+    //         returnToClass,
+    //         imgUrl: imgUrl,
+    //         isBought: result.errorCode === 8 ? true : false,
+    //       });
+    //     }
+    //   })
 
-    })
+    // })
 
     // } catch(e) {
     //   disconnectAsync();
@@ -300,9 +326,28 @@ const Payment = ({ navigation, route }) => {
                 handlePayment(itemInfo.name)
               }}
             >
-              <View style={styles.creditcardBtn}>
+              {/* <View style={styles.creditcardBtn}>
                 <Text style={styles.creditcardText}>BUY NOW</Text>
-              </View>
+              </View> */}
+              <GradientBtn
+                  text= "BUY NOW"
+                  // text="9 Units"
+                  textStyle={{
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: 20,
+                    fontFamily: "Poppins-SemiBold",
+                  }}
+                  viewStyle={{
+                    borderRadius: 57,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: Dimensions.get("screen").width * 0.9,
+                    height: 50,
+                    marginLeft: 5,
+                  }}
+                />
+              
             </TouchableOpacity>
             {/* <TouchableOpacity
               onPress={() => {
@@ -317,9 +362,9 @@ const Payment = ({ navigation, route }) => {
                 <Text style={styles.paypalText}>Paypal</Text>
               </View>
             </TouchableOpacity> */}
-            <Text>
+            {/* <Text>
               result : {bottomText}
-            </Text>
+            </Text> */}
           </View>
         </View>
       
@@ -474,11 +519,11 @@ const styles = StyleSheet.create({
     color: "#B8B5BC",
   },
   paymentContainer: {
-    flexDirection: "row",
-    marginTop: 20,
-    marginBottom: 20,
+    flexDirection: "column",
     width: "100%",
-    justifyContent: "space-evenly",
+    height: '60%',
+    justifyContent:'flex-end',
+    alignItems:'center',
   },
 
   creditcardBtn: {
