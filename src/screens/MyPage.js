@@ -619,7 +619,7 @@ const MyPage = ({ navigation }) => {
                               Object.entries(analysisObject).map((item, index) => {
                                   const [key, value] = item;
                                   return (
-                                      <View style={styles.analysisRowContainer}>
+                                      <View key={key} style={styles.analysisRowContainer}>
                                           <Text style={styles.analysisText}>{key}</Text>
                                           <View style={styles.analysisBarContainer}>
                                               {value === 0 ? (

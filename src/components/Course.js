@@ -159,7 +159,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
             key={"_"}
             style={styles.classListContainer}
             horizontal={true}
-            keyExtractor={(levelItem) => String(levelItem.level_id)}
+            keyExtractor={(item) => String(item.course_id)}
             data={lollipopCourseList}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
@@ -168,7 +168,6 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
             }}
             renderItem={({ item }) => (
               <Class
-                key={item.course_id}
                 navigation={navigation}
                 classInfo={item}
                 isShowAll={isShowAll}
