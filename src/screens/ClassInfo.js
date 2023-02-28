@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 30,
     fontFamily: "Poppins-SemiBold",
-    backgroundColor: "#fff",
+    backgroundColor: "#fdfdfd",
     textAlign: "center",
   },
   imageContainer: {
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
   topShadowContainer: {
     width: Dimensions.get("window").width * 0.95,
     height: Dimensions.get("window").height * 0.2,
-    backgroundColor: "#fff",
+    backgroundColor: "#fdfdfd",
     borderRadius: 9,
     ...Platform.select({
       ios: {
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#fdfdfd",
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 10,
@@ -499,14 +499,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
-    marginBottom: 30,
     backgroundColor: "#A160E2",
     borderRadius: 10,
   },
 
   payBtnText: {
     textAlign: "center",
-    color: "#fff",
+    color: "#fdfdfd",
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
   },

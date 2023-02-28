@@ -64,15 +64,10 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
   useEffect(() => {
     // 각 class가 wishList에 있는건지 없는건지 상태 체크해야됨!
 
-    // console.log("!!!!!!classInfo!!!!!!", classInfo);
-    console.log('isWish', isWish)
-
     if(!isWishLoaded){
       getWishlistByUser(
         {user_id: userId},
         (d) => {
-          console.log("getWishlists");
-          console.log(d.data);
           d.data.map((item) => {
             if (item.course_id == classInfo.course_id && item.user_id == userId) {
               setIsWish(true);

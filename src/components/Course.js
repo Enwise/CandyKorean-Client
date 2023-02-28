@@ -14,34 +14,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { getCourses, getTutorById } from "../modules/NetworkFunction";
 
 const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
-  // getCourse -> courseList 가져온 다음, 각 레벨에 따라서 분류
-  const [lollipopCourseList, setLollipopCourseList] = useState([]);
-  const [cottonCandyCourseList, setCottonCandyCourseList] = useState([]);
-  const [mintCandyCourseList, setMintCandyCourseList] = useState([]);
+
+  const [courseList, setCourseList] = useState([]);
 
   const [isCourseListLoaded, setIsCourseListLoaded] = useState(false);
 
   const [isTutorLoaded, setIsTutorLoaded] = useState(false);
-
-  // getCourses result
-  //    "data": [
-  //     {
-  //         "course_id": 1,
-  //         "name": "test3",
-  //         "price": 10000,
-  //         "info": "info",
-  //         "category": "기",
-  //         "view_count": 2,
-  //         "date_created": "2022-11-22T15:51:09.974Z",
-  //         "date_updated": "2022-11-22T15:51:09.974Z",
-  //         "level": {
-  //             "level_id": 1,
-  //             "name": "롤리팝",
-  //             "enabled": false,
-  //             "info": "test"
-  //         }
-  //     }
-  // ],
 
   useEffect(() => {
     console.log(levelItem);
@@ -50,52 +28,15 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
       getCourses(
         {},
         (d) => {
-          console.log("getCourse data: ", d.data);
-          let updatedLollipopCourseList = [...lollipopCourseList];
-          let updatedCottonCandyCourseList = [...cottonCandyCourseList];
-          let updatedMintCandyCourseList = [...mintCandyCourseList];
-
+          // 각 레벨에 따라 따로 분류
           d.data.map((item, idx) => {
-            // console.log(item);
-            if (item.level.name === "Lollipop Level") {
-              // if (
-              //   item.name === "Yoojin Teacher Course" ||
-              //   item.name === "Seongyeop Teacher Course" ||
-              //   item.name === "After Like Course"
-              // ) {
-              //   // course_id : 3
-              //   // class_id: 14(ot) 3, 5~13
-              //   if (!isTutorLoaded) {
-              //     getTutorById(
-              //       {
-              //         tutor_id: item.tutor_id,
-              //       },
-              //       (d) => {
-              //         console.log(d);
-              //         item["tutor"] = { ...d.data };
-              //         updatedLollipopCourseList.push(item);
-              //       },
-              //       setIsTutorLoaded,
-              //       (e) => {
-              //         console.log(e);
-              //       }
-              //     );
-              //   }
-              // }
-              updatedLollipopCourseList.push(item);
-              console.log(item)
-
-            } else if (item.level.name === "Cotton Candy Level") {
-              updatedCottonCandyCourseList.push(item);
-            } else if (item.level.name === "Mint Candy Level") {
-              updatedMintCandyCourseList.push(item);
+            console.log('course item', item);
+            if (item.level.name === levelItem.name) {
+              setCourseList((prev) => {
+                return [...prev, item]}
+              )
             }
           });
-          setLollipopCourseList(updatedLollipopCourseList);
-          setCottonCandyCourseList(updatedCottonCandyCourseList);
-          setMintCandyCourseList(updatedMintCandyCourseList);
-          console.log("lollipopCourseList");
-          console.log(lollipopCourseList);
         },
 
         setIsCourseListLoaded,
@@ -104,7 +45,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
         }
       );
     }
-  }, [isCourseListLoaded]);
+  }, []);
 
   const handleShowAllClass = () => {
     {
@@ -153,6 +94,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
         </View>
       </View>
       {levelItem.name === "Lollipop Level" ? (
+        // 현재 지금은 Lollipop Level 인 것만 show
         <SafeAreaView nestedScrollEnabled={true} style={{ width: "100%" }}>
           <FlatList
             numColumns={1}
@@ -160,7 +102,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
             style={styles.classListContainer}
             horizontal={true}
             keyExtractor={(item) => String(item.course_id)}
-            data={lollipopCourseList}
+            data={courseList}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{

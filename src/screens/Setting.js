@@ -410,8 +410,9 @@ const Setting = ({navigation}) => {
 
                             <TouchableOpacity
                                 style={{marginTop:100}}
+                                disabled={feedbackNum === 0 || feedbackContent === ""}
                                 onPress={() => {
-
+                                    
                                     createFeedback(
                                         {
                                             "text": feedbackContent,
