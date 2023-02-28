@@ -52,7 +52,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
       levelItem.name === "Lollipop Level"
         ? navigation.navigate("ClassMore", {
             title: levelItem.name,
-            courseList: lollipopCourseList,
+            courseList,
           })
         : null;
     }
@@ -112,7 +112,7 @@ const Course = ({ title, levelItem, isShowAll, navigation, isMain }) => {
               <Class
                 navigation={navigation}
                 classInfo={item}
-                isShowAll={isShowAll}
+                isShowAll={false}
                 maintitle="Lollipop Level"
                 isMain={isMain}
               />

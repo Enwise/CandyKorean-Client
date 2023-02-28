@@ -27,13 +27,10 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
   const [unitsNum, setUnitsNum] = useState(0);
 
   const handleWishlist = () => {
-    console.log('wishlist heart clicked')
-    console.log('isWish', isWish)
     if (isWish) {
       deleteWishlist(
         {user_id: authState.user_id, course_id: classInfo.course_id },
         (d) => {
-          console.log('delete wishlist success')
           setIsWish(false);
         },
         () => {},
@@ -46,7 +43,6 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
       createWishlist(
         {user_id: userId, course_id: classInfo.course_id },
         (d) => {
-          console.log('create wishlist success')
           setIsWish(true);
         },
         () => {},
@@ -95,10 +91,10 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
 
   }, []);
 
-  console.log(isShowAll);
 
   return (
     <View style={dstyles(isShowAll).classContainer}>
+      <View style={dstyles(isShowAll).topShadowContainer}>
       <TouchableOpacity 
         onPress={() => {
           navigation.navigate("ClassInfo", {
@@ -118,25 +114,13 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
             }}
             disabled={!isMain}
           >
-            <View style={styles.imageContainer}>
             <Image
-              style={isShowAll ? styles.classProfileImg : styles.classImg}
-              // source={
-              //   isShowAll
-              //     ? classInfo.tutor.profile_url !== ""
-              //       ? classInfo.profileUrl
-              //       : dummy_profile_url
-              //     : classInfo.tutor.img_url !== ""
-              //     ? classInfo.img_url
-              //     : dummy_img_url
-              // }
+              style={dstyles(isShowAll).imageContainer}
               source={{
-                // uri: classInfo.tutor.profile_url,
                 uri:
                   classInfo.tutor.profile_url
               }}
             ></Image>
-        </View>
       </TouchableOpacity>
         <View style={dstyles(isShowAll).textContainer}>
           {isShowAll ? (
@@ -161,7 +145,6 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
           ) : null}
           <View style={styles.teacherNameContainer}>
             <Text style={styles.teacherName}>
-              {/* with {classInfo.tutor.name ?? "dummy_tutor_name"} */}
               {classInfo.tutor.name}
             </Text>
           </View>
@@ -188,6 +171,8 @@ const Class = ({ classInfo, navigation, isShowAll, isMain }) => {
         ) : null}
       </View>
       </TouchableOpacity>
+      </View>
+      
       {isShowAll ? (
         <View style={styles.bottomShadowContainer}>
           <TouchableOpacity
@@ -261,6 +246,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 6,
   },
+  
+  
   bottomShadowContainer: {
     width: Dimensions.get("window").width * 0.93,
     height: Dimensions.get("window").height * 0.04,
@@ -298,23 +285,12 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     backgroundColor: "#fff",
   },
-  classImg: {
-    borderRadius: 20,
-    width: 150,
-    height: 250,
-  },
-  classProfileImg: {
-    borderRadius: 20,
-    width: Dimensions.get("window").width * 0.3,
-    height: Dimensions.get("window").width * 0.35,
-    marginRight: 5,
-  },
 
-  imageContainer: {
-    width: "35%",
-    marginRight: 8,
-  },
+  
+  
 });
+
+
 
 const dstyles = (isShowAll) =>
   StyleSheet.create({
@@ -335,38 +311,41 @@ const dstyles = (isShowAll) =>
           alignItems: "center",
           marginRight: 15,
         },
-    img: {
-      width: isShowAll ? 130 : 140,
-      height: isShowAll ? 130 : 250,
-      marginRight: isShowAll ? 15 : 0,
-      borderRadius: 10,
-    },
-    topContainer: {
-      position: "relative",
-      flexDirection: isShowAll ? "row" : "column",
-      width: "100%",
-      height: isShowAll ? "100%" : 300,
-      backgroundColor: "#fff",
-      borderRadius: 9,
-      padding: isShowAll ? 11 : 0,
-      ...Platform.select(
-        isShowAll
-          ? {
-              ios: {
-                shadowColor: "rgba(0,0,0,0.07)",
-                shadowOpacity: 1,
-                shadowOffset: { height: 2, width: 0 },
-                shadowRadius: 10,
-              },
+        imageContainer: {
+          borderRadius: 20,
+          width: isShowAll ? 120 : 150,
+          height: isShowAll ? 120 : Dimensions.get("window").width * 0.6,
+          marginRight: 10,
+        },
 
-              android: {
-                shadowColor: "rgba(0,0,0,0.5)",
-                elevation: 3,
-              },
-            }
-          : {}
-      ),
-    },
+        topContainer: {
+          width: "100%",
+          height:"100%",
+          backgroundColor:'#fff',
+          flexDirection: isShowAll? 'row' : 'column',
+        },  
+      topShadowContainer : {
+        position: "relative",
+          flexDirection: isShowAll ? "row" : "column",
+          width: isShowAll ? Dimensions.get("window").width * 0.9 : "100%",
+          height: isShowAll ? Dimensions.get("window").height * 0.2 : 200,
+          backgroundColor: "#fff",
+          borderRadius: 9,
+          padding: isShowAll ? 11 : 0,
+          ...Platform.select({
+            ios: isShowAll ? {
+              shadowColor: "rgba(0,0,0,0.07)",
+              shadowOpacity: 1,
+              shadowOffset: { height: 2, width: 0 },
+              shadowRadius: 10,
+            } : {},
+      
+            android: isShowAll ? {
+              shadowColor: "rgba(0,0,0,0.5)",
+              elevation: 5,
+            }: {},
+          }),
+        },
 
     textContainer: {
       flexDirection: "column",

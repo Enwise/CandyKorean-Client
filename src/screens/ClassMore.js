@@ -37,13 +37,7 @@ const ClassMore = ({ navigation, route }) => {
       <View style={styles.topContainer}>
         <View style={styles.topItem1}>
           <Text style={styles.title}>{courseList[0].level.name}</Text>
-          {/* <Text style={styles.secondTitle}>
-            {title === "Lollipop Level"
-              ? "K-Culture with influencers!"
-              : title === "Cotton Candy Level"
-              ? "Standard Korean"
-              : "Lessons for TOPIK"}
-          </Text> */}
+          
         </View>
       </View>
       <SafeAreaView nestedScrollEnabled={true}>
@@ -53,7 +47,7 @@ const ClassMore = ({ navigation, route }) => {
           contentContainerStyle={{}}
           style={styles.classListContainer}
           horizontal={false}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item.course_id)}
           data={courseList}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
