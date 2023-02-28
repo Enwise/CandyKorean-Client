@@ -64,30 +64,17 @@ const Premium = ({ navigation }) => {
           }
         );
 
-        // 구매한 프리미엄 코스의 클래스 정보 가져오기
+        // 구매한 프리미엄 코스의 튜터링 받은 클래스 정보 가져오기
         const courses = await Promise.all(
           purchased_course.map(async (course) => {
-            let learned = [];
-            await getClassesByCourseId(
-              { id: course.course_id },
-              (d) => {
-                // is_metaverse가 true인 클래스id 가져오기
-                course.class_id = d.data
-                  .filter((item) => item.is_metaverse && item.unit != 0)
-                  .map((c) => c.class_id);
-              },
-              () => {},
-              (e) => {
-                console.log(e);
-              }
-            );
-
-            // 튜터링 받은 클래스 정보 가져오기
             await getLearnedClassesByUserId(
               { userId: authState.userId },
               (d) => {
-                course.learned_class = d.data.filter((item) =>
-                  course.class_id.includes(item.class_id)
+                course.learned_class = d.data.filter(
+                  (item) =>
+                    item.class.is_metaverse &&
+                    item.class.unit != 0 &&
+                    course.course_id === item.class.course_id
                 );
               },
               () => {},
@@ -95,30 +82,6 @@ const Premium = ({ navigation }) => {
                 console.log(e);
               }
             );
-
-            // await getPremiumLearnedClasses(
-            //   {},
-            //   (d) => {
-            //     d.data.map((item) => {
-            //       if (
-            //         course.class_id.includes(item.class_id) &&
-            //         item.user_id == authState.userId
-            //       ) {
-            //         learned.push({
-            //           // 데이터 생성 날짜를 튜터링 날짜로 설정
-            //           date: item.date_created,
-            //           tutor_id: course.tutor_id,
-            //         });
-            //       }
-            //     });
-            //     course.learned_class = learned;
-            //     course.learned_count = learned.length;
-            //   },
-            //   () => {},
-            //   (e) => {
-            //     console.log(e);
-            //   }
-            // );
             return course;
           })
         );
