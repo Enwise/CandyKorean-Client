@@ -106,6 +106,12 @@ const MyWishList = ({ navigation, route }) => {
     setCourseList(newCourseList);
   };
 
+  const sortData = (courseList) => {
+    let sortedArray = [...courseList];
+    sortedArray.sort((a, b) => a.course_id - b.course_id)
+    return sortedArray
+  }
+
   return (
     <View
       showsVerticalScrollIndicator={false}
@@ -126,33 +132,6 @@ const MyWishList = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <View style={styles.selectAllContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              // 전체 선택
-              changeCheckColor();
-            }}
-          >
-            <Image
-              style={styles.selectAllBtn}
-              source={
-                isSelectAll
-                  ? require("../assets/img/ic-item-selected.png")
-                  : require("../assets/img/ic-item-unselected.png")
-              }
-            ></Image>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              // 전체 선택
-              changeCheckColor();
-            }}
-          >
-            <Text style={styles.selectAllText}>
-              Select All ({wishList.length}/{wishList.length})
-            </Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
 
       {courseList.length !== 0 ? (
@@ -165,7 +144,7 @@ const MyWishList = ({ navigation, route }) => {
           }}
           numColumns={1}
           key={"_"}
-          data={courseList}
+          data={sortData(courseList)}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           // 어떻게 아이템을 렌더링 할 것인가
@@ -197,11 +176,6 @@ const MyWishList = ({ navigation, route }) => {
                         </TouchableOpacity>
                       </View>
 
-                      {/* <View style={styles.categoryContainer}>
-                        <Text style={styles.cateogryText}>
-                          {item.category}
-                        </Text>
-                      </View> */}
                       <View style={styles.priceTextContainer}>
                         <Text style={styles.priceText}>
                           {item.price == 0 ? "Free" : 
