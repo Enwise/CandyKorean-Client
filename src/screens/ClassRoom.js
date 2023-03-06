@@ -22,16 +22,11 @@ import AuthContext from "../contexts/AuthContext";
 import { useIsFocused, useFocusEffect } from '@react-navigation/native'; 
 
 const ClassRoom = ({ route, navigation }) => {
-  // 객체 형태로 저장
-  // key: 코스이름
-  // value: 코스에 해당하는 수업 리스트
-
   
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState(authState.userId);
-  // const [userId, setUserId] = useState(16);
 
 
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
@@ -85,21 +80,12 @@ const ClassRoom = ({ route, navigation }) => {
     getAllQuizs(() => {},
     (d) => {
       setQuizList(d.data);
-      console.log("quizList loaded");
     }, setIsQuizListLoaded, (e) => {console.log(e)}
     )
-
-    // getSolvedQuizsByUser({user_id : userId}, (d) => {
-    //   setSolvedQuizList(d.data);
-    //   console.log("solvedQuizList loaded");
-    // },
-    // setIsSolvedQuizListLoaded, (e) => {console.log(e)})
     }, []))
 
 
   const sortData = () => {
-    console.log('sortData enter');
-    console.log('purchasedCourseList', purchasedCourseList);
     let sortedArray = [...purchasedCourseList];
     sortedArray.sort((a, b) => a.course_id - b.course_id)
     return sortedArray

@@ -82,13 +82,10 @@ const ClassInfo = ({ props, navigation, route }) => {
   }
 
   const handleWishlist = () => {
-    console.log('wishlist heart clicked')
-    console.log('isWish', isWish)
     if (isWish) {
       deleteWishlist(
         {user_id: authState.user_id, course_id: classInfo.course_id },
         (d) => {
-          console.log('delete wishlist success')
           setIsWish(false);
         },
         () => {},
@@ -101,7 +98,6 @@ const ClassInfo = ({ props, navigation, route }) => {
       createWishlist(
         {user_id: userId, course_id: classInfo.course_id, checked: true },
         (d) => {
-          console.log('create wishlist success')
           setIsWish(true);
         },
         () => {},
@@ -123,15 +119,8 @@ const ClassInfo = ({ props, navigation, route }) => {
     
     setIsProcessLoaded(false);
 
-    console.log("----------------classInfo--------------------");
-    console.log(route.params.classInfo);
 
-    // console.log(classInfo);
-
-    console.log(classInfo.course_id);
-    
- // console.log(classInfo.introVideoUrl);
-
+  
     // class, content, 그리고 tutor 정보 가져와야함
     // class, content ->  Units 갯수가 얼마인지 알기위해
 
@@ -144,11 +133,7 @@ const ClassInfo = ({ props, navigation, route }) => {
 
     // 3 : Kyungeun
     // class_id : OT: 25, 1강 ~ 10강 : 26 ~ 35
-    
-
-
   
-    console.log('isContentLoading')
     
     getContents(
       {},
@@ -156,21 +141,12 @@ const ClassInfo = ({ props, navigation, route }) => {
         console.log("getAllContents");
   
           d.data.map((contentItem) => {
-            
-          
             if (
-              contentItem.name == "Orientation" && contentItem.class_entity.course_id == route.params.classInfo.course_id
-              || contentItem.name == "OT_SeongyeopT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
-              || contentItem.name == "OT_KyungeunT" && contentItem.class_entity.course_id == route.params.classInfo.course_id
-              
+              contentItem.class_entity.course_id == route.params.classInfo.course_id && 
+              (contentItem.name == "Orientation" || contentItem.name == "OT_SeongyeopT" || contentItem.name == "OT_KyungeunT" )
               ) {
-                console.log('video url', introVideoUrl);
                 setIntroVideoUrl(contentItem.video_url);
-                // console.log(contentItem.video_url);
-                // console.log(contentItem.is_portrait);
-                
                 setIsPortrait(contentItem.is_portrait);
-                
               } 
               return;
           });
@@ -186,11 +162,9 @@ const ClassInfo = ({ props, navigation, route }) => {
       getWishlistByUser(
         {user_id: authState.userId},
         (d) => {
-          console.log("getWishlists");
           console.log(d.data);
           d.data.map((item) => {
             if (item.course_id == route.params.classInfo.course_id && item.user_id == userId) {
-              console.log("wishlist true!!")
               setIsWish(true);
             } 
           });
@@ -230,14 +204,12 @@ const ClassInfo = ({ props, navigation, route }) => {
           flexGrow: 1,
           paddingBottom: 70,
         }}
-        // showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}
       >
         <View style={styles.titleContainer}>
         <View style={styles.backBtn}>
             <TouchableOpacity
               onPress={() => {
-                // navigation.goBack();
                 isHome
                   ? navigation.reset({ routes: [{ name: "Home" }] })
                   : navigation.reset({ routes: [{ name: "ClassMain" }] });
@@ -320,18 +292,11 @@ const ClassInfo = ({ props, navigation, route }) => {
             style={{ width: "100%", 
                     height: "100%", 
                     backgroundColor: "#000" }}
-            // posterSource={{
-            //   uri: "https://candykoreanbucket.s3.ap-northeast-2.amazonaws.com/files/1671471320710/shin_yoo_jin_rect.jpg",
-            // }}
-            // posterStyle={{
-            //   height: 500,
-            //   width: 300,
-            // }}
+
             resizeMode={isPortrait ? "stretch" : "contain"}
             isLooping
             shouldPlay
             onFullscreenUpdate={(status) => {
-              // console.log(status);
               const videoStatus = status.fullscreenUpdate; // 1이면 전체화면 표시완료, 3이면 닫기 완료
               setVideoStatus(videoStatus);
               setOrientation(videoStatus);
@@ -343,34 +308,16 @@ const ClassInfo = ({ props, navigation, route }) => {
 
         <View style={styles.classAndteacherContainer}>
           <Text style={styles.classInfoText}>{classInfo.info}</Text>
-          {/* {classList.map((classItem) => {
-            return <Text>{classItem.name}</Text>;
-          })}
-          {contentsList.map((contentItem) => {
-            return <Text>{contentItem.name}</Text>;
-          })} */}
+
         </View>
 
-        {/* <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("MyWishList", {
-                classInfo: route.params.classInfo,
-                isAdd: true,
-              });
-            }}
-          >
-            <View style={styles.cartBtn}>
-              <Image source={require("../assets/img/btn-purple.png")}></Image>
-              <Text style={styles.cartBtnText}>add to wishlist</Text>
-            </View>
-          </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             videoPlayer.current.pauseAsync();
             // const payList = [{ ...classInfo }];
             navigation.navigate("Payment", {
               item: classInfo,
-              unitsNum : 10,
+              unitsNum : unitsNum - 1,
             });
           }}
         >

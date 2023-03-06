@@ -40,9 +40,7 @@ const LessonInfo = ({ navigation, route }) => {
   const [lessonInfo, setLessonInfo] = useState(route.params?.lessonInfo);
   const [courseId, setCourseId] = useState(route.params?.lessonInfo.course_id);
 
-  // const [contentsList, setContentsList] = useState(route.params.contentsList);
   const [quizList, setQuizList] = useState(route.params?.quizList);
-  // const [quizList, setQuizList] = useState([]);
   const [solvedQuizList, setSolvedQuizList] = useState(route.params?.solvedQuizList);
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
 
@@ -62,7 +60,6 @@ const LessonInfo = ({ navigation, route }) => {
 
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState(authState.userId);
-  // const [userId, setUserId] = useState(72);
 
   const [startQuizList, setStartQuizList] = useState(); // 퀴즈 시작하기 버튼 누르면 해당 컨텐츠의 퀴즈 리스트가 들어감
 
@@ -105,9 +102,6 @@ const LessonInfo = ({ navigation, route }) => {
     );
 
     if (isPlayed) { // updateLearnedClass
-      
-      console.log('updateLearnedClass');
-
       updateLearnedClass(
         {
           user_id: userId,
@@ -120,7 +114,6 @@ const LessonInfo = ({ navigation, route }) => {
         (e) => { console.log(e); }
       );
     } else { // 없는 경우! -> createLearnedClass
-      console.log('createLearnedClass');
       createLearnedClass(
         {
           user_id: userId,
@@ -257,20 +250,16 @@ const LessonInfo = ({ navigation, route }) => {
   useFocusEffect(
     React.useCallback(() => {
 
-      console.log("LessonInfo is focused");
-      console.log('lessonInfo', lessonInfo);
 
       if(!isSolvedQuizListLoaded){
         getSolvedQuizsByUser({user_id : userId}, (d) => {
           setSolvedQuizList([...d.data]);
-          console.log("solvedQuizList loaded");
         }, setIsSolvedQuizListLoaded, (e) => {console.log(e)})
        
       }
           solvedQuizList.map((solvedItem) => {
             setSolvedQuizNumList((solvedQuizNumList) => [...solvedQuizNumList, solvedItem.quiz_id])
           })
-          // console.log("solvedQuizNumList : ",  solvedQuizNumList)
           
             contentsList.map((content) => {
       
@@ -289,10 +278,7 @@ const LessonInfo = ({ navigation, route }) => {
                   let foundSolvedQuizItem = solvedQuizList.find((solvedQuizItem) => {
                     return solvedQuizItem.quiz_id == q.quiz_id;
                   })
-      
-                  // console.log('foundSolvedQuizItem', foundSolvedQuizItem)
-                  // console.log('foundsolvedItem.is_correct : ', foundSolvedQuizItem.is_correct)
-      
+          
                   if(foundSolvedQuizItem.is_correct){
                     solvedQuizNum += 1;
                   }

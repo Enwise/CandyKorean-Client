@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import GradientBtn from "../components/GradientButtonView";
-import { getClasses, getContents } from "../modules/NetworkFunction";
+import { getClasses, getClassesByCourseId, getContents } from "../modules/NetworkFunction";
 
 const Lesson = ({ navigation, lessonInfo, quizList, solvedQuizList }) => {
   const [isClassListLoaded, setIsClassListLoaded] = useState(false);
@@ -23,14 +23,13 @@ const Lesson = ({ navigation, lessonInfo, quizList, solvedQuizList }) => {
 
   useEffect(() => {
     if (!isClassListLoaded) {
-      getClasses(
-        {},
+      getClassesByCourseId(
+        {
+          id : lessonInfo.course_id
+        },
         (d) => {
           d.data.map((item) => {
-            if (
-              item.course_id == lessonInfo.course_id &&
-              (item.name != "1차" || item.name != "OT_Seongyeop")
-            ) {
+            if(item.unit !== 0){ // OT 인 Class 제외
               setClassList((classList) => [...classList, item]);
             }
           });
@@ -48,16 +47,10 @@ const Lesson = ({ navigation, lessonInfo, quizList, solvedQuizList }) => {
           classList.map((classItem) => {
             d.data.map((contentItem) => {
               if (
-                classItem.class_id == contentItem.class_entity.class_id &&
-                !(
-                  contentItem.name == "Orientation" ||
-                  contentItem.name == "OT_SeongyeopT" ||
-                  contentItem.name == "OT_KyungeunT"
-                )
+                classItem.class_id == contentItem.class_entity.class_id
+                
               ) {
-                if (classItem.course.name === "After Like Course") {
-                  contentItem["is_portrait"] = false;
-                }
+                
                 setContentsList((contentsList) => [
                   ...contentsList,
                   contentItem,

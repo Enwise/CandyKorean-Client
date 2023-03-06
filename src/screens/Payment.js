@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import GradientBtn from "../components/GradientButtonView";
 import AuthContext from "../contexts/AuthContext";
 
-import { createPurchasedCourse, getTutorById, getPurchasedCoursesByUserId } from "../modules/NetworkFunction";
+import { createPurchasedCourse, getTutorById, getPurchasedCoursesByUserId, getClassesCountByCourseId } from "../modules/NetworkFunction";
 
 // import {
 //   connectAsync,
@@ -29,7 +29,6 @@ import { createPurchasedCourse, getTutorById, getPurchasedCoursesByUserId } from
 // } from 'expo-in-app-purchases';
 
 const Payment = ({ navigation, route }) => {
-  // const [payList, setPayList] = useState(route.params.payList);
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState(authState.userId);
 
@@ -75,13 +74,6 @@ const Payment = ({ navigation, route }) => {
 
   useEffect(() => {
 
-
-    
-    console.log("iteminfo ID----------------------");
-    console.log(itemInfo.course_id);
-    console.log("iteminfo----------------------");
-
-    console.log("prev : ", prevRoute.name);
     if (prevRoute.name == "ClassInfo") {
       setReturnToClass(true);
     } else {
@@ -277,7 +269,6 @@ useEffect(() => {
           <View style={styles.classInfoContainer}>
             <Image
               source={{
-                // uri: itemInfo.tutor.profile_url,
                 uri: imgUrl,
               }}
               style={styles.classImg}
@@ -287,7 +278,6 @@ useEffect(() => {
               <View style={styles.categoryAndUnitContainer}>
                 <GradientBtn
                   text={`${unitsNum} Units`}
-                  // text="9 Units"
                   textStyle={{
                     color: "white",
                     textAlign: "center",
@@ -305,9 +295,7 @@ useEffect(() => {
                 />
               </View>
 
-              {/* <View style={styles.unitsNumContainer}>
-              <Text style={styles.unitsNum}>{itemInfo.units} Units</Text>
-            </View> */}
+
             </View>
           </View>
 
@@ -316,18 +304,14 @@ useEffect(() => {
             <Text style={styles.paymentPriceText}>$ {itemInfo.price}</Text>
             
           </View>
-          {/* <View style={styles.howToPayContainer}>
-            <Text style={styles.howToPayText}>How to pay</Text>
-          </View> */}
+
           <View style={styles.paymentContainer}>
             <TouchableOpacity
               onPress={() => {
                 handlePayment(itemInfo.name)
               }}
             >
-              {/* <View style={styles.creditcardBtn}>
-                <Text style={styles.creditcardText}>BUY NOW</Text>
-              </View> */}
+
               <GradientBtn
                   text= "BUY NOW"
                   // text="9 Units"
@@ -348,22 +332,7 @@ useEffect(() => {
                 />
               
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("PaymentResult", {
-                  itemInfo: itemInfo,
-                  totalPrice: totalPrice,
-                  isSuccess: false,
-                });
-              }}
-            >
-              <View style={styles.paypalBtn}>
-                <Text style={styles.paypalText}>Paypal</Text>
-              </View>
-            </TouchableOpacity> */}
-            {/* <Text>
-              result : {bottomText}
-            </Text> */}
+
           </View>
         </View>
       
