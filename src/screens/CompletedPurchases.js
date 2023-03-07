@@ -15,27 +15,24 @@ import {
   getAllQuizs,
   getSolvedQuizsByUser,
   updateSolvedQuiz,
-  getCourseById
+  getCourseById,
 } from "../modules/NetworkFunction";
 import AuthContext from "../contexts/AuthContext";
 import PurchasedItem from "../components/PurchasedItem";
 import { AntDesign } from "@expo/vector-icons";
 
-
-import { useIsFocused, useFocusEffect } from '@react-navigation/native'; 
+import { useIsFocused, useFocusEffect } from "@react-navigation/native";
 
 const CompletedPurchases = ({ route, navigation }) => {
   // 객체 형태로 저장
   // key: 코스이름
   // value: 코스에 해당하는 수업 리스트
 
-  
   const [purchasedCourseList, setPurchasedCourseList] = useState([]);
   const [classList, setClassList] = useState([]);
   const { authState } = React.useContext(AuthContext);
   const [userId, setUserId] = useState(authState.userId);
   // const [userId, setUserId] = useState(16);
-
 
   const [isPurchasedCourseListLoaded, setIsPurchasedCourseListLoaded] =
     useState(false);
@@ -45,11 +42,10 @@ const CompletedPurchases = ({ route, navigation }) => {
 
   const isFocused = useIsFocused(); // isFoucused를 통해 화면이 focus 되었을 때 useEffect 실행
 
-  const [quizList, setQuizList] = useState([]); 
+  const [quizList, setQuizList] = useState([]);
   const [isQuizListLoaded, setIsQuizListLoaded] = useState(false);
-  const [solvedQuizList, setSolvedQuizList] = useState([]); 
+  const [solvedQuizList, setSolvedQuizList] = useState([]);
   const [isSolvedQuizListLoaded, setIsSolvedQuizListLoaded] = useState(false);
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -59,100 +55,92 @@ const CompletedPurchases = ({ route, navigation }) => {
           let updatedPurchasedCourseList = [];
           d.data.map((item) => {
             getCourses(
-              { },
+              {},
               (d) => {
                 d.data.map((courseItem) => {
                   if (courseItem.course_id == item.course_id) {
                     updatedPurchasedCourseList.push(courseItem);
                     setPurchasedCourseList([...updatedPurchasedCourseList]);
                   }
-                })
-                
+                });
               },
               () => {},
               (e) => {
                 console.log(e);
               }
-              );
-              
-            });
-          },
+            );
+          });
+        },
         setIsPurchasedCourseListLoaded,
         (e) => {
           console.log(e);
         }
-
-
       );
-    
-    getAllQuizs(() => {},
-    (d) => {
-      setQuizList(d.data);
-      console.log("quizList loaded");
-    }, setIsQuizListLoaded, (e) => {console.log(e)}
-    )
 
-    // getSolvedQuizsByUser({user_id : userId}, (d) => {
-    //   setSolvedQuizList(d.data);
-    //   console.log("solvedQuizList loaded");
-    // },
-    // setIsSolvedQuizListLoaded, (e) => {console.log(e)})
-    }, []))
+      getAllQuizs(
+        () => {},
+        (d) => {
+          setQuizList(d.data);
+          console.log("quizList loaded");
+        },
+        setIsQuizListLoaded,
+        (e) => {
+          console.log(e);
+        }
+      );
 
+      // getSolvedQuizsByUser({user_id : userId}, (d) => {
+      //   setSolvedQuizList(d.data);
+      //   console.log("solvedQuizList loaded");
+      // },
+      // setIsSolvedQuizListLoaded, (e) => {console.log(e)})
+    }, [])
+  );
 
   const sortData = () => {
-    console.log('sortData enter');
-    console.log('purchasedCourseList', purchasedCourseList);
+    console.log("sortData enter");
+    console.log("purchasedCourseList", purchasedCourseList);
     let sortedArray = [...purchasedCourseList];
-    sortedArray.sort((a, b) => a.course_id - b.course_id)
-    return sortedArray
-  }
+    sortedArray.sort((a, b) => a.course_id - b.course_id);
+    return sortedArray;
+  };
 
   return (
     <View style={styles.container}>
-			<TouchableOpacity
-				style={{width: '85%', backgroundColor:'red'}}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-						<AntDesign name="left" size={20} color="black" style={{
-							position:'absolute',
-							top: 5,
-						}}/>
-					
-					 </TouchableOpacity>
       <View style={styles.titleContainer}>
-			
-			
-       
-        <Text style={styles.title}>
-				
-					Completed Purchases</Text>
-
+        <View style={styles.backBtn}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <AntDesign name="left" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.title}>Completed Purchases</Text>
       </View>
-      <View style={{flex: 1, alignItems:'center', justifyContent:'center'}}>
-    {purchasedCourseList.length === 0 ? (
-        <Text style={{fontFamily: 'Poppins-Regular'}}>There are no purchased courses.</Text>
-      ) : (  
-			<SafeAreaView nestedScrollEnabled={true}>
-        <FlatList
-          data={sortData()}
-          numColumns={1}
-          style={styles.classListContainer}
-          horizontal={false}
-          keyExtractor={(item) => String(item.course_id)}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <PurchasedItem navigation={navigation} lessonInfo={item} />
-          )}
-        ></FlatList>
-      </SafeAreaView>)}
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        {purchasedCourseList.length === 0 ? (
+          <Text style={{ fontFamily: "Poppins-Regular" }}>
+            There are no purchased courses.
+          </Text>
+        ) : (
+          <SafeAreaView nestedScrollEnabled={true}>
+            <FlatList
+              data={sortData()}
+              numColumns={1}
+              style={styles.classListContainer}
+              horizontal={false}
+              keyExtractor={(item) => String(item.course_id)}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <PurchasedItem navigation={navigation} lessonInfo={item} />
+              )}
+            ></FlatList>
+          </SafeAreaView>
+        )}
       </View>
-     
-
-      
     </View>
   );
 };
@@ -162,21 +150,23 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     paddingTop: 50,
-    backgroundColor: "#fff",
-    position: "relative",
+    backgroundColor: "#FDFDFD",
     alignItems: "center",
-    
   },
   titleContainer: {
     alignItems: "center",
     marginBottom: 15,
-		flexDirection: "row",
-		justifyContent:'center',
-		width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
   },
   title: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 20,
+  },
+  backBtn: {
+    position: "absolute",
+    left: 25,
   },
 });
 
