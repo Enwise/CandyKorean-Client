@@ -445,7 +445,8 @@ const MyPage = ({ navigation }) => {
                           }}
                           style={{
                               backgroundColor: "#807F82",
-                              borderRadius: 9,
+                              borderTopLeftRadius: 9,
+                              borderTopRightRadius: 9,
                               width: "100%",
                               height: 36,
                               justifyContent: "center",
@@ -463,7 +464,8 @@ const MyPage = ({ navigation }) => {
                           }}
                           style={{
                               backgroundColor: "#807F82",
-                              borderRadius: 9,
+                              borderBottomLeftRadius: 9,
+                              borderBottomRightRadius: 9,
                               width: "100%",
                               height: 36,
                               paddingLeft: 20,
@@ -749,6 +751,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     padding: 10,
+    paddingBottom:20,
     borderRadius: 10,
     ...Platform.select({
       ios: {
