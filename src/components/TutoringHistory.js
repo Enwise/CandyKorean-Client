@@ -8,16 +8,20 @@ import {
   View,
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
-const TutoringHistory = ({ tutoring , assistant }) => {
-  const dateFormater = (date) => {
+const TutoringHistory = ({ tutoring, assistants }) => {
+  const dateFormatter = (date) => {
     let d = new Date(date);
     let day = d.getDate();
     let month = d.getMonth() + 1;
     return `${month}/${day}`;
   };
+
   return (
     <View style={styles.container}>
       {tutoring.map((data, index) => {
+        const assistant = assistants.find(
+          (item) => item.assistant_id === data.assistant_id
+        );
         return (
           <View style={styles.tutor} key={index}>
             <View style={styles.imgContainer}>
@@ -30,7 +34,9 @@ const TutoringHistory = ({ tutoring , assistant }) => {
               <Text style={styles.name}>{assistant.name}</Text>
             </View>
             <View style={styles.dateContainer}>
-              <Text style={styles.dateText}>{dateFormater(data.date_updated)}</Text>
+              <Text style={styles.dateText}>
+                {dateFormatter(data.date_updated)}
+              </Text>
             </View>
           </View>
         );

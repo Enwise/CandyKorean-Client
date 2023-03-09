@@ -17,10 +17,6 @@ import GradientButton from "../components/GradientButton";
 import AuthContext from "../contexts/AuthContext";
 import {
   getPurchasedCoursesByUserId,
-  getClassesByCourseId,
-  getCourseById,
-  getPremiumCourses,
-  getPremiumLearnedClasses,
   getAllAssistants,
   getLearnedClassesByUserId,
 } from "../modules/NetworkFunction";
@@ -35,7 +31,7 @@ const Premium = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       // 튜터(조교) 리스트 가져오기
-      const getTutor = async () => {
+      const getAssistants = async () => {
         await getAllAssistants(
           {},
           (d) => {
@@ -88,7 +84,7 @@ const Premium = ({ navigation }) => {
         setPurchasedCourse(courses);
       };
 
-      getTutor();
+      getAssistants();
       getPremiumCourse();
     }, [])
   );
