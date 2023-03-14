@@ -21,7 +21,7 @@ const Stack = createNativeStackNavigator();
 
 const MyPageStack = ({ navigation, route }) => {
   const routeName = getFocusedRouteNameFromRoute(route);
-  console.log(routeName);
+  
   React.useLayoutEffect(() => {
     if (
       routeName == "MyWishList" ||
@@ -67,7 +67,6 @@ const MyPageStack = ({ navigation, route }) => {
       <Stack.Screen name="MyPage" component={MyPage} />
       <Stack.Screen name="Setting" component={Setting} />
       <Stack.Screen name="CompletedPurchases" component={CompletedPurchases} />
-      {/* <Stack.Screen name="MyPurchases" component={MyPurchases} /> */}
       <Stack.Screen name="MyLesson" component={MyLesson} />
       <Stack.Screen name="MyWishList" component={MyWishList} />
       <Stack.Screen name="Payment" component={Payment} />
