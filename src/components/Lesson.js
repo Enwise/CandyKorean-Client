@@ -69,83 +69,74 @@ const Lesson = ({ navigation, lessonInfo, quizList, solvedQuizList }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.lessonInfoShawdowContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("LessonInfo", {
-              lessonInfo: lessonInfo,
-              contentsList: contentsList,
-              quizList: quizList,
-              solvedQuizList: solvedQuizList,
-            });
-          }}
-        >
-          <View style={styles.lessonInfoContainer}>
-            <Image
-              style={styles.imageContainer}
-              source={{
-                uri: lessonInfo.tutor.profile_url
-              }}
-            ></Image>
-            <View style={styles.textContainer}>
-              <View style={styles.lessonNameContainer}>
-                <Text style={styles.lessonName}>{lessonInfo.name}</Text>
-              </View>
-              <View style={styles.lessonDescContainer}>
-                <Text style={styles.lessonDesc}>
-                  {lessonInfo.info.split(".")[0] + "."}
-                </Text>
-              </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("LessonInfo", {
+            lessonInfo: lessonInfo,
+            contentsList: contentsList,
+            quizList: quizList,
+            solvedQuizList: solvedQuizList,
+          });
+        }}
+      >
+        <View style={styles.lessonInfoContainer}>
+          <Image
+            style={styles.imageContainer}
+            source={{
+              uri: lessonInfo.tutor.profile_url,
+            }}
+          ></Image>
+          <View style={styles.textContainer}>
+            <View style={styles.lessonNameContainer}>
+              <Text style={styles.lessonName}>{lessonInfo.name}</Text>
+            </View>
+            <View style={styles.lessonDescContainer}>
+              <Text style={styles.lessonDesc}>
+                {lessonInfo.info.split(".")[0] + "."}
+              </Text>
             </View>
           </View>
-          <GradientBtn
-            text={`${contentsList.length} Units`}
-            textStyle={{
-              color: "white",
-              textAlign: "center",
-              fontSize: 14,
-              fontFamily: "Poppins-Medium",
-            }}
-            viewStyle={{
-              borderRadius: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              zIndex: 3,
-              width: 80,
-              height: 30,
-              right: 5,
-              bottom: 5,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
+        </View>
+        <GradientBtn
+          text={`${contentsList.length} Units`}
+          textStyle={{
+            color: "white",
+            textAlign: "center",
+            fontSize: 14,
+            fontFamily: "Poppins-Medium",
+          }}
+          viewStyle={{
+            borderRadius: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            zIndex: 3,
+            width: 80,
+            height: 30,
+            right: 5,
+            bottom: 5,
+          }}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width * 0.9,
+    marginHorizontal: Dimensions.get("window").width * 0.05,
     height: Dimensions.get("window").height * 0.2,
     backgroundColor: "#fff",
     borderRadius: 9,
     marginBottom: 40,
-  },
-  lessonInfoShawdowContainer: {
-    width: "100%",
-
-    height: "100%",
-
-    backgroundColor: "#fff",
     borderRadius: 9,
     padding: 10,
     ...Platform.select({
       ios: {
-        shadowColor: "rgba(0,0,0,0.2)",
+        shadowColor: "rgba(0,0,0,0.07)",
         shadowOpacity: 1,
-        shadowOffset: { height: 1, width: 1 },
-        shadowRadius: 2,
+        shadowOffset: { height: 2, width: 0 },
+        shadowRadius: 10,
       },
 
       android: {
